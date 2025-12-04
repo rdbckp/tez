@@ -6,15 +6,15 @@ on:
       ROM_URL:
         description: 'ROM_URL'
         required: true
-        default: 'https://downloads.sourceforge.net/project/wulan17/GARDEN/Nusantara/Nusantara_v3.4-11-garden-02122021-UNOFFICIAL-1306.zip?ts=gAAAAABpMWfjZIDF_dXPo22vp6n6Dk50v_B_qkwg0pjjaE7tOPrLP9BxHiPPWTigxHo_xsxp8h1Vf2BUDconL9YFLfFi8_hZtA%3D%3D&r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fwulan17%2Ffiles%2FGARDEN%2FNusantara%2FNusantara_v3.4-11-garden-02122021-UNOFFICIAL-1306.zip%2Fdownload%3Fuse_mirror%3Dcyfuture%26r%3Dhttps%3A%2F%2Fsourceforge.net%2Fprojects%2Fwulan17%2Ffiles%2FGARDEN%2FNusantara%2FNusantara_v3.4-11-garden-02122021-UNOFFICIAL-1306.zip%2Fdownload%3Fuse_mirror%3Dcyfuture%26r%3Dhttps%3A%2F%2Fsourceforge.net%2Fprojects%2Fwulan17%2Ffiles%2FGARDEN%2FNusantara%2FNusantara_v3.4-11-garden-02122021-UNOFFICIAL-1306.zip%2Fdownload'
+        default: 'https://bn.d.miui.com/V14.0.3.0.TGOIDXM/miui_WATERIDGlobal_V14.0.3.0.TGOIDXM_620060f93d_13.0.zip'
       ZIP_NAME:
         description: 'ZIP_NAME'
         required: true
-        default: 'Nusantara_v3.4-11-garden-02122021-UNOFFICIAL-1306.zip'
+        default: 'miui_WATERIDGlobal_V14.0.3.0.TGOIDXM_620060f93d_13.0.zip'
       OS_TYPE:
         description: 'OS_TYPE'
         required: true
-        default: 'aosp'
+        default: 'miui'
       SGSI_TYPE:
         description: 'SGSI_TYPE(AB, A, or BOTH)'
         required: true
