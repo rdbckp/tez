@@ -184,13 +184,6 @@ dtc_cpp_flags  = -Wp,-MD,$(depfile).pre.tmp -nostdinc                    \
 modname-multi = $(sort $(foreach m,$(multi-used),\
 		$(if $(filter $(subst $(obj)/,,$*.o), $($(m:.o=-objs)) $($(m:.o=-y))),$(m:.o=))))
 
-<<<<<<< HEAD
-ifeq ($(CONFIG_SEC_FACTORY),y)
-dtc_cpp_flags += -DCONFIG_SEC_FACTORY
-endif
-
-=======
->>>>>>> v4.14.187
 # Useful for describing the dependency of composite objects
 # Usage:
 #   $(call multi_depend, multi_used_targets, suffix_to_remove, suffix_to_add)
