@@ -122,13 +122,6 @@ ifeq ($(CONFIG_ARM_UNWIND),y)
 CFLAGS_ABI	+=-funwind-tables
 endif
 
-<<<<<<< HEAD]
-ifeq ($(cc-name),clang)
-CFLAGS_ABI	+= -meabi gnu
-endif
-
-=======
->>>>>>> v4.14.187
 # Accept old syntax despite ".syntax unified"
 AFLAGS_NOWARN	:=$(call as-option,-Wa$(comma)-mno-warn-deprecated,-Wa$(comma)-W)
 
