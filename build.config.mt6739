@@ -1,0 +1,17 @@
+ARCH=arm
+DEFCONFIG="a02_defconfig"
+
+mkdir -p toolchain
+cd toolchain
+mkdir -p clang
+mkdir -p gcc
+wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android12L-s1-release/clang-r416183b1.tar.gz
+tar -xzvf clang-r416183b1.tar -C /clang
+wget https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/heads/android12L-s1-release.tar.gz
+tar -xzvf android12L-s1-release.tar -C /gcc
+cd toolchain || exit 1
+
+# Setting Toolchain Path
+PATH="$(pwd)toolchain/clang/bin:$(pwd)toolchain/gcc/bin:/bin"
+
+make -j5(nproc --all)
