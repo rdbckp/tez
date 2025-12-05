@@ -178,13 +178,6 @@ DTC_INCLUDE    := $(srctree)/scripts/dtc/include-prefixes
 
 dtc_cpp_flags  = -Wp,-MD,$(depfile).pre.tmp -nostdinc                    \
 		 $(addprefix -I,$(DTC_INCLUDE))                          \
-<<<<<<< HEAD
-		 -I$(srctree)/arch/$(SRCARCH)/boot/dts                   \
-		 -I$(srctree)/arch/$(SRCARCH)/boot/dts/include           \
-		 -I$(objtree)/include/                                   \
-		 -Iarch/$(SRCARCH)/boot/dts                              \
-=======
->>>>>>> v4.14.187
 		 -undef -D__DTS__
 
 # Finds the multi-part object the current object will be linked into
