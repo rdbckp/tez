@@ -122,7 +122,7 @@ ifeq ($(CONFIG_ARM_UNWIND),y)
 CFLAGS_ABI	+=-funwind-tables
 endif
 
-<<<<<<< HEAD
+<<<<<<< HEAD]
 ifeq ($(cc-name),clang)
 CFLAGS_ABI	+= -meabi gnu
 endif
