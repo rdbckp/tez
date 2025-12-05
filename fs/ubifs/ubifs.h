@@ -38,10 +38,19 @@
 #include <linux/backing-dev.h>
 #include <linux/security.h>
 #include <linux/xattr.h>
+<<<<<<< HEAD
 #include <linux/random.h>
 
 #include <linux/fscrypt.h>
 
+=======
+#ifdef CONFIG_UBIFS_FS_ENCRYPTION
+#include <linux/fscrypt_supp.h>
+#else
+#include <linux/fscrypt_notsupp.h>
+#endif
+#include <linux/random.h>
+>>>>>>> v4.14.187
 #include "ubifs-media.h"
 
 /* Version of this UBIFS implementation */
@@ -138,7 +147,11 @@
  */
 #define WORST_COMPR_FACTOR 2
 
+<<<<<<< HEAD
 #ifdef CONFIG_FS_ENCRYPTION
+=======
+#ifdef CONFIG_UBIFS_FS_ENCRYPTION
+>>>>>>> v4.14.187
 #define UBIFS_CIPHER_BLOCK_SIZE FS_CRYPTO_BLOCK_SIZE
 #else
 #define UBIFS_CIPHER_BLOCK_SIZE 0
@@ -1807,7 +1820,11 @@ int ubifs_decompress(const struct ubifs_info *c, const void *buf, int len,
 #include "misc.h"
 #include "key.h"
 
+<<<<<<< HEAD
 #ifndef CONFIG_FS_ENCRYPTION
+=======
+#ifndef CONFIG_UBIFS_FS_ENCRYPTION
+>>>>>>> v4.14.187
 static inline int ubifs_encrypt(const struct inode *inode,
 				struct ubifs_data_node *dn,
 				unsigned int in_len, unsigned int *out_len,
@@ -1833,13 +1850,27 @@ int ubifs_decrypt(const struct inode *inode, struct ubifs_data_node *dn,
 
 extern const struct fscrypt_operations ubifs_crypt_operations;
 
+<<<<<<< HEAD
 static inline bool ubifs_crypt_is_encrypted(const struct inode *inode)
 {
 	const struct ubifs_inode *ui = ubifs_inode(inode);
+=======
+static inline bool __ubifs_crypt_is_encrypted(struct inode *inode)
+{
+	struct ubifs_inode *ui = ubifs_inode(inode);
+>>>>>>> v4.14.187
 
 	return ui->flags & UBIFS_CRYPT_FL;
 }
 
+<<<<<<< HEAD
+=======
+static inline bool ubifs_crypt_is_encrypted(const struct inode *inode)
+{
+	return __ubifs_crypt_is_encrypted((struct inode *)inode);
+}
+
+>>>>>>> v4.14.187
 /* Normal UBIFS messages */
 __printf(2, 3)
 void ubifs_msg(const struct ubifs_info *c, const char *fmt, ...);

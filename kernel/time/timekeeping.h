@@ -14,6 +14,7 @@ extern u64 timekeeping_max_deferment(void);
 extern int timekeeping_inject_offset(struct timespec *ts);
 extern int timekeeping_suspend(void);
 extern void timekeeping_resume(void);
+<<<<<<< HEAD
 #ifdef CONFIG_GENERIC_SCHED_CLOCK
 extern int sched_clock_suspend(void);
 extern void sched_clock_resume(void);
@@ -21,6 +22,8 @@ extern void sched_clock_resume(void);
 static inline int sched_clock_suspend(void) { return 0; }
 static inline void sched_clock_resume(void) { }
 #endif
+=======
+>>>>>>> v4.14.187
 
 extern void do_timer(unsigned long ticks);
 extern void update_wall_time(void);

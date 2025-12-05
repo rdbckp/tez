@@ -548,6 +548,7 @@ static char *dynamic_emit_prefix(const struct _ddebug *desc, char *buf)
 	return buf;
 }
 
+<<<<<<< HEAD
 void __dynamic_pr_emerg(struct _ddebug *descriptor, const char *fmt, ...)
 {
 	va_list args;
@@ -688,6 +689,8 @@ void __dynamic_pr_info(struct _ddebug *descriptor, const char *fmt, ...)
 }
 EXPORT_SYMBOL(__dynamic_pr_info);
 
+=======
+>>>>>>> v4.14.187
 void __dynamic_pr_debug(struct _ddebug *descriptor, const char *fmt, ...)
 {
 	va_list args;
@@ -1094,14 +1097,21 @@ static void ddebug_remove_all_tables(void)
 
 static __initdata int ddebug_init_success;
 
+<<<<<<< HEAD
 static int __init dynamic_debug_init_control(void)
 {
 	struct proc_dir_entry *procfs_dir;
 	struct dentry *debugfs_dir;
+=======
+static int __init dynamic_debug_init_debugfs(void)
+{
+	struct dentry *dir, *file;
+>>>>>>> v4.14.187
 
 	if (!ddebug_init_success)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	/* Create the control file in debugfs if it is enabled */
 	if (debugfs_initialized()) {
 		debugfs_dir = debugfs_create_dir("dynamic_debug", NULL);
@@ -1114,6 +1124,17 @@ static int __init dynamic_debug_init_control(void)
 	if (procfs_dir)
 		proc_create("control", 0644, procfs_dir, &ddebug_proc_fops);
 
+=======
+	dir = debugfs_create_dir("dynamic_debug", NULL);
+	if (!dir)
+		return -ENOMEM;
+	file = debugfs_create_file("control", 0644, dir, NULL,
+					&ddebug_proc_fops);
+	if (!file) {
+		debugfs_remove(dir);
+		return -ENOMEM;
+	}
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -1190,4 +1211,8 @@ out_err:
 early_initcall(dynamic_debug_init);
 
 /* Debugfs setup must be done later */
+<<<<<<< HEAD
 fs_initcall(dynamic_debug_init_control);
+=======
+fs_initcall(dynamic_debug_init_debugfs);
+>>>>>>> v4.14.187

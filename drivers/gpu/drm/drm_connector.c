@@ -86,7 +86,10 @@ static struct drm_conn_prop_enum_list drm_connector_enum_list[] = {
 	{ DRM_MODE_CONNECTOR_VIRTUAL, "Virtual" },
 	{ DRM_MODE_CONNECTOR_DSI, "DSI" },
 	{ DRM_MODE_CONNECTOR_DPI, "DPI" },
+<<<<<<< HEAD
 	{ DRM_MODE_CONNECTOR_WRITEBACK, "Writeback" },
+=======
+>>>>>>> v4.14.187
 };
 
 void drm_connector_ida_init(void)
@@ -223,9 +226,16 @@ int drm_connector_init(struct drm_device *dev,
 	config->num_connector++;
 	spin_unlock_irq(&config->connector_list_lock);
 
+<<<<<<< HEAD
 	if (connector_type != DRM_MODE_CONNECTOR_VIRTUAL &&
 	    connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
 		drm_connector_attach_edid_property(connector);
+=======
+	if (connector_type != DRM_MODE_CONNECTOR_VIRTUAL)
+		drm_object_attach_property(&connector->base,
+					      config->edid_property,
+					      0);
+>>>>>>> v4.14.187
 
 	drm_object_attach_property(&connector->base,
 				      config->dpms_property, 0);
@@ -254,6 +264,7 @@ out_put:
 EXPORT_SYMBOL(drm_connector_init);
 
 /**
+<<<<<<< HEAD
  * drm_connector_attach_edid_property - attach edid property.
  * @dev: DRM device
  * @connector: the connector
@@ -273,6 +284,8 @@ void drm_connector_attach_edid_property(struct drm_connector *connector)
 EXPORT_SYMBOL(drm_connector_attach_edid_property);
 
 /**
+=======
+>>>>>>> v4.14.187
  * drm_mode_connector_attach_encoder - attach a connector to an encoder
  * @connector: connector to attach
  * @encoder: encoder to attach @connector to
@@ -1307,8 +1320,12 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
 
 	memset(&u_mode, 0, sizeof(struct drm_mode_modeinfo));
 
+<<<<<<< HEAD
 	connector = drm_connector_lookup(dev, file_priv,
 					out_resp->connector_id);
+=======
+	connector = drm_connector_lookup(dev, out_resp->connector_id);
+>>>>>>> v4.14.187
 	if (!connector)
 		return -ENOENT;
 

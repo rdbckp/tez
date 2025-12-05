@@ -194,7 +194,11 @@ rb_event_length(struct ring_buffer_event *event)
 	case RINGBUF_TYPE_DATA:
 		return rb_event_data_length(event);
 	default:
+<<<<<<< HEAD
 		WARN_ON_ONCE(1);
+=======
+		BUG();
+>>>>>>> v4.14.187
 	}
 	/* not hit */
 	return 0;
@@ -250,7 +254,11 @@ rb_event_data(struct ring_buffer_event *event)
 {
 	if (event->type_len == RINGBUF_TYPE_TIME_EXTEND)
 		event = skip_time_extend(event);
+<<<<<<< HEAD
 	WARN_ON_ONCE(event->type_len > RINGBUF_TYPE_DATA_TYPE_LEN_MAX);
+=======
+	BUG_ON(event->type_len > RINGBUF_TYPE_DATA_TYPE_LEN_MAX);
+>>>>>>> v4.14.187
 	/* If length is in len field, then array[0] has the data */
 	if (event->type_len)
 		return (void *)&event->array[0];
@@ -3476,7 +3484,11 @@ rb_update_read_stamp(struct ring_buffer_per_cpu *cpu_buffer,
 		return;
 
 	default:
+<<<<<<< HEAD
 		RB_WARN_ON(cpu_buffer, 1);
+=======
+		BUG();
+>>>>>>> v4.14.187
 	}
 	return;
 }
@@ -3507,7 +3519,11 @@ rb_update_iter_read_stamp(struct ring_buffer_iter *iter,
 		return;
 
 	default:
+<<<<<<< HEAD
 		RB_WARN_ON(iter->cpu_buffer, 1);
+=======
+		BUG();
+>>>>>>> v4.14.187
 	}
 	return;
 }
@@ -3774,7 +3790,11 @@ rb_buffer_peek(struct ring_buffer_per_cpu *cpu_buffer, u64 *ts,
 		return event;
 
 	default:
+<<<<<<< HEAD
 		RB_WARN_ON(cpu_buffer, 1);
+=======
+		BUG();
+>>>>>>> v4.14.187
 	}
 
 	return NULL;
@@ -3854,7 +3874,11 @@ rb_iter_peek(struct ring_buffer_iter *iter, u64 *ts)
 		return event;
 
 	default:
+<<<<<<< HEAD
 		RB_WARN_ON(cpu_buffer, 1);
+=======
+		BUG();
+>>>>>>> v4.14.187
 	}
 
 	return NULL;

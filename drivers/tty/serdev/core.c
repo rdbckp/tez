@@ -20,7 +20,10 @@
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/serdev.h>
 #include <linux/slab.h>
 
@@ -50,6 +53,7 @@ static const struct device_type serdev_ctrl_type = {
 
 static int serdev_device_match(struct device *dev, struct device_driver *drv)
 {
+<<<<<<< HEAD
 	/* TODO: ACPI matching */
 
 	if (of_driver_match_device(dev, drv))
@@ -60,10 +64,15 @@ static int serdev_device_match(struct device *dev, struct device_driver *drv)
 		return 1;
 
 	return 0;
+=======
+	/* TODO: ACPI and platform matching */
+	return of_driver_match_device(dev, drv);
+>>>>>>> v4.14.187
 }
 
 static int serdev_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
+<<<<<<< HEAD
 	int rc;
 
 	/* TODO: ACPI modalias */
@@ -76,6 +85,10 @@ static int serdev_uevent(struct device *dev, struct kobj_uevent_env *env)
 		rc = dev->parent->parent->bus->uevent(dev->parent->parent, env);
 
 	return rc;
+=======
+	/* TODO: ACPI and platform modalias */
+	return of_device_uevent_modalias(dev, env);
+>>>>>>> v4.14.187
 }
 
 /**
@@ -172,7 +185,10 @@ int serdev_device_write(struct serdev_device *serdev,
 			unsigned long timeout)
 {
 	struct serdev_controller *ctrl = serdev->ctrl;
+<<<<<<< HEAD
 	int written = 0;
+=======
+>>>>>>> v4.14.187
 	int ret;
 
 	if (!ctrl || !ctrl->ops->write_buf ||
@@ -187,13 +203,20 @@ int serdev_device_write(struct serdev_device *serdev,
 		if (ret < 0)
 			break;
 
+<<<<<<< HEAD
 		written += ret;
 		buf += ret;
 		count -= ret;
+=======
+		buf += ret;
+		count -= ret;
+
+>>>>>>> v4.14.187
 	} while (count &&
 		 (timeout = wait_for_completion_timeout(&serdev->write_comp,
 							timeout)));
 	mutex_unlock(&serdev->write_lock);
+<<<<<<< HEAD
 
 	if (ret < 0)
 		return ret;
@@ -202,6 +225,9 @@ int serdev_device_write(struct serdev_device *serdev,
 		return -ETIMEDOUT;
 
 	return written;
+=======
+	return ret < 0 ? ret : (count ? -ETIMEDOUT : 0);
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL_GPL(serdev_device_write);
 
@@ -425,6 +451,7 @@ static int of_serdev_register_devices(struct serdev_controller *ctrl)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int platform_serdev_register_devices(struct serdev_controller *ctrl)
 {
 	struct serdev_device *serdev;
@@ -464,6 +491,18 @@ static int platform_serdev_register_devices(struct serdev_controller *ctrl)
 int serdev_controller_add_platform(struct serdev_controller *ctrl, bool platform)
 {
 	int ret, ret_of, ret_platform = -ENODEV;
+=======
+/**
+ * serdev_controller_add() - Add an serdev controller
+ * @ctrl:	controller to be registered.
+ *
+ * Register a controller previously allocated via serdev_controller_alloc() with
+ * the serdev core.
+ */
+int serdev_controller_add(struct serdev_controller *ctrl)
+{
+	int ret;
+>>>>>>> v4.14.187
 
 	/* Can't register until after driver model init */
 	if (WARN_ON(!is_registered))
@@ -473,6 +512,7 @@ int serdev_controller_add_platform(struct serdev_controller *ctrl, bool platform
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret_of = of_serdev_register_devices(ctrl);
 	if (platform)
 		ret_platform = platform_serdev_register_devices(ctrl);
@@ -483,6 +523,11 @@ int serdev_controller_add_platform(struct serdev_controller *ctrl, bool platform
 		ret = -ENODEV;
 		goto out_dev_del;
 	}
+=======
+	ret = of_serdev_register_devices(ctrl);
+	if (ret)
+		goto out_dev_del;
+>>>>>>> v4.14.187
 
 	dev_dbg(&ctrl->dev, "serdev%d registered: dev:%p\n",
 		ctrl->nr, &ctrl->dev);
@@ -492,7 +537,11 @@ out_dev_del:
 	device_del(&ctrl->dev);
 	return ret;
 };
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(serdev_controller_add_platform);
+=======
+EXPORT_SYMBOL_GPL(serdev_controller_add);
+>>>>>>> v4.14.187
 
 /* Remove a device associated with a controller */
 static int serdev_remove_device(struct device *dev, void *data)

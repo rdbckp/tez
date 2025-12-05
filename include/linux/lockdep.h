@@ -276,6 +276,7 @@ struct held_lock {
 	 */
 	unsigned int gen_id;
 #endif
+<<<<<<< HEAD
 
 	/* MTK_LOCK_DEBUG_HELD_LOCK */
 #define HELD_LOCK_STACK_TRACE_DEPTH 20
@@ -284,6 +285,8 @@ struct held_lock {
 	/* MTK_LOCK_MONITOR */
 	unsigned long long timestamp;
 	bool acquired;
+=======
+>>>>>>> v4.14.187
 };
 
 #ifdef CONFIG_LOCKDEP_CROSSRELEASE
@@ -609,7 +612,11 @@ static inline void lockdep_init_task(struct task_struct *task) {}
 static inline void lockdep_free_task(struct task_struct *task) {}
 #endif /* CROSSRELEASE */
 
+<<<<<<< HEAD
 #if defined(CONFIG_LOCK_STAT) || defined(CONFIG_DEBUG_LOCK_ALLOC)
+=======
+#ifdef CONFIG_LOCK_STAT
+>>>>>>> v4.14.187
 
 extern void lock_contended(struct lockdep_map *lock, unsigned long ip);
 extern void lock_acquired(struct lockdep_map *lock, unsigned long ip);
@@ -722,6 +729,7 @@ do {									\
 	lock_acquire(&(lock)->dep_map, 0, 0, 0, 1, NULL, _THIS_IP_);	\
 	lock_release(&(lock)->dep_map, 0, _THIS_IP_);			\
 } while (0)
+<<<<<<< HEAD
 
 /*
  * might_lock_read() is only invoked by might_fault() and the
@@ -737,6 +745,8 @@ do {									\
  * the false alarms caused by the new lock dependency.
  */
 #if 0
+=======
+>>>>>>> v4.14.187
 # define might_lock_read(lock) 						\
 do {									\
 	typecheck(struct lockdep_map *, &(lock)->dep_map);		\
@@ -744,16 +754,22 @@ do {									\
 	lock_release(&(lock)->dep_map, 0, _THIS_IP_);			\
 } while (0)
 #else
+<<<<<<< HEAD
 # define might_lock_read(lock) do { } while (0)
 #endif
 #else
+=======
+>>>>>>> v4.14.187
 # define might_lock(lock) do { } while (0)
 # define might_lock_read(lock) do { } while (0)
 #endif
 
 #ifdef CONFIG_LOCKDEP
 void lockdep_rcu_suspicious(const char *file, const int line, const char *s);
+<<<<<<< HEAD
 extern unsigned long long debug_locks_off_ts;
+=======
+>>>>>>> v4.14.187
 #else
 static inline void
 lockdep_rcu_suspicious(const char *file, const int line, const char *s)
@@ -761,6 +777,7 @@ lockdep_rcu_suspicious(const char *file, const int line, const char *s)
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_LOCKDEP
 void check_held_locks(int force);
 void mt_aee_dump_held_locks(void);
@@ -775,4 +792,6 @@ mt_aee_dump_held_locks(void)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 #endif /* __LINUX_LOCKDEP_H */

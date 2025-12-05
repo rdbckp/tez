@@ -20,8 +20,12 @@
 static noinline size_t
 lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
 		    unsigned char *out, size_t *out_len,
+<<<<<<< HEAD
 		    size_t ti, void *wrkmem, signed char *state_offset,
 		    const unsigned char bitstream_version)
+=======
+		    size_t ti, void *wrkmem)
+>>>>>>> v4.14.187
 {
 	const unsigned char *ip;
 	unsigned char *op;
@@ -36,16 +40,23 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
 	ip += ti < 4 ? 4 - ti : 0;
 
 	for (;;) {
+<<<<<<< HEAD
 		const unsigned char *m_pos = NULL;
 		size_t t, m_len, m_off;
 		u32 dv;
 		u32 run_length = 0;
+=======
+		const unsigned char *m_pos;
+		size_t t, m_len, m_off;
+		u32 dv;
+>>>>>>> v4.14.187
 literal:
 		ip += 1 + ((ip - ii) >> 5);
 next:
 		if (unlikely(ip >= ip_end))
 			break;
 		dv = get_unaligned_le32(ip);
+<<<<<<< HEAD
 
 		if (dv == 0 && bitstream_version) {
 			const unsigned char *ir = ip + 4;
@@ -108,13 +119,24 @@ next:
 			if (unlikely(dv != get_unaligned_le32(m_pos)))
 				goto literal;
 		}
+=======
+		t = ((dv * 0x1824429d) >> (32 - D_BITS)) & D_MASK;
+		m_pos = in + dict[t];
+		dict[t] = (lzo_dict_t) (ip - in);
+		if (unlikely(dv != get_unaligned_le32(m_pos)))
+			goto literal;
+>>>>>>> v4.14.187
 
 		ii -= ti;
 		ti = 0;
 		t = ip - ii;
 		if (t != 0) {
 			if (t <= 3) {
+<<<<<<< HEAD
 				op[*state_offset] |= t;
+=======
+				op[-2] |= t;
+>>>>>>> v4.14.187
 				COPY4(op, ii);
 				op += t;
 			} else if (t <= 16) {
@@ -147,6 +169,7 @@ next:
 			}
 		}
 
+<<<<<<< HEAD
 		if (unlikely(run_length)) {
 			ip += run_length;
 			run_length -= MIN_ZERO_RUN_LENGTH;
@@ -158,6 +181,8 @@ next:
 			goto finished_writing_instruction;
 		}
 
+=======
+>>>>>>> v4.14.187
 		m_len = 4;
 		{
 #if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) && defined(LZO_USE_CTZ64)
@@ -240,6 +265,10 @@ m_len_done:
 
 		m_off = ip - m_pos;
 		ip += m_len;
+<<<<<<< HEAD
+=======
+		ii = ip;
+>>>>>>> v4.14.187
 		if (m_len <= M2_MAX_LEN && m_off <= M2_MAX_OFFSET) {
 			m_off -= 1;
 			*op++ = (((m_len - 1) << 5) | ((m_off & 7) << 2));
@@ -276,23 +305,33 @@ m_len_done:
 			*op++ = (m_off << 2);
 			*op++ = (m_off >> 6);
 		}
+<<<<<<< HEAD
 		*state_offset = -2;
 finished_writing_instruction:
 		ii = ip;
+=======
+>>>>>>> v4.14.187
 		goto next;
 	}
 	*out_len = op - out;
 	return in_end - (ii - ti);
 }
 
+<<<<<<< HEAD
 int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
 		     unsigned char *out, size_t *out_len,
 		     void *wrkmem, const unsigned char bitstream_version)
+=======
+int lzo1x_1_compress(const unsigned char *in, size_t in_len,
+		     unsigned char *out, size_t *out_len,
+		     void *wrkmem)
+>>>>>>> v4.14.187
 {
 	const unsigned char *ip = in;
 	unsigned char *op = out;
 	size_t l = in_len;
 	size_t t = 0;
+<<<<<<< HEAD
 	signed char state_offset = -2;
 	unsigned int m4_max_offset;
 
@@ -308,13 +347,22 @@ int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
 
 	while (l > 20) {
 		size_t ll = l <= (m4_max_offset + 1) ? l : (m4_max_offset + 1);
+=======
+
+	while (l > 20) {
+		size_t ll = l <= (M4_MAX_OFFSET + 1) ? l : (M4_MAX_OFFSET + 1);
+>>>>>>> v4.14.187
 		uintptr_t ll_end = (uintptr_t) ip + ll;
 		if ((ll_end + ((t + ll) >> 5)) <= ll_end)
 			break;
 		BUILD_BUG_ON(D_SIZE * sizeof(lzo_dict_t) > LZO1X_1_MEM_COMPRESS);
 		memset(wrkmem, 0, D_SIZE * sizeof(lzo_dict_t));
+<<<<<<< HEAD
 		t = lzo1x_1_do_compress(ip, ll, op, out_len, t, wrkmem,
 					&state_offset, bitstream_version);
+=======
+		t = lzo1x_1_do_compress(ip, ll, op, out_len, t, wrkmem);
+>>>>>>> v4.14.187
 		ip += ll;
 		op += *out_len;
 		l  -= ll;
@@ -327,7 +375,11 @@ int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
 		if (op == out && t <= 238) {
 			*op++ = (17 + t);
 		} else if (t <= 3) {
+<<<<<<< HEAD
 			op[state_offset] |= t;
+=======
+			op[-2] |= t;
+>>>>>>> v4.14.187
 		} else if (t <= 18) {
 			*op++ = (t - 3);
 		} else {
@@ -358,6 +410,7 @@ int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
 	*out_len = op - out;
 	return LZO_E_OK;
 }
+<<<<<<< HEAD
 
 int lzo1x_1_compress(const unsigned char *in, size_t in_len,
 		     unsigned char *out, size_t *out_len,
@@ -376,6 +429,9 @@ int lzorle1x_1_compress(const unsigned char *in, size_t in_len,
 
 EXPORT_SYMBOL_GPL(lzo1x_1_compress);
 EXPORT_SYMBOL_GPL(lzorle1x_1_compress);
+=======
+EXPORT_SYMBOL_GPL(lzo1x_1_compress);
+>>>>>>> v4.14.187
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("LZO1X-1 Compressor");

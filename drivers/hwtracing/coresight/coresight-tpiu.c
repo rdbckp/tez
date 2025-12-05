@@ -12,7 +12,10 @@
  * GNU General Public License for more details.
  */
 
+<<<<<<< HEAD
 #include <linux/atomic.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/device.h>
@@ -76,13 +79,22 @@ static void tpiu_enable_hw(struct tpiu_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
+<<<<<<< HEAD
 static int tpiu_enable(struct coresight_device *csdev, u32 mode, void *__unused)
+=======
+static int tpiu_enable(struct coresight_device *csdev, u32 mode)
+>>>>>>> v4.14.187
 {
 	struct tpiu_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
 	tpiu_enable_hw(drvdata);
+<<<<<<< HEAD
 	atomic_inc(csdev->refcnt);
 	dev_dbg(drvdata->dev, "TPIU enabled\n");
+=======
+
+	dev_info(drvdata->dev, "TPIU enabled\n");
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -102,6 +114,7 @@ static void tpiu_disable_hw(struct tpiu_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
+<<<<<<< HEAD
 static int tpiu_disable(struct coresight_device *csdev)
 {
 	struct tpiu_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
@@ -113,6 +126,15 @@ static int tpiu_disable(struct coresight_device *csdev)
 
 	dev_dbg(drvdata->dev, "TPIU disabled\n");
 	return 0;
+=======
+static void tpiu_disable(struct coresight_device *csdev)
+{
+	struct tpiu_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+
+	tpiu_disable_hw(drvdata);
+
+	dev_info(drvdata->dev, "TPIU disabled\n");
+>>>>>>> v4.14.187
 }
 
 static const struct coresight_ops_sink tpiu_sink_ops = {
@@ -173,8 +195,15 @@ static int tpiu_probe(struct amba_device *adev, const struct amba_id *id)
 	desc.pdata = pdata;
 	desc.dev = dev;
 	drvdata->csdev = coresight_register(&desc);
+<<<<<<< HEAD
 
 	return PTR_ERR_OR_ZERO(drvdata->csdev);
+=======
+	if (IS_ERR(drvdata->csdev))
+		return PTR_ERR(drvdata->csdev);
+
+	return 0;
+>>>>>>> v4.14.187
 }
 
 #ifdef CONFIG_PM

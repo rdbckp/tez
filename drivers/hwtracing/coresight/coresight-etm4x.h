@@ -182,7 +182,10 @@
 					 ETM_MODE_EXCL_USER)
 
 #define TRCSTATR_IDLE_BIT		0
+<<<<<<< HEAD
 #define TRCSTATR_PMSTABLE_BIT		1
+=======
+>>>>>>> v4.14.187
 #define ETM_DEFAULT_ADDR_COMP		0
 
 /* PowerDown Control Register bits */
@@ -293,6 +296,7 @@ struct etmv4_config {
 };
 
 /**
+<<<<<<< HEAD
  * struct etm4_save_state - state to be preserved when ETM is without power
  */
 struct etmv4_save_state {
@@ -352,6 +356,8 @@ struct etmv4_save_state {
 };
 
 /**
+=======
+>>>>>>> v4.14.187
  * struct etm4_drvdata - specifics associated to an ETM component
  * @base:       Memory mapped base address for this component.
  * @dev:        The device entity associated to this component.
@@ -407,8 +413,11 @@ struct etmv4_save_state {
  * @atbtrig:	If the implementation can support ATB triggers
  * @lpoverride:	If the implementation can support low-power state over.
  * @config:	structure holding configuration parameters.
+<<<<<<< HEAD
  * @save_state:	State to be preserved across power loss
  * @state_needs_restore: True when there is context to restore after PM exit
+=======
+>>>>>>> v4.14.187
  */
 struct etmv4_drvdata {
 	void __iomem			*base;
@@ -455,8 +464,11 @@ struct etmv4_drvdata {
 	bool				atbtrig;
 	bool				lpoverride;
 	struct etmv4_config		config;
+<<<<<<< HEAD
 	struct etmv4_save_state		*save_state;
 	bool				state_needs_restore;
+=======
+>>>>>>> v4.14.187
 };
 
 /* Address comparator access types */

@@ -6,7 +6,10 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  */
+<<<<<<< HEAD
 #include <linux/console.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/cpu.h>
 #include <linux/delay.h>
 #include <linux/reboot.h>
@@ -126,6 +129,7 @@ void machine_power_off(void)
 		pm_power_off();
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM_FLUSH_CONSOLE_ON_RESTART
 void arm_machine_flush_console(void)
 {
@@ -151,6 +155,8 @@ void arm_machine_flush_console(void)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Restart requires that the secondary CPUs stop performing any activity
  * while the primary CPU resets the system. Systems with a single CPU can
@@ -167,10 +173,13 @@ void machine_restart(char *cmd)
 	local_irq_disable();
 	smp_send_stop();
 
+<<<<<<< HEAD
 	/* Flush the console to make sure all the relevant messages make it
 	 * out to the console drivers */
 	arm_machine_flush_console();
 
+=======
+>>>>>>> v4.14.187
 	if (arm_pm_restart)
 		arm_pm_restart(reboot_mode, cmd);
 	else

@@ -19,7 +19,10 @@
 
 #include <linux/cpu.h>
 #include <linux/cpufreq.h>
+<<<<<<< HEAD
 #include <linux/cpufreq_times.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/delay.h>
 #include <linux/device.h>
 #include <linux/init.h>
@@ -30,13 +33,19 @@
 #include <linux/suspend.h>
 #include <linux/syscore_ops.h>
 #include <linux/tick.h>
+<<<<<<< HEAD
 #include <linux/ologk.h>
+=======
+>>>>>>> v4.14.187
 #include <trace/events/power.h>
 
 static LIST_HEAD(cpufreq_policy_list);
 
+<<<<<<< HEAD
 struct cpufreq_user_policy core_min_max_policy[NR_CPUS];
 
+=======
+>>>>>>> v4.14.187
 static inline bool policy_is_inactive(struct cpufreq_policy *policy)
 {
 	return cpumask_empty(policy->cpus);
@@ -343,7 +352,10 @@ static void __cpufreq_notify_transition(struct cpufreq_policy *policy,
 			 (unsigned long)freqs->new, (unsigned long)freqs->cpu);
 		trace_cpu_frequency(freqs->new, freqs->cpu);
 		cpufreq_stats_record_transition(policy, freqs->new);
+<<<<<<< HEAD
 		cpufreq_times_record_transition(policy, freqs->new);
+=======
+>>>>>>> v4.14.187
 		srcu_notifier_call_chain(&cpufreq_transition_notifier_list,
 				CPUFREQ_POSTCHANGE, freqs);
 		if (likely(policy) && likely(policy->cpu == freqs->cpu))
@@ -380,10 +392,17 @@ static void cpufreq_notify_post_transition(struct cpufreq_policy *policy,
 	cpufreq_notify_transition(policy, freqs, CPUFREQ_POSTCHANGE);
 }
 
+<<<<<<< HEAD
 extern int update_cpu_capacity_cpumask(struct cpumask *cpus);
 void cpufreq_freq_transition_begin(struct cpufreq_policy *policy,
 		struct cpufreq_freqs *freqs)
 {
+=======
+void cpufreq_freq_transition_begin(struct cpufreq_policy *policy,
+		struct cpufreq_freqs *freqs)
+{
+
+>>>>>>> v4.14.187
 	/*
 	 * Catch double invocations of _begin() which lead to self-deadlock.
 	 * ASYNC_NOTIFICATION drivers are left out because the cpufreq core
@@ -410,11 +429,14 @@ wait:
 
 	spin_unlock(&policy->transition_lock);
 
+<<<<<<< HEAD
 	arch_set_freq_scale(policy->cpus, freqs->new, policy->cpuinfo.max_freq);
 	arch_set_max_freq_scale(policy->cpus, policy->max);
 	arch_set_min_freq_scale(policy->cpus, policy->min);
 	update_cpu_capacity_cpumask(policy->cpus);
 
+=======
+>>>>>>> v4.14.187
 	cpufreq_notify_transition(policy, freqs, CPUFREQ_PRECHANGE);
 }
 EXPORT_SYMBOL_GPL(cpufreq_freq_transition_begin);
@@ -1306,7 +1328,10 @@ static int cpufreq_online(unsigned int cpu)
 			goto out_exit_policy;
 
 		cpufreq_stats_create_table(policy);
+<<<<<<< HEAD
 		cpufreq_times_create_policy(policy);
+=======
+>>>>>>> v4.14.187
 
 		write_lock_irqsave(&cpufreq_driver_lock, flags);
 		list_add(&policy->policy_list, &cpufreq_policy_list);
@@ -1870,6 +1895,7 @@ EXPORT_SYMBOL(cpufreq_unregister_notifier);
 unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
 					unsigned int target_freq)
 {
+<<<<<<< HEAD
 	int ret;
 	target_freq = clamp_val(target_freq, policy->min, policy->max);
 
@@ -1878,6 +1904,11 @@ unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
 		cpufreq_times_record_transition(policy, ret);
 
 	return ret;
+=======
+	target_freq = clamp_val(target_freq, policy->min, policy->max);
+
+	return cpufreq_driver->fast_switch(policy, target_freq);
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
 
@@ -2257,6 +2288,7 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
 	policy->min = new_policy->min;
 	policy->max = new_policy->max;
 
+<<<<<<< HEAD
 	arch_set_max_freq_scale(policy->cpus, policy->max);
 	arch_set_min_freq_scale(policy->cpus, policy->min);
 
@@ -2271,6 +2303,8 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
 		}
 	}
 
+=======
+>>>>>>> v4.14.187
 	policy->cached_target_freq = UINT_MAX;
 
 	pr_debug("new min and max freqs are %u - %u kHz\n",
@@ -2469,6 +2503,7 @@ int cpufreq_boost_enabled(void)
 EXPORT_SYMBOL_GPL(cpufreq_boost_enabled);
 
 /*********************************************************************
+<<<<<<< HEAD
  *               FREQUENCY INVARIANT ACCOUNTING SUPPORT              *
  *********************************************************************/
 
@@ -2491,6 +2526,8 @@ __weak void arch_set_min_freq_scale(struct cpumask *cpus,
 }
 EXPORT_SYMBOL_GPL(arch_set_min_freq_scale);
 /*********************************************************************
+=======
+>>>>>>> v4.14.187
  *               REGISTER / UNREGISTER CPUFREQ DRIVER                *
  *********************************************************************/
 static enum cpuhp_state hp_online;

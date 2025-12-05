@@ -16,6 +16,7 @@
 
 #define KERN_DEFAULT	KERN_SOH "d"	/* the default kernel loglevel */
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 #define KERN_AUTO	KERN_SOH	/* auto-comment messages */
 #define KERN_AUTO1	"B"
@@ -29,6 +30,8 @@
 #define KERN_AUTO9	"J"
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Annotation for a "continued" line of log printout (only done after a
  * line that had no enclosing \n). Only to be used by core/arch code
@@ -49,8 +52,11 @@
 #define LOGLEVEL_INFO		6	/* informational */
 #define LOGLEVEL_DEBUG		7	/* debug-level messages */
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 #define LOGLEVEL_PR_AUTO_BASE	90	/* base log level for auto comment */
 #endif
 
+=======
+>>>>>>> v4.14.187
 #endif

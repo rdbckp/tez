@@ -150,7 +150,11 @@ static void show_segv_info(struct uml_pt_regs *regs)
 	if (!printk_ratelimit())
 		return;
 
+<<<<<<< HEAD
 	printk("%s%s[%d]: segfault at %lx ip %px sp %px error %x",
+=======
+	printk("%s%s[%d]: segfault at %lx ip %p sp %p error %x",
+>>>>>>> v4.14.187
 		task_pid_nr(tsk) > 1 ? KERN_INFO : KERN_EMERG,
 		tsk->comm, task_pid_nr(tsk), FAULT_ADDRESS(*fi),
 		(void *)UPT_IP(regs), (void *)UPT_SP(regs),

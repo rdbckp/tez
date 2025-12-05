@@ -14,6 +14,10 @@
  *
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/debugfs.h>
+>>>>>>> v4.14.187
 #include <linux/dma-mapping.h>
 #include <linux/err.h>
 #include <linux/fs.h>
@@ -21,6 +25,7 @@
 #include <linux/init.h>
 #include <linux/slab.h>
 #include <linux/swap.h>
+<<<<<<< HEAD
 #include <linux/sched/clock.h>
 #include "ion_priv.h"
 
@@ -59,6 +64,17 @@ static void *ion_page_pool_alloc_pages(struct ion_page_pool *pool)
 	atomic64_add_return((1 << pool->order), &page_sz_cnt);
 	for (i = 0; i < (1 << pool->order); i++)
 		SetPageIommu(&page[i]);
+=======
+
+#include "ion.h"
+
+static void *ion_page_pool_alloc_pages(struct ion_page_pool *pool)
+{
+	struct page *page = alloc_pages(pool->gfp_mask, pool->order);
+
+	if (!page)
+		return NULL;
+>>>>>>> v4.14.187
 	return page;
 }
 
@@ -66,12 +82,15 @@ static void ion_page_pool_free_pages(struct ion_page_pool *pool,
 				     struct page *page)
 {
 	__free_pages(page, pool->order);
+<<<<<<< HEAD
 	if (atomic64_sub_return((1 << pool->order), &page_sz_cnt) < 0) {
 		IONMSG("underflow!, total_now[%ld]free[%lu]\n",
 		       atomic64_read(&page_sz_cnt),
 		       (unsigned long)(1 << pool->order));
 		atomic64_set(&page_sz_cnt, 0);
 	}
+=======
+>>>>>>> v4.14.187
 }
 
 static int ion_page_pool_add(struct ion_page_pool *pool, struct page *page)
@@ -84,10 +103,13 @@ static int ion_page_pool_add(struct ion_page_pool *pool, struct page *page)
 		list_add_tail(&page->lru, &pool->low_items);
 		pool->low_count++;
 	}
+<<<<<<< HEAD
 
 	nr_total_pages += 1 << pool->order;
 	mod_node_page_state(page_pgdat(page), NR_KERNEL_MISC_RECLAIMABLE,
 							1 << pool->order);
+=======
+>>>>>>> v4.14.187
 	mutex_unlock(&pool->mutex);
 	return 0;
 }
@@ -107,6 +129,7 @@ static struct page *ion_page_pool_remove(struct ion_page_pool *pool, bool high)
 	}
 
 	list_del(&page->lru);
+<<<<<<< HEAD
 	nr_total_pages -= 1 << pool->order;
 	mod_node_page_state(page_pgdat(page), NR_KERNEL_MISC_RECLAIMABLE,
 							-(1 << pool->order));
@@ -130,6 +153,8 @@ struct page *ion_page_pool_only_alloc(struct ion_page_pool *pool)
 		mutex_unlock(&pool->mutex);
 	}
 done:
+=======
+>>>>>>> v4.14.187
 	return page;
 }
 
@@ -155,6 +180,7 @@ struct page *ion_page_pool_alloc(struct ion_page_pool *pool)
 void ion_page_pool_free(struct ion_page_pool *pool, struct page *page)
 {
 	int ret;
+<<<<<<< HEAD
 #ifndef CONFIG_ION_RBIN_HEAP
 	if (pool->order != compound_order(page))
 		IONMSG("free page = 0x%p, compound_order(page) = 0x%x",
@@ -162,6 +188,10 @@ void ion_page_pool_free(struct ion_page_pool *pool, struct page *page)
 
 	BUG_ON(pool->order != compound_order(page));
 #endif
+=======
+
+	BUG_ON(pool->order != compound_order(page));
+>>>>>>> v4.14.187
 
 	ret = ion_page_pool_add(pool, page);
 	if (ret)
@@ -178,6 +208,7 @@ static int ion_page_pool_total(struct ion_page_pool *pool, bool high)
 	return count << pool->order;
 }
 
+<<<<<<< HEAD
 long ion_page_pool_nr_pages(void)
 {
 	/* Correct possible overflow caused by racing writes */
@@ -186,6 +217,8 @@ long ion_page_pool_nr_pages(void)
 	return nr_total_pages;
 }
 
+=======
+>>>>>>> v4.14.187
 int ion_page_pool_shrink(struct ion_page_pool *pool, gfp_t gfp_mask,
 			 int nr_to_scan)
 {
@@ -225,10 +258,15 @@ struct ion_page_pool *ion_page_pool_create(gfp_t gfp_mask, unsigned int order,
 {
 	struct ion_page_pool *pool = kmalloc(sizeof(*pool), GFP_KERNEL);
 
+<<<<<<< HEAD
 	if (!pool) {
 		IONMSG("%s kmalloc failed pool is null.\n", __func__);
 		return NULL;
 	}
+=======
+	if (!pool)
+		return NULL;
+>>>>>>> v4.14.187
 	pool->high_count = 0;
 	pool->low_count = 0;
 	INIT_LIST_HEAD(&pool->low_items);

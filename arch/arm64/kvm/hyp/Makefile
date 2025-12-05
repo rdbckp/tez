@@ -3,11 +3,15 @@
 # Makefile for Kernel-based Virtual Machine module, HYP part
 #
 
+<<<<<<< HEAD
 ccflags-y += -fno-stack-protector -DDISABLE_BRANCH_PROFILING $(DISABLE_CFI)
 
 ifeq ($(cc-name),clang)
 ccflags-y += -fno-jump-tables
 endif
+=======
+ccflags-y += -fno-stack-protector -DDISABLE_BRANCH_PROFILING
+>>>>>>> v4.14.187
 
 KVM=../../../../virt/kvm
 
@@ -31,6 +35,9 @@ GCOV_PROFILE	:= n
 KASAN_SANITIZE	:= n
 UBSAN_SANITIZE	:= n
 KCOV_INSTRUMENT	:= n
+<<<<<<< HEAD
 
 # remove the SCS flags from all objects in this directory
 KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_SCS), $(KBUILD_CFLAGS))
+=======
+>>>>>>> v4.14.187

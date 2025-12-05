@@ -641,8 +641,11 @@ void __elv_add_request(struct request_queue *q, struct request *rq, int where)
 {
 	trace_block_rq_insert(q, rq);
 
+<<<<<<< HEAD
 	blk_queue_io_vol_add(q, rq->cmd_flags, blk_rq_bytes(rq));
 
+=======
+>>>>>>> v4.14.187
 	blk_pm_add_request(q, rq);
 
 	rq->q = q;
@@ -803,8 +806,11 @@ void elv_completed_request(struct request_queue *q, struct request *rq)
 	 */
 	if (blk_account_rq(rq)) {
 		q->in_flight[rq_is_sync(rq)]--;
+<<<<<<< HEAD
 		if (!queue_in_flight(q))
 			q->in_flight_time += ktime_us_delta(ktime_get(), q->in_flight_stamp);
+=======
+>>>>>>> v4.14.187
 		if ((rq->rq_flags & RQF_SORTED) &&
 		    e->type->ops.sq.elevator_completed_req_fn)
 			e->type->ops.sq.elevator_completed_req_fn(q, rq);

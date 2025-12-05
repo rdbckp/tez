@@ -125,7 +125,11 @@ struct uncached_list {
 
 static DEFINE_PER_CPU_ALIGNED(struct uncached_list, rt6_uncached_list);
 
+<<<<<<< HEAD
 void rt6_uncached_list_add(struct rt6_info *rt)
+=======
+static void rt6_uncached_list_add(struct rt6_info *rt)
+>>>>>>> v4.14.187
 {
 	struct uncached_list *ul = raw_cpu_ptr(&rt6_uncached_list);
 
@@ -136,7 +140,11 @@ void rt6_uncached_list_add(struct rt6_info *rt)
 	spin_unlock_bh(&ul->lock);
 }
 
+<<<<<<< HEAD
 void rt6_uncached_list_del(struct rt6_info *rt)
+=======
+static void rt6_uncached_list_del(struct rt6_info *rt)
+>>>>>>> v4.14.187
 {
 	if (!list_empty(&rt->rt6i_uncached)) {
 		struct uncached_list *ul = rt->rt6i_uncached_list;
@@ -2520,7 +2528,12 @@ static struct rt6_info *rt6_get_route_info(struct net *net,
 					   const struct in6_addr *gwaddr,
 					   struct net_device *dev)
 {
+<<<<<<< HEAD
 	u32 tb_id = l3mdev_fib_table(dev) ? : addrconf_rt_table(dev, RT6_TABLE_INFO);
+=======
+	u32 tb_id = l3mdev_fib_table(dev) ? : RT6_TABLE_INFO;
+	int ifindex = dev->ifindex;
+>>>>>>> v4.14.187
 	struct fib6_node *fn;
 	struct rt6_info *rt = NULL;
 	struct fib6_table *table;
@@ -2535,7 +2548,11 @@ static struct rt6_info *rt6_get_route_info(struct net *net,
 		goto out;
 
 	for (rt = fn->leaf; rt; rt = rt->dst.rt6_next) {
+<<<<<<< HEAD
 		if (rt->dst.dev->ifindex != dev->ifindex)
+=======
+		if (rt->dst.dev->ifindex != ifindex)
+>>>>>>> v4.14.187
 			continue;
 		if ((rt->rt6i_flags & (RTF_ROUTEINFO|RTF_GATEWAY)) != (RTF_ROUTEINFO|RTF_GATEWAY))
 			continue;
@@ -2567,7 +2584,11 @@ static struct rt6_info *rt6_add_route_info(struct net *net,
 		.fc_nlinfo.nl_net = net,
 	};
 
+<<<<<<< HEAD
 	cfg.fc_table = l3mdev_fib_table(dev) ? : addrconf_rt_table(dev, RT6_TABLE_INFO),
+=======
+	cfg.fc_table = l3mdev_fib_table(dev) ? : RT6_TABLE_INFO,
+>>>>>>> v4.14.187
 	cfg.fc_dst = *prefix;
 	cfg.fc_gateway = *gwaddr;
 
@@ -2583,7 +2604,11 @@ static struct rt6_info *rt6_add_route_info(struct net *net,
 
 struct rt6_info *rt6_get_dflt_router(const struct in6_addr *addr, struct net_device *dev)
 {
+<<<<<<< HEAD
 	u32 tb_id = l3mdev_fib_table(dev) ? : addrconf_rt_table(dev, RT6_TABLE_MAIN);
+=======
+	u32 tb_id = l3mdev_fib_table(dev) ? : RT6_TABLE_DFLT;
+>>>>>>> v4.14.187
 	struct rt6_info *rt;
 	struct fib6_table *table;
 
@@ -2604,6 +2629,7 @@ struct rt6_info *rt6_get_dflt_router(const struct in6_addr *addr, struct net_dev
 	return rt;
 }
 
+<<<<<<< HEAD
 struct rt6_info *rt6_get_dflt_router_expires(struct net_device *dev)
 {
 	struct rt6_info *rt;
@@ -2628,12 +2654,18 @@ struct rt6_info *rt6_get_dflt_router_expires(struct net_device *dev)
 	return rt;
 }
 
+=======
+>>>>>>> v4.14.187
 struct rt6_info *rt6_add_dflt_router(const struct in6_addr *gwaddr,
 				     struct net_device *dev,
 				     unsigned int pref)
 {
 	struct fib6_config cfg = {
+<<<<<<< HEAD
 		.fc_table	= l3mdev_fib_table(dev) ? : addrconf_rt_table(dev, RT6_TABLE_DFLT),
+=======
+		.fc_table	= l3mdev_fib_table(dev) ? : RT6_TABLE_DFLT,
+>>>>>>> v4.14.187
 		.fc_metric	= IP6_RT_PRIO_USER,
 		.fc_ifindex	= dev->ifindex,
 		.fc_flags	= RTF_GATEWAY | RTF_ADDRCONF | RTF_DEFAULT |
@@ -2657,16 +2689,55 @@ struct rt6_info *rt6_add_dflt_router(const struct in6_addr *gwaddr,
 	return rt6_get_dflt_router(gwaddr, dev);
 }
 
+<<<<<<< HEAD
 int rt6_addrconf_purge(struct rt6_info *rt, void *arg) {
 	if (rt->rt6i_flags & (RTF_DEFAULT | RTF_ADDRCONF) &&
 	    (!rt->rt6i_idev || rt->rt6i_idev->cnf.accept_ra != 2))
 		return -1;
 	return 0;
+=======
+static void __rt6_purge_dflt_routers(struct fib6_table *table)
+{
+	struct rt6_info *rt;
+
+restart:
+	read_lock_bh(&table->tb6_lock);
+	for (rt = table->tb6_root.leaf; rt; rt = rt->dst.rt6_next) {
+		if (rt->rt6i_flags & (RTF_DEFAULT | RTF_ADDRCONF) &&
+		    (!rt->rt6i_idev || rt->rt6i_idev->cnf.accept_ra != 2)) {
+			dst_hold(&rt->dst);
+			read_unlock_bh(&table->tb6_lock);
+			ip6_del_rt(rt);
+			goto restart;
+		}
+	}
+	read_unlock_bh(&table->tb6_lock);
+
+	table->flags &= ~RT6_TABLE_HAS_DFLT_ROUTER;
+>>>>>>> v4.14.187
 }
 
 void rt6_purge_dflt_routers(struct net *net)
 {
+<<<<<<< HEAD
 	fib6_clean_all(net, rt6_addrconf_purge, NULL);
+=======
+	struct fib6_table *table;
+	struct hlist_head *head;
+	unsigned int h;
+
+	rcu_read_lock();
+
+	for (h = 0; h < FIB6_TABLE_HASHSZ; h++) {
+		head = &net->ipv6.fib_table_hash[h];
+		hlist_for_each_entry_rcu(table, head, tb6_hlist) {
+			if (table->flags & RT6_TABLE_HAS_DFLT_ROUTER)
+				__rt6_purge_dflt_routers(table);
+		}
+	}
+
+	rcu_read_unlock();
+>>>>>>> v4.14.187
 }
 
 static void rtmsg_to_fib6_config(struct net *net,

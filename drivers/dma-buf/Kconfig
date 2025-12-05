@@ -3,6 +3,10 @@ menu "DMABUF options"
 config SYNC_FILE
 	bool "Explicit Synchronization Framework"
 	default n
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	select DMA_SHARED_BUFFER
 	---help---
 	  The Sync File Framework adds explicit syncronization via

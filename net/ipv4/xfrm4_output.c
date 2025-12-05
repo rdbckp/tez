@@ -81,6 +81,7 @@ int xfrm4_output_finish(struct sock *sk, struct sk_buff *skb)
 	return xfrm_output(sk, skb);
 }
 
+<<<<<<< HEAD
 static int __xfrm4_output_finish(struct net *net, struct sock *sk,
 				 struct sk_buff *skb)
 {
@@ -103,6 +104,11 @@ static int __xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
 	struct xfrm_state *x = skb_dst(skb)->xfrm;
 	int mtu;
 	bool toobig;
+=======
+static int __xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+{
+	struct xfrm_state *x = skb_dst(skb)->xfrm;
+>>>>>>> v4.14.187
 
 #ifdef CONFIG_NETFILTER
 	if (!x) {
@@ -110,6 +116,7 @@ static int __xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
 		return dst_output(net, sk, skb);
 	}
 #endif
+<<<<<<< HEAD
 	if (x->props.mode != XFRM_MODE_TUNNEL)
 		goto skip_frag;
 
@@ -129,6 +136,9 @@ static int __xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
 		return ip_fragment(net, sk, skb, mtu, __xfrm4_output_finish);
 
 skip_frag:
+=======
+
+>>>>>>> v4.14.187
 	return x->outer_mode->afinfo->output_finish(sk, skb);
 }
 

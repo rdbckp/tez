@@ -65,6 +65,7 @@
  * .data. We don't want to pull in .data..other sections, which Linux
  * has defined. Same for text and bss.
  */
+<<<<<<< HEAD
 #if defined(CONFIG_LD_DEAD_CODE_DATA_ELIMINATION) || defined(CONFIG_LTO_CLANG)
 #define TEXT_MAIN .text .text.[0-9a-zA-Z_]*
 #define TEXT_CFI_MAIN .text.cfi .text.[0-9a-zA-Z_]*.cfi
@@ -73,6 +74,14 @@
 #else
 #define TEXT_MAIN .text
 #define TEXT_CFI_MAIN .text.cfi
+=======
+#ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
+#define TEXT_MAIN .text .text.[0-9a-zA-Z_]*
+#define DATA_MAIN .data .data.[0-9a-zA-Z_]*
+#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]*
+#else
+#define TEXT_MAIN .text
+>>>>>>> v4.14.187
 #define DATA_MAIN .data
 #define BSS_MAIN .bss
 #endif
@@ -107,7 +116,11 @@
 #ifdef CONFIG_FTRACE_MCOUNT_RECORD
 #define MCOUNT_REC()	. = ALIGN(8);				\
 			VMLINUX_SYMBOL(__start_mcount_loc) = .; \
+<<<<<<< HEAD
 			KEEP(*(__mcount_loc))			\
+=======
+			*(__mcount_loc)				\
+>>>>>>> v4.14.187
 			VMLINUX_SYMBOL(__stop_mcount_loc) = .;
 #else
 #define MCOUNT_REC()
@@ -281,6 +294,7 @@
 	VMLINUX_SYMBOL(__end_ro_after_init) = .;
 #endif
 
+<<<<<<< HEAD
 
 #define PG_IDMAP							\
 	. = ALIGN(PAGE_SIZE);					\
@@ -319,6 +333,8 @@
 #else
 #define RKP_RO_DATA
 #endif
+=======
+>>>>>>> v4.14.187
 /*
  * Read only Data
  */
@@ -339,6 +355,7 @@
 	.rodata1          : AT(ADDR(.rodata1) - LOAD_OFFSET) {		\
 		*(.rodata1)						\
 	}								\
+<<<<<<< HEAD
 	. = ALIGN(4096);				\
 	.rkp_bss          : AT(ADDR(.rkp_bss) - LOAD_OFFSET) {		\
 		*(.rkp_bss.page_aligned)				\
@@ -350,6 +367,8 @@
 		*(.kdp_ro)						\
 		RKP_RO_DATA	/* Read only after init */	        \
 	}								\
+=======
+>>>>>>> v4.14.187
 									\
 	/* PCI quirks */						\
 	.pci_fixup        : AT(ADDR(.pci_fixup) - LOAD_OFFSET) {	\
@@ -511,8 +530,11 @@
 		ALIGN_FUNCTION();					\
 		*(.text.hot TEXT_MAIN .text.fixup .text.unlikely)	\
 		*(.text..refcount)					\
+<<<<<<< HEAD
 		*(.text..ftrace)					\
 		*(TEXT_CFI_MAIN) 					\
+=======
+>>>>>>> v4.14.187
 		*(.ref.text)						\
 	MEM_KEEP(init.text)						\
 	MEM_KEEP(exit.text)						\
@@ -565,7 +587,11 @@
 		VMLINUX_SYMBOL(__softirqentry_text_end) = .;
 
 /* Section used for early init (in .S files) */
+<<<<<<< HEAD
 #define HEAD_TEXT  KEEP(*(.head.text))
+=======
+#define HEAD_TEXT  *(.head.text)
+>>>>>>> v4.14.187
 
 #define HEAD_TEXT_SECTION							\
 	.head.text : AT(ADDR(.head.text) - LOAD_OFFSET) {		\
@@ -610,7 +636,11 @@
 	MEM_DISCARD(init.data)						\
 	KERNEL_CTORS()							\
 	MCOUNT_REC()							\
+<<<<<<< HEAD
 	*(.init.rodata .init.rodata.*)					\
+=======
+	*(.init.rodata)							\
+>>>>>>> v4.14.187
 	FTRACE_EVENTS()							\
 	TRACE_SYSCALLS()						\
 	KPROBE_BLACKLIST()						\
@@ -629,7 +659,11 @@
 	EARLYCON_TABLE()
 
 #define INIT_TEXT							\
+<<<<<<< HEAD
 	*(.init.text .init.text.*)					\
+=======
+	*(.init.text)							\
+>>>>>>> v4.14.187
 	*(.text.startup)						\
 	MEM_DISCARD(init.text)
 
@@ -646,7 +680,11 @@
 	MEM_DISCARD(exit.text)
 
 #define EXIT_CALL							\
+<<<<<<< HEAD
 	KEEP(*(.exitcall.exit))
+=======
+	*(.exitcall.exit)
+>>>>>>> v4.14.187
 
 /*
  * bss (Block Started by Symbol) - uninitialized data

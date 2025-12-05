@@ -37,7 +37,10 @@ extern void *proc_get_parent_data(const struct inode *);
 extern void proc_remove(struct proc_dir_entry *);
 extern void remove_proc_entry(const char *, struct proc_dir_entry *);
 extern int remove_proc_subtree(const char *, struct proc_dir_entry *);
+<<<<<<< HEAD
 extern struct pid *tgid_pidfd_to_pid(const struct file *file);
+=======
+>>>>>>> v4.14.187
 
 #else /* CONFIG_PROC_FS */
 
@@ -70,6 +73,7 @@ static inline void proc_remove(struct proc_dir_entry *de) {}
 #define remove_proc_entry(name, parent) do {} while (0)
 static inline int remove_proc_subtree(const char *name, struct proc_dir_entry *parent) { return 0; }
 
+<<<<<<< HEAD
 static inline struct pid *tgid_pidfd_to_pid(const struct file *file)
 {
 	return ERR_PTR(-EBADF);
@@ -83,6 +87,10 @@ extern void proc_register_uid(kuid_t uid);
 static inline void proc_register_uid(kuid_t uid) {}
 #endif
 
+=======
+#endif /* CONFIG_PROC_FS */
+
+>>>>>>> v4.14.187
 struct net;
 
 static inline struct proc_dir_entry *proc_net_mkdir(

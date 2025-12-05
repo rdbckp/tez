@@ -1,13 +1,26 @@
 config FS_ENCRYPTION
+<<<<<<< HEAD
 	bool "FS Encryption (Per-file encryption)"
 	select CRYPTO
 	select CRYPTO_HASH
 	select CRYPTO_BLKCIPHER
+=======
+	tristate "FS Encryption (Per-file encryption)"
+	select CRYPTO
+	select CRYPTO_AES
+	select CRYPTO_CBC
+	select CRYPTO_ECB
+	select CRYPTO_XTS
+	select CRYPTO_CTS
+	select CRYPTO_CTR
+	select CRYPTO_SHA256
+>>>>>>> v4.14.187
 	select KEYS
 	help
 	  Enable encryption of files and directories.  This
 	  feature is similar to ecryptfs, but it is more memory
 	  efficient since it avoids caching the encrypted and
+<<<<<<< HEAD
 	  decrypted pages in the page cache.  Currently Ext4,
 	  F2FS and UBIFS make use of this feature.
 
@@ -38,3 +51,6 @@ config FSCRYPT_SDP
 	  Enable SDP functional to fscrypto module.
 	  This feature is supporting "Data-At-Rest" for file systems using
 	  Per-file-encryption being controlled by SDP user status.
+=======
+	  decrypted pages in the page cache.
+>>>>>>> v4.14.187

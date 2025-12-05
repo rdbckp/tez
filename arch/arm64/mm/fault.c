@@ -39,14 +39,20 @@
 #include <asm/exception.h>
 #include <asm/debug-monitors.h>
 #include <asm/esr.h>
+<<<<<<< HEAD
 #include <asm/kasan.h>
+=======
+>>>>>>> v4.14.187
 #include <asm/sysreg.h>
 #include <asm/system_misc.h>
 #include <asm/pgtable.h>
 #include <asm/tlbflush.h>
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_EXTRA_INFO
 #include <linux/sec_debug.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 #include <acpi/ghes.h>
 
@@ -58,7 +64,11 @@ struct fault_info {
 	const char *name;
 };
 
+<<<<<<< HEAD
 static struct fault_info fault_info[];
+=======
+static const struct fault_info fault_info[];
+>>>>>>> v4.14.187
 
 static inline const struct fault_info *esr_to_fault_info(unsigned int esr)
 {
@@ -130,6 +140,7 @@ static void mem_abort_decode(unsigned int esr)
 		data_abort_decode(esr);
 }
 
+<<<<<<< HEAD
 static inline bool is_ttbr0_addr(unsigned long addr)
 {
 	/* entry assembly clears tags for TTBR0 addrs */
@@ -142,6 +153,8 @@ static inline bool is_ttbr1_addr(unsigned long addr)
 	return arch_kasan_reset_tag(addr) >= VA_START;
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * Dump out the page tables associated with 'addr' in the currently active mm.
  */
@@ -150,7 +163,11 @@ void show_pte(unsigned long addr)
 	struct mm_struct *mm;
 	pgd_t *pgd;
 
+<<<<<<< HEAD
 	if (is_ttbr0_addr(addr)) {
+=======
+	if (addr < TASK_SIZE) {
+>>>>>>> v4.14.187
 		/* TTBR0 */
 		mm = current->active_mm;
 		if (mm == &init_mm) {
@@ -158,7 +175,11 @@ void show_pte(unsigned long addr)
 				 addr);
 			return;
 		}
+<<<<<<< HEAD
 	} else if (is_ttbr1_addr(addr)) {
+=======
+	} else if (addr >= VA_START) {
+>>>>>>> v4.14.187
 		/* TTBR1 */
 		mm = &init_mm;
 	} else {
@@ -258,7 +279,11 @@ static inline bool is_permission_fault(unsigned int esr, struct pt_regs *regs,
 	if (fsc_type == ESR_ELx_FSC_PERM)
 		return true;
 
+<<<<<<< HEAD
 	if (is_ttbr0_addr(addr) && system_uses_ttbr0_pan())
+=======
+	if (addr < TASK_SIZE && system_uses_ttbr0_pan())
+>>>>>>> v4.14.187
 		return fsc_type == ESR_ELx_FSC_FAULT &&
 			(regs->pstate & PSR_PAN_BIT);
 
@@ -296,6 +321,7 @@ static void __do_kernel_fault(unsigned long addr, unsigned int esr,
 		msg = "paging request";
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 	pr_auto(ASL1, "Unable to handle kernel %s at virtual address %08lx\n", msg,
 		 addr);
@@ -308,6 +334,10 @@ static void __do_kernel_fault(unsigned long addr, unsigned int esr,
 	sec_debug_set_extra_info_fault(addr, regs);
 	sec_debug_set_extra_info_esr(esr);
 #endif
+=======
+	pr_alert("Unable to handle kernel %s at virtual address %08lx\n", msg,
+		 addr);
+>>>>>>> v4.14.187
 
 	mem_abort_decode(esr);
 
@@ -452,6 +482,7 @@ static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
 		mm_flags |= FAULT_FLAG_WRITE;
 	}
 
+<<<<<<< HEAD
 	if (is_ttbr0_addr(addr) && is_permission_fault(esr, regs, addr)) {
 		/* regs->orig_addr_limit may be 0 if we entered from EL0 */
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
@@ -482,6 +513,10 @@ static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
 			die("Accessing user space memory outside uaccess.h routines", regs, esr);
 		}
 #else
+=======
+	if (addr < TASK_SIZE && is_permission_fault(esr, regs, addr)) {
+		/* regs->orig_addr_limit may be 0 if we entered from EL0 */
+>>>>>>> v4.14.187
 		if (regs->orig_addr_limit == KERNEL_DS)
 			die("Accessing user space memory with fs=KERNEL_DS", regs, esr);
 
@@ -490,12 +525,16 @@ static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
 
 		if (!search_exception_tables(regs->pc))
 			die("Accessing user space memory outside uaccess.h routines", regs, esr);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 	}
 
 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
 
 	/*
+<<<<<<< HEAD
 	 * let's try a speculative page fault without grabbing the
 	 * mmap_sem.
 	 */
@@ -504,6 +543,8 @@ static int __kprobes do_page_fault(unsigned long addr, unsigned int esr,
 		goto done;
 
 	/*
+=======
+>>>>>>> v4.14.187
 	 * As per x86, we may deadlock here. However, since the kernel only
 	 * validly references user space from well defined areas of the code,
 	 * we can bug out early if this is from code which shouldn't.
@@ -553,8 +594,11 @@ retry:
 	}
 	up_read(&mm->mmap_sem);
 
+<<<<<<< HEAD
 done:
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Handle the "normal" (no error) case first.
 	 */
@@ -645,7 +689,11 @@ static int __kprobes do_translation_fault(unsigned long addr,
 					  unsigned int esr,
 					  struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	if (is_ttbr0_addr(addr))
+=======
+	if (addr < TASK_SIZE)
+>>>>>>> v4.14.187
 		return do_page_fault(addr, esr, regs);
 
 	do_bad_area(addr, esr, regs);
@@ -678,6 +726,7 @@ static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
 	int ret = 0;
 
 	inf = esr_to_fault_info(esr);
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 	pr_auto(ASL1, "Synchronous External Abort: %s (0x%08x) at 0x%016lx\n",
 		inf->name, esr, addr);
@@ -685,6 +734,11 @@ static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
 	pr_err("Synchronous External Abort: %s (0x%08x) at 0x%016lx\n",
 		inf->name, esr, addr);
 #endif
+=======
+	pr_err("Synchronous External Abort: %s (0x%08x) at 0x%016lx\n",
+		inf->name, esr, addr);
+
+>>>>>>> v4.14.187
 	/*
 	 * Synchronous aborts may interrupt code which had interrupts masked.
 	 * Before calling out into the wider kernel tell the interested
@@ -700,6 +754,7 @@ static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
 			nmi_exit();
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_EXTRA_INFO
 	if (!user_mode(regs)) {
 		sec_debug_set_extra_info_fault(addr, regs);
@@ -707,6 +762,8 @@ static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
 	}
 #endif
 
+=======
+>>>>>>> v4.14.187
 	info.si_signo = SIGBUS;
 	info.si_errno = 0;
 	info.si_code  = 0;
@@ -719,7 +776,11 @@ static int do_sea(unsigned long addr, unsigned int esr, struct pt_regs *regs)
 	return ret;
 }
 
+<<<<<<< HEAD
 static struct fault_info fault_info[] = {
+=======
+static const struct fault_info fault_info[] = {
+>>>>>>> v4.14.187
 	{ do_bad,		SIGBUS,  0,		"ttbr address size fault"	},
 	{ do_bad,		SIGBUS,  0,		"level 1 address size fault"	},
 	{ do_bad,		SIGBUS,  0,		"level 2 address size fault"	},
@@ -815,6 +876,7 @@ asmlinkage void __exception do_mem_abort(unsigned long addr, unsigned int esr,
 	if (!inf->fn(addr, esr, regs))
 		return;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 	pr_auto(ASL1, "Unhandled fault: %s (0x%08x) at 0x%016lx\n",
 		 inf->name, esr, addr);
@@ -829,6 +891,10 @@ asmlinkage void __exception do_mem_abort(unsigned long addr, unsigned int esr,
 		sec_debug_set_extra_info_esr(esr);
 	}
 #endif
+=======
+	pr_alert("Unhandled fault: %s (0x%08x) at 0x%016lx\n",
+		 inf->name, esr, addr);
+>>>>>>> v4.14.187
 
 	mem_abort_decode(esr);
 
@@ -854,7 +920,11 @@ asmlinkage void __exception do_el0_ia_bp_hardening(unsigned long addr,
 	 * re-enabled IRQs. If the address is a kernel address, apply
 	 * BP hardening prior to enabling IRQs and pre-emption.
 	 */
+<<<<<<< HEAD
 	if (!is_ttbr0_addr(addr))
+=======
+	if (addr > TASK_SIZE)
+>>>>>>> v4.14.187
 		arm64_apply_bp_hardening();
 
 	local_irq_enable();
@@ -873,22 +943,30 @@ asmlinkage void __exception do_sp_pc_abort(unsigned long addr,
 	struct task_struct *tsk = current;
 
 	if (user_mode(regs)) {
+<<<<<<< HEAD
 		if (!is_ttbr0_addr(instruction_pointer(regs)))
+=======
+		if (instruction_pointer(regs) > TASK_SIZE)
+>>>>>>> v4.14.187
 			arm64_apply_bp_hardening();
 		local_irq_enable();
 	}
 
 	if (show_unhandled_signals && unhandled_signal(tsk, SIGBUS))
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 		pr_auto(ASL1, "%s[%d]: %s exception: pc=%p sp=%p\n",
 					tsk->comm, task_pid_nr(tsk),
 					esr_get_class_string(esr), (void *)regs->pc,
 					(void *)regs->sp);
 #else
+=======
+>>>>>>> v4.14.187
 		pr_info_ratelimited("%s[%d]: %s exception: pc=%p sp=%p\n",
 				    tsk->comm, task_pid_nr(tsk),
 				    esr_get_class_string(esr), (void *)regs->pc,
 				    (void *)regs->sp);
+<<<<<<< HEAD
 #endif
 
 #ifdef CONFIG_SEC_DEBUG_EXTRA_INFO
@@ -897,6 +975,8 @@ asmlinkage void __exception do_sp_pc_abort(unsigned long addr,
 		sec_debug_set_extra_info_esr(esr);
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 
 	info.si_signo = SIGBUS;
 	info.si_errno = 0;
@@ -928,7 +1008,11 @@ void __init hook_debug_fault_code(int nr,
 				  int (*fn)(unsigned long, unsigned int, struct pt_regs *),
 				  int sig, int code, const char *name)
 {
+<<<<<<< HEAD
 	WARN_ON(nr < 0 || nr >= ARRAY_SIZE(debug_fault_info));
+=======
+	BUG_ON(nr < 0 || nr >= ARRAY_SIZE(debug_fault_info));
+>>>>>>> v4.14.187
 
 	debug_fault_info[nr].fn		= fn;
 	debug_fault_info[nr].sig	= sig;
@@ -936,6 +1020,7 @@ void __init hook_debug_fault_code(int nr,
 	debug_fault_info[nr].name	= name;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MEDIATEK_SOLUTION
 void hook_fault_code(int nr,
 		     int (*fn)(unsigned long, unsigned int, struct pt_regs *),
@@ -951,6 +1036,9 @@ void hook_fault_code(int nr,
 #endif
 
 asmlinkage int __exception do_debug_exception(unsigned long addr,
+=======
+asmlinkage int __exception do_debug_exception(unsigned long addr_if_watchpoint,
+>>>>>>> v4.14.187
 					      unsigned int esr,
 					      struct pt_regs *regs)
 {
@@ -966,6 +1054,7 @@ asmlinkage int __exception do_debug_exception(unsigned long addr,
 	if (interrupts_enabled(regs))
 		trace_hardirqs_off();
 
+<<<<<<< HEAD
 	if (user_mode(regs) && !is_ttbr0_addr(pc))
 		arm64_apply_bp_hardening();
 
@@ -974,11 +1063,25 @@ asmlinkage int __exception do_debug_exception(unsigned long addr,
 	} else {
 		pr_alert("Unhandled debug exception: %s (0x%08x) at 0x%016lx\n",
 			 inf->name, esr, addr);
+=======
+	if (user_mode(regs) && pc > TASK_SIZE)
+		arm64_apply_bp_hardening();
+
+	if (!inf->fn(addr_if_watchpoint, esr, regs)) {
+		rv = 1;
+	} else {
+		pr_alert("Unhandled debug exception: %s (0x%08x) at 0x%016lx\n",
+			 inf->name, esr, pc);
+>>>>>>> v4.14.187
 
 		info.si_signo = inf->sig;
 		info.si_errno = 0;
 		info.si_code  = inf->code;
+<<<<<<< HEAD
 		info.si_addr  = (void __user *)addr;
+=======
+		info.si_addr  = (void __user *)pc;
+>>>>>>> v4.14.187
 		arm64_notify_die("", regs, &info, 0);
 		rv = 0;
 	}

@@ -17,7 +17,11 @@
 
 /**
  * trace_call_bpf - invoke BPF program
+<<<<<<< HEAD
  * @call: tracepoint event
+=======
+ * @prog: BPF program
+>>>>>>> v4.14.187
  * @ctx: opaque context pointer
  *
  * kprobe handlers execute BPF programs via this helper.
@@ -29,7 +33,11 @@
  * 1 - store kprobe event into ring buffer
  * Other values are reserved and currently alias to 1
  */
+<<<<<<< HEAD
 unsigned int trace_call_bpf(struct trace_event_call *call, void *ctx)
+=======
+unsigned int trace_call_bpf(struct bpf_prog *prog, void *ctx)
+>>>>>>> v4.14.187
 {
 	unsigned int ret;
 
@@ -49,6 +57,7 @@ unsigned int trace_call_bpf(struct trace_event_call *call, void *ctx)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Instead of moving rcu_read_lock/rcu_dereference/rcu_read_unlock
 	 * to all call sites, we did a bpf_prog_array_valid() there to check
@@ -65,6 +74,11 @@ unsigned int trace_call_bpf(struct trace_event_call *call, void *ctx)
 	 * rcu_dereference() which is accepted risk.
 	 */
 	ret = BPF_PROG_RUN_ARRAY_CHECK(call->prog_array, ctx, BPF_PROG_RUN);
+=======
+	rcu_read_lock();
+	ret = BPF_PROG_RUN(prog, ctx);
+	rcu_read_unlock();
+>>>>>>> v4.14.187
 
  out:
 	__this_cpu_dec(bpf_prog_active);
@@ -687,6 +701,7 @@ const struct bpf_verifier_ops perf_event_prog_ops = {
 	.is_valid_access	= pe_prog_is_valid_access,
 	.convert_ctx_access	= pe_prog_convert_ctx_access,
 };
+<<<<<<< HEAD
 
 static DEFINE_MUTEX(bpf_event_mutex);
 
@@ -746,3 +761,5 @@ void perf_event_detach_bpf_prog(struct perf_event *event)
 out:
 	mutex_unlock(&bpf_event_mutex);
 }
+=======
+>>>>>>> v4.14.187

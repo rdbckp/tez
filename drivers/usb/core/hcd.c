@@ -2277,11 +2277,15 @@ int hcd_bus_suspend(struct usb_device *rhdev, pm_message_t msg)
 
 			status = hcd->driver->hub_status_data(hcd, buffer);
 			if (status != 0) {
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_USB_DEBUG_DETAILED_LOG)
 				dev_err(&rhdev->dev, "suspend raced with wakeup event\n");
 #else
 				dev_dbg(&rhdev->dev, "suspend raced with wakeup event\n");
 #endif
+=======
+				dev_dbg(&rhdev->dev, "suspend raced with wakeup event\n");
+>>>>>>> v4.14.187
 				hcd_bus_resume(rhdev, PMSG_AUTO_RESUME);
 				status = -EBUSY;
 			}
@@ -2308,11 +2312,15 @@ int hcd_bus_resume(struct usb_device *rhdev, pm_message_t msg)
 	dev_dbg(&rhdev->dev, "usb %sresume\n",
 			(PMSG_IS_AUTO(msg) ? "auto-" : ""));
 	if (HCD_DEAD(hcd)) {
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_USB_DEBUG_DETAILED_LOG)
 		dev_err(&rhdev->dev, "skipped %s of dead bus\n", "resume");
 #else
 		dev_dbg(&rhdev->dev, "skipped %s of dead bus\n", "resume");
 #endif
+=======
+		dev_dbg(&rhdev->dev, "skipped %s of dead bus\n", "resume");
+>>>>>>> v4.14.187
 		return 0;
 	}
 	if (!hcd->driver->bus_resume)

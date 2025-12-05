@@ -390,7 +390,11 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
 	/* Try to redo what tcp_v4_send_synack did. */
 	req->rsk_window_clamp = tp->window_clamp ? :dst_metric(&rt->dst, RTAX_WINDOW);
 
+<<<<<<< HEAD
 	tcp_select_initial_window(sock_net(sk), tcp_full_space(sk), req->mss,
+=======
+	tcp_select_initial_window(tcp_full_space(sk), req->mss,
+>>>>>>> v4.14.187
 				  &req->rsk_rcv_wnd, &req->rsk_window_clamp,
 				  ireq->wscale_ok, &rcv_wscale,
 				  dst_metric(&rt->dst, RTAX_INITRWND));

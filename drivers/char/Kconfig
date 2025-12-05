@@ -588,7 +588,10 @@ config TILE_SROM
 
 source "drivers/char/xillybus/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/char/rpmb/Kconfig"
 
+=======
+>>>>>>> v4.14.187
 endmenu
 

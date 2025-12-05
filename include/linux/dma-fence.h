@@ -111,7 +111,10 @@ struct dma_fence_cb {
  * @get_driver_name: returns the driver name.
  * @get_timeline_name: return the name of the context this fence belongs to.
  * @enable_signaling: enable software signaling of fence.
+<<<<<<< HEAD
  * @disable_signaling: disable software signaling of fence (optional).
+=======
+>>>>>>> v4.14.187
  * @signaled: [optional] peek whether the fence is signaled, can be null.
  * @wait: custom wait implementation, or dma_fence_default_wait.
  * @release: [optional] called on destruction of fence, can be null
@@ -171,7 +174,10 @@ struct dma_fence_ops {
 	const char * (*get_driver_name)(struct dma_fence *fence);
 	const char * (*get_timeline_name)(struct dma_fence *fence);
 	bool (*enable_signaling)(struct dma_fence *fence);
+<<<<<<< HEAD
 	void (*disable_signaling)(struct dma_fence *fence);
+=======
+>>>>>>> v4.14.187
 	bool (*signaled)(struct dma_fence *fence);
 	signed long (*wait)(struct dma_fence *fence,
 			    bool intr, signed long timeout);

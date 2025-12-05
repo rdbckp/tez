@@ -20,6 +20,7 @@
  * A simple function epilogue looks like this:
  *	ldm	sp, {fp, sp, pc}
  *
+<<<<<<< HEAD
  * When compiled with clang, pc and sp are not pushed. A simple function
  * prologue looks like this when built with clang:
  *
@@ -33,6 +34,8 @@
  *	ldm	{..., fp, pc}
  *
  *
+=======
+>>>>>>> v4.14.187
  * Note that with framepointer enabled, even the leaf functions have the same
  * prologue and epilogue, therefore we can ignore the LR value in this case.
  */
@@ -45,6 +48,7 @@ int notrace unwind_frame(struct stackframe *frame)
 	low = frame->sp;
 	high = ALIGN(low, THREAD_SIZE);
 
+<<<<<<< HEAD
 #ifdef CONFIG_CC_IS_CLANG
 	/* check current frame pointer is within bounds */
 	if (fp < low + 4 || fp > high - 4)
@@ -55,6 +59,8 @@ int notrace unwind_frame(struct stackframe *frame)
 	frame->pc = frame->lr;
 	frame->lr = *(unsigned long *)(fp + 4);
 #else
+=======
+>>>>>>> v4.14.187
 	/* check current frame pointer is within bounds */
 	if (fp < low + 12 || fp > high - 4)
 		return -EINVAL;
@@ -63,6 +69,7 @@ int notrace unwind_frame(struct stackframe *frame)
 	frame->fp = *(unsigned long *)(fp - 12);
 	frame->sp = *(unsigned long *)(fp - 8);
 	frame->pc = *(unsigned long *)(fp - 4);
+<<<<<<< HEAD
 #endif
 
 	if (ALIGN(frame->fp, THREAD_SIZE) != ALIGN(fp, THREAD_SIZE))
@@ -70,6 +77,8 @@ int notrace unwind_frame(struct stackframe *frame)
 
 	if (ALIGN(frame->sp, THREAD_SIZE) != ALIGN(low, THREAD_SIZE))
 		return -EINVAL;
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -149,7 +158,10 @@ static noinline void __save_stack_trace(struct task_struct *tsk,
 	data.no_sched_functions = nosched;
 
 	if (tsk != current) {
+<<<<<<< HEAD
 #if 0
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_SMP
 		/*
 		 * What guarantees do we have here that 'tsk' is not
@@ -159,7 +171,10 @@ static noinline void __save_stack_trace(struct task_struct *tsk,
 		if (trace->nr_entries < trace->max_entries)
 			trace->entries[trace->nr_entries++] = ULONG_MAX;
 		return;
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 #else
 		frame.fp = thread_saved_fp(tsk);
 		frame.sp = thread_saved_sp(tsk);

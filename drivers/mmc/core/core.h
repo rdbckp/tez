@@ -14,8 +14,11 @@
 #include <linux/delay.h>
 #include <linux/sched.h>
 
+<<<<<<< HEAD
 #include "mmc_crypto.h"
 
+=======
+>>>>>>> v4.14.187
 struct mmc_host;
 struct mmc_card;
 struct mmc_request;
@@ -94,6 +97,7 @@ void mmc_remove_card_debugfs(struct mmc_card *card);
 
 void mmc_init_context_info(struct mmc_host *host);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_CQ_SUPPORT
 void mmc_wait_cmdq_empty(struct mmc_host *host);
 void mmc_do_check(struct mmc_host *host);
@@ -103,6 +107,8 @@ void mmc_wait_cmdq_done(struct mmc_request *mrq);
 int mmc_run_queue_thread(void *data);
 #endif
 
+=======
+>>>>>>> v4.14.187
 int mmc_execute_tuning(struct mmc_card *card);
 int mmc_hs200_to_hs400(struct mmc_card *card);
 int mmc_hs400_to_hs200(struct mmc_card *card);
@@ -119,6 +125,7 @@ void mmc_wait_for_req_done(struct mmc_host *host, struct mmc_request *mrq);
 bool mmc_is_req_done(struct mmc_host *host, struct mmc_request *mrq);
 
 struct mmc_async_req;
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 struct mmc_cmdq_req;
 
@@ -137,6 +144,8 @@ int mmc_cmdq_erase(struct mmc_cmdq_req *cmdq_req,
 void mmc_cmdq_up_rwsem(struct mmc_host *host);
 int mmc_cmdq_down_rwsem(struct mmc_host *host, struct request *rq);
 #endif
+=======
+>>>>>>> v4.14.187
 
 struct mmc_async_req *mmc_start_areq(struct mmc_host *host,
 				     struct mmc_async_req *areq,
@@ -161,6 +170,7 @@ int __mmc_claim_host(struct mmc_host *host, atomic_t *abort);
 void mmc_release_host(struct mmc_host *host);
 void mmc_get_card(struct mmc_card *card);
 void mmc_put_card(struct mmc_card *card);
+<<<<<<< HEAD
 int mmc_try_claim_host(struct mmc_host *host, unsigned int delay);
 
 #if defined(CONFIG_MMC_FFU)
@@ -171,6 +181,9 @@ extern int mmc_reinit_oldcard(struct mmc_host *host);
 void mmc_blk_cmdq_req_done(struct mmc_request *mrq);
 #endif
 extern int mmc_blk_cmdq_switch(struct mmc_card *card, int enable);
+=======
+
+>>>>>>> v4.14.187
 /**
  *	mmc_claim_host - exclusively claim a host
  *	@host: mmc host to claim

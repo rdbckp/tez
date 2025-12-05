@@ -10,7 +10,10 @@
 #include <linux/migrate.h>
 #include <linux/stackdepot.h>
 #include <linux/seq_file.h>
+<<<<<<< HEAD
 #include <linux/stackdepot.h>
+=======
+>>>>>>> v4.14.187
 
 #include "internal.h"
 
@@ -353,7 +356,10 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
 		.skip = 0
 	};
 
+<<<<<<< HEAD
 	count = min_t(size_t, count, PAGE_SIZE);
+=======
+>>>>>>> v4.14.187
 	kbuf = kmalloc(count, GFP_KERNEL);
 	if (!kbuf)
 		return -ENOMEM;
@@ -645,6 +651,7 @@ static int __init pageowner_init(void)
 	return 0;
 }
 late_initcall(pageowner_init)
+<<<<<<< HEAD
 
 static ssize_t __update_max_page_owner(unsigned long pfn,
 		struct page *page, struct page_owner *page_owner,
@@ -734,3 +741,5 @@ ssize_t print_max_page_owner(void)
 
 	return 0;
 }
+=======
+>>>>>>> v4.14.187

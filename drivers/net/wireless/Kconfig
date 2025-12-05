@@ -114,6 +114,7 @@ config USB_NET_RNDIS_WLAN
 
 	  If you choose to build a module, it'll be called rndis_wlan.
 
+<<<<<<< HEAD
 config VIRT_WIFI
 	tristate "Wifi wrapper for ethernet drivers"
 	depends on CFG80211
@@ -121,4 +122,6 @@ config VIRT_WIFI
 	  This option adds support for ethernet connections to appear as if they
 	  are wifi connections through a special rtnetlink device.
 
+=======
+>>>>>>> v4.14.187
 endif # WLAN

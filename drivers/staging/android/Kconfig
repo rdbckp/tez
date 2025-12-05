@@ -14,6 +14,7 @@ config ASHMEM
 	  It is, in theory, a good memory allocator for low-memory devices,
 	  because it can discard shared memory units when under memory pressure.
 
+<<<<<<< HEAD
 config ANDROID_VSOC
 	tristate "Android Virtual SoC support"
 	default n
@@ -92,6 +93,8 @@ config SAMSUNG_LMKD_DEBUG
 	help
 	  record lmkd kill history
 
+=======
+>>>>>>> v4.14.187
 source "drivers/staging/android/ion/Kconfig"
 
 endif # if ANDROID

@@ -18,6 +18,7 @@
 
 bool selinux_is_enabled(void)
 {
+<<<<<<< HEAD
 // [ SEC_SELINUX_PORTING_COMMON
 #ifdef CONFIG_ALWAYS_ENFORCE
 	return true;
@@ -25,5 +26,8 @@ bool selinux_is_enabled(void)
 	return selinux_enabled;
 #endif
 // ] SEC_SELINUX_PORTING_COMMON
+=======
+	return selinux_enabled;
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL_GPL(selinux_is_enabled);

@@ -10,8 +10,11 @@
 #include <linux/sched.h>
 #include "hashtab.h"
 
+<<<<<<< HEAD
 static struct kmem_cache *hashtab_node_cachep;
 
+=======
+>>>>>>> v4.14.187
 struct hashtab *hashtab_create(u32 (*hash_value)(struct hashtab *h, const void *key),
 			       int (*keycmp)(struct hashtab *h, const void *key1, const void *key2),
 			       u32 size)
@@ -60,7 +63,11 @@ int hashtab_insert(struct hashtab *h, void *key, void *datum)
 	if (cur && (h->keycmp(h, key, cur->key) == 0))
 		return -EEXIST;
 
+<<<<<<< HEAD
 	newnode = kmem_cache_zalloc(hashtab_node_cachep, GFP_KERNEL);
+=======
+	newnode = kzalloc(sizeof(*newnode), GFP_KERNEL);
+>>>>>>> v4.14.187
 	if (!newnode)
 		return -ENOMEM;
 	newnode->key = key;
@@ -109,7 +116,11 @@ void hashtab_destroy(struct hashtab *h)
 		while (cur) {
 			temp = cur;
 			cur = cur->next;
+<<<<<<< HEAD
 			kmem_cache_free(hashtab_node_cachep, temp);
+=======
+			kfree(temp);
+>>>>>>> v4.14.187
 		}
 		h->htable[i] = NULL;
 	}
@@ -169,6 +180,7 @@ void hashtab_stat(struct hashtab *h, struct hashtab_info *info)
 	info->slots_used = slots_used;
 	info->max_chain_len = max_chain_len;
 }
+<<<<<<< HEAD
 
 void __init hashtab_cache_init(void)
 {
@@ -176,3 +188,5 @@ void __init hashtab_cache_init(void)
 			sizeof(struct hashtab_node),
 			0, SLAB_PANIC, NULL);
 }
+=======
+>>>>>>> v4.14.187

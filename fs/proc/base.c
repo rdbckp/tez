@@ -93,8 +93,11 @@
 #include <linux/sched/stat.h>
 #include <linux/flex_array.h>
 #include <linux/posix-timers.h>
+<<<<<<< HEAD
 #include <linux/cpufreq_times.h>
 #include <linux/task_integrity.h>
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_HARDWALL
 #include <asm/hardwall.h>
 #endif
@@ -104,10 +107,13 @@
 
 #include "../../lib/kstrtox.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_PAGE_BOOST
 #include <linux/delayacct.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 /* NOTE:
  *	Implementing inode permission operations in /proc is almost
  *	certainly an error.  Permission checks need to happen during
@@ -254,10 +260,15 @@ static ssize_t proc_pid_cmdline_read(struct file *file, char __user *buf,
 	env_end = mm->env_end;
 	up_read(&mm->mmap_sem);
 
+<<<<<<< HEAD
 	if ((arg_start > arg_end) || (env_start > env_end)) {
 		rv = 0;
 		goto out_mmput;
 	}
+=======
+	BUG_ON(arg_start > arg_end);
+	BUG_ON(env_start > env_end);
+>>>>>>> v4.14.187
 
 	len1 = arg_end - arg_start;
 	len2 = env_end - env_start;
@@ -478,6 +489,7 @@ static int proc_pid_stack(struct seq_file *m, struct pid_namespace *ns,
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_PAGE_BOOST
 static int proc_pid_ioinfo(struct seq_file *m, struct pid_namespace *ns,
 			      struct pid *pid, struct task_struct *task)
@@ -529,6 +541,8 @@ out_unlock:
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_SCHED_INFO
 /*
  * Provides /proc/PID/schedstat
@@ -548,6 +562,7 @@ static int proc_pid_schedstat(struct seq_file *m, struct pid_namespace *ns,
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_UCLAMP_TASK
 /*
  * Provides /proc/PID/tasks/TID/util_clamp
@@ -571,6 +586,8 @@ static int proc_pid_util_clamp(struct seq_file *m, struct pid_namespace *ns,
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_LATENCYTOP
 static int lstats_show_proc(struct seq_file *m, void *v)
 {
@@ -2990,6 +3007,7 @@ static const struct file_operations proc_setgroups_operations = {
 };
 #endif /* CONFIG_USER_NS */
 
+<<<<<<< HEAD
 #ifdef CONFIG_FIVE
 static int proc_integrity_value_read(struct seq_file *m,
 		struct pid_namespace *ns, struct pid *pid,
@@ -3185,6 +3203,8 @@ static const struct file_operations proc_integrity_operations = {
 };
 #endif
 
+=======
+>>>>>>> v4.14.187
 static int proc_pid_personality(struct seq_file *m, struct pid_namespace *ns,
 				struct pid *pid, struct task_struct *task)
 {
@@ -3205,6 +3225,7 @@ static int proc_pid_patch_state(struct seq_file *m, struct pid_namespace *ns,
 }
 #endif /* CONFIG_LIVEPATCH */
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 static int proc_turbo_task_show(struct seq_file *m, struct pid_namespace *ns,
 		struct pid *pid, struct task_struct *p)
@@ -3225,6 +3246,8 @@ static int proc_turbo_task_show(struct seq_file *m, struct pid_namespace *ns,
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Thread groups
  */
@@ -3259,6 +3282,7 @@ static const struct pid_entry tgid_base_stuff[] = {
 	ONE("stat",       S_IRUGO, proc_tgid_stat),
 	ONE("statm",      S_IRUGO, proc_pid_statm),
 	REG("maps",       S_IRUGO, proc_pid_maps_operations),
+<<<<<<< HEAD
 #ifdef CONFIG_PAGE_BOOST
 	REG("filemap_list",       S_IRUGO, proc_pid_filemap_list_operations),
 	ONE("ioinfo",  S_IRUGO, proc_pid_ioinfo),
@@ -3266,6 +3290,8 @@ static const struct pid_entry tgid_base_stuff[] = {
 	REG("io_record_control",      S_IRUGO|S_IWUGO, proc_pid_io_record_operations),
 #endif
 #endif
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_NUMA
 	REG("numa_maps",  S_IRUGO, proc_pid_numa_maps_operations),
 #endif
@@ -3276,9 +3302,12 @@ static const struct pid_entry tgid_base_stuff[] = {
 	REG("mounts",     S_IRUGO, proc_mounts_operations),
 	REG("mountinfo",  S_IRUGO, proc_mountinfo_operations),
 	REG("mountstats", S_IRUSR, proc_mountstats_operations),
+<<<<<<< HEAD
 #ifdef CONFIG_PROCESS_RECLAIM
 	REG("reclaim", 0222, proc_reclaim_operations),
 #endif
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_PROC_PAGE_MONITOR
 	REG("clear_refs", S_IWUSR, proc_clear_refs_operations),
 	REG("smaps",      S_IRUGO, proc_pid_smaps_operations),
@@ -3339,6 +3368,7 @@ static const struct pid_entry tgid_base_stuff[] = {
 #ifdef CONFIG_LIVEPATCH
 	ONE("patch_state",  S_IRUSR, proc_pid_patch_state),
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_FREQ_TIMES
 	ONE("time_in_state", 0444, proc_time_in_state_show),
 #endif
@@ -3346,6 +3376,8 @@ static const struct pid_entry tgid_base_stuff[] = {
 	DIR("integrity", S_IRUGO|S_IXUGO, proc_integrity_inode_operations,
 			proc_integrity_operations),
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 static int proc_tgid_base_readdir(struct file *file, struct dir_context *ctx)
@@ -3360,6 +3392,7 @@ static const struct file_operations proc_tgid_base_operations = {
 	.llseek		= generic_file_llseek,
 };
 
+<<<<<<< HEAD
 struct pid *tgid_pidfd_to_pid(const struct file *file)
 {
 	if (!d_is_dir(file->f_path.dentry) ||
@@ -3369,6 +3402,8 @@ struct pid *tgid_pidfd_to_pid(const struct file *file)
 	return proc_pid(file_inode(file));
 }
 
+=======
+>>>>>>> v4.14.187
 static struct dentry *proc_tgid_base_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)
 {
 	return proc_pident_lookup(dir, dentry,
@@ -3676,12 +3711,20 @@ static const struct pid_entry tid_base_stuff[] = {
 	REG("cmdline",   S_IRUGO, proc_pid_cmdline_ops),
 	ONE("stat",      S_IRUGO, proc_tid_stat),
 	ONE("statm",     S_IRUGO, proc_pid_statm),
+<<<<<<< HEAD
 	REG("maps",      S_IRUGO, proc_pid_maps_operations),
+=======
+	REG("maps",      S_IRUGO, proc_tid_maps_operations),
+>>>>>>> v4.14.187
 #ifdef CONFIG_PROC_CHILDREN
 	REG("children",  S_IRUGO, proc_tid_children_operations),
 #endif
 #ifdef CONFIG_NUMA
+<<<<<<< HEAD
 	REG("numa_maps", S_IRUGO, proc_pid_numa_maps_operations),
+=======
+	REG("numa_maps", S_IRUGO, proc_tid_numa_maps_operations),
+>>>>>>> v4.14.187
 #endif
 	REG("mem",       S_IRUSR|S_IWUSR, proc_mem_operations),
 	LNK("cwd",       proc_cwd_link),
@@ -3691,7 +3734,11 @@ static const struct pid_entry tid_base_stuff[] = {
 	REG("mountinfo",  S_IRUGO, proc_mountinfo_operations),
 #ifdef CONFIG_PROC_PAGE_MONITOR
 	REG("clear_refs", S_IWUSR, proc_clear_refs_operations),
+<<<<<<< HEAD
 	REG("smaps",     S_IRUGO, proc_pid_smaps_operations),
+=======
+	REG("smaps",     S_IRUGO, proc_tid_smaps_operations),
+>>>>>>> v4.14.187
 	REG("smaps_rollup", S_IRUGO, proc_pid_smaps_rollup_operations),
 	REG("pagemap",    S_IRUSR, proc_pagemap_operations),
 #endif
@@ -3707,9 +3754,12 @@ static const struct pid_entry tid_base_stuff[] = {
 #ifdef CONFIG_SCHED_INFO
 	ONE("schedstat", S_IRUGO, proc_pid_schedstat),
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_UCLAMP_TASK
 	ONE("util_clamp",  0444, proc_pid_util_clamp),
 #endif
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_LATENCYTOP
 	REG("latency",  S_IRUGO, proc_lstats_operations),
 #endif
@@ -3745,12 +3795,15 @@ static const struct pid_entry tid_base_stuff[] = {
 #ifdef CONFIG_LIVEPATCH
 	ONE("patch_state",  S_IRUSR, proc_pid_patch_state),
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_FREQ_TIMES
 	ONE("time_in_state", 0444, proc_time_in_state_show),
 #endif
 #ifdef CONFIG_MTK_TASK_TURBO
 	ONE("turbo", 0444, proc_turbo_task_show),
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 static int proc_tid_base_readdir(struct file *file, struct dir_context *ctx)

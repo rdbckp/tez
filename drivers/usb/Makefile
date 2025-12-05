@@ -64,7 +64,11 @@ obj-$(CONFIG_USB_COMMON)	+= common/
 
 obj-$(CONFIG_USBIP_CORE)	+= usbip/
 
+<<<<<<< HEAD
 obj-$(CONFIG_USB_NOTIFY_LAYER)	+= notify/
 
 obj-$(CONFIG_TYPEC)		+= typec/
 
+=======
+obj-$(CONFIG_TYPEC)		+= typec/
+>>>>>>> v4.14.187

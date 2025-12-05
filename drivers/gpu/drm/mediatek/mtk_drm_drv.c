@@ -12,17 +12,27 @@
  * GNU General Public License for more details.
  */
 
+<<<<<<< HEAD
 #include <linux/syscalls.h>
 #include <drm/drmP.h>
+=======
+#include <drm/drmP.h>
+#include <drm/drm_atomic.h>
+>>>>>>> v4.14.187
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_gem.h>
 #include <drm/drm_gem_cma_helper.h>
+<<<<<<< HEAD
+=======
+#include <drm/drm_of.h>
+>>>>>>> v4.14.187
 #include <linux/component.h>
 #include <linux/iommu.h>
 #include <linux/of_address.h>
 #include <linux/of_platform.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/kthread.h>
 #include <linux/sched.h>
 #include <uapi/linux/sched/types.h>
@@ -60,6 +70,15 @@
 #ifdef CONFIG_MTK_HDMI_SUPPORT
 #include "mtk_dp_api.h"
 #endif
+=======
+
+#include "mtk_drm_crtc.h"
+#include "mtk_drm_ddp.h"
+#include "mtk_drm_ddp_comp.h"
+#include "mtk_drm_drv.h"
+#include "mtk_drm_fb.h"
+#include "mtk_drm_gem.h"
+>>>>>>> v4.14.187
 
 #define DRIVER_NAME "mediatek"
 #define DRIVER_DESC "Mediatek SoC DRM"
@@ -67,6 +86,7 @@
 #define DRIVER_MAJOR 1
 #define DRIVER_MINOR 0
 
+<<<<<<< HEAD
 static atomic_t top_isr_ref; /* irq power status protection */
 static atomic_t top_clk_ref; /* top clk status protection*/
 static spinlock_t top_clk_lock; /* power status protection*/
@@ -169,6 +189,8 @@ static void mtk_unreference_work(struct work_struct *work)
 	spin_unlock_irqrestore(&mtk_drm->unreference.lock, flags);
 }
 
+=======
+>>>>>>> v4.14.187
 static void mtk_atomic_schedule(struct mtk_drm_private *private,
 				struct drm_atomic_state *state)
 {
@@ -179,6 +201,7 @@ static void mtk_atomic_schedule(struct mtk_drm_private *private,
 static void mtk_atomic_wait_for_fences(struct drm_atomic_state *state)
 {
 	struct drm_plane *plane;
+<<<<<<< HEAD
 	struct drm_plane_state *plane_state;
 	int i;
 
@@ -639,6 +662,13 @@ static void mtk_drm_enable_trig(struct drm_device *drm,
 
 		mtk_crtc_hw_block_ready(new_conn_state->crtc);
 	}
+=======
+	struct drm_plane_state *new_plane_state;
+	int i;
+
+	for_each_new_plane_in_state(state, plane, new_plane_state, i)
+		mtk_fb_wait(new_plane_state->fb);
+>>>>>>> v4.14.187
 }
 
 static void mtk_atomic_complete(struct mtk_drm_private *private,
@@ -662,6 +692,7 @@ static void mtk_atomic_complete(struct mtk_drm_private *private,
 	 *
 	 * See the kerneldoc entries for these three functions for more details.
 	 */
+<<<<<<< HEAD
 	/*
 	 * To change the CRTC doze state, call the encorder enable/disable
 	 * directly if the actvie state doesn't change.
@@ -696,16 +727,33 @@ static void mtk_atomic_complete(struct mtk_drm_private *private,
 
 	drm_atomic_helper_cleanup_planes(drm, state);
 	mtk_atomic_state_put(state);
+=======
+	drm_atomic_helper_commit_modeset_disables(drm, state);
+	drm_atomic_helper_commit_modeset_enables(drm, state);
+	drm_atomic_helper_commit_planes(drm, state,
+					DRM_PLANE_COMMIT_ACTIVE_ONLY);
+
+	drm_atomic_helper_wait_for_vblanks(drm, state);
+
+	drm_atomic_helper_cleanup_planes(drm, state);
+	drm_atomic_state_put(state);
+>>>>>>> v4.14.187
 }
 
 static void mtk_atomic_work(struct work_struct *work)
 {
+<<<<<<< HEAD
 	struct mtk_drm_private *private =
 		container_of(work, struct mtk_drm_private, commit.work);
+=======
+	struct mtk_drm_private *private = container_of(work,
+			struct mtk_drm_private, commit.work);
+>>>>>>> v4.14.187
 
 	mtk_atomic_complete(private, private->commit.state);
 }
 
+<<<<<<< HEAD
 static int mtk_atomic_check(struct drm_device *dev,
 			    struct drm_atomic_state *state)
 {
@@ -752,10 +800,20 @@ static int mtk_atomic_commit(struct drm_device *drm,
 	bool need_path_lock = false;
 	struct mtk_panel_funcs *panel_funcs;
 #endif
+=======
+static int mtk_atomic_commit(struct drm_device *drm,
+			     struct drm_atomic_state *state,
+			     bool async)
+{
+	struct mtk_drm_private *private = drm->dev_private;
+	int ret;
+
+>>>>>>> v4.14.187
 	ret = drm_atomic_helper_prepare_planes(drm, state);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 #if CONFIG_SMCDSD_PANEL
 	panel_funcs = mtk_drm_get_lcm_ext_funcs(private->crtc[0]);
 
@@ -797,11 +855,25 @@ static int mtk_atomic_commit(struct drm_device *drm,
 	}
 
 	mtk_atomic_state_get(state);
+=======
+	mutex_lock(&private->commit.lock);
+	flush_work(&private->commit.work);
+
+	ret = drm_atomic_helper_swap_state(state, true);
+	if (ret) {
+		mutex_unlock(&private->commit.lock);
+		drm_atomic_helper_cleanup_planes(drm, state);
+		return ret;
+	}
+
+	drm_atomic_state_get(state);
+>>>>>>> v4.14.187
 	if (async)
 		mtk_atomic_schedule(private, state);
 	else
 		mtk_atomic_complete(private, state);
 
+<<<<<<< HEAD
 	mutex_nested_time_end = sched_clock();
 	mutex_nested_time_period =
 			mutex_nested_time_end - mutex_nested_time_start;
@@ -2311,16 +2383,82 @@ int mtk_drm_ioctl_get_lcm_index(struct drm_device *dev, void *data,
 	return ret;
 }
 
+=======
+	mutex_unlock(&private->commit.lock);
+
+	return 0;
+}
+
+static const struct drm_mode_config_funcs mtk_drm_mode_config_funcs = {
+	.fb_create = mtk_drm_mode_fb_create,
+	.atomic_check = drm_atomic_helper_check,
+	.atomic_commit = mtk_atomic_commit,
+};
+
+static const enum mtk_ddp_comp_id mt2701_mtk_ddp_main[] = {
+	DDP_COMPONENT_OVL0,
+	DDP_COMPONENT_RDMA0,
+	DDP_COMPONENT_COLOR0,
+	DDP_COMPONENT_BLS,
+	DDP_COMPONENT_DSI0,
+};
+
+static const enum mtk_ddp_comp_id mt2701_mtk_ddp_ext[] = {
+	DDP_COMPONENT_RDMA1,
+	DDP_COMPONENT_DPI0,
+};
+
+static const enum mtk_ddp_comp_id mt8173_mtk_ddp_main[] = {
+	DDP_COMPONENT_OVL0,
+	DDP_COMPONENT_COLOR0,
+	DDP_COMPONENT_AAL,
+	DDP_COMPONENT_OD,
+	DDP_COMPONENT_RDMA0,
+	DDP_COMPONENT_UFOE,
+	DDP_COMPONENT_DSI0,
+	DDP_COMPONENT_PWM0,
+};
+
+static const enum mtk_ddp_comp_id mt8173_mtk_ddp_ext[] = {
+	DDP_COMPONENT_OVL1,
+	DDP_COMPONENT_COLOR1,
+	DDP_COMPONENT_GAMMA,
+	DDP_COMPONENT_RDMA1,
+	DDP_COMPONENT_DPI0,
+};
+
+static const struct mtk_mmsys_driver_data mt2701_mmsys_driver_data = {
+	.main_path = mt2701_mtk_ddp_main,
+	.main_len = ARRAY_SIZE(mt2701_mtk_ddp_main),
+	.ext_path = mt2701_mtk_ddp_ext,
+	.ext_len = ARRAY_SIZE(mt2701_mtk_ddp_ext),
+	.shadow_register = true,
+};
+
+static const struct mtk_mmsys_driver_data mt8173_mmsys_driver_data = {
+	.main_path = mt8173_mtk_ddp_main,
+	.main_len = ARRAY_SIZE(mt8173_mtk_ddp_main),
+	.ext_path = mt8173_mtk_ddp_ext,
+	.ext_len = ARRAY_SIZE(mt8173_mtk_ddp_ext),
+};
+
+>>>>>>> v4.14.187
 static int mtk_drm_kms_init(struct drm_device *drm)
 {
 	struct mtk_drm_private *private = drm->dev_private;
 	struct platform_device *pdev;
 	struct device_node *np;
+<<<<<<< HEAD
 	int ret, i;
+=======
+	struct device *dma_dev;
+	int ret;
+>>>>>>> v4.14.187
 
 	if (!iommu_present(&platform_bus_type))
 		return -EPROBE_DEFER;
 
+<<<<<<< HEAD
 	DDPINFO("%s+\n", __func__);
 	pdev = of_find_device_by_node(private->mutex_node);
 	if (!pdev) {
@@ -2330,12 +2468,26 @@ static int mtk_drm_kms_init(struct drm_device *drm)
 		return -EPROBE_DEFER;
 	}
 
+=======
+	pdev = of_find_device_by_node(private->mutex_node);
+	if (!pdev) {
+		dev_err(drm->dev, "Waiting for disp-mutex device %pOF\n",
+			private->mutex_node);
+		of_node_put(private->mutex_node);
+		return -EPROBE_DEFER;
+	}
+>>>>>>> v4.14.187
 	private->mutex_dev = &pdev->dev;
 
 	drm_mode_config_init(drm);
 
+<<<<<<< HEAD
 	drm->mode_config.min_width = 1;
 	drm->mode_config.min_height = 1;
+=======
+	drm->mode_config.min_width = 64;
+	drm->mode_config.min_height = 64;
+>>>>>>> v4.14.187
 
 	/*
 	 * set max width and height as default value(4096x4096).
@@ -2345,7 +2497,10 @@ static int mtk_drm_kms_init(struct drm_device *drm)
 	drm->mode_config.max_width = 4096;
 	drm->mode_config.max_height = 4096;
 	drm->mode_config.funcs = &mtk_drm_mode_config_funcs;
+<<<<<<< HEAD
 	drm->mode_config.allow_fb_modifiers = true;
+=======
+>>>>>>> v4.14.187
 
 	ret = component_bind_all(drm->dev, drm);
 	if (ret)
@@ -2356,6 +2511,7 @@ static int mtk_drm_kms_init(struct drm_device *drm)
 	 * and each statically assigned to a crtc:
 	 * OVL0 -> COLOR0 -> AAL -> OD -> RDMA0 -> UFOE -> DSI0 ...
 	 */
+<<<<<<< HEAD
 	ret = mtk_drm_crtc_create(drm, private->data->main_path_data);
 	if (ret < 0)
 		goto err_component_unbind;
@@ -2376,6 +2532,21 @@ static int mtk_drm_kms_init(struct drm_device *drm)
 		np = private->comp_node[private->data->ext_path_data
 						->path[DDP_MAJOR][0][0]];
 
+=======
+	ret = mtk_drm_crtc_create(drm, private->data->main_path,
+				  private->data->main_len);
+	if (ret < 0)
+		goto err_component_unbind;
+	/* ... and OVL1 -> COLOR1 -> GAMMA -> RDMA1 -> DPI0. */
+	ret = mtk_drm_crtc_create(drm, private->data->ext_path,
+				  private->data->ext_len);
+	if (ret < 0)
+		goto err_component_unbind;
+
+	/* Use OVL device for all DMA memory allocations */
+	np = private->comp_node[private->data->main_path[0]] ?:
+	     private->comp_node[private->data->ext_path[0]];
+>>>>>>> v4.14.187
 	pdev = of_find_device_by_node(np);
 	if (!pdev) {
 		ret = -ENODEV;
@@ -2383,7 +2554,33 @@ static int mtk_drm_kms_init(struct drm_device *drm)
 		goto err_component_unbind;
 	}
 
+<<<<<<< HEAD
 	private->dma_dev = &pdev->dev;
+=======
+	dma_dev = &pdev->dev;
+	private->dma_dev = dma_dev;
+
+	/*
+	 * Configure the DMA segment size to make sure we get contiguous IOVA
+	 * when importing PRIME buffers.
+	 */
+	if (!dma_dev->dma_parms) {
+		private->dma_parms_allocated = true;
+		dma_dev->dma_parms =
+			devm_kzalloc(drm->dev, sizeof(*dma_dev->dma_parms),
+				     GFP_KERNEL);
+	}
+	if (!dma_dev->dma_parms) {
+		ret = -ENOMEM;
+		goto err_component_unbind;
+	}
+
+	ret = dma_set_max_seg_size(dma_dev, (unsigned int)DMA_BIT_MASK(32));
+	if (ret) {
+		dev_err(dma_dev, "Failed to set DMA segment size\n");
+		goto err_unset_dma_parms;
+	}
+>>>>>>> v4.14.187
 
 	/*
 	 * We don't use the drm_irq_install() helpers provided by the DRM
@@ -2393,11 +2590,16 @@ static int mtk_drm_kms_init(struct drm_device *drm)
 	drm->irq_enabled = true;
 	ret = drm_vblank_init(drm, MAX_CRTC);
 	if (ret < 0)
+<<<<<<< HEAD
 		goto err_component_unbind;
+=======
+		goto err_unset_dma_parms;
+>>>>>>> v4.14.187
 
 	drm_kms_helper_poll_init(drm);
 	drm_mode_config_reset(drm);
 
+<<<<<<< HEAD
 	INIT_WORK(&private->unreference.work, mtk_unreference_work);
 	INIT_LIST_HEAD(&private->unreference.list);
 	INIT_LIST_HEAD(&private->lyeblob_head);
@@ -2431,6 +2633,13 @@ static int mtk_drm_kms_init(struct drm_device *drm)
 	return 0;
 err_kms_helper_poll_fini:
 	drm_kms_helper_poll_fini(drm);
+=======
+	return 0;
+
+err_unset_dma_parms:
+	if (private->dma_parms_allocated)
+		dma_dev->dma_parms = NULL;
+>>>>>>> v4.14.187
 err_component_unbind:
 	component_unbind_all(drm->dev, drm);
 err_config_cleanup:
@@ -2441,6 +2650,7 @@ err_config_cleanup:
 
 static void mtk_drm_kms_deinit(struct drm_device *drm)
 {
+<<<<<<< HEAD
 	mtk_fbdev_fini(drm);
 	drm_kms_helper_poll_fini(drm);
 
@@ -2539,6 +2749,20 @@ static const struct drm_ioctl_desc mtk_ioctls[] = {
 #endif
 };
 
+=======
+	struct mtk_drm_private *private = drm->dev_private;
+
+	drm_kms_helper_poll_fini(drm);
+	drm_atomic_helper_shutdown(drm);
+
+	if (private->dma_parms_allocated)
+		private->dma_dev->dma_parms = NULL;
+
+	component_unbind_all(drm->dev, drm);
+	drm_mode_config_cleanup(drm);
+}
+
+>>>>>>> v4.14.187
 static const struct file_operations mtk_drm_fops = {
 	.owner = THIS_MODULE,
 	.open = drm_open,
@@ -2547,6 +2771,7 @@ static const struct file_operations mtk_drm_fops = {
 	.mmap = mtk_drm_gem_mmap,
 	.poll = drm_poll,
 	.read = drm_read,
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
 	.compat_ioctl = drm_compat_ioctl,
 #endif
@@ -2560,22 +2785,52 @@ static struct drm_driver mtk_drm_driver = {
 	.enable_vblank = mtk_drm_crtc_enable_vblank,
 	.disable_vblank = mtk_drm_crtc_disable_vblank,
 	.get_vblank_timestamp = mtk_crtc_get_vblank_timestamp,
+=======
+	.compat_ioctl = drm_compat_ioctl,
+};
+
+/*
+ * We need to override this because the device used to import the memory is
+ * not dev->dev, as drm_gem_prime_import() expects.
+ */
+struct drm_gem_object *mtk_drm_gem_prime_import(struct drm_device *dev,
+						struct dma_buf *dma_buf)
+{
+	struct mtk_drm_private *private = dev->dev_private;
+
+	return drm_gem_prime_import_dev(dev, dma_buf, private->dma_dev);
+}
+
+static struct drm_driver mtk_drm_driver = {
+	.driver_features = DRIVER_MODESET | DRIVER_GEM | DRIVER_PRIME |
+			   DRIVER_ATOMIC,
+>>>>>>> v4.14.187
 
 	.gem_free_object_unlocked = mtk_drm_gem_free_object,
 	.gem_vm_ops = &drm_gem_cma_vm_ops,
 	.dumb_create = mtk_drm_gem_dumb_create,
+<<<<<<< HEAD
 	.dumb_map_offset = mtk_drm_gem_dumb_map_offset,
 	.dumb_destroy = drm_gem_dumb_destroy,
+=======
+>>>>>>> v4.14.187
 
 	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
 	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
 	.gem_prime_export = drm_gem_prime_export,
+<<<<<<< HEAD
 	.gem_prime_import = mtk_gem_prime_import,
 	.gem_prime_get_sg_table = mtk_gem_prime_get_sg_table,
 	.gem_prime_import_sg_table = mtk_gem_prime_import_sg_table,
 	.gem_prime_mmap = mtk_drm_gem_mmap_buf,
 	.ioctls = mtk_ioctls,
 	.num_ioctls = ARRAY_SIZE(mtk_ioctls),
+=======
+	.gem_prime_import = mtk_drm_gem_prime_import,
+	.gem_prime_get_sg_table = mtk_gem_prime_get_sg_table,
+	.gem_prime_import_sg_table = mtk_gem_prime_import_sg_table,
+	.gem_prime_mmap = mtk_drm_gem_mmap_buf,
+>>>>>>> v4.14.187
 	.fops = &mtk_drm_fops,
 
 	.name = DRIVER_NAME,
@@ -2594,10 +2849,15 @@ static int mtk_drm_bind(struct device *dev)
 {
 	struct mtk_drm_private *private = dev_get_drvdata(dev);
 	struct drm_device *drm;
+<<<<<<< HEAD
 	struct drm_crtc *crtc;
 	int ret;
 
 	DDPINFO("%s+\n", __func__);
+=======
+	int ret;
+
+>>>>>>> v4.14.187
 	drm = drm_dev_alloc(&mtk_drm_driver, dev);
 	if (IS_ERR(drm))
 		return PTR_ERR(drm);
@@ -2613,6 +2873,7 @@ static int mtk_drm_bind(struct device *dev)
 	if (ret < 0)
 		goto err_deinit;
 
+<<<<<<< HEAD
 	mtk_layering_rule_init(drm);
 	crtc = list_first_entry(&(drm)->mode_config.crtc_list, typeof(*crtc),
 				head);
@@ -2622,6 +2883,8 @@ static int mtk_drm_bind(struct device *dev)
 #endif
 	DDPINFO("%s-\n", __func__);
 
+=======
+>>>>>>> v4.14.187
 	return 0;
 
 err_deinit:
@@ -2641,6 +2904,7 @@ static void mtk_drm_unbind(struct device *dev)
 }
 
 static const struct component_master_ops mtk_drm_ops = {
+<<<<<<< HEAD
 	.bind = mtk_drm_bind, .unbind = mtk_drm_unbind,
 };
 
@@ -2884,6 +3148,33 @@ struct disp_iommu_device *disp_get_iommu_dev(void)
 	return &disp_iommu;
 }
 #endif
+=======
+	.bind		= mtk_drm_bind,
+	.unbind		= mtk_drm_unbind,
+};
+
+static const struct of_device_id mtk_ddp_comp_dt_ids[] = {
+	{ .compatible = "mediatek,mt2701-disp-ovl",   .data = (void *)MTK_DISP_OVL },
+	{ .compatible = "mediatek,mt8173-disp-ovl",   .data = (void *)MTK_DISP_OVL },
+	{ .compatible = "mediatek,mt2701-disp-rdma",  .data = (void *)MTK_DISP_RDMA },
+	{ .compatible = "mediatek,mt8173-disp-rdma",  .data = (void *)MTK_DISP_RDMA },
+	{ .compatible = "mediatek,mt8173-disp-wdma",  .data = (void *)MTK_DISP_WDMA },
+	{ .compatible = "mediatek,mt2701-disp-color", .data = (void *)MTK_DISP_COLOR },
+	{ .compatible = "mediatek,mt8173-disp-color", .data = (void *)MTK_DISP_COLOR },
+	{ .compatible = "mediatek,mt8173-disp-aal",   .data = (void *)MTK_DISP_AAL},
+	{ .compatible = "mediatek,mt8173-disp-gamma", .data = (void *)MTK_DISP_GAMMA, },
+	{ .compatible = "mediatek,mt8173-disp-ufoe",  .data = (void *)MTK_DISP_UFOE },
+	{ .compatible = "mediatek,mt2701-dsi",	      .data = (void *)MTK_DSI },
+	{ .compatible = "mediatek,mt8173-dsi",        .data = (void *)MTK_DSI },
+	{ .compatible = "mediatek,mt8173-dpi",        .data = (void *)MTK_DPI },
+	{ .compatible = "mediatek,mt2701-disp-mutex", .data = (void *)MTK_DISP_MUTEX },
+	{ .compatible = "mediatek,mt8173-disp-mutex", .data = (void *)MTK_DISP_MUTEX },
+	{ .compatible = "mediatek,mt2701-disp-pwm",   .data = (void *)MTK_DISP_BLS },
+	{ .compatible = "mediatek,mt8173-disp-pwm",   .data = (void *)MTK_DISP_PWM },
+	{ .compatible = "mediatek,mt8173-disp-od",    .data = (void *)MTK_DISP_OD },
+	{ }
+};
+>>>>>>> v4.14.187
 
 static int mtk_drm_probe(struct platform_device *pdev)
 {
@@ -2895,15 +3186,19 @@ static int mtk_drm_probe(struct platform_device *pdev)
 	int ret;
 	int i;
 
+<<<<<<< HEAD
 	disp_dbg_probe();
 	PanelMaster_probe();
 	DDPINFO("%s+\n", __func__);
 
 	drm_debug = 0x2; /* DRIVER messages */
+=======
+>>>>>>> v4.14.187
 	private = devm_kzalloc(dev, sizeof(*private), GFP_KERNEL);
 	if (!private)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	private->data = of_device_get_match_data(dev);
 
 	private->reg_data = mtk_ddp_get_mmsys_reg_data(private->data->mmsys_id);
@@ -2915,6 +3210,11 @@ static int mtk_drm_probe(struct platform_device *pdev)
 
 	mutex_init(&private->commit.lock);
 	INIT_WORK(&private->commit.work, mtk_atomic_work);
+=======
+	mutex_init(&private->commit.lock);
+	INIT_WORK(&private->commit.work, mtk_atomic_work);
+	private->data = of_device_get_match_data(dev);
+>>>>>>> v4.14.187
 
 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	private->config_regs = devm_ioremap_resource(dev, mem);
@@ -2925,6 +3225,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	private->config_regs_pa = mem->start;
 	private->mmsys_dev = dev;
 
@@ -2973,19 +3274,30 @@ static int mtk_drm_probe(struct platform_device *pdev)
 			   get_virtual_port(VIRTUAL_DISP));
 #endif
 
+=======
+>>>>>>> v4.14.187
 	/* Iterate over sibling DISP function blocks */
 	for_each_child_of_node(dev->of_node->parent, node) {
 		const struct of_device_id *of_id;
 		enum mtk_ddp_comp_type comp_type;
+<<<<<<< HEAD
 		enum mtk_ddp_comp_id comp_id;
+=======
+		int comp_id;
+>>>>>>> v4.14.187
 
 		of_id = of_match_node(mtk_ddp_comp_dt_ids, node);
 		if (!of_id)
 			continue;
 
 		if (!of_device_is_available(node)) {
+<<<<<<< HEAD
 			dev_dbg(dev, "Skipping disabled component %s\n",
 				node->full_name);
+=======
+			dev_dbg(dev, "Skipping disabled component %pOF\n",
+				node);
+>>>>>>> v4.14.187
 			continue;
 		}
 
@@ -2996,6 +3308,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
 			continue;
 		}
 
+<<<<<<< HEAD
 		DDPINFO("%s line:%d, comp_type:%d\n", __func__, __LINE__,
 			comp_type);
 
@@ -3008,6 +3321,15 @@ static int mtk_drm_probe(struct platform_device *pdev)
 		DDPINFO("%s line:%d, comp_id:%d\n", __func__, __LINE__,
 			comp_id);
 		/*comp node is registered here including PQ module*/
+=======
+		comp_id = mtk_ddp_comp_get_id(node, comp_type);
+		if (comp_id < 0) {
+			dev_warn(dev, "Skipping unknown component %pOF\n",
+				 node);
+			continue;
+		}
+
+>>>>>>> v4.14.187
 		private->comp_node[comp_id] = of_node_get(node);
 
 		/*
@@ -3015,6 +3337,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
 		 * separate component platform drivers and initialize their own
 		 * DDP component structure. The others are initialized here.
 		 */
+<<<<<<< HEAD
 		if (comp_type == MTK_DISP_OVL ||
 		    comp_type == MTK_DISP_MERGE ||
 		    comp_type == MTK_DISP_RDMA || comp_type == MTK_DISP_WDMA ||
@@ -3035,21 +3358,45 @@ static int mtk_drm_probe(struct platform_device *pdev)
 			dev_info(dev, "Adding component match for %s\n",
 				 node->full_name);
 			component_match_add(dev, &match, compare_of, node);
+=======
+		if (comp_type == MTK_DISP_COLOR ||
+		    comp_type == MTK_DISP_OVL ||
+		    comp_type == MTK_DISP_RDMA ||
+		    comp_type == MTK_DSI ||
+		    comp_type == MTK_DPI) {
+			dev_info(dev, "Adding component match for %pOF\n",
+				 node);
+			drm_of_component_match_add(dev, &match, compare_of,
+						   node);
+>>>>>>> v4.14.187
 		} else {
 			struct mtk_ddp_comp *comp;
 
 			comp = devm_kzalloc(dev, sizeof(*comp), GFP_KERNEL);
 			if (!comp) {
 				ret = -ENOMEM;
+<<<<<<< HEAD
+=======
+				of_node_put(node);
+>>>>>>> v4.14.187
 				goto err_node;
 			}
 
 			ret = mtk_ddp_comp_init(dev, node, comp, comp_id, NULL);
+<<<<<<< HEAD
 			if (ret)
 				goto err_node;
 
 		      private
 			->ddp_comp[comp_id] = comp;
+=======
+			if (ret) {
+				of_node_put(node);
+				goto err_node;
+			}
+
+			private->ddp_comp[comp_id] = comp;
+>>>>>>> v4.14.187
 		}
 	}
 
@@ -3064,6 +3411,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, private);
 
 	ret = component_master_add_with_match(dev, &mtk_drm_ops, match);
+<<<<<<< HEAD
 	DDPINFO("%s- ret:%d\n", __func__, ret);
 	if (ret)
 		goto err_pm;
@@ -3081,6 +3429,11 @@ static int mtk_drm_probe(struct platform_device *pdev)
 	uevent_dev_register(&private->uevent_data);
 	mtk_notifier_activate();
 
+=======
+	if (ret)
+		goto err_pm;
+
+>>>>>>> v4.14.187
 	return 0;
 
 err_pm:
@@ -3092,6 +3445,7 @@ err_node:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void mtk_drm_shutdown(struct platform_device *pdev)
 {
 	struct mtk_drm_private *private = platform_get_drvdata(pdev);
@@ -3103,6 +3457,8 @@ static void mtk_drm_shutdown(struct platform_device *pdev)
 	}
 }
 
+=======
+>>>>>>> v4.14.187
 static int mtk_drm_remove(struct platform_device *pdev)
 {
 	struct mtk_drm_private *private = platform_get_drvdata(pdev);
@@ -3135,9 +3491,12 @@ static int mtk_drm_sys_suspend(struct device *dev)
 		drm_kms_helper_poll_enable(drm);
 		return PTR_ERR(private->suspend_state);
 	}
+<<<<<<< HEAD
 #ifdef MTK_DRM_FENCE_SUPPORT
 	mtk_drm_suspend_release_fence(dev);
 #endif
+=======
+>>>>>>> v4.14.187
 
 	DRM_DEBUG_DRIVER("mtk_drm_sys_suspend\n");
 	return 0;
@@ -3146,6 +3505,7 @@ static int mtk_drm_sys_suspend(struct device *dev)
 static int mtk_drm_sys_resume(struct device *dev)
 {
 	struct mtk_drm_private *private = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	struct drm_device *drm;
 
 	drm = private->drm;
@@ -3156,6 +3516,9 @@ static int mtk_drm_sys_resume(struct device *dev)
 		DDPINFO("suspend_state is null\n");
 		return 0;
 	}
+=======
+	struct drm_device *drm = private->drm;
+>>>>>>> v4.14.187
 
 	drm_atomic_helper_resume(drm, private->suspend_state);
 	drm_kms_helper_poll_enable(drm);
@@ -3169,6 +3532,7 @@ static SIMPLE_DEV_PM_OPS(mtk_drm_pm_ops, mtk_drm_sys_suspend,
 			 mtk_drm_sys_resume);
 
 static const struct of_device_id mtk_drm_of_ids[] = {
+<<<<<<< HEAD
 	{.compatible = "mediatek,mt2701-mmsys",
 	 .data = &mt2701_mmsys_driver_data},
 	{.compatible = "mediatek,mt2712-display",
@@ -3228,10 +3592,39 @@ static struct platform_driver *const mtk_drm_drivers[] = {
 	&mtk_dp_tx_driver,
 #endif
 	&mtk_disp_merge_driver
+=======
+	{ .compatible = "mediatek,mt2701-mmsys",
+	  .data = &mt2701_mmsys_driver_data},
+	{ .compatible = "mediatek,mt8173-mmsys",
+	  .data = &mt8173_mmsys_driver_data},
+	{ }
+};
+
+static struct platform_driver mtk_drm_platform_driver = {
+	.probe	= mtk_drm_probe,
+	.remove	= mtk_drm_remove,
+	.driver	= {
+		.name	= "mediatek-drm",
+		.of_match_table = mtk_drm_of_ids,
+		.pm     = &mtk_drm_pm_ops,
+	},
+};
+
+static struct platform_driver * const mtk_drm_drivers[] = {
+	&mtk_ddp_driver,
+	&mtk_disp_color_driver,
+	&mtk_disp_ovl_driver,
+	&mtk_disp_rdma_driver,
+	&mtk_dpi_driver,
+	&mtk_drm_platform_driver,
+	&mtk_dsi_driver,
+	&mtk_mipi_tx_driver,
+>>>>>>> v4.14.187
 };
 
 static int __init mtk_drm_init(void)
 {
+<<<<<<< HEAD
 	int ret;
 	int i;
 
@@ -3253,15 +3646,26 @@ err:
 		platform_driver_unregister(mtk_drm_drivers[i]);
 
 	return ret;
+=======
+	return platform_register_drivers(mtk_drm_drivers,
+					 ARRAY_SIZE(mtk_drm_drivers));
+>>>>>>> v4.14.187
 }
 
 static void __exit mtk_drm_exit(void)
 {
+<<<<<<< HEAD
 	int i;
 
 	for (i = ARRAY_SIZE(mtk_drm_drivers) - 1; i >= 0; i--)
 		platform_driver_unregister(mtk_drm_drivers[i]);
 }
+=======
+	platform_unregister_drivers(mtk_drm_drivers,
+				    ARRAY_SIZE(mtk_drm_drivers));
+}
+
+>>>>>>> v4.14.187
 module_init(mtk_drm_init);
 module_exit(mtk_drm_exit);
 

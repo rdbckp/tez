@@ -27,6 +27,7 @@
 #include <linux/netfilter/x_tables.h>
 #include <linux/netfilter/xt_connmark.h>
 
+<<<<<<< HEAD
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_VPN {
 #include <linux/types.h>
 #include <linux/tcp.h>
@@ -34,6 +35,8 @@
 #include <net/ip.h>
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_VPN }
 
+=======
+>>>>>>> v4.14.187
 MODULE_AUTHOR("Henrik Nordstrom <hno@marasystems.com>");
 MODULE_DESCRIPTION("Xtables: connection mark operations");
 MODULE_LICENSE("GPL");
@@ -42,6 +45,7 @@ MODULE_ALIAS("ip6t_CONNMARK");
 MODULE_ALIAS("ipt_connmark");
 MODULE_ALIAS("ip6t_connmark");
 
+<<<<<<< HEAD
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_VPN {
 /* KNOX framework uses mark value 100 to 500
  * when the special meta data is added
@@ -100,6 +104,8 @@ static unsigned int knoxvpn_uidpid(struct sk_buff *skb, u_int32_t newmark)
 }
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_VPN }
 
+=======
+>>>>>>> v4.14.187
 static unsigned int
 connmark_tg(struct sk_buff *skb, const struct xt_action_param *par)
 {
@@ -132,9 +138,12 @@ connmark_tg(struct sk_buff *skb, const struct xt_action_param *par)
 		newmark = (skb->mark & ~info->nfmask) ^
 		          (ct->mark & info->ctmask);
 		skb->mark = newmark;
+<<<<<<< HEAD
 		// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_VPN {
 		knoxvpn_uidpid(skb, newmark);
 		// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_VPN }
+=======
+>>>>>>> v4.14.187
 		break;
 	}
 

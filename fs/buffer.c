@@ -46,7 +46,10 @@
 #include <linux/bit_spinlock.h>
 #include <linux/pagevec.h>
 #include <trace/events/block.h>
+<<<<<<< HEAD
 #include <linux/fscrypt.h>
+=======
+>>>>>>> v4.14.187
 
 static int fsync_buffers_list(spinlock_t *lock, struct list_head *list);
 static int submit_bh_wbc(int op, int op_flags, struct buffer_head *bh,
@@ -615,6 +618,7 @@ void mark_buffer_dirty_inode(struct buffer_head *bh, struct inode *inode)
 }
 EXPORT_SYMBOL(mark_buffer_dirty_inode);
 
+<<<<<<< HEAD
 void mark_buffer_dirty_inode_sync(struct buffer_head *bh, struct inode *inode)
 {
 	set_buffer_sync_flush(bh);
@@ -622,6 +626,8 @@ void mark_buffer_dirty_inode_sync(struct buffer_head *bh, struct inode *inode)
 }
 EXPORT_SYMBOL(mark_buffer_dirty_inode_sync);
 
+=======
+>>>>>>> v4.14.187
 /*
  * Mark the page dirty, and set it dirty in the radix tree, and mark the inode
  * dirty.
@@ -1089,10 +1095,13 @@ static struct buffer_head *
 __getblk_slow(struct block_device *bdev, sector_t block,
 	     unsigned size, gfp_t gfp)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_ZONE_MOVABLE_CMA
 	/* __GFP_MOVABLE is not allowed for buffer_head */
 	gfp &= ~__GFP_MOVABLE;
 #endif
+=======
+>>>>>>> v4.14.187
 	/* Size must be multiple of hard sectorsize */
 	if (unlikely(size & (bdev_logical_block_size(bdev)-1) ||
 			(size < 512 || size > PAGE_SIZE))) {
@@ -1191,6 +1200,7 @@ void mark_buffer_dirty(struct buffer_head *bh)
 }
 EXPORT_SYMBOL(mark_buffer_dirty);
 
+<<<<<<< HEAD
 void mark_buffer_dirty_sync(struct buffer_head *bh)
 {
 	WARN_ON_ONCE(!buffer_uptodate(bh));
@@ -1227,6 +1237,8 @@ void mark_buffer_dirty_sync(struct buffer_head *bh)
 }
 EXPORT_SYMBOL(mark_buffer_dirty_sync);
 
+=======
+>>>>>>> v4.14.187
 void mark_buffer_write_io_error(struct buffer_head *bh)
 {
 	set_buffer_write_io_error(bh);
@@ -3184,8 +3196,11 @@ static int submit_bh_wbc(int op, int op_flags, struct buffer_head *bh,
 	 */
 	bio = bio_alloc(GFP_NOIO, 1);
 
+<<<<<<< HEAD
 	fscrypt_set_bio_crypt_ctx_bh(bio, bh, GFP_NOIO);
 
+=======
+>>>>>>> v4.14.187
 	if (wbc) {
 		wbc_init_bio(wbc, bio);
 		wbc_account_io(wbc, bh->b_page, bh->b_size);
@@ -3200,6 +3215,10 @@ static int submit_bh_wbc(int op, int op_flags, struct buffer_head *bh,
 
 	bio->bi_end_io = end_bio_bh_io_sync;
 	bio->bi_private = bh;
+<<<<<<< HEAD
+=======
+
+>>>>>>> v4.14.187
 	/* Take care of bh's that straddle the end of the device */
 	guard_bio_eod(op, bio);
 
@@ -3207,10 +3226,13 @@ static int submit_bh_wbc(int op, int op_flags, struct buffer_head *bh,
 		op_flags |= REQ_META;
 	if (buffer_prio(bh))
 		op_flags |= REQ_PRIO;
+<<<<<<< HEAD
 	if (buffer_sync_flush(bh)) {
 		op_flags |= REQ_SYNC;
 		clear_buffer_sync_flush(bh);
 	}
+=======
+>>>>>>> v4.14.187
 	bio_set_op_attrs(bio, op, op_flags);
 
 	submit_bio(bio);
@@ -3244,7 +3266,11 @@ EXPORT_SYMBOL(submit_bh);
  *
  * ll_rw_block sets b_end_io to simple completion handler that marks
  * the buffer up-to-date (if appropriate), unlocks the buffer and wakes
+<<<<<<< HEAD
  * any waiters.
+=======
+ * any waiters. 
+>>>>>>> v4.14.187
  *
  * All of the buffers must be for the same device, and must also be a
  * multiple of the current approved size for the device.

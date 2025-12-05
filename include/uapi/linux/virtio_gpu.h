@@ -40,6 +40,7 @@
 
 #include <linux/types.h>
 
+<<<<<<< HEAD
 /*
  * VIRTIO_GPU_CMD_CTX_*
  * VIRTIO_GPU_CMD_*_3D
@@ -67,6 +68,9 @@
  * VIRTIO_GPU_CMD_CTX_CREATE_V2
  */
 #define VIRTIO_GPU_F_VULKAN              5
+=======
+#define VIRTIO_GPU_F_VIRGL 0
+>>>>>>> v4.14.187
 
 enum virtio_gpu_ctrl_type {
 	VIRTIO_GPU_UNDEFINED = 0,
@@ -82,11 +86,14 @@ enum virtio_gpu_ctrl_type {
 	VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING,
 	VIRTIO_GPU_CMD_GET_CAPSET_INFO,
 	VIRTIO_GPU_CMD_GET_CAPSET,
+<<<<<<< HEAD
 	VIRTIO_GPU_CMD_GET_EDID,
 	VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID,
 	VIRTIO_GPU_CMD_RESOURCE_CREATE_BLOB,
 	VIRTIO_GPU_CMD_RESOURCE_MAP,
 	VIRTIO_GPU_CMD_RESOURCE_UNMAP,
+=======
+>>>>>>> v4.14.187
 
 	/* 3d commands */
 	VIRTIO_GPU_CMD_CTX_CREATE = 0x0200,
@@ -107,6 +114,7 @@ enum virtio_gpu_ctrl_type {
 	VIRTIO_GPU_RESP_OK_DISPLAY_INFO,
 	VIRTIO_GPU_RESP_OK_CAPSET_INFO,
 	VIRTIO_GPU_RESP_OK_CAPSET,
+<<<<<<< HEAD
 	VIRTIO_GPU_RESP_OK_EDID,
 	VIRTIO_GPU_RESP_OK_RESOURCE_UUID,
 	VIRTIO_GPU_RESP_OK_MAP_INFO,
@@ -115,6 +123,8 @@ enum virtio_gpu_ctrl_type {
 	VIRTIO_GPU_RESP_OK_RESOURCE_PLANE_INFO_LEGACY = 0x1104,
 	/* CHROMIUM: success responses */
 	VIRTIO_GPU_RESP_OK_RESOURCE_PLANE_INFO = 0x11FF,
+=======
+>>>>>>> v4.14.187
 
 	/* error responses */
 	VIRTIO_GPU_RESP_ERR_UNSPEC = 0x1200,
@@ -123,7 +133,10 @@ enum virtio_gpu_ctrl_type {
 	VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID,
 	VIRTIO_GPU_RESP_ERR_INVALID_CONTEXT_ID,
 	VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER,
+<<<<<<< HEAD
 	VIRTIO_GPU_RESP_ERR_INVALID_MEMORY_ID,
+=======
+>>>>>>> v4.14.187
 };
 
 #define VIRTIO_GPU_FLAG_FENCE (1 << 0)
@@ -175,7 +188,10 @@ struct virtio_gpu_resource_unref {
 struct virtio_gpu_resource_create_2d {
 	struct virtio_gpu_ctrl_hdr hdr;
 	__le32 resource_id;
+<<<<<<< HEAD
 	/* memory_type is VIRTIO_GPU_MEMORY_TRANSFER */
+=======
+>>>>>>> v4.14.187
 	__le32 format;
 	__le32 width;
 	__le32 height;
@@ -217,7 +233,10 @@ struct virtio_gpu_resource_attach_backing {
 	struct virtio_gpu_ctrl_hdr hdr;
 	__le32 resource_id;
 	__le32 nr_entries;
+<<<<<<< HEAD
 	/* struct virtio_gpu_mem_entry entries follow here */
+=======
+>>>>>>> v4.14.187
 };
 
 /* VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING */
@@ -302,7 +321,10 @@ struct virtio_gpu_cmd_submit {
 };
 
 #define VIRTIO_GPU_CAPSET_VIRGL 1
+<<<<<<< HEAD
 #define VIRTIO_GPU_CAPSET_VIRGL2 2
+=======
+>>>>>>> v4.14.187
 
 /* VIRTIO_GPU_CMD_GET_CAPSET_INFO */
 struct virtio_gpu_get_capset_info {
@@ -333,6 +355,7 @@ struct virtio_gpu_resp_capset {
 	__u8 capset_data[];
 };
 
+<<<<<<< HEAD
 /* VIRTIO_GPU_CMD_GET_EDID */
 struct virtio_gpu_cmd_get_edid {
 	struct virtio_gpu_ctrl_hdr hdr;
@@ -357,6 +380,8 @@ struct virtio_gpu_resp_resource_plane_info {
 	__le32 offsets[4];
 };
 
+=======
+>>>>>>> v4.14.187
 #define VIRTIO_GPU_EVENT_DISPLAY (1 << 0)
 
 struct virtio_gpu_config {
@@ -380,6 +405,7 @@ enum virtio_gpu_formats {
 	VIRTIO_GPU_FORMAT_R8G8B8X8_UNORM  = 134,
 };
 
+<<<<<<< HEAD
 /* VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID */
 struct virtio_gpu_resource_assign_uuid {
 	struct virtio_gpu_ctrl_hdr hdr;
@@ -444,4 +470,6 @@ struct virtio_gpu_resource_unmap {
 	__le32 padding;
 };
 
+=======
+>>>>>>> v4.14.187
 #endif

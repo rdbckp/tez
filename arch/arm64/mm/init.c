@@ -52,6 +52,7 @@
 #include <asm/sizes.h>
 #include <asm/tlb.h>
 #include <asm/alternative.h>
+<<<<<<< HEAD
 #include <linux/cma.h>
 #include <mt-plat/mtk_meminfo.h>
 
@@ -63,6 +64,8 @@
 #include <linux/rustrkp.h>
 #endif
 #endif
+=======
+>>>>>>> v4.14.187
 
 /*
  * We need to be able to catch inadvertent references to memstart_addr
@@ -235,12 +238,15 @@ static void __init reserve_elfcorehdr(void)
 static phys_addr_t __init max_zone_dma_phys(void)
 {
 	phys_addr_t offset = memblock_start_of_DRAM() & GENMASK_ULL(63, 32);
+<<<<<<< HEAD
 
 #ifdef CONFIG_ZONE_MOVABLE_CMA
 	if (is_zmc_inited())
 		return min(offset + zmc_max_zone_dma_phys,
 				memblock_end_of_DRAM());
 #endif
+=======
+>>>>>>> v4.14.187
 	return min(offset + (1ULL << 32), memblock_end_of_DRAM());
 }
 
@@ -250,9 +256,14 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 {
 	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
 
+<<<<<<< HEAD
 #ifdef CONFIG_ZONE_DMA
 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(max_zone_dma_phys());
 #endif
+=======
+	if (IS_ENABLED(CONFIG_ZONE_DMA))
+		max_zone_pfns[ZONE_DMA] = PFN_DOWN(max_zone_dma_phys());
+>>>>>>> v4.14.187
 	max_zone_pfns[ZONE_NORMAL] = max;
 
 	free_area_init_nodes(max_zone_pfns);
@@ -265,6 +276,7 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 	struct memblock_region *reg;
 	unsigned long zone_size[MAX_NR_ZONES], zhole_size[MAX_NR_ZONES];
 	unsigned long max_dma = min;
+<<<<<<< HEAD
 #ifdef CONFIG_ZONE_MOVABLE_CMA
 	phys_addr_t cma_base = 0, cma_size = 0;
 	unsigned long cma_base_pfn = ULONG_MAX;
@@ -279,12 +291,15 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 	if (cma_size)
 		cma_base_pfn = PFN_DOWN(cma_base);
 #endif
+=======
+>>>>>>> v4.14.187
 
 	memset(zone_size, 0, sizeof(zone_size));
 
 	/* 4GB maximum for 32-bit only capable devices */
 #ifdef CONFIG_ZONE_DMA
 	max_dma = PFN_DOWN(arm64_dma_phys_limit);
+<<<<<<< HEAD
 #ifdef CONFIG_ZONE_MOVABLE_CMA
 	max_dma = min(max_dma, cma_base_pfn);
 #endif
@@ -300,6 +315,11 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 #else
 	zone_size[ZONE_NORMAL] = max - max_dma;
 #endif
+=======
+	zone_size[ZONE_DMA] = max_dma - min;
+#endif
+	zone_size[ZONE_NORMAL] = max - max_dma;
+>>>>>>> v4.14.187
 
 	memcpy(zhole_size, zone_size, sizeof(zhole_size));
 
@@ -316,6 +336,7 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 			zhole_size[ZONE_DMA] -= dma_end - start;
 		}
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_ZONE_MOVABLE_CMA
 		if (zone_size[ZONE_NORMAL] && end > max_dma &&
 				start < cma_base_pfn) {
@@ -332,12 +353,17 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
 			zhole_size[ZONE_MOVABLE] -= movable_end - movable_start;
 		}
 #else
+=======
+>>>>>>> v4.14.187
 		if (end > max_dma) {
 			unsigned long normal_end = min(end, max);
 			unsigned long normal_start = max(start, max_dma);
 			zhole_size[ZONE_NORMAL] -= normal_end - normal_start;
 		}
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 	}
 
 	free_area_init_node(0, zone_size, min, zhole_size);
@@ -428,7 +454,10 @@ void __init arm64_memblock_init(void)
 {
 	const s64 linear_region_size = -(s64)PAGE_OFFSET;
 
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_STOP);
+=======
+>>>>>>> v4.14.187
 	/* Handle linux,usable-memory-range property */
 	fdt_enforce_memory_region();
 
@@ -492,6 +521,7 @@ void __init arm64_memblock_init(void)
 			"initrd not fully accessible via the linear mapping -- please check your bootloader ...\n")) {
 			initrd_start = 0;
 		} else {
+<<<<<<< HEAD
 			u64 start_up, end_dn, size_al;
 
 			start_up = PAGE_ALIGN(initrd_start);
@@ -503,6 +533,11 @@ void __init arm64_memblock_init(void)
 			memblock_reserve(base, size);
 			record_memsize_reserved("initrd", start_up, size_al,
 						false, false);
+=======
+			memblock_remove(base, size); /* clear MEMBLOCK_ flags */
+			memblock_add(base, size);
+			memblock_reserve(base, size);
+>>>>>>> v4.14.187
 		}
 	}
 
@@ -527,11 +562,15 @@ void __init arm64_memblock_init(void)
 	 * Register the kernel text, kernel data, initrd, and initial
 	 * pagetables with memblock.
 	 */
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_KERNEL);
 	memblock_reserve(__pa_symbol(_text), _end - _text);
 	set_memsize_kernel_type(MEMSIZE_KERNEL_STOP);
 	record_memsize_reserved("initmem", __pa(__init_begin),
 				__init_end - __init_begin, false, false);
+=======
+	memblock_reserve(__pa_symbol(_text), _end - _text);
+>>>>>>> v4.14.187
 #ifdef CONFIG_BLK_DEV_INITRD
 	if (initrd_start) {
 		memblock_reserve(initrd_start, initrd_end - initrd_start);
@@ -557,7 +596,10 @@ void __init arm64_memblock_init(void)
 	high_memory = __va(memblock_end_of_DRAM() - 1) + 1;
 
 	dma_contiguous_reserve(arm64_dma_phys_limit);
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_OTHERS);
+=======
+>>>>>>> v4.14.187
 
 	memblock_allow_resize();
 }
@@ -566,7 +608,10 @@ void __init bootmem_init(void)
 {
 	unsigned long min, max;
 
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_PAGING);
+=======
+>>>>>>> v4.14.187
 	min = PFN_UP(memblock_start_of_DRAM());
 	max = PFN_DOWN(memblock_end_of_DRAM());
 
@@ -585,7 +630,10 @@ void __init bootmem_init(void)
 	zone_sizes_init(min, max);
 
 	memblock_dump_all();
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_OTHERS);
+=======
+>>>>>>> v4.14.187
 }
 
 #ifndef CONFIG_SPARSEMEM_VMEMMAP
@@ -761,10 +809,13 @@ void free_initmem(void)
 	 * is not supported by kallsyms.
 	 */
 	unmap_kernel_range((u64)__init_begin, (u64)(__init_end - __init_begin));
+<<<<<<< HEAD
 
 #if defined(CONFIG_UH_RKP)
 	rkp_deferred_init();
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 #ifdef CONFIG_BLK_DEV_INITRD

@@ -1989,6 +1989,9 @@ config WATCHDOG_PRETIMEOUT_GOV_PANIC
 endif # WATCHDOG_PRETIMEOUT_GOV
 
 endif # WATCHDOG
+<<<<<<< HEAD
 
 #mediatek
 source "drivers/watchdog/mediatek/Kconfig"
+=======
+>>>>>>> v4.14.187

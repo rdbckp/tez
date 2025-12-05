@@ -36,10 +36,17 @@ static inline void set_64bit(volatile u64 *ptr, u64 value)
 }
 
 #ifdef CONFIG_X86_CMPXCHG64
+<<<<<<< HEAD
 #define arch_cmpxchg64(ptr, o, n)					\
 	((__typeof__(*(ptr)))__cmpxchg64((ptr), (unsigned long long)(o), \
 					 (unsigned long long)(n)))
 #define arch_cmpxchg64_local(ptr, o, n)					\
+=======
+#define cmpxchg64(ptr, o, n)						\
+	((__typeof__(*(ptr)))__cmpxchg64((ptr), (unsigned long long)(o), \
+					 (unsigned long long)(n)))
+#define cmpxchg64_local(ptr, o, n)					\
+>>>>>>> v4.14.187
 	((__typeof__(*(ptr)))__cmpxchg64_local((ptr), (unsigned long long)(o), \
 					       (unsigned long long)(n)))
 #endif
@@ -76,7 +83,11 @@ static inline u64 __cmpxchg64_local(volatile u64 *ptr, u64 old, u64 new)
  * to simulate the cmpxchg8b on the 80386 and 80486 CPU.
  */
 
+<<<<<<< HEAD
 #define arch_cmpxchg64(ptr, o, n)				\
+=======
+#define cmpxchg64(ptr, o, n)					\
+>>>>>>> v4.14.187
 ({								\
 	__typeof__(*(ptr)) __ret;				\
 	__typeof__(*(ptr)) __old = (o);				\
@@ -93,7 +104,11 @@ static inline u64 __cmpxchg64_local(volatile u64 *ptr, u64 old, u64 new)
 	__ret; })
 
 
+<<<<<<< HEAD
 #define arch_cmpxchg64_local(ptr, o, n)				\
+=======
+#define cmpxchg64_local(ptr, o, n)				\
+>>>>>>> v4.14.187
 ({								\
 	__typeof__(*(ptr)) __ret;				\
 	__typeof__(*(ptr)) __old = (o);				\

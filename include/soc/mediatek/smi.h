@@ -19,7 +19,11 @@
 
 #ifdef CONFIG_MTK_SMI
 
+<<<<<<< HEAD
 #define MTK_LARB_NR_MAX		32
+=======
+#define MTK_LARB_NR_MAX		16
+>>>>>>> v4.14.187
 
 #define MTK_SMI_MMU_EN(port)	BIT(port)
 
@@ -33,6 +37,7 @@ struct mtk_smi_iommu {
 	struct mtk_smi_larb_iommu larb_imu[MTK_LARB_NR_MAX];
 };
 
+<<<<<<< HEAD
 #endif
 #if IS_ENABLED(CONFIG_MTK_SMI_EXT)
 #include <linux/platform_device.h>
@@ -67,6 +72,28 @@ s32 mtk_smi_conf_set(const struct mtk_smi_dev *smi, const u32 scen_id);
 
 s32 smi_register(void);
 s32 smi_larb_port_check(void);
+=======
+/*
+ * mtk_smi_larb_get: Enable the power domain and clocks for this local arbiter.
+ *                   It also initialize some basic setting(like iommu).
+ * mtk_smi_larb_put: Disable the power domain and clocks for this local arbiter.
+ * Both should be called in non-atomic context.
+ *
+ * Returns 0 if successful, negative on failure.
+ */
+int mtk_smi_larb_get(struct device *larbdev);
+void mtk_smi_larb_put(struct device *larbdev);
+
+#else
+
+static inline int mtk_smi_larb_get(struct device *larbdev)
+{
+	return 0;
+}
+
+static inline void mtk_smi_larb_put(struct device *larbdev) { }
+
+>>>>>>> v4.14.187
 #endif
 
 #endif

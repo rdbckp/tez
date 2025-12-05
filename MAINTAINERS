@@ -5649,13 +5649,17 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tytso/fscrypt.git
 S:	Supported
 F:	fs/crypto/
 F:	include/linux/fscrypt*.h
+<<<<<<< HEAD
 F:	include/uapi/linux/fscrypt.h
 F:	Documentation/filesystems/fscrypt.rst
+=======
+>>>>>>> v4.14.187
 
 FUJITSU FR-V (FRV) PORT
 S:	Orphan
 F:	arch/frv/
 
+<<<<<<< HEAD
 FSVERITY: READ-ONLY FILE-BASED AUTHENTICITY PROTECTION
 M:	Eric Biggers <ebiggers@kernel.org>
 M:	Theodore Y. Ts'o <tytso@mit.edu>
@@ -5668,6 +5672,8 @@ F:	include/linux/fsverity.h
 F:	include/uapi/linux/fsverity.h
 F:	Documentation/filesystems/fsverity.rst
 
+=======
+>>>>>>> v4.14.187
 FUJITSU LAPTOP EXTRAS
 M:	Jonathan Woithe <jwoithe@just42.net>
 L:	platform-driver-x86@vger.kernel.org
@@ -5847,6 +5853,7 @@ F:	Documentation/isdn/README.gigaset
 F:	drivers/isdn/gigaset/
 F:	include/uapi/linux/gigaset_dev.h
 
+<<<<<<< HEAD
 GNSS SUBSYSTEM
 M:	Johan Hovold <johan@kernel.org>
 S:	Maintained
@@ -5855,6 +5862,8 @@ F:	Documentation/devicetree/bindings/gnss/
 F:	drivers/gnss/
 F:	include/linux/gnss.h
 
+=======
+>>>>>>> v4.14.187
 GO7007 MPEG CODEC
 M:	Hans Verkuil <hans.verkuil@cisco.com>
 L:	linux-media@vger.kernel.org
@@ -7886,6 +7895,7 @@ Q:	https://patchwork.kernel.org/project/linux-nvdimm/list/
 S:	Supported
 F:	drivers/nvdimm/pmem*
 
+<<<<<<< HEAD
 LIBNVDIMM: DEVICETREE BINDINGS
 M:	Oliver O'Halloran <oohall@gmail.com>
 L:	linux-nvdimm@lists.01.org
@@ -7893,6 +7903,8 @@ Q:	https://patchwork.kernel.org/project/linux-nvdimm/list/
 S:	Supported
 F:	drivers/nvdimm/of_pmem.c
 
+=======
+>>>>>>> v4.14.187
 LIBNVDIMM: NON-VOLATILE MEMORY DEVICE SUBSYSTEM
 M:	Dan Williams <dan.j.williams@intel.com>
 L:	linux-nvdimm@lists.01.org
@@ -9591,12 +9603,15 @@ S:	Maintained
 F:	Documentation/scsi/NinjaSCSI.txt
 F:	drivers/scsi/nsp32*
 
+<<<<<<< HEAD
 NINTENDO HID DRIVER
 M:	Daniel J. Ogorchock <djogorchock@gmail.com>
 L:	linux-input@vger.kernel.org
 S:	Maintained
 F:	drivers/hid/hid-nintendo*
 
+=======
+>>>>>>> v4.14.187
 NIOS2 ARCHITECTURE
 M:	Ley Foon Tan <lftan@altera.com>
 L:	nios2-dev@lists.rocketboards.org (moderated for non-subscribers)

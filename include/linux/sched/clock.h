@@ -15,12 +15,15 @@
 extern unsigned long long notrace sched_clock(void);
 
 /*
+<<<<<<< HEAD
  * alternative sched_clock to get arch_timer cycle as well
  */
 extern unsigned long long notrace sched_clock_get_cyc(
 	unsigned long long *cyc_ret);
 
 /*
+=======
+>>>>>>> v4.14.187
  * See the comment in kernel/sched/clock.c
  */
 extern u64 running_clock(void);

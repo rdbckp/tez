@@ -370,6 +370,7 @@ config MTK_IOMMU_V1
 
 	  if unsure, say N here.
 
+<<<<<<< HEAD
 config MTK_IOMMU_V2
 	bool "MTK IOMMU Version 2"
 	depends on ARM || ARM64
@@ -399,6 +400,8 @@ config MTK_IOMMU_PGTABLE_EXT
 
 	  if unsure, say N here.
 
+=======
+>>>>>>> v4.14.187
 config QCOM_IOMMU
 	# Note: iommu drivers cannot (yet?) be built as modules
 	bool "Qualcomm IOMMU Support"

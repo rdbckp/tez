@@ -73,6 +73,7 @@ its hardware characteristcs.
 
 	* port or ports: same as above.
 
+<<<<<<< HEAD
 * Optional properties for all components:
 
 	* arm,coresight-loses-context-with-cpu : boolean. Indicates that the
@@ -82,6 +83,8 @@ its hardware characteristcs.
 	  powers down the coresight component also powers down and loses its
 	  context. This property is currently only used for the ETM 4.x driver.
 
+=======
+>>>>>>> v4.14.187
 * Optional properties for ETM/PTMs:
 
 	* arm,cp14: must be present if the system accesses ETM/PTM management
@@ -93,11 +96,16 @@ its hardware characteristcs.
 * Optional property for TMC:
 
 	* arm,buffer-size: size of contiguous buffer space for TMC ETR
+<<<<<<< HEAD
 	  (embedded trace router). This property is obsolete. The buffer size
 	  can be configured dynamically via buffer_size property in sysfs.
 
 	* arm,scatter-gather: boolean. Indicates that the TMC-ETR can safely
 	  use the SG mode on this system.
+=======
+	 (embedded trace router)
+
+>>>>>>> v4.14.187
 
 Example:
 

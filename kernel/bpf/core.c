@@ -32,6 +32,7 @@
 #include <linux/kallsyms.h>
 #include <linux/rcupdate.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_UH
 #include <linux/uh.h>
 #ifdef CONFIG_UH_RKP
@@ -42,6 +43,8 @@
 #include <linux/rustrkp.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 #include <asm/unaligned.h>
 
 /* Registers */
@@ -542,6 +545,7 @@ static void bpf_jit_uncharge_modmem(u32 pages)
 	atomic_long_sub(pages, &bpf_jit_current);
 }
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_BPF_JIT) && IS_ENABLED(CONFIG_CFI_CLANG)
 bool __weak arch_bpf_jit_check_func(const struct bpf_prog *prog)
 {
@@ -550,6 +554,8 @@ bool __weak arch_bpf_jit_check_func(const struct bpf_prog *prog)
 EXPORT_SYMBOL(arch_bpf_jit_check_func);
 #endif
 
+=======
+>>>>>>> v4.14.187
 struct bpf_binary_header *
 bpf_jit_binary_alloc(unsigned int proglen, u8 **image_ptr,
 		     unsigned int alignment,
@@ -576,7 +582,10 @@ bpf_jit_binary_alloc(unsigned int proglen, u8 **image_ptr,
 	/* Fill space with illegal/arch-dep instructions. */
 	bpf_fill_ill_insns(hdr, size);
 
+<<<<<<< HEAD
 	bpf_jit_set_header_magic(hdr);
+=======
+>>>>>>> v4.14.187
 	hdr->pages = pages;
 	hole = min_t(unsigned int, size - (proglen + sizeof(*hdr)),
 		     PAGE_SIZE - sizeof(*hdr));
@@ -591,12 +600,16 @@ bpf_jit_binary_alloc(unsigned int proglen, u8 **image_ptr,
 void bpf_jit_binary_free(struct bpf_binary_header *hdr)
 {
 	u32 pages = hdr->pages;
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 	uh_call(UH_APP_RKP, RKP_BFP_LOAD, (u64)hdr, (u64)(hdr->pages * 0x1000), 1, 0);
 #endif
 #ifdef CONFIG_RUSTUH_RKP
 	uh_call(UH_APP_RKP, RKP_BPF_LOAD, (u64)hdr, (u64)(hdr->pages * 0x1000), 1, 0); //Set PXN
 #endif
+=======
+
+>>>>>>> v4.14.187
 	module_memfree(hdr);
 	bpf_jit_uncharge_modmem(pages);
 }
@@ -1496,6 +1509,7 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
 }
 EXPORT_SYMBOL_GPL(bpf_prog_select_runtime);
 
+<<<<<<< HEAD
 static unsigned int __bpf_prog_ret1(const void *ctx,
 				    const struct bpf_insn *insn)
 {
@@ -1608,6 +1622,8 @@ int bpf_prog_array_copy(struct bpf_prog_array __rcu *old_array,
 	return 0;
 }
 
+=======
+>>>>>>> v4.14.187
 static void bpf_prog_free_deferred(struct work_struct *work)
 {
 	struct bpf_prog_aux *aux;

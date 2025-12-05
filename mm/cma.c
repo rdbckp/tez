@@ -58,6 +58,7 @@ const char *cma_get_name(const struct cma *cma)
 	return cma->name ? cma->name : "(undefined)";
 }
 
+<<<<<<< HEAD
 /* Get all cma range */
 void cma_get_range(phys_addr_t *base, phys_addr_t *size)
 {
@@ -82,6 +83,8 @@ void cma_get_range(phys_addr_t *base, phys_addr_t *size)
 	}
 }
 
+=======
+>>>>>>> v4.14.187
 static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
 					     unsigned int align_order)
 {
@@ -171,6 +174,7 @@ not_in_zone:
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ZONE_MOVABLE_CMA
 int cma_alloc_range_ok(struct cma *cma, int count, int align)
 {
@@ -192,6 +196,8 @@ int cma_alloc_range_ok(struct cma *cma, int count, int align)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static int __init cma_init_reserved_areas(void)
 {
 	int i;
@@ -466,7 +472,10 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
 	unsigned long pfn = -1;
 	unsigned long start = 0;
 	unsigned long bitmap_maxno, bitmap_no, bitmap_count;
+<<<<<<< HEAD
 	size_t i;
+=======
+>>>>>>> v4.14.187
 	struct page *page = NULL;
 	int ret = -ENOMEM;
 
@@ -526,6 +535,7 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
 
 	trace_cma_alloc(pfn, page, count, align);
 
+<<<<<<< HEAD
 	/*
 	 * CMA can allocate multiple page blocks, which results in different
 	 * blocks being marked with different tags. Reset the tags to ignore
@@ -536,6 +546,8 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
 			page_kasan_tag_reset(page + i);
 	}
 
+=======
+>>>>>>> v4.14.187
 	if (ret && !(gfp_mask & __GFP_NOWARN)) {
 		pr_info("%s: alloc failed, req-size: %zu pages, ret: %d\n",
 			__func__, count, ret);

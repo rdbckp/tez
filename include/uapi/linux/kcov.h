@@ -4,6 +4,7 @@
 
 #include <linux/types.h>
 
+<<<<<<< HEAD
 /*
  * Argument for KCOV_REMOTE_ENABLE ioctl, see Documentation/dev-tools/kcov.rst
  * and the comment before kcov_remote_start() for usage details.
@@ -59,5 +60,10 @@ static inline __u64 kcov_remote_handle(__u64 subsys, __u64 inst)
 		return 0;
 	return subsys | inst;
 }
+=======
+#define KCOV_INIT_TRACE			_IOR('c', 1, unsigned long)
+#define KCOV_ENABLE			_IO('c', 100)
+#define KCOV_DISABLE			_IO('c', 101)
+>>>>>>> v4.14.187
 
 #endif /* _LINUX_KCOV_IOCTLS_H */

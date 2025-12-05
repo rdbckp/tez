@@ -16,7 +16,10 @@ config ARM64
 	select ARCH_HAS_GCOV_PROFILE_ALL
 	select ARCH_HAS_GIGANTIC_PAGE if (MEMORY_ISOLATION && COMPACTION) || CMA
 	select ARCH_HAS_KCOV
+<<<<<<< HEAD
 	select ARCH_HAS_PTE_SPECIAL
+=======
+>>>>>>> v4.14.187
 	select ARCH_HAS_SET_MEMORY
 	select ARCH_HAS_SG_CHAIN
 	select ARCH_HAS_STRICT_KERNEL_RWX
@@ -25,9 +28,12 @@ config ARM64
 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if ACPI_APEI_SEA
 	select ARCH_USE_CMPXCHG_LOCKREF
 	select ARCH_SUPPORTS_MEMORY_FAILURE
+<<<<<<< HEAD
 	select ARCH_SUPPORTS_LTO_CLANG
 	select ARCH_SUPPORTS_THINLTO
 	select ARCH_SUPPORTS_SHADOW_CALL_STACK
+=======
+>>>>>>> v4.14.187
 	select ARCH_SUPPORTS_ATOMIC_RMW
 	select ARCH_SUPPORTS_NUMA_BALANCING
 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION
@@ -73,8 +79,12 @@ config ARM64
 	select HAVE_ARCH_BITREVERSE
 	select HAVE_ARCH_HUGE_VMAP
 	select HAVE_ARCH_JUMP_LABEL
+<<<<<<< HEAD
 	select HAVE_ARCH_KASAN if !(ARM64_16K_PAGES && ARM64_VA_BITS_48)
 	select HAVE_ARCH_KASAN_SW_TAGS if HAVE_ARCH_KASAN
+=======
+	select HAVE_ARCH_KASAN if SPARSEMEM_VMEMMAP && !(ARM64_16K_PAGES && ARM64_VA_BITS_48)
+>>>>>>> v4.14.187
 	select HAVE_ARCH_KGDB
 	select HAVE_ARCH_MMAP_RND_BITS
 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
@@ -97,7 +107,11 @@ config ARM64
 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
 	select HAVE_FTRACE_MCOUNT_RECORD
 	select HAVE_FUNCTION_TRACER
+<<<<<<< HEAD
 	select HAVE_FUNCTION_GRAPH_TRACER if !SHADOW_CALL_STACK
+=======
+	select HAVE_FUNCTION_GRAPH_TRACER
+>>>>>>> v4.14.187
 	select HAVE_GCC_PLUGINS
 	select HAVE_GENERIC_DMA_COHERENT
 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
@@ -128,7 +142,10 @@ config ARM64
 	select SPARSE_IRQ
 	select SYSCTL_EXCEPTION_TRACE
 	select THREAD_INFO_IN_TASK
+<<<<<<< HEAD
 	select ARCH_SUPPORTS_SPECULATIVE_PAGE_FAULT
+=======
+>>>>>>> v4.14.187
 	help
 	  ARM 64-bit (AArch64) Linux support.
 
@@ -217,8 +234,12 @@ config GENERIC_CALIBRATE_DELAY
 	def_bool y
 
 config ZONE_DMA
+<<<<<<< HEAD
 	bool "Support DMA zone" if EXPERT
 	default y
+=======
+	def_bool y
+>>>>>>> v4.14.187
 
 config HAVE_GENERIC_GUP
 	def_bool y
@@ -441,6 +462,10 @@ config ARM64_ERRATUM_845719
 
 config ARM64_ERRATUM_843419
 	bool "Cortex-A53: 843419: A load or store might access an incorrect address"
+<<<<<<< HEAD
+=======
+	default y
+>>>>>>> v4.14.187
 	select ARM64_MODULE_CMODEL_LARGE if MODULES
 	help
 	  This option links the kernel with '--fix-cortex-a53-843419' and
@@ -464,6 +489,7 @@ config ARM64_ERRATUM_1024718
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD
 config ARM64_ERRATUM_1542418
 	bool "Cortex-A77: 1542418: The core might fetch a stale instruction from the L0 Macro-op"
 	default n
@@ -474,6 +500,8 @@ config ARM64_ERRATUM_1542418
 	  fetch a stale instructions from the L0 Macro-op cache which violates
 	  the ordefing of instruction fetches.
 
+=======
+>>>>>>> v4.14.187
 config CAVIUM_ERRATUM_22375
 	bool "Cavium erratum 22375, 24313"
 	default y
@@ -838,7 +866,11 @@ config FORCE_MAX_ZONEORDER
 
 config UNMAP_KERNEL_AT_EL0
 	bool "Unmap kernel when running in userspace (aka \"KAISER\")" if EXPERT
+<<<<<<< HEAD
 	default n
+=======
+	default y
+>>>>>>> v4.14.187
 	help
 	  Speculation attacks against some high-performance processors can
 	  be used to bypass MMU permission checks and leak kernel data to
@@ -874,6 +906,7 @@ config ARM64_SSBD
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD
 config ARM64_TAGGED_ADDR_ABI
 	bool "Enable the tagged user addresses syscall ABI"
 	default y
@@ -883,6 +916,8 @@ config ARM64_TAGGED_ADDR_ABI
 	  to system calls as pointer arguments. For details, see
 	  Documentation/arm64/tagged-address-abi.rst.
 
+=======
+>>>>>>> v4.14.187
 menuconfig ARMV8_DEPRECATED
 	bool "Emulate deprecated/obsolete ARMv8 instructions"
 	depends on COMPAT
@@ -1005,7 +1040,11 @@ config ARM64_LSE_ATOMICS
 
 config ARM64_VHE
 	bool "Enable support for Virtualization Host Extensions (VHE)"
+<<<<<<< HEAD
 	default n
+=======
+	default y
+>>>>>>> v4.14.187
 	help
 	  Virtualization Host Extensions (VHE) allow the kernel to run
 	  directly at EL2 (instead of EL1) on processors that support
@@ -1065,7 +1104,10 @@ config ARM64_MODULE_PLTS
 
 config RELOCATABLE
 	bool
+<<<<<<< HEAD
 	select ARCH_HAS_RELR
+=======
+>>>>>>> v4.14.187
 	help
 	  This builds the kernel as a Position Independent Executable (PIE),
 	  which retains all relocation metadata required to relocate the
@@ -1096,7 +1138,11 @@ config RANDOMIZE_BASE
 
 config RANDOMIZE_MODULE_REGION_FULL
 	bool "Randomize the module region independently from the core kernel"
+<<<<<<< HEAD
 	depends on RANDOMIZE_BASE && !LTO_CLANG
+=======
+	depends on RANDOMIZE_BASE
+>>>>>>> v4.14.187
 	default y
 	help
 	  Randomizes the location of the module region without considering the
@@ -1130,6 +1176,7 @@ config CMDLINE
 	  entering them here. As a minimum, you should specify the the
 	  root device (e.g. root=/dev/nfs).
 
+<<<<<<< HEAD
 choice
 	prompt "Kernel command line type" if CMDLINE != ""
 	default CMDLINE_FROM_BOOTLOADER
@@ -1147,6 +1194,8 @@ config CMDLINE_EXTEND
 	  The command-line arguments provided by the boot loader will be
 	  appended to the default kernel command string.
 
+=======
+>>>>>>> v4.14.187
 config CMDLINE_FORCE
 	bool "Always use the default kernel command string"
 	help
@@ -1154,7 +1203,10 @@ config CMDLINE_FORCE
 	  loader passes other arguments to the kernel.
 	  This is useful if you cannot or don't want to change the
 	  command-line options your boot loader passes to the kernel.
+<<<<<<< HEAD
 endchoice
+=======
+>>>>>>> v4.14.187
 
 config EFI_STUB
 	bool
@@ -1187,6 +1239,7 @@ config DMI
 	  However, even with this option, the resultant kernel should
 	  continue to boot on existing non-UEFI platforms.
 
+<<<<<<< HEAD
 config BUILD_ARM64_APPENDED_DTB_IMAGE
 	bool "Build a concatenated Image.gz/dtb by default"
 	depends on OF
@@ -1332,6 +1385,8 @@ config RUSTUH_KDP_TEST
     help
       enable KDP test.
 
+=======
+>>>>>>> v4.14.187
 endmenu
 
 menu "Userspace binary formats"

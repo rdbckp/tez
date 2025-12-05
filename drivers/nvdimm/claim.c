@@ -263,7 +263,11 @@ static int nsio_rw_bytes(struct nd_namespace_common *ndns,
 	struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
 	unsigned int sz_align = ALIGN(size + (offset & (512 - 1)), 512);
 	sector_t sector = offset >> 9;
+<<<<<<< HEAD
 	int rc = 0, ret = 0;
+=======
+	int rc = 0;
+>>>>>>> v4.14.187
 
 	if (unlikely(!size))
 		return 0;
@@ -299,9 +303,13 @@ static int nsio_rw_bytes(struct nd_namespace_common *ndns,
 	}
 
 	memcpy_flushcache(nsio->addr + offset, buf, size);
+<<<<<<< HEAD
 	ret = nvdimm_flush(to_nd_region(ndns->dev.parent), NULL);
 	if (ret)
 		rc = ret;
+=======
+	nvdimm_flush(to_nd_region(ndns->dev.parent));
+>>>>>>> v4.14.187
 
 	return rc;
 }

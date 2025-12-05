@@ -243,6 +243,7 @@ static inline void spin_lock_prefetch(const void *ptr)
 void cpu_enable_pan(const struct arm64_cpu_capabilities *__unused);
 void cpu_enable_cache_maint_trap(const struct arm64_cpu_capabilities *__unused);
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_TAGGED_ADDR_ABI
 /* PR_{SET,GET}_TAGGED_ADDR_CTRL prctl */
 long set_tagged_addr_ctrl(unsigned long arg);
@@ -251,5 +252,7 @@ long get_tagged_addr_ctrl(void);
 #define GET_TAGGED_ADDR_CTRL()		get_tagged_addr_ctrl()
 #endif
 
+=======
+>>>>>>> v4.14.187
 #endif /* __ASSEMBLY__ */
 #endif /* __ASM_PROCESSOR_H */

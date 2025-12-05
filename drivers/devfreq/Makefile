@@ -12,6 +12,7 @@ obj-$(CONFIG_ARM_EXYNOS_BUS_DEVFREQ)	+= exynos-bus.o
 obj-$(CONFIG_ARM_RK3399_DMC_DEVFREQ)	+= rk3399_dmc.o
 obj-$(CONFIG_ARM_TEGRA_DEVFREQ)		+= tegra-devfreq.o
 
+<<<<<<< HEAD
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/spm/$(MTK_PLATFORM)/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/dramc/$(MTK_PLATFORM)/
@@ -47,5 +48,7 @@ obj-$(CONFIG_MACH_MT6853)		+= helio-dvfsrc-v3/
 obj-$(CONFIG_MACH_MT8168)		+= helio-dvfsrc-v4/
 obj-$(CONFIG_MACH_MT6893)		+= helio-dvfsrc-v3/
 obj-$(CONFIG_MACH_MT6833)		+= helio-dvfsrc-v3/
+=======
+>>>>>>> v4.14.187
 # DEVFREQ Event Drivers
 obj-$(CONFIG_PM_DEVFREQ_EVENT)		+= event/

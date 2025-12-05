@@ -12,6 +12,10 @@
 
 #include <linux/atomic.h>
 #include <linux/compat.h>
+<<<<<<< HEAD
+=======
+#include <linux/cred.h>
+>>>>>>> v4.14.187
 #include <linux/device.h>
 #include <linux/fs.h>
 #include <linux/hid.h>
@@ -24,7 +28,10 @@
 #include <linux/spinlock.h>
 #include <linux/uhid.h>
 #include <linux/wait.h>
+<<<<<<< HEAD
 #include <linux/fb.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/eventpoll.h>
 
 #define UHID_NAME	"uhid"
@@ -58,8 +65,11 @@ struct uhid_device {
 
 static struct miscdevice uhid_misc;
 
+<<<<<<< HEAD
 bool lcd_is_on = true;
 
+=======
+>>>>>>> v4.14.187
 static void uhid_device_add_worker(struct work_struct *work)
 {
 	struct uhid_device *uhid = container_of(work, struct uhid_device, worker);
@@ -726,6 +736,20 @@ static ssize_t uhid_char_write(struct file *file, const char __user *buffer,
 
 	switch (uhid->input_buf.type) {
 	case UHID_CREATE:
+<<<<<<< HEAD
+=======
+		/*
+		 * 'struct uhid_create_req' contains a __user pointer which is
+		 * copied from, so it's unsafe to allow this with elevated
+		 * privileges (e.g. from a setuid binary) or via kernel_write().
+		 */
+		if (file->f_cred != current_cred() || uaccess_kernel()) {
+			pr_err_once("UHID_CREATE from different security context by process %d (%s), this is not allowed.\n",
+				    task_tgid_vnr(current), current->comm);
+			ret = -EACCES;
+			goto unlock;
+		}
+>>>>>>> v4.14.187
 		ret = uhid_dev_create(uhid, &uhid->input_buf);
 		break;
 	case UHID_CREATE2:
@@ -785,6 +809,7 @@ static struct miscdevice uhid_misc = {
 	.minor		= UHID_MINOR,
 	.name		= UHID_NAME,
 };
+<<<<<<< HEAD
 
 static int fb_state_change(struct notifier_block *nb,
     unsigned long val, void *data)
@@ -828,6 +853,9 @@ static void __exit uhid_exit(void)
 
 module_init(uhid_init);
 module_exit(uhid_exit);
+=======
+module_misc_device(uhid_misc);
+>>>>>>> v4.14.187
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("David Herrmann <dh.herrmann@gmail.com>");

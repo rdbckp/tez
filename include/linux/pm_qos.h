@@ -17,6 +17,7 @@ enum {
 	PM_QOS_NETWORK_THROUGHPUT,
 	PM_QOS_MEMORY_BANDWIDTH,
 
+<<<<<<< HEAD
 	PM_QOS_CPU_MEMORY_BANDWIDTH,
 	PM_QOS_GPU_MEMORY_BANDWIDTH,
 	PM_QOS_MM_MEMORY_BANDWIDTH,
@@ -45,6 +46,8 @@ enum {
 	PM_QOS_APU_MEMORY_BANDWIDTH,
 	PM_QOS_VVPU_OPP,
 
+=======
+>>>>>>> v4.14.187
 	/* insert new class ID */
 	PM_QOS_NUM_CLASSES,
 };
@@ -62,6 +65,7 @@ enum pm_qos_flags_status {
 #define PM_QOS_NETWORK_LAT_DEFAULT_VALUE	(2000 * USEC_PER_SEC)
 #define PM_QOS_NETWORK_THROUGHPUT_DEFAULT_VALUE	0
 #define PM_QOS_MEMORY_BANDWIDTH_DEFAULT_VALUE	0
+<<<<<<< HEAD
 #define PM_QOS_CPU_MEMORY_BANDWIDTH_DEFAULT_VALUE	0
 #define PM_QOS_GPU_MEMORY_BANDWIDTH_DEFAULT_VALUE	0
 #define PM_QOS_MM_MEMORY_BANDWIDTH_DEFAULT_VALUE	0
@@ -79,21 +83,32 @@ enum pm_qos_flags_status {
 #define PM_QOS_MM_FREQ_DEFAULT_VALUE		0
 #define PM_QOS_ISP_HRT_BANDWIDTH_DEFAULT_VALUE         0
 #define PM_QOS_APU_MEMORY_BANDWIDTH_DEFAULT_VALUE      0
+=======
+>>>>>>> v4.14.187
 #define PM_QOS_RESUME_LATENCY_DEFAULT_VALUE	0
 #define PM_QOS_LATENCY_TOLERANCE_DEFAULT_VALUE	0
 #define PM_QOS_LATENCY_TOLERANCE_NO_CONSTRAINT	(-1)
 #define PM_QOS_LATENCY_ANY			((s32)(~(__u32)0 >> 1))
+<<<<<<< HEAD
 #define PM_QOS_VVPU_OPP_DEFAULT_VALUE			3
+=======
+>>>>>>> v4.14.187
 
 #define PM_QOS_FLAG_NO_POWER_OFF	(1 << 0)
 #define PM_QOS_FLAG_REMOTE_WAKEUP	(1 << 1)
 
 struct pm_qos_request {
+<<<<<<< HEAD
 	struct list_head list_node;
 	struct plist_node node;
 	int pm_qos_class;
 	struct delayed_work work; /* for pm_qos_update_request_timeout */
 	char owner[20];
+=======
+	struct plist_node node;
+	int pm_qos_class;
+	struct delayed_work work; /* for pm_qos_update_request_timeout */
+>>>>>>> v4.14.187
 };
 
 struct pm_qos_flags_request {
@@ -129,13 +144,19 @@ enum pm_qos_type {
  * types linux supports for 32 bit quantites
  */
 struct pm_qos_constraints {
+<<<<<<< HEAD
 	struct list_head req_list;
+=======
+>>>>>>> v4.14.187
 	struct plist_head list;
 	s32 target_value;	/* Do not change to 64 bit */
 	s32 default_value;
 	s32 no_constraint_value;
 	enum pm_qos_type type;
+<<<<<<< HEAD
 	struct mutex qos_lock;
+=======
+>>>>>>> v4.14.187
 	struct blocking_notifier_head *notifiers;
 };
 
@@ -197,8 +218,11 @@ int dev_pm_qos_add_notifier(struct device *dev,
 			    struct notifier_block *notifier);
 int dev_pm_qos_remove_notifier(struct device *dev,
 			       struct notifier_block *notifier);
+<<<<<<< HEAD
 int dev_pm_qos_add_global_notifier(struct notifier_block *notifier);
 int dev_pm_qos_remove_global_notifier(struct notifier_block *notifier);
+=======
+>>>>>>> v4.14.187
 void dev_pm_qos_constraints_init(struct device *dev);
 void dev_pm_qos_constraints_destroy(struct device *dev);
 int dev_pm_qos_add_ancestor_request(struct device *dev,

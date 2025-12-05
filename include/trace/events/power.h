@@ -148,6 +148,7 @@ DEFINE_EVENT(cpu, cpu_frequency,
 	TP_ARGS(frequency, cpu_id)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(cpu_frequency_limits,
 
 	TP_PROTO(unsigned int max_freq, unsigned int min_freq,
@@ -173,6 +174,8 @@ TRACE_EVENT(cpu_frequency_limits,
 		  (unsigned long)__entry->cpu_id)
 );
 
+=======
+>>>>>>> v4.14.187
 TRACE_EVENT(device_pm_callback_start,
 
 	TP_PROTO(struct device *dev, const char *pm_ops, int event),
@@ -326,6 +329,7 @@ DEFINE_EVENT(clock, clock_set_rate,
 	TP_ARGS(name, state, cpu_id)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(clock_set_parent,
 
 	TP_PROTO(const char *name, const char *parent_name),
@@ -345,6 +349,8 @@ TRACE_EVENT(clock_set_parent,
 	TP_printk("%s parent=%s", __get_str(name), __get_str(parent_name))
 );
 
+=======
+>>>>>>> v4.14.187
 /*
  * The power domain events are used for power domains transitions
  */
@@ -382,49 +388,86 @@ DEFINE_EVENT(power_domain, power_domain_target,
  */
 DECLARE_EVENT_CLASS(pm_qos_request,
 
+<<<<<<< HEAD
 	TP_PROTO(int pm_qos_class, s32 value, char *owner),
 
 	TP_ARGS(pm_qos_class, value, owner),
+=======
+	TP_PROTO(int pm_qos_class, s32 value),
+
+	TP_ARGS(pm_qos_class, value),
+>>>>>>> v4.14.187
 
 	TP_STRUCT__entry(
 		__field( int,                    pm_qos_class   )
 		__field( s32,                    value          )
+<<<<<<< HEAD
 		__string(owner,                 owner)
+=======
+>>>>>>> v4.14.187
 	),
 
 	TP_fast_assign(
 		__entry->pm_qos_class = pm_qos_class;
 		__entry->value = value;
+<<<<<<< HEAD
 		__assign_str(owner, owner);
 	),
 
 	TP_printk("pm_qos_class=%s value=%d owner=%s",
+=======
+	),
+
+	TP_printk("pm_qos_class=%s value=%d",
+>>>>>>> v4.14.187
 		  __print_symbolic(__entry->pm_qos_class,
 			{ PM_QOS_CPU_DMA_LATENCY,	"CPU_DMA_LATENCY" },
 			{ PM_QOS_NETWORK_LATENCY,	"NETWORK_LATENCY" },
 			{ PM_QOS_NETWORK_THROUGHPUT,	"NETWORK_THROUGHPUT" }),
+<<<<<<< HEAD
 		  __entry->value, __get_str(owner))
+=======
+		  __entry->value)
+>>>>>>> v4.14.187
 );
 
 DEFINE_EVENT(pm_qos_request, pm_qos_add_request,
 
+<<<<<<< HEAD
 	TP_PROTO(int pm_qos_class, s32 value, char *owner),
 
 	TP_ARGS(pm_qos_class, value, owner)
+=======
+	TP_PROTO(int pm_qos_class, s32 value),
+
+	TP_ARGS(pm_qos_class, value)
+>>>>>>> v4.14.187
 );
 
 DEFINE_EVENT(pm_qos_request, pm_qos_update_request,
 
+<<<<<<< HEAD
 	TP_PROTO(int pm_qos_class, s32 value, char *owner),
 
 	TP_ARGS(pm_qos_class, value, owner)
+=======
+	TP_PROTO(int pm_qos_class, s32 value),
+
+	TP_ARGS(pm_qos_class, value)
+>>>>>>> v4.14.187
 );
 
 DEFINE_EVENT(pm_qos_request, pm_qos_remove_request,
 
+<<<<<<< HEAD
 	TP_PROTO(int pm_qos_class, s32 value, char *owner),
 
 	TP_ARGS(pm_qos_class, value, owner)
+=======
+	TP_PROTO(int pm_qos_class, s32 value),
+
+	TP_ARGS(pm_qos_class, value)
+>>>>>>> v4.14.187
 );
 
 TRACE_EVENT(pm_qos_update_request_timeout,

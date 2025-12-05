@@ -618,6 +618,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 static struct sk_buff *vlan_gro_receive(struct list_head *head,
 					struct sk_buff *skb)
 {
@@ -626,6 +627,15 @@ static struct sk_buff *vlan_gro_receive(struct list_head *head,
 	struct sk_buff *pp = NULL;
 	struct vlan_hdr *vhdr;
 	struct sk_buff *p;
+=======
+static struct sk_buff **vlan_gro_receive(struct sk_buff **head,
+					 struct sk_buff *skb)
+{
+	struct sk_buff *p, **pp = NULL;
+	struct vlan_hdr *vhdr;
+	unsigned int hlen, off_vlan;
+	const struct packet_offload *ptype;
+>>>>>>> v4.14.187
 	__be16 type;
 	int flush = 1;
 
@@ -647,7 +657,11 @@ static struct sk_buff *vlan_gro_receive(struct list_head *head,
 
 	flush = 0;
 
+<<<<<<< HEAD
 	list_for_each_entry(p, head, list) {
+=======
+	for (p = *head; p; p = p->next) {
+>>>>>>> v4.14.187
 		struct vlan_hdr *vhdr2;
 
 		if (!NAPI_GRO_CB(p)->same_flow)

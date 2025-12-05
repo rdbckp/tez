@@ -25,9 +25,12 @@ typedef struct raw_spinlock {
 #ifdef CONFIG_DEBUG_SPINLOCK
 	unsigned int magic, owner_cpu;
 	void *owner;
+<<<<<<< HEAD
 	/* timestamp of lock/unlock*/
 	unsigned long long lock_t;
 	unsigned long long unlock_t;
+=======
+>>>>>>> v4.14.187
 #endif
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 	struct lockdep_map dep_map;

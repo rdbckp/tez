@@ -16,6 +16,7 @@
 #include <linux/component.h>
 #include <linux/of_device.h>
 #include <linux/of_irq.h>
+<<<<<<< HEAD
 #include <linux/of_address.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
@@ -135,12 +136,34 @@ static struct MDP_TDSHP_REG g_tdshp_reg = {
 #define COLOR_MODE			(0)	/*color feature off */
 #endif
 
+=======
+#include <linux/platform_device.h>
+
+#include "mtk_drm_crtc.h"
+#include "mtk_drm_ddp_comp.h"
+
+#define DISP_COLOR_CFG_MAIN			0x0400
+#define DISP_COLOR_START_MT2701			0x0f00
+#define DISP_COLOR_START_MT8173			0x0c00
+#define DISP_COLOR_START(comp)			((comp)->data->color_offset)
+#define DISP_COLOR_WIDTH(comp)			(DISP_COLOR_START(comp) + 0x50)
+#define DISP_COLOR_HEIGHT(comp)			(DISP_COLOR_START(comp) + 0x54)
+
+#define COLOR_BYPASS_ALL			BIT(7)
+#define COLOR_SEQ_SEL				BIT(13)
+
+struct mtk_disp_color_data {
+	unsigned int color_offset;
+};
+
+>>>>>>> v4.14.187
 /**
  * struct mtk_disp_color - DISP_COLOR driver structure
  * @ddp_comp - structure containing type enum and hardware resources
  * @crtc - associated crtc to report irq events to
  */
 struct mtk_disp_color {
+<<<<<<< HEAD
 	struct mtk_ddp_comp ddp_comp;
 	struct drm_crtc *crtc;
 	const struct mtk_disp_color_data *data;
@@ -1079,11 +1102,19 @@ COLOR_3D :
 };
 
 
+=======
+	struct mtk_ddp_comp			ddp_comp;
+	struct drm_crtc				*crtc;
+	const struct mtk_disp_color_data	*data;
+};
+
+>>>>>>> v4.14.187
 static inline struct mtk_disp_color *comp_to_color(struct mtk_ddp_comp *comp)
 {
 	return container_of(comp, struct mtk_disp_color, ddp_comp);
 }
 
+<<<<<<< HEAD
 static void ddp_color_cal_split_window(struct mtk_ddp_comp *comp,
 	unsigned int *p_split_window_x, unsigned int *p_split_window_y)
 {
@@ -2990,10 +3021,30 @@ void mtk_color_first_cfg(struct mtk_ddp_comp *comp,
 
 	mtk_color_config(comp, cfg, handle);
 	ddp_color_backup(comp);
+=======
+static void mtk_color_config(struct mtk_ddp_comp *comp, unsigned int w,
+			     unsigned int h, unsigned int vrefresh,
+			     unsigned int bpc)
+{
+	struct mtk_disp_color *color = comp_to_color(comp);
+
+	writel(w, comp->regs + DISP_COLOR_WIDTH(color));
+	writel(h, comp->regs + DISP_COLOR_HEIGHT(color));
+}
+
+static void mtk_color_start(struct mtk_ddp_comp *comp)
+{
+	struct mtk_disp_color *color = comp_to_color(comp);
+
+	writel(COLOR_BYPASS_ALL | COLOR_SEQ_SEL,
+	       comp->regs + DISP_COLOR_CFG_MAIN);
+	writel(0x1, comp->regs + DISP_COLOR_START(color));
+>>>>>>> v4.14.187
 }
 
 static const struct mtk_ddp_comp_funcs mtk_disp_color_funcs = {
 	.config = mtk_color_config,
+<<<<<<< HEAD
 	.first_cfg = mtk_color_first_cfg,
 	.start = mtk_color_start,
 	.stop = mtk_color_stop,
@@ -3012,6 +3063,11 @@ void mtk_color_dump(struct mtk_ddp_comp *comp)
 	mtk_serial_dump_reg(baddr, 0xC50, 2);
 }
 
+=======
+	.start = mtk_color_start,
+};
+
+>>>>>>> v4.14.187
 static int mtk_disp_color_bind(struct device *dev, struct device *master,
 			       void *data)
 {
@@ -3021,8 +3077,13 @@ static int mtk_disp_color_bind(struct device *dev, struct device *master,
 
 	ret = mtk_ddp_comp_register(drm_dev, &priv->ddp_comp);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(dev, "Failed to register component %s: %d\n",
 			dev->of_node->full_name, ret);
+=======
+		dev_err(dev, "Failed to register component %pOF: %d\n",
+			dev->of_node, ret);
+>>>>>>> v4.14.187
 		return ret;
 	}
 
@@ -3047,6 +3108,7 @@ static int mtk_disp_color_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct mtk_disp_color *priv;
+<<<<<<< HEAD
 	enum mtk_ddp_comp_id comp_id;
 	int ret;
 
@@ -3057,24 +3119,43 @@ static int mtk_disp_color_probe(struct platform_device *pdev)
 
 	comp_id = mtk_ddp_comp_get_id(dev->of_node, MTK_DISP_COLOR);
 	if ((int)comp_id < 0) {
+=======
+	int comp_id;
+	int ret;
+
+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+	if (!priv)
+		return -ENOMEM;
+
+	comp_id = mtk_ddp_comp_get_id(dev->of_node, MTK_DISP_COLOR);
+	if (comp_id < 0) {
+>>>>>>> v4.14.187
 		dev_err(dev, "Failed to identify by alias: %d\n", comp_id);
 		return comp_id;
 	}
 
 	ret = mtk_ddp_comp_init(dev, dev->of_node, &priv->ddp_comp, comp_id,
 				&mtk_disp_color_funcs);
+<<<<<<< HEAD
 	if (ret != 0) {
+=======
+	if (ret) {
+>>>>>>> v4.14.187
 		dev_err(dev, "Failed to initialize component: %d\n", ret);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (!default_comp)
 		default_comp = &priv->ddp_comp;
 
+=======
+>>>>>>> v4.14.187
 	priv->data = of_device_get_match_data(dev);
 
 	platform_set_drvdata(pdev, priv);
 
+<<<<<<< HEAD
 	pm_runtime_enable(dev);
 
 	ret = component_add(dev, &mtk_disp_color_component_ops);
@@ -3083,6 +3164,11 @@ static int mtk_disp_color_probe(struct platform_device *pdev)
 		pm_runtime_disable(dev);
 	}
 	DDPINFO("%s-\n", __func__);
+=======
+	ret = component_add(dev, &mtk_disp_color_component_ops);
+	if (ret)
+		dev_err(dev, "Failed to add component: %d\n", ret);
+>>>>>>> v4.14.187
 
 	return ret;
 }
@@ -3091,12 +3177,16 @@ static int mtk_disp_color_remove(struct platform_device *pdev)
 {
 	component_del(&pdev->dev, &mtk_disp_color_component_ops);
 
+<<<<<<< HEAD
 	pm_runtime_disable(&pdev->dev);
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
 static const struct mtk_disp_color_data mt2701_color_driver_data = {
 	.color_offset = DISP_COLOR_START_MT2701,
+<<<<<<< HEAD
 	.support_color21 = false,
 	.support_color30 = false,
 	.color_window = 0x40106051,
@@ -3111,10 +3201,13 @@ static const struct mtk_disp_color_data mt6779_color_driver_data = {
 			0x14011000, 0x14012000},
 	.color_window = 0x40185E57,
 	.support_shadow = false,
+=======
+>>>>>>> v4.14.187
 };
 
 static const struct mtk_disp_color_data mt8173_color_driver_data = {
 	.color_offset = DISP_COLOR_START_MT8173,
+<<<<<<< HEAD
 	.support_color21 = false,
 	.support_color30 = false,
 	.color_window = 0x40106051,
@@ -3176,11 +3269,21 @@ static const struct of_device_id mtk_disp_color_driver_dt_match[] = {
 	 .data = &mt6853_color_driver_data},
 	{.compatible = "mediatek,mt6833-disp-color",
 	 .data = &mt6833_color_driver_data},
+=======
+};
+
+static const struct of_device_id mtk_disp_color_driver_dt_match[] = {
+	{ .compatible = "mediatek,mt2701-disp-color",
+	  .data = &mt2701_color_driver_data},
+	{ .compatible = "mediatek,mt8173-disp-color",
+	  .data = &mt8173_color_driver_data},
+>>>>>>> v4.14.187
 	{},
 };
 MODULE_DEVICE_TABLE(of, mtk_disp_color_driver_dt_match);
 
 struct platform_driver mtk_disp_color_driver = {
+<<<<<<< HEAD
 	.probe = mtk_disp_color_probe,
 	.remove = mtk_disp_color_remove,
 	.driver = {
@@ -3220,3 +3323,13 @@ void mtk_color_setbypass(struct mtk_ddp_comp *comp, struct cmdq_pkt *handle,
 		DDPINFO("%s, default_comp is null\n", __func__);
 	}
 }
+=======
+	.probe		= mtk_disp_color_probe,
+	.remove		= mtk_disp_color_remove,
+	.driver		= {
+		.name	= "mediatek-disp-color",
+		.owner	= THIS_MODULE,
+		.of_match_table = mtk_disp_color_driver_dt_match,
+	},
+};
+>>>>>>> v4.14.187

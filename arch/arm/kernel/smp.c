@@ -51,9 +51,12 @@
 #include <asm/virt.h>
 #include <asm/mach/arch.h>
 #include <asm/mpu.h>
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 #include <linux/sec_debug.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/ipi.h>
@@ -252,6 +255,7 @@ int __cpu_disable(void)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_GIC_TARGET_ALL
 	{
 		unsigned long flags;
@@ -263,6 +267,8 @@ int __cpu_disable(void)
 		local_irq_save(flags);
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Take this CPU offline.  Once we clear this, we can't return,
 	 * and we must not schedule until we're ready to give up the cpu.
@@ -289,13 +295,22 @@ int __cpu_disable(void)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static DECLARE_COMPLETION(cpu_died);
+
+>>>>>>> v4.14.187
 /*
  * called on the thread which is asking for a CPU to be shutdown -
  * waits until shutdown has completed, or it is timed out.
  */
 void __cpu_die(unsigned int cpu)
 {
+<<<<<<< HEAD
 	if (!cpu_wait_death(cpu, 5)) {
+=======
+	if (!wait_for_completion_timeout(&cpu_died, msecs_to_jiffies(5000))) {
+>>>>>>> v4.14.187
 		pr_err("CPU%u: cpu didn't die\n", cpu);
 		return;
 	}
@@ -341,7 +356,11 @@ void arch_cpu_idle_dead(void)
 	 * this returns, power and/or clocks can be removed at any point
 	 * from this CPU and its cache by platform_cpu_kill().
 	 */
+<<<<<<< HEAD
 	(void)cpu_report_death();
+=======
+	complete(&cpu_died);
+>>>>>>> v4.14.187
 
 	/*
 	 * Ensure that the cache lines associated with that completion are
@@ -604,11 +623,15 @@ static DEFINE_RAW_SPINLOCK(stop_lock);
 /*
  * ipi_cpu_stop - handle IPI from smp_send_stop()
  */
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 static void ipi_cpu_stop(unsigned int cpu, struct pt_regs *regs)
 #else
 static void ipi_cpu_stop(unsigned int cpu)
 #endif
+=======
+static void ipi_cpu_stop(unsigned int cpu)
+>>>>>>> v4.14.187
 {
 	if (system_state <= SYSTEM_RUNNING) {
 		raw_spin_lock(&stop_lock);
@@ -621,10 +644,13 @@ static void ipi_cpu_stop(unsigned int cpu)
 
 	local_fiq_disable();
 	local_irq_disable();
+<<<<<<< HEAD
 	
 #ifdef CONFIG_SEC_DEBUG
 	sec_save_context(_THIS_CPU, regs);
 #endif
+=======
+>>>>>>> v4.14.187
 
 	while (1) {
 		cpu_relax();
@@ -657,11 +683,16 @@ void handle_IPI(int ipinr, struct pt_regs *regs)
 {
 	unsigned int cpu = smp_processor_id();
 	struct pt_regs *old_regs = set_irq_regs(regs);
+<<<<<<< HEAD
 	unsigned long long ts = 0;
 	int count = 0;
 
 	if ((unsigned)ipinr < NR_IPI) {
 		check_start_time_preempt(ipi_note, count, ts, ipinr);
+=======
+
+	if ((unsigned)ipinr < NR_IPI) {
+>>>>>>> v4.14.187
 		trace_ipi_entry_rcuidle(ipi_types[ipinr]);
 		__inc_irq_stat(cpu, ipi_irqs[ipinr]);
 	}
@@ -690,11 +721,15 @@ void handle_IPI(int ipinr, struct pt_regs *regs)
 
 	case IPI_CPU_STOP:
 		irq_enter();
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 		ipi_cpu_stop(cpu, regs);
 #else
 		ipi_cpu_stop(cpu);
 #endif
+=======
+		ipi_cpu_stop(cpu);
+>>>>>>> v4.14.187
 		irq_exit();
 		break;
 
@@ -726,11 +761,16 @@ void handle_IPI(int ipinr, struct pt_regs *regs)
 		break;
 	}
 
+<<<<<<< HEAD
 	if ((unsigned int)ipinr < NR_IPI) {
 		trace_ipi_exit_rcuidle(ipi_types[ipinr]);
 		check_process_time_preempt(ipi_note, count, "ipi %d %s", ts,
 					   ipinr, ipi_types[ipinr]);
 	}
+=======
+	if ((unsigned)ipinr < NR_IPI)
+		trace_ipi_exit_rcuidle(ipi_types[ipinr]);
+>>>>>>> v4.14.187
 	set_irq_regs(old_regs);
 }
 

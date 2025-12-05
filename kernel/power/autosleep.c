@@ -116,7 +116,11 @@ int pm_autosleep_set_state(suspend_state_t state)
 
 int __init pm_autosleep_init(void)
 {
+<<<<<<< HEAD
 	autosleep_ws = wakeup_source_register(NULL, "autosleep");
+=======
+	autosleep_ws = wakeup_source_register("autosleep");
+>>>>>>> v4.14.187
 	if (!autosleep_ws)
 		return -ENOMEM;
 

@@ -9,23 +9,30 @@
 #include <linux/init.h>
 #include <linux/fs.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/scs.h>
 #include <linux/task_integrity.h>
+=======
+>>>>>>> v4.14.187
 
 #include <asm/pgtable.h>
 #include <linux/uaccess.h>
 
 static struct signal_struct init_signals = INIT_SIGNALS(init_signals);
 static struct sighand_struct init_sighand = INIT_SIGHAND(init_sighand);
+<<<<<<< HEAD
 #ifdef CONFIG_FIVE
 static struct task_integrity init_integrity =
 					INIT_TASK_INTEGRITY(init_integrity);
 #endif
+=======
+>>>>>>> v4.14.187
 
 /* Initial task structure */
 struct task_struct init_task = INIT_TASK(init_task);
 EXPORT_SYMBOL(init_task);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SHADOW_CALL_STACK
 unsigned long init_shadow_call_stack[SCS_SIZE / sizeof(long)] __init_task_data
 		__aligned(SCS_SIZE) = {
@@ -33,6 +40,8 @@ unsigned long init_shadow_call_stack[SCS_SIZE / sizeof(long)] __init_task_data
 };
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Initial thread structure. Alignment of this is handled by a special
  * linker map entry.

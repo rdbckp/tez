@@ -1,6 +1,10 @@
 config DRM_MEDIATEK
 	tristate "DRM Support for Mediatek SoCs"
 	depends on DRM
+<<<<<<< HEAD
+=======
+	depends on ARCH_MEDIATEK || (ARM && COMPILE_TEST)
+>>>>>>> v4.14.187
 	depends on COMMON_CLK
 	depends on HAVE_ARM_SMCCC
 	depends on OF
@@ -10,8 +14,11 @@ config DRM_MEDIATEK
 	select DRM_PANEL
 	select MEMORY
 	select MTK_SMI
+<<<<<<< HEAD
         select FONT_SUPPORT
 	select GENERIC_PHY
+=======
+>>>>>>> v4.14.187
 	help
 	  Choose this option if you have a Mediatek SoCs.
 	  The module will be called mediatek-drm
@@ -25,6 +32,7 @@ config DRM_MEDIATEK_HDMI
 	select GENERIC_PHY
 	help
 	  DRM/KMS HDMI driver for Mediatek SoCs
+<<<<<<< HEAD
 
 config MTK_PQ_COLOR_MODE
 	string "Config PQ_COLOR_MODE (MDP & DISP COLOR on/off)"
@@ -57,3 +65,5 @@ config DRM_MTK_DISABLE_AEE_LAYER
 	  if this value is y, will not produce AEE.
 	  if this value is n, will produce AEE.
 	  If you do not produce AEE, please set it to Y in xxx_defconfig.
+=======
+>>>>>>> v4.14.187

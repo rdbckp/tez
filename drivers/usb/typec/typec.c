@@ -14,9 +14,12 @@
 #include <linux/mutex.h>
 #include <linux/slab.h>
 #include <linux/usb/typec.h>
+<<<<<<< HEAD
 #if defined(CONFIG_USB_NOTIFY_LAYER)
 #include <linux/usb_notify.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 struct typec_mode {
 	int				index;
@@ -447,7 +450,10 @@ static ssize_t supports_usb_power_delivery_show(struct device *dev,
 {
 	struct typec_partner *p = to_typec_partner(dev);
 
+<<<<<<< HEAD
 	pr_info("%s usb_pd=%d\n", __func__, p->usb_pd);
+=======
+>>>>>>> v4.14.187
 	return sprintf(buf, "%s\n", p->usb_pd ? "yes" : "no");
 }
 static DEVICE_ATTR_RO(supports_usb_power_delivery);
@@ -545,7 +551,10 @@ struct typec_partner *typec_register_partner(struct typec_port *port,
 	partner->dev.type = &typec_partner_dev_type;
 	dev_set_name(&partner->dev, "%s-partner", dev_name(&port->dev));
 
+<<<<<<< HEAD
 	pr_info("%s\n", __func__);
+=======
+>>>>>>> v4.14.187
 	ret = device_register(&partner->dev);
 	if (ret) {
 		dev_err(&port->dev, "failed to register partner (%d)\n", ret);
@@ -565,6 +574,7 @@ EXPORT_SYMBOL_GPL(typec_register_partner);
  */
 void typec_unregister_partner(struct typec_partner *partner)
 {
+<<<<<<< HEAD
 #if defined(CONFIG_USB_NOTIFY_LAYER)
 	struct otg_notify *o_notify = get_otg_notify();
 #endif
@@ -577,6 +587,10 @@ void typec_unregister_partner(struct typec_partner *partner)
 			send_otg_notify(o_notify, NOTIFY_EVENT_PD_CONTRACT, 0);
 #endif
 	}
+=======
+	if (partner)
+		device_unregister(&partner->dev);
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL_GPL(typec_unregister_partner);
 
@@ -882,12 +896,18 @@ static ssize_t data_role_store(struct device *dev,
 		return -EOPNOTSUPP;
 	}
 
+<<<<<<< HEAD
 	pr_info("%s %s +\n", __func__, buf);
 	ret = sysfs_match_string(typec_data_roles, buf);
 	if (ret < 0) {
 		pr_err("%s error -\n", __func__);
 		return ret;
 	}
+=======
+	ret = sysfs_match_string(typec_data_roles, buf);
+	if (ret < 0)
+		return ret;
+>>>>>>> v4.14.187
 
 	mutex_lock(&port->port_type_lock);
 	if (port->port_type != TYPEC_PORT_DRP) {
@@ -904,7 +924,10 @@ static ssize_t data_role_store(struct device *dev,
 	ret = size;
 unlock_and_ret:
 	mutex_unlock(&port->port_type_lock);
+<<<<<<< HEAD
 	pr_info("%s -\n", __func__);
+=======
+>>>>>>> v4.14.187
 	return ret;
 }
 
@@ -943,12 +966,18 @@ static ssize_t power_role_store(struct device *dev,
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	pr_info("%s %s +\n", __func__, buf);
 	ret = sysfs_match_string(typec_roles, buf);
 	if (ret < 0) {
 		pr_err("%s error -\n", __func__);
 		return ret;
 	}
+=======
+	ret = sysfs_match_string(typec_roles, buf);
+	if (ret < 0)
+		return ret;
+>>>>>>> v4.14.187
 
 	mutex_lock(&port->port_type_lock);
 	if (port->port_type != TYPEC_PORT_DRP) {
@@ -965,7 +994,10 @@ static ssize_t power_role_store(struct device *dev,
 	ret = size;
 unlock_and_ret:
 	mutex_unlock(&port->port_type_lock);
+<<<<<<< HEAD
 	pr_info("%s -\n", __func__);
+=======
+>>>>>>> v4.14.187
 	return ret;
 }
 
@@ -995,6 +1027,7 @@ port_type_store(struct device *dev, struct device_attribute *attr,
 		return -EOPNOTSUPP;
 	}
 
+<<<<<<< HEAD
 	pr_info("%s %s +\n", __func__, buf);
 	ret = sysfs_match_string(typec_port_types, buf);
 	if (ret < 0) {
@@ -1005,11 +1038,24 @@ port_type_store(struct device *dev, struct device_attribute *attr,
 	type = ret;
 	mutex_lock(&port->port_type_lock);
 #if 0
+=======
+	ret = sysfs_match_string(typec_port_types, buf);
+	if (ret < 0)
+		return ret;
+
+	type = ret;
+	mutex_lock(&port->port_type_lock);
+
+>>>>>>> v4.14.187
 	if (port->port_type == type) {
 		ret = size;
 		goto unlock_and_ret;
 	}
+<<<<<<< HEAD
 #endif
+=======
+
+>>>>>>> v4.14.187
 	ret = port->cap->port_type_set(port->cap, type);
 	if (ret)
 		goto unlock_and_ret;
@@ -1019,7 +1065,10 @@ port_type_store(struct device *dev, struct device_attribute *attr,
 
 unlock_and_ret:
 	mutex_unlock(&port->port_type_lock);
+<<<<<<< HEAD
 	pr_info("%s -\n", __func__);
+=======
+>>>>>>> v4.14.187
 	return ret;
 }
 
@@ -1189,7 +1238,10 @@ static const struct device_type typec_port_dev_type = {
  */
 void typec_set_data_role(struct typec_port *port, enum typec_data_role role)
 {
+<<<<<<< HEAD
 	pr_info("%s data_role=%d role=%d\n", __func__, port->data_role, role);
+=======
+>>>>>>> v4.14.187
 	if (port->data_role == role)
 		return;
 
@@ -1208,7 +1260,10 @@ EXPORT_SYMBOL_GPL(typec_set_data_role);
  */
 void typec_set_pwr_role(struct typec_port *port, enum typec_role role)
 {
+<<<<<<< HEAD
 	pr_info("%s pwr_role=%d role=%d\n", __func__, port->pwr_role, role);
+=======
+>>>>>>> v4.14.187
 	if (port->pwr_role == role)
 		return;
 
@@ -1228,7 +1283,10 @@ EXPORT_SYMBOL_GPL(typec_set_pwr_role);
  */
 void typec_set_vconn_role(struct typec_port *port, enum typec_role role)
 {
+<<<<<<< HEAD
 	pr_info("%s vconn_role=%d role=%d\n", __func__, port->vconn_role, role);
+=======
+>>>>>>> v4.14.187
 	if (port->vconn_role == role)
 		return;
 
@@ -1257,6 +1315,7 @@ void typec_set_pwr_opmode(struct typec_port *port,
 			  enum typec_pwr_opmode opmode)
 {
 	struct device *partner_dev;
+<<<<<<< HEAD
 #if defined(CONFIG_USB_NOTIFY_LAYER)
 	struct otg_notify *o_notify = get_otg_notify();
 
@@ -1269,20 +1328,30 @@ void typec_set_pwr_opmode(struct typec_port *port,
 #endif
 
 	pr_info("%s pwr_opmode=%d opmode=%d\n", __func__, port->pwr_opmode, opmode);
+=======
+
+>>>>>>> v4.14.187
 	if (port->pwr_opmode == opmode)
 		return;
 
 	port->pwr_opmode = opmode;
 	sysfs_notify(&port->dev.kobj, NULL, "power_operation_mode");
+<<<<<<< HEAD
 #if !IS_ENABLED(CONFIG_USB_HOST_SAMSUNG_FEATURE)
 	kobject_uevent(&port->dev.kobj, KOBJ_CHANGE);
 #endif
+=======
+	kobject_uevent(&port->dev.kobj, KOBJ_CHANGE);
+>>>>>>> v4.14.187
 
 	partner_dev = device_find_child(&port->dev, NULL, partner_match);
 	if (partner_dev) {
 		struct typec_partner *partner = to_typec_partner(partner_dev);
 
+<<<<<<< HEAD
 		pr_info("%s usb_pd=%d\n", __func__, partner->usb_pd);
+=======
+>>>>>>> v4.14.187
 		if (opmode == TYPEC_PWR_MODE_PD && !partner->usb_pd) {
 			partner->usb_pd = 1;
 			sysfs_notify(&partner_dev->kobj, NULL,
@@ -1290,11 +1359,14 @@ void typec_set_pwr_opmode(struct typec_port *port,
 		}
 		put_device(partner_dev);
 	}
+<<<<<<< HEAD
 
 #if IS_ENABLED(CONFIG_USB_HOST_SAMSUNG_FEATURE)
 	pr_info("%s uevent\n", __func__);
 	kobject_uevent(&port->dev.kobj, KOBJ_CHANGE);
 #endif
+=======
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL_GPL(typec_set_pwr_opmode);
 

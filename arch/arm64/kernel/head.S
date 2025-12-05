@@ -37,7 +37,10 @@
 #include <asm/pgtable-hwdef.h>
 #include <asm/pgtable.h>
 #include <asm/page.h>
+<<<<<<< HEAD
 #include <asm/scs.h>
+=======
+>>>>>>> v4.14.187
 #include <asm/smp.h>
 #include <asm/sysreg.h>
 #include <asm/thread_info.h>
@@ -89,6 +92,7 @@ _head:
 	le64sym	_kernel_offset_le		// Image load offset from start of RAM, little-endian
 	le64sym	_kernel_size_le			// Effective size of kernel image, little-endian
 	le64sym	_kernel_flags_le		// Informative flags, little-endian
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 	.quad	rkp_init_data - .		// rkp init data
 #else
@@ -99,6 +103,10 @@ _head:
 #else
 	.quad	0xecefecef			// Magic number for proca ta
 #endif
+=======
+	.quad	0				// reserved
+	.quad	0				// reserved
+>>>>>>> v4.14.187
 	.quad	0				// reserved
 	.ascii	"ARM\x64"			// Magic number
 #ifdef CONFIG_EFI
@@ -121,8 +129,11 @@ pe_header:
 	 *  x23        stext() .. start_kernel()  physical misalignment/KASLR offset
 	 *  x28        __create_page_tables()     callee preserved temp register
 	 *  x19/x20    __primary_switch()         callee preserved temp registers
+<<<<<<< HEAD
 	 *  x24        __primary_switch() .. relocate_kernel()
 	 *                                        current RELR displacement
+=======
+>>>>>>> v4.14.187
 	 */
 ENTRY(stext)
 	bl	preserve_boot_args
@@ -344,10 +355,13 @@ __primary_switched:
 	stp	xzr, x30, [sp, #-16]!
 	mov	x29, sp
 
+<<<<<<< HEAD
 #ifdef CONFIG_SHADOW_CALL_STACK
 	adr_l	x18, init_shadow_call_stack	// Set shadow call stack
 #endif
 
+=======
+>>>>>>> v4.14.187
 	str_l	x21, __fdt_pointer, x5		// Save FDT pointer
 
 	ldr_l	x4, kimage_vaddr		// Save the offset between
@@ -626,10 +640,13 @@ __secondary_switched:
 	mov	sp, x1
 	ldr	x2, [x0, #CPU_BOOT_TASK]
 	msr	sp_el0, x2
+<<<<<<< HEAD
 #ifdef CONFIG_SHADOW_CALL_STACK
 	ldr	x18, [x2, #TSK_TI_SCS]		// set shadow call stack
 	str	xzr, [x2, #TSK_TI_SCS]		// limit visibility of saved SCS
 #endif
+=======
+>>>>>>> v4.14.187
 	mov	x29, #0
 	mov	x30, #0
 	b	secondary_start_kernel
@@ -738,6 +755,7 @@ __relocate_kernel:
 
 0:	cmp	x9, x10
 	b.hs	1f
+<<<<<<< HEAD
 	ldp	x12, x13, [x9], #24
 	ldr	x14, [x9, #-8]
 	cmp	w13, #R_AARCH64_RELATIVE
@@ -825,6 +843,16 @@ __relocate_kernel:
 #endif
 	ret
 
+=======
+	ldp	x11, x12, [x9], #24
+	ldr	x13, [x9, #-8]
+	cmp	w12, #R_AARCH64_RELATIVE
+	b.ne	0b
+	add	x13, x13, x23			// relocate
+	str	x13, [x11, x23]
+	b	0b
+1:	ret
+>>>>>>> v4.14.187
 ENDPROC(__relocate_kernel)
 #endif
 
@@ -836,9 +864,12 @@ __primary_switch:
 
 	bl	__enable_mmu
 #ifdef CONFIG_RELOCATABLE
+<<<<<<< HEAD
 #ifdef CONFIG_RELR
 	mov	x24, #0				// no RELR displacement yet
 #endif
+=======
+>>>>>>> v4.14.187
 	bl	__relocate_kernel
 #ifdef CONFIG_RANDOMIZE_BASE
 	ldr	x8, =__primary_switched

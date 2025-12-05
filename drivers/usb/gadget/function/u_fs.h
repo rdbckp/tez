@@ -177,8 +177,11 @@ struct ffs_data {
 	 */
 	struct usb_request		*ep0req;		/* P: mutex */
 	struct completion		ep0req_completion;	/* P: mutex */
+<<<<<<< HEAD
 	struct completion               epin_completion;
 	struct completion               epout_completion;
+=======
+>>>>>>> v4.14.187
 
 	/* reference counter */
 	refcount_t			ref;

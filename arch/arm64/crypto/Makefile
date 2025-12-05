@@ -7,9 +7,12 @@
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation.
 #
+<<<<<<< HEAD
 ifeq ($(cc-name),clang)
 ccflags-y += -Wno-error=unneeded-internal-declaration
 endif
+=======
+>>>>>>> v4.14.187
 
 obj-$(CONFIG_CRYPTO_SHA1_ARM64_CE) += sha1-ce.o
 sha1-ce-y := sha1-ce-glue.o sha1-ce-core.o

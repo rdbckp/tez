@@ -24,10 +24,13 @@
 #include <xen/xen.h>
 #include <asm/xen/hypervisor.h>
 
+<<<<<<< HEAD
 
 #ifdef CONFIG_MTK_BOUNCING_CHECK
 #include "../../../../drivers/misc/mediatek/include/mt-plat/aee.h"
 #endif
+=======
+>>>>>>> v4.14.187
 extern const struct dma_map_ops dummy_dma_ops;
 
 static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
@@ -46,6 +49,7 @@ void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
 #ifdef CONFIG_IOMMU_DMA
 void arch_teardown_dma_ops(struct device *dev);
 #define arch_teardown_dma_ops	arch_teardown_dma_ops
+<<<<<<< HEAD
 int dma_map_sg_within_reserved_iova(struct device *dev, struct scatterlist *sg,
 				    int nents, int prot, dma_addr_t dma_addr);
 void dma_unmap_sg_within_reserved_iova(struct device *dev,
@@ -55,6 +59,8 @@ void *dma_alloc_coherent_fix_iova(struct device *dev, dma_addr_t dma_addr,
 				  size_t size, gfp_t flag);
 void dma_free_coherent_fix_iova(struct device *dev, void *cpu_addr,
 				dma_addr_t dma_addr, size_t size);
+=======
+>>>>>>> v4.14.187
 #endif
 
 /* do not use this function in a driver */
@@ -79,6 +85,7 @@ static inline phys_addr_t dma_to_phys(struct device *dev, dma_addr_t dev_addr)
 
 static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_BOUNCING_CHECK
 	bool ret;
 
@@ -95,11 +102,16 @@ static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
 
 	return ret;
 #else
+=======
+>>>>>>> v4.14.187
 	if (!dev->dma_mask)
 		return false;
 
 	return addr + size - 1 <= *dev->dma_mask;
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 static inline void dma_mark_clean(void *addr, size_t size)

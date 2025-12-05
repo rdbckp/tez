@@ -173,7 +173,10 @@ typedef struct rndis_params {
 	struct net_device	*dev;
 
 	u32			vendorID;
+<<<<<<< HEAD
 	u8			max_pkt_per_xfer;
+=======
+>>>>>>> v4.14.187
 	const char		*vendorDescr;
 	void			(*resp_avail)(void *v);
 	void			*v;
@@ -190,7 +193,10 @@ int  rndis_set_param_vendor(struct rndis_params *params, u32 vendorID,
 			    const char *vendorDescr);
 int  rndis_set_param_medium(struct rndis_params *params, u32 medium,
 			     u32 speed);
+<<<<<<< HEAD
 void rndis_set_max_pkt_xfer(struct rndis_params *params, u8 max_pkt_per_xfer);
+=======
+>>>>>>> v4.14.187
 void rndis_add_hdr(struct sk_buff *skb);
 int rndis_rm_hdr(struct gether *port, struct sk_buff *skb,
 			struct sk_buff_head *list);

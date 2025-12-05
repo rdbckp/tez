@@ -340,7 +340,10 @@ struct scsi_host_template {
 #define SCSI_ADAPTER_RESET	1
 #define SCSI_FIRMWARE_RESET	2
 
+<<<<<<< HEAD
 	void (*tw_ctrl)(struct scsi_device *sdev, int en);
+=======
+>>>>>>> v4.14.187
 
 	/*
 	 * Name of proc directory
@@ -667,9 +670,12 @@ struct Scsi_Host {
 	/* The controller does not support WRITE SAME */
 	unsigned no_write_same:1;
 
+<<<<<<< HEAD
 	/* Inline encryption support */
 	unsigned use_inline_crypt:1;
 
+=======
+>>>>>>> v4.14.187
 	unsigned use_blk_mq:1;
 	unsigned use_cmd_list:1;
 
@@ -733,6 +739,7 @@ struct Scsi_Host {
 	 */
 	struct device *dma_dev;
 
+<<<<<<< HEAD
 	unsigned int  by_ufs;
 	unsigned int medium_err_cnt;
 	unsigned int hw_err_cnt;
@@ -741,6 +748,8 @@ struct Scsi_Host {
 	unsigned long issue_LBA_list[SEC_MAX_LBA_LOGGING];
 	unsigned int issue_LBA_count;
 	u64 issue_region_map;
+=======
+>>>>>>> v4.14.187
 	/*
 	 * We should ensure that this is aligned, both for better performance
 	 * and also because some compilers (m68k) don't automatically force
@@ -825,9 +834,12 @@ static inline int scsi_host_scan_allowed(struct Scsi_Host *shost)
 
 extern void scsi_unblock_requests(struct Scsi_Host *);
 extern void scsi_block_requests(struct Scsi_Host *);
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_TURBO_WRITE
 extern void scsi_reset_tw_state(struct Scsi_Host *);
 #endif
+=======
+>>>>>>> v4.14.187
 
 struct class_container;
 

@@ -67,6 +67,7 @@
 #include <uapi/linux/module.h>
 #include "module-internal.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_UH
 #include <linux/uh.h>
 #ifdef CONFIG_UH_RKP
@@ -77,6 +78,8 @@
 #include <linux/rustrkp.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 #define CREATE_TRACE_POINTS
 #include <trace/events/module.h>
 
@@ -2149,8 +2152,11 @@ void __weak module_arch_freeing_init(struct module *mod)
 {
 }
 
+<<<<<<< HEAD
 static void cfi_cleanup(struct module *mod);
 
+=======
+>>>>>>> v4.14.187
 /* Free a module, remove from lists, etc. */
 static void free_module(struct module *mod)
 {
@@ -2192,10 +2198,13 @@ static void free_module(struct module *mod)
 
 	/* This may be empty, but that's OK */
 	disable_ro_nx(&mod->init_layout);
+<<<<<<< HEAD
 
 	/* Clean up CFI for the module. */
 	cfi_cleanup(mod);
 
+=======
+>>>>>>> v4.14.187
 	module_arch_freeing_init(mod);
 	module_memfree(mod->init_layout.base);
 	kfree(mod->args);
@@ -3393,8 +3402,11 @@ int __weak module_finalize(const Elf_Ehdr *hdr,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void cfi_init(struct module *mod);
 
+=======
+>>>>>>> v4.14.187
 static int post_relocation(struct module *mod, const struct load_info *info)
 {
 	/* Sort exception table now relocations are done. */
@@ -3407,9 +3419,12 @@ static int post_relocation(struct module *mod, const struct load_info *info)
 	/* Setup kallsyms-specific fields. */
 	add_kallsyms(mod, info);
 
+<<<<<<< HEAD
 	/* Setup CFI for the module. */
 	cfi_init(mod);
 
+=======
+>>>>>>> v4.14.187
 	/* Arch-specific module finalizing. */
 	return module_finalize(info->hdr, info->sechdrs, mod);
 }
@@ -3468,9 +3483,12 @@ static noinline int do_init_module(struct module *mod)
 {
 	int ret = 0;
 	struct mod_initfree *freeinit;
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	struct module_info rkp_mod_info;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	freeinit = kmalloc(sizeof(*freeinit), GFP_KERNEL);
 	if (!freeinit) {
@@ -3537,6 +3555,7 @@ static noinline int do_init_module(struct module *mod)
 	mod_tree_remove_init(mod);
 	disable_ro_nx(&mod->init_layout);
 	module_arch_freeing_init(mod);
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	rkp_mod_info.base_va = 0;
 	rkp_mod_info.vm_size = 0;
@@ -3547,6 +3566,8 @@ static noinline int do_init_module(struct module *mod)
 	rkp_mod_info.init_text_size = (u64)mod->init_layout.text_size;
 	uh_call(UH_APP_RKP, RKP_MODULE_LOAD, RKP_MODULE_PXN_SET, (u64)&rkp_mod_info, 0, 0);
 #endif
+=======
+>>>>>>> v4.14.187
 	mod->init_layout.base = NULL;
 	mod->init_layout.size = 0;
 	mod->init_layout.ro_size = 0;
@@ -3635,9 +3656,12 @@ out_unlocked:
 static int complete_formation(struct module *mod, struct load_info *info)
 {
 	int err;
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	struct module_info rkp_mod_info;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	mutex_lock(&module_mutex);
 
@@ -3656,6 +3680,7 @@ static int complete_formation(struct module *mod, struct load_info *info)
 	 * but kallsyms etc. can see us. */
 	mod->state = MODULE_STATE_COMING;
 	mutex_unlock(&module_mutex);
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	rkp_mod_info.base_va = 0;
 	rkp_mod_info.vm_size = 0;
@@ -3666,6 +3691,8 @@ static int complete_formation(struct module *mod, struct load_info *info)
 	rkp_mod_info.init_text_size = (u64)mod->init_layout.text_size;
 	uh_call(UH_APP_RKP, RKP_MODULE_LOAD, RKP_MODULE_PXN_CLEAR, (u64)&rkp_mod_info, 0, 0);
 #endif
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 
@@ -3788,10 +3815,14 @@ static int load_module(struct load_info *info, const char __user *uargs,
 	flush_module_icache(mod);
 
 	/* Now copy in args */
+<<<<<<< HEAD
 	if (uargs)
 		mod->args = strndup_user(uargs, ~0UL >> 1);
 	else
 		mod->args = kstrdup("", GFP_KERNEL);
+=======
+	mod->args = strndup_user(uargs, ~0UL >> 1);
+>>>>>>> v4.14.187
 	if (IS_ERR(mod->args)) {
 		err = PTR_ERR(mod->args);
 		goto free_arch_cleanup;
@@ -3915,6 +3946,7 @@ SYSCALL_DEFINE3(init_module, void __user *, umod,
 	return load_module(&info, uargs, 0);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MNTL_SUPPORT
 int init_module_mem(void *buf, int size)
 {
@@ -3939,6 +3971,8 @@ int init_module_mem(void *buf, int size)
 EXPORT_SYMBOL(init_module_mem);
 #endif
 
+=======
+>>>>>>> v4.14.187
 SYSCALL_DEFINE3(finit_module, int, fd, const char __user *, uargs, int, flags)
 {
 	struct load_info info = { };
@@ -4208,6 +4242,7 @@ int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
 }
 #endif /* CONFIG_KALLSYMS */
 
+<<<<<<< HEAD
 static void cfi_init(struct module *mod)
 {
 #ifdef CONFIG_CFI_CLANG
@@ -4226,6 +4261,8 @@ static void cfi_cleanup(struct module *mod)
 #endif
 }
 
+=======
+>>>>>>> v4.14.187
 /* Maximum number of characters written by module_flags() */
 #define MODULE_FLAGS_BUF_SIZE (TAINT_FLAGS_COUNT + 4)
 
@@ -4454,6 +4491,7 @@ void print_modules(void)
 	list_for_each_entry_rcu(mod, &modules, list) {
 		if (mod->state == MODULE_STATE_UNFORMED)
 			continue;
+<<<<<<< HEAD
 
 		pr_cont(" %s %px %px %d %d %s",
 			mod->name,
@@ -4462,6 +4500,9 @@ void print_modules(void)
 			mod->core_layout.size,
 			mod->init_layout.size,
 			module_flags(mod, buf));
+=======
+		pr_cont(" %s%s", mod->name, module_flags(mod, buf));
+>>>>>>> v4.14.187
 	}
 	preempt_enable();
 	if (last_unloaded_module[0])
@@ -4469,6 +4510,7 @@ void print_modules(void)
 	pr_cont("\n");
 }
 
+<<<<<<< HEAD
 /* MUST ensure called when preempt disabled already */
 int save_modules(char *mbuf, int mbufsize)
 {
@@ -4526,6 +4568,8 @@ int save_modules(char *mbuf, int mbufsize)
 	return sz;
 }
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_MODVERSIONS
 /* Generate the signature for all relevant module structures here.
  * If these change, we don't want to try to parse the module. */

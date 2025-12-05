@@ -8,15 +8,25 @@ struct task_struct;
 
 #ifdef CONFIG_KCOV
 
+<<<<<<< HEAD
 enum kcov_mode {
 	/* Coverage collection is not enabled yet. */
 	KCOV_MODE_DISABLED = 0,
 	/* KCOV was initialized, but tracing mode hasn't been chosen yet. */
 	KCOV_MODE_INIT = 1,
+=======
+void kcov_task_init(struct task_struct *t);
+void kcov_task_exit(struct task_struct *t);
+
+enum kcov_mode {
+	/* Coverage collection is not enabled yet. */
+	KCOV_MODE_DISABLED = 0,
+>>>>>>> v4.14.187
 	/*
 	 * Tracing coverage collection mode.
 	 * Covered PCs are collected in a per-task buffer.
 	 */
+<<<<<<< HEAD
 	KCOV_MODE_TRACE_PC = 2,
 	/* Collecting comparison operands mode. */
 	KCOV_MODE_TRACE_CMP = 3,
@@ -52,10 +62,16 @@ static inline void kcov_remote_start_usb(u64 id)
 	kcov_remote_start(kcov_remote_handle(KCOV_SUBSYSTEM_USB, id));
 }
 
+=======
+	KCOV_MODE_TRACE = 1,
+};
+
+>>>>>>> v4.14.187
 #else
 
 static inline void kcov_task_init(struct task_struct *t) {}
 static inline void kcov_task_exit(struct task_struct *t) {}
+<<<<<<< HEAD
 static inline void kcov_prepare_switch(struct task_struct *t) {}
 static inline void kcov_finish_switch(struct task_struct *t) {}
 static inline void kcov_remote_start(u64 handle) {}
@@ -66,6 +82,8 @@ static inline u64 kcov_common_handle(void)
 }
 static inline void kcov_remote_start_common(u64 id) {}
 static inline void kcov_remote_start_usb(u64 id) {}
+=======
+>>>>>>> v4.14.187
 
 #endif /* CONFIG_KCOV */
 #endif /* _LINUX_KCOV_H */

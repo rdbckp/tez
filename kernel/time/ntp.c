@@ -31,7 +31,11 @@
 
 
 /* USER_HZ period (usecs): */
+<<<<<<< HEAD
 unsigned long			tick_usec = USER_TICK_USEC;
+=======
+unsigned long			tick_usec = TICK_USEC;
+>>>>>>> v4.14.187
 
 /* SHIFTED_HZ period (nsecs): */
 unsigned long			tick_nsec;

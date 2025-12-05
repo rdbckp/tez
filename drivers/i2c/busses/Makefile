@@ -3,8 +3,11 @@
 # Makefile for the i2c bus drivers.
 #
 
+<<<<<<< HEAD
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include
 
+=======
+>>>>>>> v4.14.187
 # ACPI drivers
 obj-$(CONFIG_I2C_SCMI)		+= i2c-scmi.o
 
@@ -115,8 +118,12 @@ obj-$(CONFIG_I2C_XLR)		+= i2c-xlr.o
 obj-$(CONFIG_I2C_XLP9XX)	+= i2c-xlp9xx.o
 obj-$(CONFIG_I2C_RCAR)		+= i2c-rcar.o
 obj-$(CONFIG_I2C_ZX2967)	+= i2c-zx2967.o
+<<<<<<< HEAD
 obj-$(CONFIG_I2C_MTK)		+= i2c-mtk.o
 obj-$(CONFIG_I2C_MTK)           += i2c-mtk_debug.o
+=======
+
+>>>>>>> v4.14.187
 # External I2C/SMBus adapter drivers
 obj-$(CONFIG_I2C_DIOLAN_U2C)	+= i2c-diolan-u2c.o
 obj-$(CONFIG_I2C_DLN2)		+= i2c-dln2.o
@@ -141,5 +148,8 @@ obj-$(CONFIG_I2C_XGENE_SLIMPRO) += i2c-xgene-slimpro.o
 obj-$(CONFIG_SCx200_ACB)	+= scx200_acb.o
 
 ccflags-$(CONFIG_I2C_DEBUG_BUS) := -DDEBUG
+<<<<<<< HEAD
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/scp/$(CONFIG_MTK_PLATFORM)/
+=======
+>>>>>>> v4.14.187

@@ -61,6 +61,7 @@ archive_builtin()
 		${AR} rcsTP${KBUILD_ARFLAGS} built-in.o			\
 					${KBUILD_VMLINUX_INIT}		\
 					${KBUILD_VMLINUX_MAIN}
+<<<<<<< HEAD
 
 		if [ -n "${CONFIG_LTO_CLANG}" ]; then
 			mv -f built-in.o built-in.o.tmp
@@ -96,6 +97,11 @@ lto_lds()
 	echo "-T .tmp_lto.lds"
 }
 
+=======
+	fi
+}
+
+>>>>>>> v4.14.187
 # Link of vmlinux.o used for section mismatch analysis
 # ${1} output file
 modpost_link()
@@ -116,6 +122,7 @@ modpost_link()
 			${KBUILD_VMLINUX_LIBS}				\
 			--end-group"
 	fi
+<<<<<<< HEAD
 
 	if [ -n "${CONFIG_LTO_CLANG}" ]; then
 		# This might take a while, so indicate that we're doing
@@ -139,6 +146,9 @@ recordmcount()
 	if [ -n "${CONFIG_FTRACE_MCOUNT_RECORD}" ]; then
 		scripts/recordmcount ${RECORDMCOUNT_FLAGS} $*
 	fi
+=======
+	${LD} ${LDFLAGS} -r -o ${1} ${objects}
+>>>>>>> v4.14.187
 }
 
 # Link of vmlinux
@@ -150,6 +160,7 @@ vmlinux_link()
 	local objects
 
 	if [ "${SRCARCH}" != "um" ]; then
+<<<<<<< HEAD
 		local ld=${LD}
 		local ldflags="${LDFLAGS} ${LDFLAGS_vmlinux}"
 
@@ -160,6 +171,10 @@ vmlinux_link()
 
 		if [[ -n "${CONFIG_THIN_ARCHIVES}" && -z "${CONFIG_LTO_CLANG}" ]]; then
 			objects="--whole-archive 			\
+=======
+		if [ -n "${CONFIG_THIN_ARCHIVES}" ]; then
+			objects="--whole-archive			\
+>>>>>>> v4.14.187
 				built-in.o				\
 				--no-whole-archive			\
 				--start-group				\
@@ -175,7 +190,12 @@ vmlinux_link()
 				${1}"
 		fi
 
+<<<<<<< HEAD
 		${ld} ${ldflags} -o ${2} -T ${lds} ${objects}
+=======
+		${LD} ${LDFLAGS} ${LDFLAGS_vmlinux} -o ${2}		\
+			-T ${lds} ${objects}
+>>>>>>> v4.14.187
 	else
 		if [ -n "${CONFIG_THIN_ARCHIVES}" ]; then
 			objects="-Wl,--whole-archive			\
@@ -202,6 +222,10 @@ vmlinux_link()
 	fi
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> v4.14.187
 # Create ${2} .o file with all symbols from the ${1} object file
 kallsyms()
 {
@@ -252,7 +276,10 @@ cleanup()
 	rm -f .tmp_System.map
 	rm -f .tmp_kallsyms*
 	rm -f .tmp_version
+<<<<<<< HEAD
 	rm -f .tmp_lto.lds
+=======
+>>>>>>> v4.14.187
 	rm -f .tmp_vmlinux*
 	rm -f built-in.o
 	rm -f System.map
@@ -314,11 +341,16 @@ ${MAKE} -f "${srctree}/scripts/Makefile.build" obj=init GCC_PLUGINS_CFLAGS="${GC
 archive_builtin
 
 #link vmlinux.o
+<<<<<<< HEAD
+=======
+info LD vmlinux.o
+>>>>>>> v4.14.187
 modpost_link vmlinux.o
 
 # modpost vmlinux.o to check for section mismatches
 ${MAKE} -f "${srctree}/scripts/Makefile.modpost" vmlinux.o
 
+<<<<<<< HEAD
 if [ -n "${CONFIG_LTO_CLANG}" ]; then
 	# Re-use vmlinux.o, so we can avoid the slow LTO link step in
 	# vmlinux_link
@@ -330,6 +362,8 @@ if [ -n "${CONFIG_LTO_CLANG}" ]; then
 	recordmcount vmlinux.o
 fi
 
+=======
+>>>>>>> v4.14.187
 kallsymso=""
 kallsyms_vmlinux=""
 if [ -n "${CONFIG_KALLSYMS}" ]; then

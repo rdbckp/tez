@@ -9,8 +9,11 @@ source "drivers/bus/Kconfig"
 
 source "drivers/connector/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/gnss/Kconfig"
 
+=======
+>>>>>>> v4.14.187
 source "drivers/mtd/Kconfig"
 
 source "drivers/of/Kconfig"
@@ -79,8 +82,11 @@ source "drivers/hwmon/Kconfig"
 
 source "drivers/thermal/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/trusty/Kconfig"
 
+=======
+>>>>>>> v4.14.187
 source "drivers/watchdog/Kconfig"
 
 source "drivers/ssb/Kconfig"
@@ -195,8 +201,11 @@ source "drivers/thunderbolt/Kconfig"
 
 source "drivers/android/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/gpu/trace/Kconfig"
 
+=======
+>>>>>>> v4.14.187
 source "drivers/nvdimm/Kconfig"
 
 source "drivers/dax/Kconfig"
@@ -215,6 +224,7 @@ source "drivers/tee/Kconfig"
 
 source "drivers/mux/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/samsung/Kconfig"
 
 source "drivers/switch/Kconfig"
@@ -237,4 +247,6 @@ source "drivers/mfd/slsi/s2mu005/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT 
 source "drivers/battery/fuelgauge/s2mu005_fuelgauge/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
 source "drivers/battery/common/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
 source "drivers/vibrator/dc/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
+=======
+>>>>>>> v4.14.187
 endmenu

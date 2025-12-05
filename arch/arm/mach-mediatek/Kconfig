@@ -34,6 +34,7 @@ config MACH_MT8135
 	bool "MediaTek MT8135 SoCs support"
 	default ARCH_MEDIATEK
 
+<<<<<<< HEAD
 config MACH_MT8167
 	bool "MediaTek MT8167"
 	select GENERIC_TIME
@@ -285,3 +286,6 @@ config MACH_MT6771
 	  Support for fpga_64_mt6771 related projects
 	  Support for mt6771 related projects
 
+=======
+endif
+>>>>>>> v4.14.187

@@ -47,7 +47,11 @@
 
 /* These are for everybody (although not all archs will actually
    discard it in modules) */
+<<<<<<< HEAD
 #define __init		__section(.init.text) __cold __inittrace __latent_entropy __noinitretpoline __nocfi
+=======
+#define __init		__section(.init.text) __cold __inittrace __latent_entropy __noinitretpoline
+>>>>>>> v4.14.187
 #define __initdata	__section(.init.data)
 #define __initconst	__section(.init.rodata)
 #define __exitdata	__section(.exit.data)
@@ -168,6 +172,7 @@ extern bool initcall_debug;
  * and remove that completely, so the initcall sections have to be marked
  * as KEEP() in the linker script.
  */
+<<<<<<< HEAD
 #ifdef CONFIG_LTO_CLANG
   /*
    * With LTO, the compiler doesn't necessarily obey link order for
@@ -195,6 +200,12 @@ extern bool initcall_debug;
 #endif
 
 #define __define_initcall(fn, id) ___define_initcall(fn, id, .initcall##id)
+=======
+
+#define __define_initcall(fn, id) \
+	static initcall_t __initcall_##fn##id __used \
+	__attribute__((__section__(".initcall" #id ".init"))) = fn;
+>>>>>>> v4.14.187
 
 /*
  * Early initcalls run before initializing SMP.
@@ -233,8 +244,18 @@ extern bool initcall_debug;
 #define __exitcall(fn)						\
 	static exitcall_t __exitcall_##fn __exit_call = fn
 
+<<<<<<< HEAD
 #define console_initcall(fn)	___define_initcall(fn, con, .con_initcall)
 #define security_initcall(fn)	___define_initcall(fn, security, .security_initcall)
+=======
+#define console_initcall(fn)					\
+	static initcall_t __initcall_##fn			\
+	__used __section(.con_initcall.init) = fn
+
+#define security_initcall(fn)					\
+	static initcall_t __initcall_##fn			\
+	__used __section(.security_initcall.init) = fn
+>>>>>>> v4.14.187
 
 struct obs_kernel_param {
 	const char *str;

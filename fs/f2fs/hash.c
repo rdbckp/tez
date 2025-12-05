@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> v4.14.187
 /*
  * fs/f2fs/hash.c
  *
@@ -8,13 +11,23 @@
  * Portions of this code from linux/fs/ext3/hash.c
  *
  * Copyright (C) 2002 by Theodore Ts'o
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+>>>>>>> v4.14.187
  */
 #include <linux/types.h>
 #include <linux/fs.h>
 #include <linux/f2fs_fs.h>
 #include <linux/cryptohash.h>
 #include <linux/pagemap.h>
+<<<<<<< HEAD
 #include <linux/unicode.h>
+=======
+>>>>>>> v4.14.187
 
 #include "f2fs.h"
 
@@ -68,9 +81,28 @@ static void str2hashbuf(const unsigned char *msg, size_t len,
 		*buf++ = pad;
 }
 
+<<<<<<< HEAD
 static u32 TEA_hash_name(const u8 *p, size_t len)
 {
 	__u32 in[8], buf[4];
+=======
+f2fs_hash_t f2fs_dentry_hash(const struct qstr *name_info,
+				struct fscrypt_name *fname)
+{
+	__u32 hash;
+	f2fs_hash_t f2fs_hash;
+	const unsigned char *p;
+	__u32 in[8], buf[4];
+	const unsigned char *name = name_info->name;
+	size_t len = name_info->len;
+
+	/* encrypted bigname case */
+	if (fname && !fname->disk_name.name)
+		return cpu_to_le32(fname->hash);
+
+	if (is_dot_dotdot(name_info))
+		return 0;
+>>>>>>> v4.14.187
 
 	/* Initialize the default seed for the hash checksum functions */
 	buf[0] = 0x67452301;
@@ -78,6 +110,10 @@ static u32 TEA_hash_name(const u8 *p, size_t len)
 	buf[2] = 0x98badcfe;
 	buf[3] = 0x10325476;
 
+<<<<<<< HEAD
+=======
+	p = name;
+>>>>>>> v4.14.187
 	while (1) {
 		str2hashbuf(p, len, in, 4);
 		TEA_transform(buf, in);
@@ -86,6 +122,7 @@ static u32 TEA_hash_name(const u8 *p, size_t len)
 			break;
 		len -= 16;
 	}
+<<<<<<< HEAD
 	return buf[0] & ~F2FS_HASH_COL_BIT;
 }
 
@@ -134,4 +171,9 @@ void f2fs_hash_filename(const struct inode *dir, struct f2fs_filename *fname)
 	}
 #endif
 	fname->hash = cpu_to_le32(TEA_hash_name(name, len));
+=======
+	hash = buf[0];
+	f2fs_hash = cpu_to_le32(hash & ~F2FS_HASH_COL_BIT);
+	return f2fs_hash;
+>>>>>>> v4.14.187
 }

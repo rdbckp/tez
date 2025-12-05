@@ -7,7 +7,10 @@
 #include <linux/export.h>
 #include <linux/pm_qos.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/pm_wakeup.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/atomic.h>
 #include <linux/jiffies.h>
 #include "power.h"
@@ -684,10 +687,13 @@ int dpm_sysfs_add(struct device *dev)
 {
 	int rc;
 
+<<<<<<< HEAD
 	/* No need to create PM sysfs if explicitly disabled. */
 	if (device_pm_not_required(dev))
 		return 0;
 
+=======
+>>>>>>> v4.14.187
 	rc = sysfs_create_group(&dev->kobj, &pm_attr_group);
 	if (rc)
 		return rc;
@@ -708,6 +714,7 @@ int dpm_sysfs_add(struct device *dev)
 		if (rc)
 			goto err_wakeup;
 	}
+<<<<<<< HEAD
 	rc = pm_wakeup_source_sysfs_add(dev);
 	if (rc)
 		goto err_latency;
@@ -715,6 +722,10 @@ int dpm_sysfs_add(struct device *dev)
 
  err_latency:
 	sysfs_unmerge_group(&dev->kobj, &pm_qos_latency_tolerance_attr_group);
+=======
+	return 0;
+
+>>>>>>> v4.14.187
  err_wakeup:
 	sysfs_unmerge_group(&dev->kobj, &pm_wakeup_attr_group);
  err_runtime:
@@ -772,8 +783,11 @@ void rpm_sysfs_remove(struct device *dev)
 
 void dpm_sysfs_remove(struct device *dev)
 {
+<<<<<<< HEAD
 	if (device_pm_not_required(dev))
 		return;
+=======
+>>>>>>> v4.14.187
 	sysfs_unmerge_group(&dev->kobj, &pm_qos_latency_tolerance_attr_group);
 	dev_pm_qos_constraints_destroy(dev);
 	rpm_sysfs_remove(dev);

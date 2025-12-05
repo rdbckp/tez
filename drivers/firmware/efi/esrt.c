@@ -180,7 +180,11 @@ static int esre_create_sysfs_entry(void *esre, int entry_num)
 		rc = kobject_init_and_add(&entry->kobj, &esre1_ktype, NULL,
 					  "entry%d", entry_num);
 		if (rc) {
+<<<<<<< HEAD
 			kfree(entry);
+=======
+			kobject_put(&entry->kobj);
+>>>>>>> v4.14.187
 			return rc;
 		}
 	}

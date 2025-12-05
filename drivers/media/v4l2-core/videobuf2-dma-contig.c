@@ -621,6 +621,7 @@ static int vb2_dc_map_dmabuf(void *mem_priv)
 	/* checking if dmabuf is big enough to store contiguous chunk */
 	contig_size = vb2_dc_get_contiguous_size(sgt);
 	if (contig_size < buf->size) {
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_IOMMU_V2
 		pr_err("contiguous chunk is too small %lu/%lu b\n",
 			contig_size, buf->size);
@@ -629,6 +630,12 @@ static int vb2_dc_map_dmabuf(void *mem_priv)
 #ifdef CONFIG_MTK_IOMMU_V2
 		return -EFAULT;
 #endif
+=======
+		pr_err("contiguous chunk is too small %lu/%lu b\n",
+			contig_size, buf->size);
+		dma_buf_unmap_attachment(buf->db_attach, sgt, buf->dma_dir);
+		return -EFAULT;
+>>>>>>> v4.14.187
 	}
 
 	buf->dma_addr = sg_dma_address(sgt->sgl);

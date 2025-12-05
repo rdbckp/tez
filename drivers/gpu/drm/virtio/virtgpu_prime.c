@@ -25,6 +25,7 @@
 #include "virtgpu_drv.h"
 
 /* Empty Implementations as there should not be any other driver for a virtual
+<<<<<<< HEAD
  * device that might share buffers with virtgpu
  */
 
@@ -38,6 +39,26 @@ struct sg_table *virtgpu_gem_prime_get_sg_table(struct drm_gem_object *obj)
 
 	return drm_prime_pages_to_sg(bo->tbo.ttm->pages,
 				     bo->tbo.ttm->num_pages);
+=======
+ * device that might share buffers with virtgpu */
+
+int virtgpu_gem_prime_pin(struct drm_gem_object *obj)
+{
+	WARN_ONCE(1, "not implemented");
+	return -ENODEV;
+}
+
+void virtgpu_gem_prime_unpin(struct drm_gem_object *obj)
+{
+	WARN_ONCE(1, "not implemented");
+}
+
+
+struct sg_table *virtgpu_gem_prime_get_sg_table(struct drm_gem_object *obj)
+{
+	WARN_ONCE(1, "not implemented");
+	return ERR_PTR(-ENODEV);
+>>>>>>> v4.14.187
 }
 
 struct drm_gem_object *virtgpu_gem_prime_import_sg_table(
@@ -50,6 +71,7 @@ struct drm_gem_object *virtgpu_gem_prime_import_sg_table(
 
 void *virtgpu_gem_prime_vmap(struct drm_gem_object *obj)
 {
+<<<<<<< HEAD
 	struct virtio_gpu_object *bo = gem_to_virtio_gpu_obj(obj);
 	int ret;
 
@@ -57,10 +79,15 @@ void *virtgpu_gem_prime_vmap(struct drm_gem_object *obj)
 	if (ret)
 		return NULL;
 	return bo->vmap;
+=======
+	WARN_ONCE(1, "not implemented");
+	return ERR_PTR(-ENODEV);
+>>>>>>> v4.14.187
 }
 
 void virtgpu_gem_prime_vunmap(struct drm_gem_object *obj, void *vaddr)
 {
+<<<<<<< HEAD
 	virtio_gpu_object_kunmap(gem_to_virtio_gpu_obj(obj));
 }
 
@@ -71,4 +98,13 @@ int virtgpu_gem_prime_mmap(struct drm_gem_object *obj,
 
 	bo->gem_base.vma_node.vm_node.start = bo->tbo.vma_node.vm_node.start;
 	return drm_gem_prime_mmap(obj, vma);
+=======
+	WARN_ONCE(1, "not implemented");
+}
+
+int virtgpu_gem_prime_mmap(struct drm_gem_object *obj,
+		       struct vm_area_struct *area)
+{
+	return -ENODEV;
+>>>>>>> v4.14.187
 }

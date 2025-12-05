@@ -44,6 +44,7 @@ struct io_pgtable_ops *alloc_io_pgtable_ops(enum io_pgtable_fmt fmt,
 	struct io_pgtable *iop;
 	const struct io_pgtable_init_fns *fns;
 
+<<<<<<< HEAD
 	if (fmt >= IO_PGTABLE_NUM_FMTS) {
 		pr_notice("%s, %d, err fmt:0x%x, IO_PGTABLE_NUM_FMTS:0x%x\n",
 			__func__, __LINE__, fmt, IO_PGTABLE_NUM_FMTS);
@@ -61,6 +62,18 @@ struct io_pgtable_ops *alloc_io_pgtable_ops(enum io_pgtable_fmt fmt,
 		pr_notice("%s, %d, err iop\n", __func__, __LINE__);
 		return NULL;
 	}
+=======
+	if (fmt >= IO_PGTABLE_NUM_FMTS)
+		return NULL;
+
+	fns = io_pgtable_init_table[fmt];
+	if (!fns)
+		return NULL;
+
+	iop = fns->alloc(cfg, cookie);
+	if (!iop)
+		return NULL;
+>>>>>>> v4.14.187
 
 	iop->fmt	= fmt;
 	iop->cookie	= cookie;

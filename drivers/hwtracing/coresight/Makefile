@@ -18,4 +18,7 @@ obj-$(CONFIG_CORESIGHT_SOURCE_ETM4X) += coresight-etm4x.o \
 obj-$(CONFIG_CORESIGHT_DYNAMIC_REPLICATOR) += coresight-dynamic-replicator.o
 obj-$(CONFIG_CORESIGHT_STM) += coresight-stm.o
 obj-$(CONFIG_CORESIGHT_CPU_DEBUG) += coresight-cpu-debug.o
+<<<<<<< HEAD
 obj-$(CONFIG_CORESIGHT_CATU) += coresight-catu.o
+=======
+>>>>>>> v4.14.187

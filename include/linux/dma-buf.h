@@ -258,12 +258,19 @@ struct dma_buf_ops {
  * @file: file pointer used for sharing buffers across, and for refcounting.
  * @attachments: list of dma_buf_attachment that denotes all devices attached.
  * @ops: dma_buf_ops associated with this buffer object.
+<<<<<<< HEAD
  * @lock: used internally to serialize list manipulation, attach/detach and
  *        vmap/unmap, and accesses to name
  * @vmapping_counter: used internally to refcnt the vmaps
  * @vmap_ptr: the current vmap ptr if vmapping_counter > 0
  * @exp_name: name of the exporter; useful for debugging.
  * @name: userspace-provided name; useful for accounting and debugging.
+=======
+ * @lock: used internally to serialize list manipulation, attach/detach and vmap/unmap
+ * @vmapping_counter: used internally to refcnt the vmaps
+ * @vmap_ptr: the current vmap ptr if vmapping_counter > 0
+ * @exp_name: name of the exporter; useful for debugging.
+>>>>>>> v4.14.187
  * @owner: pointer to exporter module; used for refcounting when exporter is a
  *         kernel module.
  * @list_node: node for dma_buf accounting and debugging.
@@ -283,7 +290,10 @@ struct dma_buf_ops {
  * Device DMA access is handled by the separate &struct dma_buf_attachment.
  */
 struct dma_buf {
+<<<<<<< HEAD
 	atomic_t ref_dbg;
+=======
+>>>>>>> v4.14.187
 	size_t size;
 	struct file *file;
 	struct list_head attachments;
@@ -292,10 +302,14 @@ struct dma_buf {
 	unsigned vmapping_counter;
 	void *vmap_ptr;
 	const char *exp_name;
+<<<<<<< HEAD
 	const char *name;
 	spinlock_t name_lock; /* spinlock to protect name access */
 	struct module *owner;
 	struct list_head node;
+=======
+	struct module *owner;
+>>>>>>> v4.14.187
 	struct list_head list_node;
 	void *priv;
 	struct reservation_object *resv;
@@ -379,7 +393,10 @@ struct dma_buf_export_info {
  */
 static inline void get_dma_buf(struct dma_buf *dmabuf)
 {
+<<<<<<< HEAD
 	atomic_inc(&dmabuf->ref_dbg);
+=======
+>>>>>>> v4.14.187
 	get_file(dmabuf->file);
 }
 

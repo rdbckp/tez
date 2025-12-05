@@ -24,6 +24,7 @@
 
 #include "lockdep_internals.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_BOOT
 #include <mt-plat/mtk_boot_common.h>
 #endif
@@ -45,6 +46,8 @@ static const char * const usage_str[] = {
 };
 #endif
 
+=======
+>>>>>>> v4.14.187
 static void *l_next(struct seq_file *m, void *v, loff_t *pos)
 {
 	return seq_list_next(v, &all_lock_classes, pos);
@@ -76,6 +79,7 @@ static void print_name(struct seq_file *m, struct lock_class *class)
 	}
 }
 
+<<<<<<< HEAD
 void lock_show_trace(struct seq_file *m, struct stack_trace *trace)
 {
 	int i;
@@ -88,6 +92,8 @@ void lock_show_trace(struct seq_file *m, struct stack_trace *trace)
 			(void *)trace->entries[i]);
 }
 
+=======
+>>>>>>> v4.14.187
 static int l_show(struct seq_file *m, void *v)
 {
 	struct lock_class *class = list_entry(v, struct lock_class, lock_entry);
@@ -100,11 +106,14 @@ static int l_show(struct seq_file *m, void *v)
 	}
 
 	seq_printf(m, "%p", class->key);
+<<<<<<< HEAD
 #ifdef MTK_ENHANCE_LOCKDEP_PROC
 	/* 0x10: print key information */
 	if (lockdep_mode & 0x10)
 		seq_printf(m, " <%ps>", class->key);
 #endif
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_DEBUG_LOCKDEP
 	seq_printf(m, " OPS:%8ld", class->ops);
 #endif
@@ -120,6 +129,7 @@ static int l_show(struct seq_file *m, void *v)
 	print_name(m, class);
 	seq_puts(m, "\n");
 
+<<<<<<< HEAD
 #ifdef MTK_ENHANCE_LOCKDEP_PROC
 	/* 0x1: print usage traces of this lock */
 	if (lockdep_mode & 0x1) {
@@ -158,6 +168,8 @@ static int l_show(struct seq_file *m, void *v)
 	}
 	seq_puts(m, "\n");
 #else
+=======
+>>>>>>> v4.14.187
 	list_for_each_entry(entry, &class->locks_after, entry) {
 		if (entry->distance == 1) {
 			seq_printf(m, " -> [%p] ", entry->class->key);
@@ -166,7 +178,10 @@ static int l_show(struct seq_file *m, void *v)
 		}
 	}
 	seq_puts(m, "\n");
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -183,6 +198,7 @@ static int lockdep_open(struct inode *inode, struct file *file)
 	return seq_open(file, &lockdep_ops);
 }
 
+<<<<<<< HEAD
 #ifdef MTK_ENHANCE_LOCKDEP_PROC
 /*
  * 0x0: print basic dependency information
@@ -222,6 +238,10 @@ static const struct file_operations proc_lockdep_operations = {
 #ifdef MTK_ENHANCE_LOCKDEP_PROC
 	.write		= lockdep_write,
 #endif
+=======
+static const struct file_operations proc_lockdep_operations = {
+	.open		= lockdep_open,
+>>>>>>> v4.14.187
 	.read		= seq_read,
 	.llseek		= seq_lseek,
 	.release	= seq_release,
@@ -798,6 +818,7 @@ static const struct file_operations proc_lock_stat_operations = {
 
 static int __init lockdep_proc_init(void)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_BOOT
 	if (get_boot_mode() == META_BOOT)
 		debug_locks_off();
@@ -808,6 +829,9 @@ static int __init lockdep_proc_init(void)
 	proc_create("lockdep", S_IRUSR, NULL, &proc_lockdep_operations);
 #endif
 
+=======
+	proc_create("lockdep", S_IRUSR, NULL, &proc_lockdep_operations);
+>>>>>>> v4.14.187
 #ifdef CONFIG_PROVE_LOCKING
 	proc_create("lockdep_chains", S_IRUSR, NULL,
 		    &proc_lockdep_chains_operations);
@@ -820,10 +844,13 @@ static int __init lockdep_proc_init(void)
 		    &proc_lock_stat_operations);
 #endif
 
+<<<<<<< HEAD
 #ifdef MTK_LOCK_MONITOR
 	lock_monitor_init();
 #endif
 	lockdep_test_init();
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 

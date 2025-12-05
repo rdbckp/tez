@@ -20,6 +20,10 @@ if VIRTUALIZATION
 config KVM
 	bool
 	select PREEMPT_NOTIFIERS
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	select HAVE_KVM_EVENTFD
 	select SRCU
 	select KVM_VFIO

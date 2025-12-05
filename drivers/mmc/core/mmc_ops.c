@@ -426,6 +426,7 @@ static int mmc_switch_status_error(struct mmc_host *host, u32 status)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 /**
  *	mmc_prepare_switch - helper; prepare to modify EXT_CSD register
@@ -466,6 +467,8 @@ int __mmc_switch_cmdq_mode(struct mmc_command *cmd, u8 set, u8 index, u8 value,
 EXPORT_SYMBOL(__mmc_switch_cmdq_mode);
 #endif
 
+=======
+>>>>>>> v4.14.187
 /* Caller must hold re-tuning */
 int __mmc_switch_status(struct mmc_card *card, bool crc_err_fatal)
 {
@@ -1072,6 +1075,7 @@ int mmc_flush_cache(struct mmc_card *card)
 }
 EXPORT_SYMBOL(mmc_flush_cache);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 int mmc_discard_queue(struct mmc_host *host, u32 tasks)
 {
@@ -1099,6 +1103,22 @@ static int mmc_cmdq_switch(struct mmc_card *card, bool enable)
 #else
 	return 0;
 #endif
+=======
+static int mmc_cmdq_switch(struct mmc_card *card, bool enable)
+{
+	u8 val = enable ? EXT_CSD_CMDQ_MODE_ENABLED : 0;
+	int err;
+
+	if (!card->ext_csd.cmdq_support)
+		return -EOPNOTSUPP;
+
+	err = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL, EXT_CSD_CMDQ_MODE_EN,
+			 val, card->ext_csd.generic_cmd6_time);
+	if (!err)
+		card->ext_csd.cmdq_en = enable;
+
+	return err;
+>>>>>>> v4.14.187
 }
 
 int mmc_cmdq_enable(struct mmc_card *card)

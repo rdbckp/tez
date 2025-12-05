@@ -12,6 +12,11 @@ config MTK_INFRACFG
 
 config MTK_PMIC_WRAP
 	tristate "MediaTek PMIC Wrapper Support"
+<<<<<<< HEAD
+=======
+	depends on ARCH_MEDIATEK
+	depends on RESET_CONTROLLER
+>>>>>>> v4.14.187
 	select REGMAP
 	help
 	  Say yes here to add support for MediaTek PMIC Wrapper found
@@ -28,6 +33,7 @@ config MTK_SCPSYS
 	help
 	  Say yes here to add support for the MediaTek SCPSYS power domain
 	  driver.
+<<<<<<< HEAD
 
 config MTK_SCPSYS_MT8167
 	bool "SCPSYS Support MediaTek MT8167"
@@ -69,3 +75,5 @@ config MTK_LPM
 	  platform could enter deeper sleep mode when cpu preparing to
 	  power down if it have sufficient time between warmboot.
 
+=======
+>>>>>>> v4.14.187

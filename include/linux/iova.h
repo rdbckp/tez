@@ -147,6 +147,7 @@ void free_iova_fast(struct iova_domain *iovad, unsigned long pfn,
 void queue_iova(struct iova_domain *iovad,
 		unsigned long pfn, unsigned long pages,
 		unsigned long data);
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_IOMMU_V2
 unsigned long
 alloc_iova_fast(struct iova_domain *iovad, unsigned long size,
@@ -166,6 +167,13 @@ void iovad_scan_reserved_iova(void *arg,
 			unsigned long target),
 		unsigned long target);
 #endif
+=======
+unsigned long alloc_iova_fast(struct iova_domain *iovad, unsigned long size,
+			      unsigned long limit_pfn);
+struct iova *reserve_iova(struct iova_domain *iovad, unsigned long pfn_lo,
+	unsigned long pfn_hi);
+void copy_reserved_iova(struct iova_domain *from, struct iova_domain *to);
+>>>>>>> v4.14.187
 void init_iova_domain(struct iova_domain *iovad, unsigned long granule,
 	unsigned long start_pfn, unsigned long pfn_32bit);
 bool has_iova_flush_queue(struct iova_domain *iovad);

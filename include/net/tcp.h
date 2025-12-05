@@ -1315,7 +1315,11 @@ static inline void tcp_sack_reset(struct tcp_options_received *rx_opt)
 	rx_opt->num_sacks = 0;
 }
 
+<<<<<<< HEAD
 u32 tcp_default_init_rwnd(struct net *net, u32 mss);
+=======
+u32 tcp_default_init_rwnd(u32 mss);
+>>>>>>> v4.14.187
 void tcp_cwnd_restart(struct sock *sk, s32 delta);
 
 static inline void tcp_slow_start_after_idle_check(struct sock *sk)
@@ -1333,8 +1337,12 @@ static inline void tcp_slow_start_after_idle_check(struct sock *sk)
 }
 
 /* Determine a window scaling and initial window to offer. */
+<<<<<<< HEAD
 void tcp_select_initial_window(struct net *net,
 			       int __space, __u32 mss, __u32 *rcv_wnd,
+=======
+void tcp_select_initial_window(int __space, __u32 mss, __u32 *rcv_wnd,
+>>>>>>> v4.14.187
 			       __u32 *window_clamp, int wscale_ok,
 			       __u8 *rcv_wscale, __u32 init_rcv_wnd);
 
@@ -1874,7 +1882,11 @@ void tcp_v4_destroy_sock(struct sock *sk);
 
 struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
 				netdev_features_t features);
+<<<<<<< HEAD
 struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb);
+=======
+struct sk_buff **tcp_gro_receive(struct sk_buff **head, struct sk_buff *skb);
+>>>>>>> v4.14.187
 int tcp_gro_complete(struct sk_buff *skb);
 
 void __tcp_v4_send_check(struct sk_buff *skb, __be32 saddr, __be32 daddr);

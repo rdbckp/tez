@@ -14,6 +14,7 @@
 #include <linux/pm-trace.h>
 #include <linux/workqueue.h>
 #include <linux/debugfs.h>
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_NAD
 #include <linux/proc_fs.h>
 #endif
@@ -21,15 +22,21 @@
 #ifdef CONFIG_SEC_PM
 #include <linux/fb.h>
 #endif
+=======
+#include <linux/seq_file.h>
+>>>>>>> v4.14.187
 
 #include "power.h"
 
 DEFINE_MUTEX(pm_mutex);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_PM
 static struct delayed_work ws_work;
 #endif
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_PM_SLEEP
 
 /* Routines for PM-transition notifications */
@@ -223,6 +230,10 @@ static ssize_t pm_test_store(struct kobject *kobj, struct kobj_attribute *attr,
 power_attr(pm_test);
 #endif /* CONFIG_PM_SLEEP_DEBUG */
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DEBUG_FS
+>>>>>>> v4.14.187
 static char *suspend_step_name(enum suspend_stat_step step)
 {
 	switch (step) {
@@ -243,6 +254,7 @@ static char *suspend_step_name(enum suspend_stat_step step)
 	}
 }
 
+<<<<<<< HEAD
 #define suspend_attr(_name)					\
 static ssize_t _name##_show(struct kobject *kobj,		\
 		struct kobj_attribute *attr, char *buf)		\
@@ -329,6 +341,8 @@ static struct attribute_group suspend_attr_group = {
 };
 
 #if defined(CONFIG_DEBUG_FS) || defined(CONFIG_SEC_NAD)
+=======
+>>>>>>> v4.14.187
 static int suspend_stats_show(struct seq_file *s, void *unused)
 {
 	int i, index, last_dev, last_errno, last_step;
@@ -401,14 +415,21 @@ static int __init pm_debugfs_init(void)
 {
 	debugfs_create_file("suspend_stats", S_IFREG | S_IRUGO,
 			NULL, NULL, &suspend_stats_operations);
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_NAD
 	proc_create("suspend_stats", 0644, NULL, &suspend_stats_operations);
 #endif
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
 late_initcall(pm_debugfs_init);
+<<<<<<< HEAD
 #endif /* CONFIG_DEBUG_FS || CONFIG_SEC_NAD */
+=======
+#endif /* CONFIG_DEBUG_FS */
+>>>>>>> v4.14.187
 
 #endif /* CONFIG_PM_SLEEP */
 
@@ -825,6 +846,7 @@ power_attr(pm_freeze_timeout);
 
 #endif	/* CONFIG_FREEZER*/
 
+<<<<<<< HEAD
 #if defined(CONFIG_FOTA_LIMIT)
 static char fota_limit_str[] =
 #if defined(CONFIG_MACH_MT6853)
@@ -866,6 +888,8 @@ static struct kobj_attribute fota_limit_attr = {
 };
 #endif /* CONFIG_FOTA_LIMIT */
 
+=======
+>>>>>>> v4.14.187
 static struct attribute * g[] = {
 	&state_attr.attr,
 #ifdef CONFIG_PM_TRACE
@@ -895,9 +919,12 @@ static struct attribute * g[] = {
 #ifdef CONFIG_FREEZER
 	&pm_freeze_timeout_attr.attr,
 #endif
+<<<<<<< HEAD
 #if defined(CONFIG_FOTA_LIMIT)
 	&fota_limit_attr.attr,
 #endif /* CONFIG_FOTA_LIMIT */
+=======
+>>>>>>> v4.14.187
 	NULL,
 };
 
@@ -905,6 +932,7 @@ static const struct attribute_group attr_group = {
 	.attrs = g,
 };
 
+<<<<<<< HEAD
 static const struct attribute_group *attr_groups[] = {
 	&attr_group,
 #ifdef CONFIG_PM_SLEEP
@@ -913,6 +941,8 @@ static const struct attribute_group *attr_groups[] = {
 	NULL,
 };
 
+=======
+>>>>>>> v4.14.187
 struct workqueue_struct *pm_wq;
 EXPORT_SYMBOL_GPL(pm_wq);
 
@@ -923,6 +953,7 @@ static int __init pm_start_workqueue(void)
 	return pm_wq ? 0 : -ENOMEM;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_PM
 static void handle_ws_work(struct work_struct *work)
 {
@@ -955,6 +986,8 @@ static struct notifier_block fb_notifier = {
 };
 #endif
 
+=======
+>>>>>>> v4.14.187
 static int __init pm_init(void)
 {
 	int error = pm_start_workqueue();
@@ -966,6 +999,7 @@ static int __init pm_init(void)
 	power_kobj = kobject_create_and_add("power", NULL);
 	if (!power_kobj)
 		return -ENOMEM;
+<<<<<<< HEAD
 	error = sysfs_create_groups(power_kobj, attr_groups);
 	if (error)
 		return error;
@@ -974,6 +1008,12 @@ static int __init pm_init(void)
 	fb_register_client(&fb_notifier);
 	INIT_DELAYED_WORK(&ws_work, handle_ws_work);
 #endif
+=======
+	error = sysfs_create_group(power_kobj, &attr_group);
+	if (error)
+		return error;
+	pm_print_times_init();
+>>>>>>> v4.14.187
 	return pm_autosleep_init();
 }
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 mtk_jpeg-objs := mtk_jpeg_core.o \
 	mtk_jpeg_enc_hw.o \
 	mtk_jpeg_dec_hw.o \
@@ -12,3 +13,7 @@ ccflags-y += -I$(srctree)/drivers/misc/mediatek/smi/$(MTK_PLATFORM)
 ccflags-y += -I$(srctree)/drivers/staging/android/ion
 ccflags-y += -I$(srctree)/drivers/staging/android/ion/mtk
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/mmdvfs
+=======
+mtk_jpeg-objs := mtk_jpeg_core.o mtk_jpeg_hw.o mtk_jpeg_parse.o
+obj-$(CONFIG_VIDEO_MEDIATEK_JPEG) += mtk_jpeg.o
+>>>>>>> v4.14.187

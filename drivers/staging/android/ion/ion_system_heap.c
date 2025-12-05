@@ -24,13 +24,20 @@
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
 #include "ion.h"
+<<<<<<< HEAD
 #include "ion_priv.h"
+=======
+>>>>>>> v4.14.187
 
 #define NUM_ORDERS ARRAY_SIZE(orders)
 
 static gfp_t high_order_gfp_flags = (GFP_HIGHUSER | __GFP_ZERO | __GFP_NOWARN |
 				     __GFP_NORETRY) & ~__GFP_RECLAIM;
+<<<<<<< HEAD
 static gfp_t low_order_gfp_flags  = (GFP_HIGHUSER | __GFP_ZERO);
+=======
+static gfp_t low_order_gfp_flags  = GFP_HIGHUSER | __GFP_ZERO;
+>>>>>>> v4.14.187
 static const unsigned int orders[] = {8, 4, 0};
 
 static int order_to_index(unsigned int order)
@@ -75,9 +82,12 @@ static struct page *alloc_buffer_page(struct ion_system_heap *heap,
 
 	page = ion_page_pool_alloc(pool);
 
+<<<<<<< HEAD
 	ion_pages_sync_for_device(g_ion_device->dev.this_device,
 				  page, PAGE_SIZE << order,
 				  DMA_BIDIRECTIONAL);
+=======
+>>>>>>> v4.14.187
 	return page;
 }
 
@@ -91,12 +101,15 @@ static void free_buffer_page(struct ion_system_heap *heap,
 	/* go to system */
 	if (buffer->private_flags & ION_PRIV_FLAG_SHRINKER_FREE) {
 		__free_pages(page, order);
+<<<<<<< HEAD
 		if (atomic64_sub_return((1 << order), &page_sz_cnt) < 0) {
 			seq_printf(NULL, "underflow!, total[%ld]free[%lu]\n",
 				   atomic64_read(&page_sz_cnt),
 				   (unsigned long)(1 << order));
 			atomic64_set(&page_sz_cnt, 0);
 		}
+=======
+>>>>>>> v4.14.187
 		return;
 	}
 
@@ -134,7 +147,11 @@ static struct page *alloc_largest_available(struct ion_system_heap *heap,
 
 static int ion_system_heap_allocate(struct ion_heap *heap,
 				    struct ion_buffer *buffer,
+<<<<<<< HEAD
 				    unsigned long size, unsigned long align,
+=======
+				    unsigned long size,
+>>>>>>> v4.14.187
 				    unsigned long flags)
 {
 	struct ion_system_heap *sys_heap = container_of(heap,
@@ -148,9 +165,12 @@ static int ion_system_heap_allocate(struct ion_heap *heap,
 	unsigned long size_remaining = PAGE_ALIGN(size);
 	unsigned int max_order = orders[0];
 
+<<<<<<< HEAD
 	if (align > PAGE_SIZE)
 		return -EINVAL;
 
+=======
+>>>>>>> v4.14.187
 	if (size / PAGE_SIZE > totalram_pages / 2)
 		return -ENOMEM;
 
@@ -316,7 +336,11 @@ static int ion_system_heap_create_pools(struct ion_page_pool **pools,
 		struct ion_page_pool *pool;
 		gfp_t gfp_flags = low_order_gfp_flags;
 
+<<<<<<< HEAD
 		if (orders[i] >= 4)
+=======
+		if (orders[i] > 4)
+>>>>>>> v4.14.187
 			gfp_flags = high_order_gfp_flags;
 
 		pool = ion_page_pool_create(gfp_flags, orders[i], cached);
@@ -331,7 +355,11 @@ err_create_pool:
 	return -ENOMEM;
 }
 
+<<<<<<< HEAD
 struct ion_heap *ion_system_heap_create(struct ion_platform_heap *unused)
+=======
+static struct ion_heap *__ion_system_heap_create(void)
+>>>>>>> v4.14.187
 {
 	struct ion_system_heap *heap;
 
@@ -359,6 +387,7 @@ free_heap:
 	return ERR_PTR(-ENOMEM);
 }
 
+<<<<<<< HEAD
 void ion_system_heap_destroy(struct ion_heap *heap)
 {
 	struct ion_system_heap *sys_heap = container_of(heap,
@@ -372,11 +401,29 @@ void ion_system_heap_destroy(struct ion_heap *heap)
 	}
 	kfree(sys_heap);
 }
+=======
+static int ion_system_heap_create(void)
+{
+	struct ion_heap *heap;
+
+	heap = __ion_system_heap_create();
+	if (IS_ERR(heap))
+		return PTR_ERR(heap);
+	heap->name = "ion_system_heap";
+
+	ion_device_add_heap(heap);
+	return 0;
+}
+device_initcall(ion_system_heap_create);
+>>>>>>> v4.14.187
 
 static int ion_system_contig_heap_allocate(struct ion_heap *heap,
 					   struct ion_buffer *buffer,
 					   unsigned long len,
+<<<<<<< HEAD
 					   unsigned long align,
+=======
+>>>>>>> v4.14.187
 					   unsigned long flags)
 {
 	int order = get_order(len);
@@ -385,10 +432,14 @@ static int ion_system_contig_heap_allocate(struct ion_heap *heap,
 	unsigned long i;
 	int ret;
 
+<<<<<<< HEAD
 	if (align > (PAGE_SIZE << order))
 		return -EINVAL;
 
 	page = alloc_pages(low_order_gfp_flags, order);
+=======
+	page = alloc_pages(low_order_gfp_flags | __GFP_NOWARN, order);
+>>>>>>> v4.14.187
 	if (!page)
 		return -ENOMEM;
 
@@ -397,9 +448,13 @@ static int ion_system_contig_heap_allocate(struct ion_heap *heap,
 	len = PAGE_ALIGN(len);
 	for (i = len >> PAGE_SHIFT; i < (1 << order); i++)
 		__free_page(page + i);
+<<<<<<< HEAD
 	for (i = 0; i < (len >> PAGE_SHIFT); i++)
 		SetPageIommu(&page[i]);
 	atomic64_add_return((len >> PAGE_SHIFT), &page_sz_cnt);
+=======
+
+>>>>>>> v4.14.187
 	table = kmalloc(sizeof(*table), GFP_KERNEL);
 	if (!table) {
 		ret = -ENOMEM;
@@ -414,9 +469,12 @@ static int ion_system_contig_heap_allocate(struct ion_heap *heap,
 
 	buffer->sg_table = table;
 
+<<<<<<< HEAD
 	ion_pages_sync_for_device(g_ion_device->dev.this_device,
 				  page, len, DMA_BIDIRECTIONAL);
 
+=======
+>>>>>>> v4.14.187
 	return 0;
 
 free_table:
@@ -449,7 +507,11 @@ static struct ion_heap_ops kmalloc_ops = {
 	.map_user = ion_heap_map_user,
 };
 
+<<<<<<< HEAD
 struct ion_heap *ion_system_contig_heap_create(struct ion_platform_heap *unused)
+=======
+static struct ion_heap *__ion_system_contig_heap_create(void)
+>>>>>>> v4.14.187
 {
 	struct ion_heap *heap;
 
@@ -458,6 +520,7 @@ struct ion_heap *ion_system_contig_heap_create(struct ion_platform_heap *unused)
 		return ERR_PTR(-ENOMEM);
 	heap->ops = &kmalloc_ops;
 	heap->type = ION_HEAP_TYPE_SYSTEM_CONTIG;
+<<<<<<< HEAD
 	return heap;
 }
 
@@ -465,3 +528,22 @@ void ion_system_contig_heap_destroy(struct ion_heap *heap)
 {
 	kfree(heap);
 }
+=======
+	heap->name = "ion_system_contig_heap";
+	return heap;
+}
+
+static int ion_system_contig_heap_create(void)
+{
+	struct ion_heap *heap;
+
+	heap = __ion_system_contig_heap_create();
+	if (IS_ERR(heap))
+		return PTR_ERR(heap);
+
+	ion_device_add_heap(heap);
+	return 0;
+}
+device_initcall(ion_system_contig_heap_create);
+
+>>>>>>> v4.14.187

@@ -17,6 +17,7 @@
 
 #include <drm/drm_crtc.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <drm/mediatek_drm.h>
 
 #define MAKE_DISP_FORMAT_ID(id, bpp) (((id) << 8) | (bpp))
@@ -224,5 +225,34 @@ void mtk_plane_get_comp_state(struct drm_plane *plane,
 			      struct mtk_plane_comp_state *comp_state,
 			      struct drm_crtc *crtc, int lock);
 unsigned int to_crtc_plane_index(unsigned int plane_index);
+=======
+
+struct mtk_plane_pending_state {
+	bool				config;
+	bool				enable;
+	dma_addr_t			addr;
+	unsigned int			pitch;
+	unsigned int			format;
+	unsigned int			x;
+	unsigned int			y;
+	unsigned int			width;
+	unsigned int			height;
+	bool				dirty;
+};
+
+struct mtk_plane_state {
+	struct drm_plane_state		base;
+	struct mtk_plane_pending_state	pending;
+};
+
+static inline struct mtk_plane_state *
+to_mtk_plane_state(struct drm_plane_state *state)
+{
+	return container_of(state, struct mtk_plane_state, base);
+}
+
+int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
+		   unsigned long possible_crtcs, enum drm_plane_type type);
+>>>>>>> v4.14.187
 
 #endif

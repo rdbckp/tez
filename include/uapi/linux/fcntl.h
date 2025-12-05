@@ -28,6 +28,7 @@
 #define F_SETPIPE_SZ	(F_LINUX_SPECIFIC_BASE + 7)
 #define F_GETPIPE_SZ	(F_LINUX_SPECIFIC_BASE + 8)
 
+<<<<<<< HEAD
 #ifdef CONFIG_FIVE
 #define F_FIVE_SIGN	(F_LINUX_SPECIFIC_BASE + 100)
 #define F_FIVE_VERIFY_ASYNC	(F_LINUX_SPECIFIC_BASE + 101)
@@ -42,6 +43,8 @@
 #endif
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Set/Get seals
  */
@@ -55,7 +58,10 @@
 #define F_SEAL_SHRINK	0x0002	/* prevent file from shrinking */
 #define F_SEAL_GROW	0x0004	/* prevent file from growing */
 #define F_SEAL_WRITE	0x0008	/* prevent writes */
+<<<<<<< HEAD
 #define F_SEAL_FUTURE_WRITE	0x0010	/* prevent writes */
+=======
+>>>>>>> v4.14.187
 /* (1U << 31) is reserved for signed error codes */
 
 /*

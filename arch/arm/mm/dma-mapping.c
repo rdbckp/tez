@@ -845,7 +845,11 @@ static int __arm_dma_mmap(struct device *dev, struct vm_area_struct *vma,
 		 void *cpu_addr, dma_addr_t dma_addr, size_t size,
 		 unsigned long attrs)
 {
+<<<<<<< HEAD
 	int ret = -ENXIO;
+=======
+	int ret;
+>>>>>>> v4.14.187
 	unsigned long nr_vma_pages = (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
 	unsigned long nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
 	unsigned long pfn = dma_to_pfn(dev, dma_addr);
@@ -2206,11 +2210,14 @@ arm_iommu_create_mapping(struct bus_type *bus, dma_addr_t base, u64 size)
 	if (!mapping->domain)
 		goto err4;
 
+<<<<<<< HEAD
 #ifdef IOMMU_DEBUG_ENABLED
 	pr_notice("%s, %d, base=0x%x, extensions=0x%x, bitmap_size=0x%x\n",
 		    __func__, __LINE__, mapping->base,
 		    mapping->extensions, mapping->bitmap_size);
 #endif
+=======
+>>>>>>> v4.14.187
 	kref_init(&mapping->kref);
 	return mapping;
 err4:
@@ -2235,9 +2242,12 @@ static void release_iommu_mapping(struct kref *kref)
 		kfree(mapping->bitmaps[i]);
 	kfree(mapping->bitmaps);
 	kfree(mapping);
+<<<<<<< HEAD
 #ifdef IOMMU_DEBUG_ENABLED
 	pr_notice("%s, %d, release mapping\n", __func__, __LINE__);
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 static int extend_iommu_mapping(struct dma_iommu_mapping *mapping)
@@ -2375,6 +2385,7 @@ static void arm_teardown_iommu_dma_ops(struct device *dev)
 	arm_iommu_release_mapping(mapping);
 }
 
+<<<<<<< HEAD
 /*
  * For reserve iova regions
  */
@@ -2638,6 +2649,8 @@ void dma_free_coherent_fix_iova(struct device *dev, void *cpu_addr,
 }
 EXPORT_SYMBOL(dma_free_coherent_fix_iova);
 
+=======
+>>>>>>> v4.14.187
 #else
 
 static bool arm_setup_iommu_dma_ops(struct device *dev, u64 dma_base, u64 size,

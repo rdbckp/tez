@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 config PINCTRL_MTK
 	bool "MediaTek Pinctrl Support"
 	depends on OF
@@ -40,6 +41,18 @@ config PINCTRL_MTK_MOORE
 
 if ARCH_MEDIATEK || COMPILE_TEST
 
+=======
+if ARCH_MEDIATEK || COMPILE_TEST
+
+config PINCTRL_MTK
+	bool
+	depends on OF
+	select PINMUX
+	select GENERIC_PINCONF
+	select GPIOLIB
+	select OF_GPIO
+
+>>>>>>> v4.14.187
 # For ARMv7 SoCs
 config PINCTRL_MT2701
 	bool "Mediatek MT2701 pin control"
@@ -63,6 +76,7 @@ config PINCTRL_MT8127
 	select PINCTRL_MTK
 
 # For ARMv8 SoCs
+<<<<<<< HEAD
 config PINCTRL_MT8167
 	bool "Mediatek MT8167 pin control" if COMPILE_TEST && !ARCH_MT8167
 	depends on OF
@@ -75,6 +89,8 @@ config PINCTRL_MT8168
 	default ARCH_MT8168
 	select PINCTRL_MTK
 
+=======
+>>>>>>> v4.14.187
 config PINCTRL_MT8173
 	bool "Mediatek MT8173 pin control"
 	depends on OF
@@ -82,6 +98,7 @@ config PINCTRL_MT8173
 	default ARM64 && ARCH_MEDIATEK
 	select PINCTRL_MTK
 
+<<<<<<< HEAD
 config PINCTRL_MT8183
 	bool "Mediatek MT8183 pin control"
 	depends on OF
@@ -89,6 +106,8 @@ config PINCTRL_MT8183
 	default ARM64 && ARCH_MEDIATEK
 	select PINCTRL_MTK
 
+=======
+>>>>>>> v4.14.187
 # For PMIC
 config PINCTRL_MT6397
 	bool "Mediatek MT6397 pin control"
@@ -97,6 +116,7 @@ config PINCTRL_MT6397
 	default MFD_MT6397
 	select PINCTRL_MTK
 
+<<<<<<< HEAD
 # For pintcrl command debug
 config PINCTRL_MTK_DEBUG
 	bool "Mediatek pin control common debug"
@@ -160,4 +180,6 @@ config PINCTRL_MT6785
 	depends on MACH_MT6785
 	select PINCTRL_MTK_PARIS
 
+=======
+>>>>>>> v4.14.187
 endif

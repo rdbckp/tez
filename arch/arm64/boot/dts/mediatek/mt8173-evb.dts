@@ -14,7 +14,11 @@
 
 /dts-v1/;
 #include <dt-bindings/gpio/gpio.h>
+<<<<<<< HEAD
 #include "mediatek/mt8173.dtsi"
+=======
+#include "mt8173.dtsi"
+>>>>>>> v4.14.187
 
 / {
 	model = "MediaTek MT8173 evaluation board";

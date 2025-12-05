@@ -13,6 +13,7 @@ config MMC_DEBUG
 	  added host drivers please don't invent their private macro for
 	  debugging.
 
+<<<<<<< HEAD
 config MMC_MTK_PRO
 	tristate "MediaTek SD/MMC Card Proprietary Interface support"
 	depends on !MMC_MTK
@@ -76,6 +77,8 @@ config MTK_EMMC_HW_CQ
 	  use MTK eMMC hardware Command Queuing scheme.
 	  If unsure, say N.
 
+=======
+>>>>>>> v4.14.187
 config MMC_ARMMMCI
 	tristate "ARM AMBA Multimedia Card Interface support"
 	depends on ARM_AMBA
@@ -492,6 +495,10 @@ config MMC_SDHCI_MSM
 	tristate "Qualcomm SDHCI Controller Support"
 	depends on ARCH_QCOM || (ARM && COMPILE_TEST)
 	depends on MMC_SDHCI_PLTFM
+<<<<<<< HEAD
+=======
+	select MMC_SDHCI_IO_ACCESSORS
+>>>>>>> v4.14.187
 	help
 	  This selects the Secure Digital Host Controller Interface (SDHCI)
 	  support present in Qualcomm SOCs. The controller supports
@@ -955,6 +962,7 @@ config MMC_SDHCI_BRCMSTB
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD
 config MMC_MTK_SDIO
 	tristate "MediaTek SDIO Card Interface support"
 	depends on HAS_DMA
@@ -973,6 +981,8 @@ config MMC_MTK_COMM_SDIO
 	  This is needed if support for any SDIO devices is required.
 	  If unsure, say N.
 
+=======
+>>>>>>> v4.14.187
 config MMC_SDHCI_XENON
 	tristate "Marvell Xenon eMMC/SD/SDIO SDHCI driver"
 	depends on MMC_SDHCI_PLTFM
@@ -980,4 +990,7 @@ config MMC_SDHCI_XENON
 	  This selects Marvell Xenon eMMC/SD/SDIO SDHCI.
 	  If you have a controller with this interface, say Y or M here.
 	  If unsure, say N.
+<<<<<<< HEAD
 source "drivers/mmc/host/mediatek/Kconfig"
+=======
+>>>>>>> v4.14.187

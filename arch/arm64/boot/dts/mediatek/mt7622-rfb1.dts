@@ -7,7 +7,11 @@
  */
 
 /dts-v1/;
+<<<<<<< HEAD
 #include "mediatek/mt7622.dtsi"
+=======
+#include "mt7622.dtsi"
+>>>>>>> v4.14.187
 
 / {
 	model = "MediaTek MT7622 RFB1 board";

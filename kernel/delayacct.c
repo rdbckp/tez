@@ -135,12 +135,18 @@ int __delayacct_add_tsk(struct taskstats *d, struct task_struct *tsk)
 	d->swapin_delay_total = (tmp < d->swapin_delay_total) ? 0 : tmp;
 	tmp = d->freepages_delay_total + tsk->delays->freepages_delay;
 	d->freepages_delay_total = (tmp < d->freepages_delay_total) ? 0 : tmp;
+<<<<<<< HEAD
 	tmp = d->thrashing_delay_total + tsk->delays->thrashing_delay;
 	d->thrashing_delay_total = (tmp < d->thrashing_delay_total) ? 0 : tmp;
 	d->blkio_count += tsk->delays->blkio_count;
 	d->swapin_count += tsk->delays->swapin_count;
 	d->freepages_count += tsk->delays->freepages_count;
 	d->thrashing_count += tsk->delays->thrashing_count;
+=======
+	d->blkio_count += tsk->delays->blkio_count;
+	d->swapin_count += tsk->delays->swapin_count;
+	d->freepages_count += tsk->delays->freepages_count;
+>>>>>>> v4.14.187
 	raw_spin_unlock_irqrestore(&tsk->delays->lock, flags);
 
 	return 0;
@@ -158,6 +164,7 @@ __u64 __delayacct_blkio_ticks(struct task_struct *tsk)
 	return ret;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PAGE_BOOST
 __u64 __delayacct_blkio_nsecs(struct task_struct *tsk)
 {
@@ -171,6 +178,8 @@ __u64 __delayacct_blkio_nsecs(struct task_struct *tsk)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 void __delayacct_freepages_start(void)
 {
 	current->delays->freepages_start = ktime_get_ns();
@@ -185,6 +194,7 @@ void __delayacct_freepages_end(void)
 		&current->delays->freepages_count);
 }
 
+<<<<<<< HEAD
 void __delayacct_thrashing_start(void)
 {
 	current->delays->thrashing_start = ktime_get_ns();
@@ -197,3 +207,5 @@ void __delayacct_thrashing_end(void)
 		      &current->delays->thrashing_delay,
 		      &current->delays->thrashing_count);
 }
+=======
+>>>>>>> v4.14.187

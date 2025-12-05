@@ -254,6 +254,7 @@ static inline int ftrace_function_local_disabled(struct ftrace_ops *ops)
 	return *this_cpu_ptr(ops->disabled);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_CFI_CLANG
 /* Use a C stub with the correct type for CFI */
 static inline void ftrace_stub(unsigned long a0, unsigned long a1,
@@ -264,6 +265,10 @@ static inline void ftrace_stub(unsigned long a0, unsigned long a1,
 extern void ftrace_stub(unsigned long a0, unsigned long a1,
 			struct ftrace_ops *op, struct pt_regs *regs);
 #endif
+=======
+extern void ftrace_stub(unsigned long a0, unsigned long a1,
+			struct ftrace_ops *op, struct pt_regs *regs);
+>>>>>>> v4.14.187
 
 #else /* !CONFIG_FUNCTION_TRACER */
 /*
@@ -742,6 +747,7 @@ static inline unsigned long get_lock_parent_ip(void)
 		return addr;
 	return CALLER_ADDR2;
 }
+<<<<<<< HEAD
 static inline void record_preempt_disable_ips(struct task_struct *tsk)
 {
 #ifdef CONFIG_DEBUG_PREEMPT
@@ -763,6 +769,9 @@ static inline void dump_preempt_disable_ips(struct task_struct *tsk)
 		print_ip_sym(addrs[i]);
 #endif
 }
+=======
+
+>>>>>>> v4.14.187
 #ifdef CONFIG_IRQSOFF_TRACER
   extern void time_hardirqs_on(unsigned long a0, unsigned long a1);
   extern void time_hardirqs_off(unsigned long a0, unsigned long a1);
@@ -771,8 +780,12 @@ static inline void dump_preempt_disable_ips(struct task_struct *tsk)
   static inline void time_hardirqs_off(unsigned long a0, unsigned long a1) { }
 #endif
 
+<<<<<<< HEAD
 #if defined(CONFIG_PREEMPT_TRACER) || \
 	(defined(CONFIG_DEBUG_PREEMPT) && defined(CONFIG_PREEMPTIRQ_EVENTS))
+=======
+#ifdef CONFIG_PREEMPT_TRACER
+>>>>>>> v4.14.187
   extern void trace_preempt_on(unsigned long a0, unsigned long a1);
   extern void trace_preempt_off(unsigned long a0, unsigned long a1);
 #else

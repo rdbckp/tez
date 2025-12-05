@@ -25,10 +25,16 @@ extern char __cpuidle_text_start[], __cpuidle_text_end[];
  * sched_idle_set_state - Record idle state for the current CPU.
  * @idle_state: State to record.
  */
+<<<<<<< HEAD
 void sched_idle_set_state(struct cpuidle_state *idle_state, int index)
 {
 	idle_set_state(this_rq(), idle_state);
 	idle_set_state_idx(this_rq(), index);
+=======
+void sched_idle_set_state(struct cpuidle_state *idle_state)
+{
+	idle_set_state(this_rq(), idle_state);
+>>>>>>> v4.14.187
 }
 
 static int __read_mostly cpu_idle_force_poll;
@@ -147,6 +153,7 @@ static void cpuidle_idle_call(void)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * The RCU framework needs to be told that we are entering an idle
 	 * section, so no more rcu read side critical sections and one more
 	 * step to the grace period
@@ -156,6 +163,15 @@ static void cpuidle_idle_call(void)
 		tick_nohz_idle_stop_tick();
 		rcu_idle_enter();
 
+=======
+	 * Tell the RCU framework we are entering an idle section,
+	 * so no more rcu read side critical sections and one more
+	 * step to the grace period
+	 */
+	rcu_idle_enter();
+
+	if (cpuidle_not_available(drv, dev)) {
+>>>>>>> v4.14.187
 		default_idle_call();
 		goto exit_idle;
 	}
@@ -172,13 +188,17 @@ static void cpuidle_idle_call(void)
 
 	if (idle_should_enter_s2idle() || dev->use_deepest_state) {
 		if (idle_should_enter_s2idle()) {
+<<<<<<< HEAD
 			rcu_idle_enter();
 
+=======
+>>>>>>> v4.14.187
 			entered_state = cpuidle_enter_s2idle(drv, dev);
 			if (entered_state > 0) {
 				local_irq_enable();
 				goto exit_idle;
 			}
+<<<<<<< HEAD
 
 			rcu_idle_exit();
 		}
@@ -203,6 +223,17 @@ static void cpuidle_idle_call(void)
 
 		rcu_idle_enter();
 
+=======
+		}
+
+		next_state = cpuidle_find_deepest_state(drv, dev);
+		call_cpuidle(drv, dev, next_state);
+	} else {
+		/*
+		 * Ask the cpuidle framework to choose a convenient idle state.
+		 */
+		next_state = cpuidle_select(drv, dev);
+>>>>>>> v4.14.187
 		entered_state = call_cpuidle(drv, dev, next_state);
 		/*
 		 * Give the governor an opportunity to reflect on the outcome
@@ -246,14 +277,22 @@ static void do_idle(void)
 		check_pgt_cache();
 		rmb();
 
+<<<<<<< HEAD
 		local_irq_disable();
 
 		if (cpu_is_offline(smp_processor_id())) {
 			tick_nohz_idle_stop_tick();
+=======
+		if (cpu_is_offline(smp_processor_id())) {
+>>>>>>> v4.14.187
 			cpuhp_report_idle_dead();
 			arch_cpu_idle_dead();
 		}
 
+<<<<<<< HEAD
+=======
+		local_irq_disable();
+>>>>>>> v4.14.187
 		arch_cpu_idle_enter();
 
 		/*
@@ -262,12 +301,19 @@ static void do_idle(void)
 		 * broadcast device expired for us, we don't want to go deep
 		 * idle as we know that the IPI is going to arrive right away.
 		 */
+<<<<<<< HEAD
 		if (cpu_idle_force_poll || tick_check_broadcast_expired()) {
 			tick_nohz_idle_restart_tick();
 			cpu_idle_poll();
 		} else {
 			cpuidle_idle_call();
 		}
+=======
+		if (cpu_idle_force_poll || tick_check_broadcast_expired())
+			cpu_idle_poll();
+		else
+			cpuidle_idle_call();
+>>>>>>> v4.14.187
 		arch_cpu_idle_exit();
 	}
 

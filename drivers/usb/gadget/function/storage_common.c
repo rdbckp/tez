@@ -28,6 +28,7 @@
 #include <linux/file.h>
 #include <linux/fs.h>
 #include <linux/usb/composite.h>
+<<<<<<< HEAD
 #include <uapi/linux/usb/ch9.h>
 
 #include "storage_common.h"
@@ -42,6 +43,11 @@ fsg_otg_desc = {
 	.bcdOTG = cpu_to_le16(0x200),
 };
 #endif
+=======
+
+#include "storage_common.h"
+
+>>>>>>> v4.14.187
 /* There is only one interface. */
 
 struct usb_interface_descriptor fsg_intf_desc = {
@@ -82,9 +88,12 @@ struct usb_endpoint_descriptor fsg_fs_bulk_out_desc = {
 EXPORT_SYMBOL_GPL(fsg_fs_bulk_out_desc);
 
 struct usb_descriptor_header *fsg_fs_function[] = {
+<<<<<<< HEAD
 #ifdef CONFIG_USBIF_COMPLIANCE
 	(struct usb_descriptor_header *) &fsg_otg_desc,
 #endif
+=======
+>>>>>>> v4.14.187
 	(struct usb_descriptor_header *) &fsg_intf_desc,
 	(struct usb_descriptor_header *) &fsg_fs_bulk_in_desc,
 	(struct usb_descriptor_header *) &fsg_fs_bulk_out_desc,
@@ -122,9 +131,12 @@ EXPORT_SYMBOL_GPL(fsg_hs_bulk_out_desc);
 
 
 struct usb_descriptor_header *fsg_hs_function[] = {
+<<<<<<< HEAD
 #ifdef CONFIG_USBIF_COMPLIANCE
 	(struct usb_descriptor_header *) &fsg_otg_desc,
 #endif
+=======
+>>>>>>> v4.14.187
 	(struct usb_descriptor_header *) &fsg_intf_desc,
 	(struct usb_descriptor_header *) &fsg_hs_bulk_in_desc,
 	(struct usb_descriptor_header *) &fsg_hs_bulk_out_desc,
@@ -169,9 +181,12 @@ struct usb_ss_ep_comp_descriptor fsg_ss_bulk_out_comp_desc = {
 EXPORT_SYMBOL_GPL(fsg_ss_bulk_out_comp_desc);
 
 struct usb_descriptor_header *fsg_ss_function[] = {
+<<<<<<< HEAD
 #ifdef CONFIG_USBIF_COMPLIANCE
 	(struct usb_descriptor_header *) &fsg_otg_desc,
 #endif
+=======
+>>>>>>> v4.14.187
 	(struct usb_descriptor_header *) &fsg_intf_desc,
 	(struct usb_descriptor_header *) &fsg_ss_bulk_in_desc,
 	(struct usb_descriptor_header *) &fsg_ss_bulk_in_comp_desc,
@@ -464,6 +479,7 @@ ssize_t fsg_store_file(struct fsg_lun *curlun, struct rw_semaphore *filesem,
 		LDBG(curlun, "eject attempt prevented\n");
 		return -EBUSY;				/* "Door is locked" */
 	}
+<<<<<<< HEAD
 	pr_notice("%s file=%s, count=%d, curlun->cdrom=%d\n",
 			__func__, buf, (int)count, curlun->cdrom);
 
@@ -486,6 +502,8 @@ ssize_t fsg_store_file(struct fsg_lun *curlun, struct rw_semaphore *filesem,
 			fsg_lun_is_open(curlun)) {
 		((char *) buf)[0] = 0;
 	}
+=======
+>>>>>>> v4.14.187
 
 	/* Remove a trailing newline */
 	if (count > 0 && buf[count-1] == '\n')

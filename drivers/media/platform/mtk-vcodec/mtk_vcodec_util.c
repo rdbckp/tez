@@ -1,7 +1,11 @@
 /*
 * Copyright (c) 2016 MediaTek Inc.
 * Author: PC Chen <pc.chen@mediatek.com>
+<<<<<<< HEAD
 *       Tiffany Lin <tiffany.lin@mediatek.com>
+=======
+*	Tiffany Lin <tiffany.lin@mediatek.com>
+>>>>>>> v4.14.187
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 as
@@ -14,6 +18,7 @@
 */
 
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/module.h>
 #include <media/v4l2-mem2mem.h>
 #include <media/videobuf2-dma-contig.h>
@@ -22,21 +27,31 @@
 #include "mtk_vcodec_util.h"
 #include "mtk_vcu.h"
 #include "mtk_vcodec_dec.h"
+=======
+
+#include "mtk_vcodec_drv.h"
+#include "mtk_vcodec_util.h"
+#include "mtk_vpu.h"
+>>>>>>> v4.14.187
 
 /* For encoder, this will enable logs in venc/*/
 bool mtk_vcodec_dbg;
 EXPORT_SYMBOL(mtk_vcodec_dbg);
 
+<<<<<<< HEAD
 /* For vcodec performance measure */
 bool mtk_vcodec_perf;
 EXPORT_SYMBOL(mtk_vcodec_perf);
 
+=======
+>>>>>>> v4.14.187
 /* The log level of v4l2 encoder or decoder driver.
  * That is, files under mtk-vcodec/.
  */
 int mtk_v4l2_dbg_level;
 EXPORT_SYMBOL(mtk_v4l2_dbg_level);
 
+<<<<<<< HEAD
 void __iomem *mtk_vcodec_get_dec_reg_addr(struct mtk_vcodec_ctx *data,
 	unsigned int reg_idx)
 {
@@ -66,6 +81,23 @@ EXPORT_SYMBOL(mtk_vcodec_get_enc_reg_addr);
 
 int mtk_vcodec_mem_alloc(struct mtk_vcodec_ctx *data,
 						 struct mtk_vcodec_mem *mem)
+=======
+void __iomem *mtk_vcodec_get_reg_addr(struct mtk_vcodec_ctx *data,
+					unsigned int reg_idx)
+{
+	struct mtk_vcodec_ctx *ctx = (struct mtk_vcodec_ctx *)data;
+
+	if (!data || reg_idx >= NUM_MAX_VCODEC_REG_BASE) {
+		mtk_v4l2_err("Invalid arguments, reg_idx=%d", reg_idx);
+		return NULL;
+	}
+	return ctx->dev->reg_base[reg_idx];
+}
+EXPORT_SYMBOL(mtk_vcodec_get_reg_addr);
+
+int mtk_vcodec_mem_alloc(struct mtk_vcodec_ctx *data,
+			struct mtk_vcodec_mem *mem)
+>>>>>>> v4.14.187
 {
 	unsigned long size = mem->size;
 	struct mtk_vcodec_ctx *ctx = (struct mtk_vcodec_ctx *)data;
@@ -75,23 +107,38 @@ int mtk_vcodec_mem_alloc(struct mtk_vcodec_ctx *data,
 
 	if (!mem->va) {
 		mtk_v4l2_err("%s dma_alloc size=%ld failed!", dev_name(dev),
+<<<<<<< HEAD
 					 size);
+=======
+			     size);
+>>>>>>> v4.14.187
 		return -ENOMEM;
 	}
 
 	memset(mem->va, 0, size);
 
+<<<<<<< HEAD
 	mtk_v4l2_debug(4, "[%d]  - va      = %p", ctx->id, mem->va);
 	mtk_v4l2_debug(4, "[%d]  - dma     = 0x%lx", ctx->id,
 				   (unsigned long)mem->dma_addr);
 	mtk_v4l2_debug(4, "[%d]    size = 0x%lx", ctx->id, size);
+=======
+	mtk_v4l2_debug(3, "[%d]  - va      = %p", ctx->id, mem->va);
+	mtk_v4l2_debug(3, "[%d]  - dma     = 0x%lx", ctx->id,
+		       (unsigned long)mem->dma_addr);
+	mtk_v4l2_debug(3, "[%d]    size = 0x%lx", ctx->id, size);
+>>>>>>> v4.14.187
 
 	return 0;
 }
 EXPORT_SYMBOL(mtk_vcodec_mem_alloc);
 
 void mtk_vcodec_mem_free(struct mtk_vcodec_ctx *data,
+<<<<<<< HEAD
 						 struct mtk_vcodec_mem *mem)
+=======
+			struct mtk_vcodec_mem *mem)
+>>>>>>> v4.14.187
 {
 	unsigned long size = mem->size;
 	struct mtk_vcodec_ctx *ctx = (struct mtk_vcodec_ctx *)data;
@@ -99,6 +146,7 @@ void mtk_vcodec_mem_free(struct mtk_vcodec_ctx *data,
 
 	if (!mem->va) {
 		mtk_v4l2_err("%s dma_free size=%ld failed!", dev_name(dev),
+<<<<<<< HEAD
 					 size);
 		return;
 	}
@@ -107,6 +155,16 @@ void mtk_vcodec_mem_free(struct mtk_vcodec_ctx *data,
 	mtk_v4l2_debug(4, "[%d]  - dma     = 0x%lx", ctx->id,
 				   (unsigned long)mem->dma_addr);
 	mtk_v4l2_debug(4, "[%d]    size = 0x%lx", ctx->id, size);
+=======
+			     size);
+		return;
+	}
+
+	mtk_v4l2_debug(3, "[%d]  - va      = %p", ctx->id, mem->va);
+	mtk_v4l2_debug(3, "[%d]  - dma     = 0x%lx", ctx->id,
+		       (unsigned long)mem->dma_addr);
+	mtk_v4l2_debug(3, "[%d]    size = 0x%lx", ctx->id, size);
+>>>>>>> v4.14.187
 
 	dma_free_coherent(dev, size, mem->va, mem->dma_addr);
 	mem->va = NULL;
@@ -116,29 +174,46 @@ void mtk_vcodec_mem_free(struct mtk_vcodec_ctx *data,
 EXPORT_SYMBOL(mtk_vcodec_mem_free);
 
 void mtk_vcodec_set_curr_ctx(struct mtk_vcodec_dev *dev,
+<<<<<<< HEAD
 	struct mtk_vcodec_ctx *ctx, unsigned int hw_id)
+=======
+	struct mtk_vcodec_ctx *ctx)
+>>>>>>> v4.14.187
 {
 	unsigned long flags;
 
 	spin_lock_irqsave(&dev->irqlock, flags);
+<<<<<<< HEAD
 	dev->curr_dec_ctx[hw_id] = ctx;
+=======
+	dev->curr_ctx = ctx;
+>>>>>>> v4.14.187
 	spin_unlock_irqrestore(&dev->irqlock, flags);
 }
 EXPORT_SYMBOL(mtk_vcodec_set_curr_ctx);
 
+<<<<<<< HEAD
 struct mtk_vcodec_ctx *mtk_vcodec_get_curr_ctx(struct mtk_vcodec_dev *dev,
 	unsigned int hw_id)
+=======
+struct mtk_vcodec_ctx *mtk_vcodec_get_curr_ctx(struct mtk_vcodec_dev *dev)
+>>>>>>> v4.14.187
 {
 	unsigned long flags;
 	struct mtk_vcodec_ctx *ctx;
 
 	spin_lock_irqsave(&dev->irqlock, flags);
+<<<<<<< HEAD
 	ctx = dev->curr_dec_ctx[hw_id];
+=======
+	ctx = dev->curr_ctx;
+>>>>>>> v4.14.187
 	spin_unlock_irqrestore(&dev->irqlock, flags);
 	return ctx;
 }
 EXPORT_SYMBOL(mtk_vcodec_get_curr_ctx);
 
+<<<<<<< HEAD
 
 struct vdec_fb *mtk_vcodec_get_fb(struct mtk_vcodec_ctx *ctx)
 {
@@ -233,3 +308,7 @@ void v4l2_m2m_buf_queue_check(struct v4l2_m2m_ctx *m2m_ctx,
 }
 EXPORT_SYMBOL(v4l2_m2m_buf_queue_check);
 
+=======
+MODULE_LICENSE("GPL v2");
+MODULE_DESCRIPTION("Mediatek video codec driver");
+>>>>>>> v4.14.187

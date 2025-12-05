@@ -140,6 +140,7 @@ void *__seq_open_private(struct file *, const struct seq_operations *, int);
 int seq_open_private(struct file *, const struct seq_operations *, int);
 int seq_release_private(struct inode *, struct file *);
 
+<<<<<<< HEAD
 #define DEFINE_SHOW_ATTRIBUTE(__name)					\
 static int __name ## _open(struct inode *inode, struct file *file)	\
 {									\
@@ -154,6 +155,8 @@ static const struct file_operations __name ## _fops = {			\
 	.release	= single_release,				\
 }
 
+=======
+>>>>>>> v4.14.187
 static inline struct user_namespace *seq_user_ns(struct seq_file *seq)
 {
 #ifdef CONFIG_USER_NS

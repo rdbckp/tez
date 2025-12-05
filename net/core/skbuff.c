@@ -3482,6 +3482,7 @@ void *skb_pull_rcsum(struct sk_buff *skb, unsigned int len)
 }
 EXPORT_SYMBOL_GPL(skb_pull_rcsum);
 
+<<<<<<< HEAD
 static inline skb_frag_t skb_head_frag_to_page_desc(struct sk_buff *frag_skb)
 {
 	skb_frag_t head_frag;
@@ -3495,6 +3496,8 @@ static inline skb_frag_t skb_head_frag_to_page_desc(struct sk_buff *frag_skb)
 	return head_frag;
 }
 
+=======
+>>>>>>> v4.14.187
 /**
  *	skb_segment - Perform protocol segmentation on skb.
  *	@head_skb: buffer to segment
@@ -3714,10 +3717,16 @@ normal:
 
 		while (pos < offset + len) {
 			if (i >= nfrags) {
+<<<<<<< HEAD
+=======
+				BUG_ON(skb_headlen(list_skb));
+
+>>>>>>> v4.14.187
 				i = 0;
 				nfrags = skb_shinfo(list_skb)->nr_frags;
 				frag = skb_shinfo(list_skb)->frags;
 				frag_skb = list_skb;
+<<<<<<< HEAD
 				if (!skb_headlen(list_skb)) {
 					BUG_ON(!nfrags);
 				} else {
@@ -3727,6 +3736,11 @@ normal:
 					i--;
 					frag--;
 				}
+=======
+
+				BUG_ON(!nfrags);
+
+>>>>>>> v4.14.187
 				list_skb = list_skb->next;
 			}
 
@@ -3744,7 +3758,11 @@ normal:
 			if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
 				goto err;
 
+<<<<<<< HEAD
 			*nskb_frag = (i < 0) ? skb_head_frag_to_page_desc(frag_skb) : *frag;
+=======
+			*nskb_frag = *frag;
+>>>>>>> v4.14.187
 			__skb_frag_ref(nskb_frag);
 			size = skb_frag_size(nskb_frag);
 
@@ -3836,14 +3854,23 @@ err:
 }
 EXPORT_SYMBOL_GPL(skb_segment);
 
+<<<<<<< HEAD
 int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
+=======
+int skb_gro_receive(struct sk_buff **head, struct sk_buff *skb)
+>>>>>>> v4.14.187
 {
 	struct skb_shared_info *pinfo, *skbinfo = skb_shinfo(skb);
 	unsigned int offset = skb_gro_offset(skb);
 	unsigned int headlen = skb_headlen(skb);
 	unsigned int len = skb_gro_len(skb);
+<<<<<<< HEAD
 	unsigned int delta_truesize;
 	struct sk_buff *lp;
+=======
+	struct sk_buff *lp, *p = *head;
+	unsigned int delta_truesize;
+>>>>>>> v4.14.187
 
 	if (unlikely(p->len + len >= 65536 || NAPI_GRO_CB(skb)->flush))
 		return -E2BIG;
@@ -4961,8 +4988,11 @@ unsigned int skb_gso_transport_seglen(const struct sk_buff *skb)
 		thlen = tcp_hdrlen(skb);
 	} else if (unlikely(shinfo->gso_type & SKB_GSO_SCTP)) {
 		thlen = sizeof(struct sctphdr);
+<<<<<<< HEAD
 	} else if (shinfo->gso_type & SKB_GSO_UDP_L4) {
 		thlen = sizeof(struct udphdr);
+=======
+>>>>>>> v4.14.187
 	}
 	/* UFO sets gso_size to the size of the fragmentation
 	 * payload, i.e. the size of the L4 (UDP) header is already

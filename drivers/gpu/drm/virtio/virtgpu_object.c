@@ -23,6 +23,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+<<<<<<< HEAD
 #include <linux/moduleparam.h>
 
 #include <drm/ttm/ttm_execbuf_util.h>
@@ -74,6 +75,9 @@ static void virtio_gpu_resource_id_put(struct virtio_gpu_device *vgdev, uint32_t
 		spin_unlock(&vgdev->resource_idr_lock);
 	}
 }
+=======
+#include "virtgpu_drv.h"
+>>>>>>> v4.14.187
 
 static void virtio_gpu_ttm_bo_destroy(struct ttm_buffer_object *tbo)
 {
@@ -83,6 +87,7 @@ static void virtio_gpu_ttm_bo_destroy(struct ttm_buffer_object *tbo)
 	bo = container_of(tbo, struct virtio_gpu_object, tbo);
 	vgdev = (struct virtio_gpu_device *)bo->gem_base.dev->dev_private;
 
+<<<<<<< HEAD
 	if (bo->created)
 		virtio_gpu_cmd_unref_resource(vgdev, bo->hw_res_handle);
 	if (bo->pages)
@@ -108,11 +113,27 @@ static void virtio_gpu_init_ttm_placement(struct virtio_gpu_object *vgbo)
 	u32 cache_type = (vgbo->blob_mem & VIRTGPU_BLOB_MEM_CACHE_MASK);
 	bool has_guest = (vgbo->blob_mem == VIRTGPU_BLOB_MEM_GUEST ||
 			  vgbo->blob_mem == VIRTGPU_BLOB_MEM_HOST_GUEST);
+=======
+	if (bo->hw_res_handle)
+		virtio_gpu_cmd_unref_resource(vgdev, bo->hw_res_handle);
+	if (bo->pages)
+		virtio_gpu_object_free_sg_table(bo);
+	drm_gem_object_release(&bo->gem_base);
+	kfree(bo);
+}
+
+static void virtio_gpu_init_ttm_placement(struct virtio_gpu_object *vgbo,
+					  bool pinned)
+{
+	u32 c = 1;
+	u32 pflag = pinned ? TTM_PL_FLAG_NO_EVICT : 0;
+>>>>>>> v4.14.187
 
 	vgbo->placement.placement = &vgbo->placement_code;
 	vgbo->placement.busy_placement = &vgbo->placement_code;
 	vgbo->placement_code.fpfn = 0;
 	vgbo->placement_code.lpfn = 0;
+<<<<<<< HEAD
 
 	switch (cache_type) {
 	case VIRTGPU_BLOB_MEM_CACHE_CACHED:
@@ -137,12 +158,17 @@ static void virtio_gpu_init_ttm_placement(struct virtio_gpu_object *vgbo)
 			TTM_PL_MASK_CACHING | TTM_PL_FLAG_TT |
 			TTM_PL_FLAG_NO_EVICT;
 	}
+=======
+	vgbo->placement_code.flags =
+		TTM_PL_MASK_CACHING | TTM_PL_FLAG_TT | pflag;
+>>>>>>> v4.14.187
 	vgbo->placement.num_placement = c;
 	vgbo->placement.num_busy_placement = c;
 
 }
 
 int virtio_gpu_object_create(struct virtio_gpu_device *vgdev,
+<<<<<<< HEAD
 			     struct virtio_gpu_object_params *params,
 			     struct virtio_gpu_object **bo_ptr,
 			     struct virtio_gpu_fence *fence)
@@ -154,11 +180,29 @@ int virtio_gpu_object_create(struct virtio_gpu_device *vgdev,
 	*bo_ptr = NULL;
 
 	acc_size = ttm_bo_dma_acc_size(&vgdev->mman.bdev, params->size,
+=======
+			     unsigned long size, bool kernel, bool pinned,
+			     struct virtio_gpu_object **bo_ptr)
+{
+	struct virtio_gpu_object *bo;
+	enum ttm_bo_type type;
+	size_t acc_size;
+	int ret;
+
+	if (kernel)
+		type = ttm_bo_type_kernel;
+	else
+		type = ttm_bo_type_device;
+	*bo_ptr = NULL;
+
+	acc_size = ttm_bo_dma_acc_size(&vgdev->mman.bdev, size,
+>>>>>>> v4.14.187
 				       sizeof(struct virtio_gpu_object));
 
 	bo = kzalloc(sizeof(struct virtio_gpu_object), GFP_KERNEL);
 	if (bo == NULL)
 		return -ENOMEM;
+<<<<<<< HEAD
 	ret = virtio_gpu_resource_id_get(vgdev, &bo->hw_res_handle);
 	if (ret < 0) {
 		kfree(bo);
@@ -186,10 +230,25 @@ int virtio_gpu_object_create(struct virtio_gpu_device *vgdev,
 			  ttm_bo_type_device, &bo->placement, 0,
 			  true, NULL, acc_size, NULL, NULL,
 			  &virtio_gpu_ttm_bo_destroy);
+=======
+	size = roundup(size, PAGE_SIZE);
+	ret = drm_gem_object_init(vgdev->ddev, &bo->gem_base, size);
+	if (ret != 0) {
+		kfree(bo);
+		return ret;
+	}
+	bo->dumb = false;
+	virtio_gpu_init_ttm_placement(bo, pinned);
+
+	ret = ttm_bo_init(&vgdev->mman.bdev, &bo->tbo, size, type,
+			  &bo->placement, 0, !kernel, NULL, acc_size,
+			  NULL, NULL, &virtio_gpu_ttm_bo_destroy);
+>>>>>>> v4.14.187
 	/* ttm_bo_init failure will call the destroy */
 	if (ret != 0)
 		return ret;
 
+<<<<<<< HEAD
 	if (fence) {
 		struct virtio_gpu_fence_driver *drv = &vgdev->fence_drv;
 		struct list_head validate_list;
@@ -222,10 +281,13 @@ int virtio_gpu_object_create(struct virtio_gpu_device *vgdev,
 		virtio_gpu_unref_list(&validate_list);
 	}
 
+=======
+>>>>>>> v4.14.187
 	*bo_ptr = bo;
 	return 0;
 }
 
+<<<<<<< HEAD
 void virtio_gpu_object_kunmap(struct virtio_gpu_object *bo)
 {
 	bo->vmap = NULL;
@@ -233,16 +295,32 @@ void virtio_gpu_object_kunmap(struct virtio_gpu_object *bo)
 }
 
 int virtio_gpu_object_kmap(struct virtio_gpu_object *bo)
+=======
+int virtio_gpu_object_kmap(struct virtio_gpu_object *bo, void **ptr)
+>>>>>>> v4.14.187
 {
 	bool is_iomem;
 	int r;
 
+<<<<<<< HEAD
 	WARN_ON(bo->vmap);
 
+=======
+	if (bo->vmap) {
+		if (ptr)
+			*ptr = bo->vmap;
+		return 0;
+	}
+>>>>>>> v4.14.187
 	r = ttm_bo_kmap(&bo->tbo, 0, bo->tbo.num_pages, &bo->kmap);
 	if (r)
 		return r;
 	bo->vmap = ttm_kmap_obj_virtual(&bo->kmap, &is_iomem);
+<<<<<<< HEAD
+=======
+	if (ptr)
+		*ptr = bo->vmap;
+>>>>>>> v4.14.187
 	return 0;
 }
 

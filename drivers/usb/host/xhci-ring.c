@@ -275,6 +275,7 @@ static inline int room_on_ring(struct xhci_hcd *xhci, struct xhci_ring *ring,
 	if (ring->num_trbs_free < num_trbs)
 		return 0;
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTK_UAC_POWER_SAVING)
 	if (!(xhci->quirks & XHCI_MTK_HOST))
 #endif
@@ -285,6 +286,13 @@ static inline int room_on_ring(struct xhci_hcd *xhci, struct xhci_ring *ring,
 				num_trbs_in_deq_seg)
 				return 0;
 		}
+=======
+	if (ring->type != TYPE_COMMAND && ring->type != TYPE_EVENT) {
+		num_trbs_in_deq_seg = ring->dequeue - ring->deq_seg->trbs;
+		if (ring->num_trbs_free < num_trbs + num_trbs_in_deq_seg)
+			return 0;
+	}
+>>>>>>> v4.14.187
 
 	return 1;
 }
@@ -372,7 +380,11 @@ static int xhci_abort_cmd_ring(struct xhci_hcd *xhci, unsigned long flags)
 	 * In the future we should distinguish between -ENODEV and -ETIMEDOUT
 	 * and try to recover a -ETIMEDOUT with a host controller reset.
 	 */
+<<<<<<< HEAD
 	ret = xhci_handshake_check_state(xhci, &xhci->op_regs->cmd_ring,
+=======
+	ret = xhci_handshake(&xhci->op_regs->cmd_ring,
+>>>>>>> v4.14.187
 			CMD_RING_RUNNING, 0, 5 * 1000 * 1000);
 	if (ret < 0) {
 		xhci_err(xhci, "Abort failed to stop command ring: %d\n", ret);
@@ -2438,7 +2450,11 @@ static int handle_tx_event(struct xhci_hcd *xhci,
 		break;
 	case COMP_SPLIT_TRANSACTION_ERROR:
 	case COMP_USB_TRANSACTION_ERROR:
+<<<<<<< HEAD
 		xhci_warn_ratelimited(xhci, "Transfer error for slot %u ep %u on endpoint\n",
+=======
+		xhci_dbg(xhci, "Transfer error for slot %u ep %u on endpoint\n",
+>>>>>>> v4.14.187
 			 slot_id, ep_index);
 		status = -EPROTO;
 		break;
@@ -2477,17 +2493,29 @@ static int handle_tx_event(struct xhci_hcd *xhci,
 		 * a Ring Overrun Event for IN Isoch endpoint or Ring
 		 * Underrun Event for OUT Isoch endpoint.
 		 */
+<<<<<<< HEAD
 		xhci_warn_ratelimited(xhci, "underrun event on endpoint\n");
 		if (!list_empty(&ep_ring->td_list))
 			xhci_warn_ratelimited(xhci, "Underrun Event for slot %d ep %d "
+=======
+		xhci_dbg(xhci, "underrun event on endpoint\n");
+		if (!list_empty(&ep_ring->td_list))
+			xhci_dbg(xhci, "Underrun Event for slot %d ep %d "
+>>>>>>> v4.14.187
 					"still with TDs queued?\n",
 				 TRB_TO_SLOT_ID(le32_to_cpu(event->flags)),
 				 ep_index);
 		goto cleanup;
 	case COMP_RING_OVERRUN:
+<<<<<<< HEAD
 		xhci_warn_ratelimited(xhci, "overrun event on endpoint\n");
 		if (!list_empty(&ep_ring->td_list))
 			xhci_warn_ratelimited(xhci, "Overrun Event for slot %d ep %d "
+=======
+		xhci_dbg(xhci, "overrun event on endpoint\n");
+		if (!list_empty(&ep_ring->td_list))
+			xhci_dbg(xhci, "Overrun Event for slot %d ep %d "
+>>>>>>> v4.14.187
 					"still with TDs queued?\n",
 				 TRB_TO_SLOT_ID(le32_to_cpu(event->flags)),
 				 ep_index);
@@ -3865,6 +3893,7 @@ static int xhci_queue_isoc_tx(struct xhci_hcd *xhci, gfp_t mem_flags,
 
 	giveback_first_trb(xhci, slot_id, ep_index, urb->stream_id,
 			start_cycle, start_trb);
+<<<<<<< HEAD
 
 #if IS_ENABLED(CONFIG_MTK_UAC_POWER_SAVING)
 	if (!list_empty(&ep_ring->td_list) &&
@@ -3876,6 +3905,8 @@ static int xhci_queue_isoc_tx(struct xhci_hcd *xhci, gfp_t mem_flags,
 		xhci_mtk_allow_sleep(left_trbs, urb->dev->speed);
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 	return 0;
 cleanup:
 	/* Clean up a partially enqueued isoc transfer. */

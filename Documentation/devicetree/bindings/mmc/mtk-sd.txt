@@ -7,6 +7,7 @@ This file documents differences between the core properties in mmc.txt
 and the properties used by the msdc driver.
 
 Required properties:
+<<<<<<< HEAD
 - compatible: value should be either of the following.
 	"mediatek,mt8135-mmc": for mmc host ip compatible with mt8135
 	"mediatek,mt8173-mmc": for mmc host ip compatible with mt8173
@@ -23,6 +24,12 @@ Required properties:
 	"source" - source clock (required)
 	"hclk" - HCLK which used for host (required)
 	"source_cg" - independent source clock gate (required for MT2712)
+=======
+- compatible: Should be "mediatek,mt8173-mmc","mediatek,mt8135-mmc"
+- interrupts: Should contain MSDC interrupt number
+- clocks: MSDC source clock, HCLK
+- clock-names: "source", "hclk"
+>>>>>>> v4.14.187
 - pinctrl-names: should be "default", "state_uhs"
 - pinctrl-0: should contain default/high speed pin ctrl
 - pinctrl-1: should contain uhs mode pin ctrl
@@ -42,10 +49,13 @@ Optional properties:
 - mediatek,hs400-cmd-resp-sel-rising:  HS400 command response sample selection
 				       If present,HS400 command responses are sampled on rising edges.
 				       If not present,HS400 command responses are sampled on falling edges.
+<<<<<<< HEAD
 - mediatek,latch-ck: Some SoCs do not support enhance_rx, need set correct latch-ck to avoid data crc
 		     error caused by stop clock(fifo full)
 		     Valid range = [0:0x7]. if not present, default value is 0.
 		     applied to compatible "mediatek,mt2701-mmc".
+=======
+>>>>>>> v4.14.187
 
 Examples:
 mmc0: mmc@11230000 {

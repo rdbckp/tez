@@ -61,7 +61,11 @@ jiffies = jiffies_64;
 #define TRAMP_TEXT					\
 	. = ALIGN(PAGE_SIZE);				\
 	VMLINUX_SYMBOL(__entry_tramp_text_start) = .;	\
+<<<<<<< HEAD
 	KEEP(*(.entry.tramp.text))			\
+=======
+	*(.entry.tramp.text)				\
+>>>>>>> v4.14.187
 	. = ALIGN(PAGE_SIZE);				\
 	VMLINUX_SYMBOL(__entry_tramp_text_end) = .;
 #else
@@ -151,11 +155,19 @@ SECTIONS
 	. = ALIGN(4);
 	.altinstructions : {
 		__alt_instructions = .;
+<<<<<<< HEAD
 		KEEP(*(.altinstructions))
 		__alt_instructions_end = .;
 	}
 	.altinstr_replacement : {
 		KEEP(*(.altinstr_replacement))
+=======
+		*(.altinstructions)
+		__alt_instructions_end = .;
+	}
+	.altinstr_replacement : {
+		*(.altinstr_replacement)
+>>>>>>> v4.14.187
 	}
 
 	. = ALIGN(PAGE_SIZE);
@@ -184,6 +196,7 @@ SECTIONS
 	__rela_offset	= ABSOLUTE(ADDR(.rela.dyn) - KIMAGE_VADDR);
 	__rela_size	= SIZEOF(.rela.dyn);
 
+<<<<<<< HEAD
 #ifdef CONFIG_RELR
 	.relr.dyn : ALIGN(8) {
 		*(.relr.dyn)
@@ -193,6 +206,8 @@ SECTIONS
 	__relr_size	= SIZEOF(.relr.dyn);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	. = ALIGN(SEGMENT_ALIGN);
 	__initdata_end = .;
 	__init_end = .;
@@ -226,7 +241,10 @@ SECTIONS
 	BSS_SECTION(0, 0, 0)
 
 	. = ALIGN(PAGE_SIZE);
+<<<<<<< HEAD
 #ifndef CONFIG_UH_RKP
+=======
+>>>>>>> v4.14.187
 	idmap_pg_dir = .;
 	. += IDMAP_DIR_SIZE;
 	swapper_pg_dir = .;
@@ -241,7 +259,11 @@ SECTIONS
 	tramp_pg_dir = .;
 	. += PAGE_SIZE;
 #endif
+<<<<<<< HEAD
 #endif
+=======
+
+>>>>>>> v4.14.187
 	__pecoff_data_size = ABSOLUTE(. - __initdata_begin);
 	_end = .;
 

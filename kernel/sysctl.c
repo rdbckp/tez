@@ -105,7 +105,10 @@ extern char core_pattern[];
 extern unsigned int core_pipe_limit;
 #endif
 extern int pid_max;
+<<<<<<< HEAD
 extern int extra_free_kbytes;
+=======
+>>>>>>> v4.14.187
 extern int pid_max_min, pid_max_max;
 extern int percpu_pagelist_fraction;
 extern int latencytop_enabled;
@@ -129,9 +132,12 @@ static unsigned long zero_ul;
 static unsigned long one_ul = 1;
 static unsigned long long_max = LONG_MAX;
 static int one_hundred = 100;
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_GMO_RAM_OPTIMIZE) || defined(CONFIG_INCREASE_MAXIMUM_SWAPPINESS)
 static int two_hundred = 200;
 #endif
+=======
+>>>>>>> v4.14.187
 static int one_thousand = 1000;
 #ifdef CONFIG_PRINTK
 static int ten_thousand = 10000;
@@ -334,6 +340,7 @@ static struct ctl_table kern_table[] = {
 		.extra1		= &min_sched_granularity_ns,
 		.extra2		= &max_sched_granularity_ns,
 	},
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_SCHED_BOOST
 	{
 		.procname       = "sched_isolation_hint",
@@ -387,6 +394,8 @@ static struct ctl_table kern_table[] = {
 		.mode		= 0644,
 		.proc_handler	= proc_dointvec,
 	},
+=======
+>>>>>>> v4.14.187
 	{
 		.procname	= "sched_wakeup_granularity_ns",
 		.data		= &sysctl_sched_wakeup_granularity,
@@ -428,6 +437,7 @@ static struct ctl_table kern_table[] = {
 		.proc_handler	= proc_dointvec_minmax,
 		.extra1		= &one,
 	},
+<<<<<<< HEAD
 	{
 		.procname	= "sched_big_task_rotation",
 		.data		= &sysctl_sched_rotation_enable,
@@ -437,6 +447,8 @@ static struct ctl_table kern_table[] = {
 		.extra1		= &zero,
 		.extra2		= &one,
 	},
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_SCHEDSTATS
 	{
 		.procname	= "sched_schedstats",
@@ -511,6 +523,7 @@ static struct ctl_table kern_table[] = {
 		.mode		= 0644,
 		.proc_handler	= sched_rr_handler,
 	},
+<<<<<<< HEAD
 #ifdef CONFIG_UCLAMP_TASK
 	{
 		.procname	= "sched_uclamp_util_min",
@@ -527,6 +540,8 @@ static struct ctl_table kern_table[] = {
 		.proc_handler	= sched_uclamp_handler,
 	},
 #endif
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_SCHED_AUTOGROUP
 	{
 		.procname	= "sched_autogroup_enabled",
@@ -548,6 +563,7 @@ static struct ctl_table kern_table[] = {
 		.extra1		= &one,
 	},
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_TUNE
 	{
 		.procname	= "sched_stune_task_threshold",
@@ -557,6 +573,8 @@ static struct ctl_table kern_table[] = {
 		.proc_handler   = &sched_stune_task_threshold_handler,
 	},
 #endif
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_PROVE_LOCKING
 	{
 		.procname	= "prove_locking",
@@ -1322,6 +1340,7 @@ static struct ctl_table vm_table[] = {
 		.extra1		= &zero,
 		.extra2		= &two,
 	},
+<<<<<<< HEAD
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
 	{
 		.procname	= "speculative_page_fault",
@@ -1331,6 +1350,8 @@ static struct ctl_table vm_table[] = {
 		.proc_handler	= proc_dointvec,
 	},
 #endif
+=======
+>>>>>>> v4.14.187
 	{
 		.procname	= "panic_on_oom",
 		.data		= &sysctl_panic_on_oom,
@@ -1445,6 +1466,7 @@ static struct ctl_table vm_table[] = {
 		.mode		= 0644,
 		.proc_handler	= proc_dointvec_minmax,
 		.extra1		= &zero,
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_GMO_RAM_OPTIMIZE) || defined(CONFIG_INCREASE_MAXIMUM_SWAPPINESS)
 		.extra2		= &two_hundred,
 #else
@@ -1458,6 +1480,9 @@ static struct ctl_table vm_table[] = {
 		.mode		= 0644,
 		.proc_handler	= proc_dointvec_minmax,
 		.extra1		= &zero,
+=======
+		.extra2		= &one_hundred,
+>>>>>>> v4.14.187
 	},
 #ifdef CONFIG_HUGETLB_PAGE
 	{
@@ -1560,6 +1585,7 @@ static struct ctl_table vm_table[] = {
 		.extra2		= &one_thousand,
 	},
 	{
+<<<<<<< HEAD
 		.procname	= "extra_free_kbytes",
 		.data		= &extra_free_kbytes,
 		.maxlen		= sizeof(extra_free_kbytes),
@@ -1568,6 +1594,8 @@ static struct ctl_table vm_table[] = {
 		.extra1		= &zero,
 	},
 	{
+=======
+>>>>>>> v4.14.187
 		.procname	= "percpu_pagelist_fraction",
 		.data		= &percpu_pagelist_fraction,
 		.maxlen		= sizeof(percpu_pagelist_fraction),

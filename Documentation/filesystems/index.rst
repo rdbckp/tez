@@ -315,6 +315,7 @@ exported for use by modules.
    :internal:
 
 .. kernel-doc:: fs/pipe.c
+<<<<<<< HEAD
 
 Encryption API
 ==============
@@ -327,3 +328,5 @@ encryption of files and directories.
 
     fscrypt
     fsverity
+=======
+>>>>>>> v4.14.187

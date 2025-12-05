@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ===== General Properties =====
 
 What:		/sys/class/power_supply/<supply_name>/manufacturer
@@ -454,6 +455,8 @@ Description:
 
 ===== Device Specific Properties =====
 
+=======
+>>>>>>> v4.14.187
 What:		/sys/class/power/ds2760-battery.*/charge_now
 Date:		May 2010
 KernelVersion:	2.6.35

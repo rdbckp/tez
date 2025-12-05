@@ -40,10 +40,13 @@
 #include <asm/tls.h>
 #include <asm/vdso.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 #include <linux/sec_debug.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_CC_STACKPROTECTOR
 #include <linux/stackprotector.h>
 unsigned long __stack_chk_guard __read_mostly;
@@ -98,6 +101,7 @@ void arch_cpu_idle_exit(void)
 	ledtrig_cpu(CPU_LED_IDLE_END);
 }
 
+<<<<<<< HEAD
 /*
  * dump a block of kernel memory from around the given address
  */
@@ -169,6 +173,8 @@ static void show_extra_register_data(struct pt_regs *regs, int nbytes)
 	set_fs(fs);
 }
 
+=======
+>>>>>>> v4.14.187
 void __show_regs(struct pt_regs *regs)
 {
 	unsigned long flags;
@@ -194,12 +200,15 @@ void __show_regs(struct pt_regs *regs)
 #endif
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 	if (!user_mode(regs)) {
 		sec_save_context(_THIS_CPU, regs);
 	}
 #endif
 
+=======
+>>>>>>> v4.14.187
 	show_regs_print_info(KERN_DEFAULT);
 
 	print_symbol("PC is at %s\n", instruction_pointer(regs));
@@ -274,6 +283,7 @@ void show_regs(struct pt_regs * regs)
 	dump_stack();
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 void show_regs_auto_comment(struct pt_regs * regs, bool comm)
 {
@@ -285,6 +295,8 @@ void show_regs_auto_comment(struct pt_regs * regs, bool comm)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 ATOMIC_NOTIFIER_HEAD(thread_notify_head);
 
 EXPORT_SYMBOL_GPL(thread_notify_head);

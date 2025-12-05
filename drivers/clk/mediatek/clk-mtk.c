@@ -23,7 +23,10 @@
 
 #include "clk-mtk.h"
 #include "clk-gate.h"
+<<<<<<< HEAD
 #include "clk-fixup-div.h"
+=======
+>>>>>>> v4.14.187
 
 struct clk_onecell_data *mtk_alloc_clk_data(unsigned int clk_num)
 {
@@ -50,6 +53,7 @@ err_out:
 	return NULL;
 }
 
+<<<<<<< HEAD
 void mtk_clk_register_fixup_dividers(const struct mtk_clk_divider *mcds,
 			int num, void __iomem *base, spinlock_t *lock,
 				struct clk_onecell_data *clk_data)
@@ -79,6 +83,8 @@ void mtk_clk_register_fixup_dividers(const struct mtk_clk_divider *mcds,
 	}
 }
 
+=======
+>>>>>>> v4.14.187
 void mtk_clk_register_fixed_clks(const struct mtk_fixed_clk *clks,
 		int num, struct clk_onecell_data *clk_data)
 {
@@ -130,6 +136,7 @@ void mtk_clk_register_factors(const struct mtk_fixed_factor *clks,
 			clk_data->clks[ff->id] = clk;
 	}
 }
+<<<<<<< HEAD
 #if defined(CONFIG_MACH_MT6739)
 void __init mtk_clk_register_factors_pdn(
 	const struct mtk_fixed_factor_pdn *clks,
@@ -157,6 +164,9 @@ void __init mtk_clk_register_factors_pdn(
 	}
 }
 #endif
+=======
+
+>>>>>>> v4.14.187
 int mtk_clk_register_gates(struct device_node *node,
 		const struct mtk_gate *clks,
 		int num, struct clk_onecell_data *clk_data)
@@ -164,7 +174,10 @@ int mtk_clk_register_gates(struct device_node *node,
 	int i;
 	struct clk *clk;
 	struct regmap *regmap;
+<<<<<<< HEAD
 	struct regmap *pwr_regmap;
+=======
+>>>>>>> v4.14.187
 
 	if (!clk_data)
 		return -ENOMEM;
@@ -176,10 +189,13 @@ int mtk_clk_register_gates(struct device_node *node,
 		return PTR_ERR(regmap);
 	}
 
+<<<<<<< HEAD
 	pwr_regmap = syscon_regmap_lookup_by_phandle(node, "pwr-regmap");
 	if (IS_ERR(pwr_regmap))
 		pwr_regmap = NULL;
 
+=======
+>>>>>>> v4.14.187
 	for (i = 0; i < num; i++) {
 		const struct mtk_gate *gate = &clks[i];
 
@@ -191,11 +207,15 @@ int mtk_clk_register_gates(struct device_node *node,
 				gate->regs->set_ofs,
 				gate->regs->clr_ofs,
 				gate->regs->sta_ofs,
+<<<<<<< HEAD
 				gate->shift,
 				gate->ops,
 				gate->flags,
 				gate->pwr_stat,
 				pwr_regmap);
+=======
+				gate->shift, gate->ops);
+>>>>>>> v4.14.187
 
 		if (IS_ERR(clk)) {
 			pr_err("Failed to register clk %s: %ld\n",
@@ -232,7 +252,11 @@ struct clk *mtk_clk_register_composite(const struct mtk_composite *mc,
 		mux->mask = BIT(mc->mux_width) - 1;
 		mux->shift = mc->mux_shift;
 		mux->lock = lock;
+<<<<<<< HEAD
 		mux->flags = mc->mux_flags;
+=======
+
+>>>>>>> v4.14.187
 		mux_hw = &mux->hw;
 		mux_ops = &clk_mux_ops;
 

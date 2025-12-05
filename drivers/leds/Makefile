@@ -71,6 +71,7 @@ obj-$(CONFIG_LEDS_IS31FL319X)		+= leds-is31fl319x.o
 obj-$(CONFIG_LEDS_IS31FL32XX)		+= leds-is31fl32xx.o
 obj-$(CONFIG_LEDS_PM8058)		+= leds-pm8058.o
 obj-$(CONFIG_LEDS_MLXCPLD)		+= leds-mlxcpld.o
+<<<<<<< HEAD
 obj-$(CONFIG_LEDS_SM5714)		+= leds-sm5714-fled.o
 obj-$(CONFIG_LEDS_NIC78BX)		+= leds-nic78bx.o
 obj-$(CONFIG_LEDS_MT6323)		+= leds-mt6323.o
@@ -80,6 +81,10 @@ obj-$(CONFIG_LEDS_S2MU005_FLASH)		+= leds-s2mu005.o
 
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/flashlight \
 	-I$(srctree)/drivers/misc/mediatek/include/mt-plat
+=======
+obj-$(CONFIG_LEDS_NIC78BX)		+= leds-nic78bx.o
+obj-$(CONFIG_LEDS_MT6323)		+= leds-mt6323.o
+>>>>>>> v4.14.187
 
 # LED SPI Drivers
 obj-$(CONFIG_LEDS_DAC124S085)		+= leds-dac124s085.o

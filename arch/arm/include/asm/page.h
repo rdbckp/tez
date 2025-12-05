@@ -162,6 +162,7 @@ extern int pfn_valid(unsigned long);
 
 #include <asm/memory.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
 #define spf_access_check spf_access_check
 extern bool __access_error(unsigned long fsr, unsigned long vma_flags);
@@ -171,6 +172,8 @@ static inline bool spf_access_error(unsigned long fsr, unsigned long vma_flags)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 #endif /* !__ASSEMBLY__ */
 
 #define VM_DATA_DEFAULT_FLAGS \

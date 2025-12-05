@@ -372,7 +372,11 @@ repeat:
 	}
 
 	/* OK, account for the buffers that this operation expects to
+<<<<<<< HEAD
 	 * use and add the handle to the running transaction.
+=======
+	 * use and add the handle to the running transaction. 
+>>>>>>> v4.14.187
 	 */
 	update_t_max_wait(transaction, ts);
 	handle->h_transaction = transaction;
@@ -386,6 +390,7 @@ repeat:
 		  jbd2_log_space_left(journal));
 	read_unlock(&journal->j_state_lock);
 	current->journal_info = handle;
+<<<<<<< HEAD
 	/*
 	 * MTK WA:
 	 * Disable jbd2_handle lockdep checking
@@ -397,6 +402,10 @@ repeat:
 #if 0
 	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
 #endif
+=======
+
+	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
+>>>>>>> v4.14.187
 	jbd2_journal_free_transaction(new_transaction);
 	/*
 	 * Ensure that no allocations done while the transaction is open are
@@ -690,6 +699,7 @@ int jbd2__journal_restart(handle_t *handle, int nblocks, gfp_t gfp_mask)
 	read_unlock(&journal->j_state_lock);
 	if (need_to_start)
 		jbd2_log_start_commit(journal, tid);
+<<<<<<< HEAD
 	/*
 	 * MTK WA:
 	 * Disable jbd2_handle lockdep checking.
@@ -698,6 +708,10 @@ int jbd2__journal_restart(handle_t *handle, int nblocks, gfp_t gfp_mask)
 #if 0
 	rwsem_release(&journal->j_trans_commit_map, 1, _THIS_IP_);
 #endif
+=======
+
+	rwsem_release(&journal->j_trans_commit_map, 1, _THIS_IP_);
+>>>>>>> v4.14.187
 	handle->h_buffer_credits = nblocks;
 	/*
 	 * Restore the original nofs context because the journal restart
@@ -1797,6 +1811,7 @@ int jbd2_journal_stop(handle_t *handle)
 		if (journal->j_barrier_count)
 			wake_up(&journal->j_wait_transaction_locked);
 	}
+<<<<<<< HEAD
 	/*
 	 * MTK WA:
 	 * Disable jbd2_handle lockdep checking.
@@ -1805,6 +1820,11 @@ int jbd2_journal_stop(handle_t *handle)
 #if 0
 	rwsem_release(&journal->j_trans_commit_map, 1, _THIS_IP_);
 #endif
+=======
+
+	rwsem_release(&journal->j_trans_commit_map, 1, _THIS_IP_);
+
+>>>>>>> v4.14.187
 	if (wait_for_commit)
 		err = jbd2_log_wait_commit(journal, tid);
 
@@ -1922,7 +1942,11 @@ static void __jbd2_journal_temp_unlink_buffer(struct journal_head *jh)
 	if (transaction && is_journal_aborted(transaction->t_journal))
 		clear_buffer_jbddirty(bh);
 	else if (test_clear_buffer_jbddirty(bh))
+<<<<<<< HEAD
 		mark_buffer_dirty_sync(bh);	/* Expose it to the VM */
+=======
+		mark_buffer_dirty(bh);	/* Expose it to the VM */
+>>>>>>> v4.14.187
 }
 
 /*

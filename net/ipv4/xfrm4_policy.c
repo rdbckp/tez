@@ -103,7 +103,10 @@ static int xfrm4_fill_dst(struct xfrm_dst *xdst, struct net_device *dev,
 	xdst->u.rt.rt_mtu_locked = rt->rt_mtu_locked;
 	xdst->u.rt.rt_table_id = rt->rt_table_id;
 	INIT_LIST_HEAD(&xdst->u.rt.rt_uncached);
+<<<<<<< HEAD
 	rt_add_uncached_list(&xdst->u.rt);
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -246,8 +249,12 @@ static void xfrm4_dst_destroy(struct dst_entry *dst)
 	struct xfrm_dst *xdst = (struct xfrm_dst *)dst;
 
 	dst_destroy_metrics_generic(dst);
+<<<<<<< HEAD
 	if (xdst->u.rt.rt_uncached_list)
 		rt_del_uncached_list(&xdst->u.rt);
+=======
+
+>>>>>>> v4.14.187
 	xfrm_dst_destroy(xdst);
 }
 

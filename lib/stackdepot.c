@@ -69,7 +69,10 @@ struct stack_record {
 	struct stack_record *next;	/* Link in the hashtable */
 	u32 hash;			/* Hash in the hastable */
 	u32 size;			/* Number of frames in the stack */
+<<<<<<< HEAD
 	u32 hit;
+=======
+>>>>>>> v4.14.187
 	union handle_parts handle;
 	unsigned long entries[1];	/* Variable-sized array of entries. */
 };
@@ -80,9 +83,12 @@ static int depot_index;
 static int next_slab_inited;
 static size_t depot_offset;
 static DEFINE_SPINLOCK(depot_lock);
+<<<<<<< HEAD
 static struct stack_record *max_found;
 static DEFINE_SPINLOCK(max_found_lock);
 
+=======
+>>>>>>> v4.14.187
 
 static bool init_stack_slab(void **prealloc)
 {
@@ -145,7 +151,10 @@ static struct stack_record *depot_alloc_stack(unsigned long *entries, int size,
 
 	stack->hash = hash;
 	stack->size = size;
+<<<<<<< HEAD
 	stack->hit = 0;
+=======
+>>>>>>> v4.14.187
 	stack->handle.slabindex = depot_index;
 	stack->handle.offset = depot_offset >> STACK_ALLOC_ALIGN;
 	stack->handle.valid = 1;
@@ -203,6 +212,7 @@ void depot_fetch_stack(depot_stack_handle_t handle, struct stack_trace *trace)
 }
 EXPORT_SYMBOL_GPL(depot_fetch_stack);
 
+<<<<<<< HEAD
 void depot_hit_stack(depot_stack_handle_t handle, struct stack_trace *trace,
 		int cnt)
 {
@@ -238,6 +248,8 @@ void show_max_hit_page(void)
 }
 EXPORT_SYMBOL_GPL(show_max_hit_page);
 
+=======
+>>>>>>> v4.14.187
 /**
  * depot_save_stack - save stack in a stack depot.
  * @trace - the stacktrace to save.

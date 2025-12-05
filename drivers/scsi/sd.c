@@ -44,7 +44,10 @@
 #include <linux/interrupt.h>
 #include <linux/init.h>
 #include <linux/blkdev.h>
+<<<<<<< HEAD
 #include <linux/backing-dev.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/blkpg.h>
 #include <linux/delay.h>
 #include <linux/mutex.h>
@@ -72,8 +75,11 @@
 #include "scsi_priv.h"
 #include "scsi_logging.h"
 
+<<<<<<< HEAD
 #include "../../block/blk.h"
 
+=======
+>>>>>>> v4.14.187
 MODULE_AUTHOR("Eric Youngdale");
 MODULE_DESCRIPTION("SCSI disk (sd) driver");
 MODULE_LICENSE("GPL");
@@ -790,7 +796,10 @@ static int sd_setup_unmap_cmnd(struct scsi_cmnd *cmd)
 	cmd->allowed = SD_MAX_RETRIES;
 	cmd->transfersize = data_len;
 	rq->timeout = SD_TIMEOUT;
+<<<<<<< HEAD
 
+=======
+>>>>>>> v4.14.187
 	scsi_req(rq)->resid_len = data_len;
 
 	return scsi_init_io(cmd);
@@ -1591,6 +1600,7 @@ static unsigned int sd_check_events(struct gendisk *disk, unsigned int clearing)
 	if (scsi_block_when_processing_errors(sdp)) {
 		struct scsi_sense_hdr sshdr = { 0, };
 
+<<<<<<< HEAD
 		/*
 		 * It may cause some issue when sending test unit ready
 		 * while suspending. So get and put pm_runtime before
@@ -1606,6 +1616,11 @@ static unsigned int sd_check_events(struct gendisk *disk, unsigned int clearing)
 
 		scsi_autopm_put_device(sdp);
 
+=======
+		retval = scsi_test_unit_ready(sdp, SD_TIMEOUT, SD_MAX_RETRIES,
+					      &sshdr);
+
+>>>>>>> v4.14.187
 		/* failed to execute TUR, assume media not present */
 		if (host_byte(retval)) {
 			set_media_not_present(sdkp);
@@ -1668,6 +1683,7 @@ static int sd_sync_cache(struct scsi_disk *sdkp, struct scsi_sense_hdr *sshdr)
 	if (res) {
 		sd_print_result(sdkp, "Synchronize Cache(10) failed", res);
 
+<<<<<<< HEAD
 		/*
 		 * MTK PATCH
 		 * pass the error code to the
@@ -1676,6 +1692,8 @@ static int sd_sync_cache(struct scsi_disk *sdkp, struct scsi_sense_hdr *sshdr)
 		if (res == -EAGAIN)
 			return res;
 
+=======
+>>>>>>> v4.14.187
 		if (driver_byte(res) & DRIVER_SENSE)
 			sd_print_sense_hdr(sdkp, sshdr);
 
@@ -2847,10 +2865,13 @@ sd_read_cache_type(struct scsi_disk *sdkp, unsigned char *buffer)
 		if (sdkp->WCE && sdkp->write_prot)
 			sdkp->WCE = 0;
 
+<<<<<<< HEAD
 		/* No cache flush allowed for UFS well-known LU */
 		if (sdkp->WCE && (sdp->bootlunID == 1 || sdp->bootlunID == 2))
 			sdkp->WCE = 0;
 
+=======
+>>>>>>> v4.14.187
 		if (sdkp->first_scan || old_wce != sdkp->WCE ||
 		    old_rcd != sdkp->RCD || old_dpofua != sdkp->DPOFUA)
 			sd_printk(KERN_NOTICE, sdkp,
@@ -3238,17 +3259,25 @@ static int sd_revalidate_disk(struct gendisk *disk)
 	q->limits.max_dev_sectors = logical_to_sectors(sdp, dev_max);
 
 	if (sd_validate_opt_xfer_size(sdkp, dev_max)) {
+<<<<<<< HEAD
 		rw_max = q->limits.io_opt =
 			sdkp->opt_xfer_blocks * sdp->sector_size;
+=======
+		q->limits.io_opt = logical_to_bytes(sdp, sdkp->opt_xfer_blocks);
+		rw_max = logical_to_sectors(sdp, sdkp->opt_xfer_blocks);
+>>>>>>> v4.14.187
 	} else {
 		q->limits.io_opt = 0;
 		rw_max = min_not_zero(logical_to_sectors(sdp, dev_max),
 				      (sector_t)BLK_DEF_MAX_SECTORS);
 	}
 
+<<<<<<< HEAD
 	/* IOPP-max_sectors-v1.0.4.14 */
 	rw_max = max(rw_max, (unsigned int)BLK_DEF_MAX_SECTORS);
 
+=======
+>>>>>>> v4.14.187
 	/* Do not exceed controller limit */
 	rw_max = min(rw_max, queue_max_hw_sectors(q));
 
@@ -3381,6 +3410,7 @@ static void sd_probe_async(void *data, async_cookie_t cookie)
 	}
 
 	blk_pm_runtime_init(sdp->request_queue, dev);
+<<<<<<< HEAD
 
 	/*
 	 * MTK PATCH:
@@ -3392,6 +3422,8 @@ static void sd_probe_async(void *data, async_cookie_t cookie)
 	if (sdp->autosuspend_delay >= 0)
 		pm_runtime_set_autosuspend_delay(dev, sdp->autosuspend_delay);
 
+=======
+>>>>>>> v4.14.187
 	device_add_disk(dev, gd);
 	if (sdkp->capacity)
 		sd_dif_config_host(sdkp);
@@ -3480,8 +3512,11 @@ static int sd_probe(struct device *dev)
 		goto out_free_index;
 	}
 
+<<<<<<< HEAD
 	sdp->host->medium_err_cnt = 0;
 	sdp->host->hw_err_cnt = 0;
+=======
+>>>>>>> v4.14.187
 	sdkp->device = sdp;
 	sdkp->driver = &sd_template;
 	sdkp->disk = gd;
@@ -3497,6 +3532,7 @@ static int sd_probe(struct device *dev)
 					     SD_MOD_TIMEOUT);
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_SCSI_UFSHCD
 	if (!sdp->host->by_ufs) {
 #else
@@ -3526,6 +3562,8 @@ static int sd_probe(struct device *dev)
 			q->backing_dev_info->ra_pages * 4);
 	}
 
+=======
+>>>>>>> v4.14.187
 	device_initialize(&sdkp->dev);
 	sdkp->dev.parent = dev;
 	sdkp->dev.class = &sd_disk_class;
@@ -3572,6 +3610,7 @@ static int sd_remove(struct device *dev)
 	struct scsi_disk *sdkp;
 	dev_t devt;
 
+<<<<<<< HEAD
 #ifdef CONFIG_LARGE_DIRTY_BUFFER
 	struct scsi_device *sdp;
 
@@ -3583,6 +3622,8 @@ static int sd_remove(struct device *dev)
 	}
 #endif
 
+=======
+>>>>>>> v4.14.187
 	sdkp = dev_get_drvdata(dev);
 	devt = disk_devt(sdkp->disk);
 	scsi_autopm_get_device(sdkp->device);
@@ -3665,6 +3706,7 @@ static int sd_start_stop_device(struct scsi_disk *sdkp, int start)
 			SD_TIMEOUT, SD_MAX_RETRIES, 0, RQF_PM, NULL);
 	if (res) {
 		sd_print_result(sdkp, "Start/Stop Unit failed", res);
+<<<<<<< HEAD
 
 		/*
 		 * MTK PATCH
@@ -3674,6 +3716,8 @@ static int sd_start_stop_device(struct scsi_disk *sdkp, int start)
 		if (res == -EAGAIN)
 			return res;
 
+=======
+>>>>>>> v4.14.187
 		if (driver_byte(res) & DRIVER_SENSE)
 			sd_print_sense_hdr(sdkp, &sshdr);
 		if (scsi_sense_valid(&sshdr) &&
@@ -3697,9 +3741,12 @@ static int sd_start_stop_device(struct scsi_disk *sdkp, int start)
 static void sd_shutdown(struct device *dev)
 {
 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	struct scsi_device *sdp = to_scsi_device(dev);
 	struct request_queue *q = sdp->request_queue;
 	unsigned long flags;
+=======
+>>>>>>> v4.14.187
 
 	if (!sdkp)
 		return;         /* this can happen */
@@ -3716,6 +3763,7 @@ static void sd_shutdown(struct device *dev)
 		sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
 		sd_start_stop_device(sdkp, 0);
 	}
+<<<<<<< HEAD
 
 	if (sdp->host->by_ufs) {
 		spin_lock_irqsave(q->queue_lock, flags);
@@ -3724,12 +3772,18 @@ static void sd_shutdown(struct device *dev)
 		queue_flag_set(QUEUE_FLAG_DEAD, q);
 		spin_unlock_irqrestore(q->queue_lock, flags);
 	}
+=======
+>>>>>>> v4.14.187
 }
 
 static int sd_suspend_common(struct device *dev, bool ignore_stop_errors)
 {
 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	struct scsi_sense_hdr sshdr = {0};
+=======
+	struct scsi_sense_hdr sshdr;
+>>>>>>> v4.14.187
 	int ret = 0;
 
 	if (!sdkp)	/* E.g.: runtime suspend following sd_remove() */

@@ -385,7 +385,11 @@ int drm_mode_rmfb(struct drm_device *dev,
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	fb = drm_framebuffer_lookup(dev, file_priv, *id);
+=======
+	fb = drm_framebuffer_lookup(dev, *id);
+>>>>>>> v4.14.187
 	if (!fb)
 		return -ENOENT;
 
@@ -454,7 +458,11 @@ int drm_mode_getfb(struct drm_device *dev,
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	fb = drm_framebuffer_lookup(dev, file_priv, r->fb_id);
+=======
+	fb = drm_framebuffer_lookup(dev, r->fb_id);
+>>>>>>> v4.14.187
 	if (!fb)
 		return -ENOENT;
 
@@ -526,7 +534,11 @@ int drm_mode_dirtyfb_ioctl(struct drm_device *dev,
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	fb = drm_framebuffer_lookup(dev, file_priv, r->fb_id);
+=======
+	fb = drm_framebuffer_lookup(dev, r->fb_id);
+>>>>>>> v4.14.187
 	if (!fb)
 		return -ENOENT;
 
@@ -699,13 +711,20 @@ EXPORT_SYMBOL(drm_framebuffer_init);
  * again, using drm_framebuffer_put().
  */
 struct drm_framebuffer *drm_framebuffer_lookup(struct drm_device *dev,
+<<<<<<< HEAD
 					       struct drm_file *file_priv,
+=======
+>>>>>>> v4.14.187
 					       uint32_t id)
 {
 	struct drm_mode_object *obj;
 	struct drm_framebuffer *fb = NULL;
 
+<<<<<<< HEAD
 	obj = __drm_mode_object_find(dev, file_priv, id, DRM_MODE_OBJECT_FB);
+=======
+	obj = __drm_mode_object_find(dev, id, DRM_MODE_OBJECT_FB);
+>>>>>>> v4.14.187
 	if (obj)
 		fb = obj_to_fb(obj);
 	return fb;

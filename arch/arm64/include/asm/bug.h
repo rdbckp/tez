@@ -31,7 +31,10 @@
 } while (0)
 
 #define __WARN_FLAGS(flags) __BUG_FLAGS(BUGFLAG_WARNING|(flags))
+<<<<<<< HEAD
 #undef __WARN_FLAGS
+=======
+>>>>>>> v4.14.187
 
 #define HAVE_ARCH_BUG
 

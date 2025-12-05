@@ -75,6 +75,7 @@ module_param(lock_stat, int, 0644);
 #define lock_stat 0
 #endif
 
+<<<<<<< HEAD
 #ifdef MTK_LOCK_DEBUG_NEW_DEPENDENCY
 //#define MTK_LOCK_DEBUG_NEW_DEPENDENCY_AEE
 /*
@@ -263,6 +264,8 @@ static void lock_mon_msg(char *buf, int out)
 
 static void lockdep_aee(void);
 
+=======
+>>>>>>> v4.14.187
 /*
  * lockdep_lock: protects the lockdep graph, the hashes and the
  *               class/list/hash allocators.
@@ -615,7 +618,10 @@ static int save_trace(struct stack_trace *trace)
 
 		print_lockdep_off("BUG: MAX_STACK_TRACE_ENTRIES too low!");
 		dump_stack();
+<<<<<<< HEAD
 		lockdep_aee();
+=======
+>>>>>>> v4.14.187
 
 		return 0;
 	}
@@ -663,6 +669,7 @@ static inline unsigned long lock_flag(enum lock_usage_bit bit)
 	return 1UL << bit;
 }
 
+<<<<<<< HEAD
 #ifdef MTK_LOCK_DEBUG_NEW_DEPENDENCY
 static int check_lock_name(struct lock_class *class, const char *lock_name)
 {
@@ -693,6 +700,8 @@ static int check_lock_name(struct lock_class *class, const char *lock_name)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static char get_usage_char(struct lock_class *class, enum lock_usage_bit bit)
 {
 	char c = '.';
@@ -779,6 +788,7 @@ static void print_lock(struct held_lock *hlock)
 	}
 
 	print_lock_name(lock_classes + class_idx - 1);
+<<<<<<< HEAD
 	pr_cont(", at: [<%p>] %pS from [%lld.%06lu]\n",
 		(void *)hlock->acquire_ip, (void *)hlock->acquire_ip,
 		sec_high(hlock->timestamp), sec_low(hlock->timestamp));
@@ -817,17 +827,25 @@ void held_lock_show_trace(struct stack_trace *trace, int output)
 		lock_mon_msg(buf, output);
 	}
 #endif
+=======
+	printk(KERN_CONT ", at: [<%p>] %pS\n",
+		(void *)hlock->acquire_ip, (void *)hlock->acquire_ip);
+>>>>>>> v4.14.187
 }
 
 static void lockdep_print_held_locks(struct task_struct *curr)
 {
 	int i, depth = curr->lockdep_depth;
+<<<<<<< HEAD
 	struct held_lock *hlock;
+=======
+>>>>>>> v4.14.187
 
 	if (!depth) {
 		printk("no locks held by %s/%d.\n", curr->comm, task_pid_nr(curr));
 		return;
 	}
+<<<<<<< HEAD
 	pr_info("%d lock%s held by %s/%d/[%ld] on CPU#%d:\n",
 		depth, depth > 1 ? "s" : "", curr->comm,
 		curr->pid, curr->state, task_cpu(curr));
@@ -838,6 +856,14 @@ static void lockdep_print_held_locks(struct task_struct *curr)
 		print_lock(hlock + i);
 		/* MTK_LOCK_DEBUG_HELD_LOCK */
 		held_lock_show_trace(&(hlock + i)->trace, TO_KERNEL_LOG);
+=======
+	printk("%d lock%s held by %s/%d:\n",
+		depth, depth > 1 ? "s" : "", curr->comm, task_pid_nr(curr));
+
+	for (i = 0; i < depth; i++) {
+		printk(" #%d: ", i);
+		print_lock(curr->held_locks + i);
+>>>>>>> v4.14.187
 	}
 }
 
@@ -931,7 +957,10 @@ look_up_lock_class(struct lockdep_map *lock, unsigned int subclass)
 		printk(KERN_ERR
 			"turning off the locking correctness validator.\n");
 		dump_stack();
+<<<<<<< HEAD
 		lockdep_aee();
+=======
+>>>>>>> v4.14.187
 		return NULL;
 	}
 
@@ -1027,7 +1056,10 @@ register_lock_class(struct lockdep_map *lock, unsigned int subclass, int force)
 		printk("the code is fine but needs lockdep annotation.\n");
 		printk("turning off the locking correctness validator.\n");
 		dump_stack();
+<<<<<<< HEAD
 		lockdep_aee();
+=======
+>>>>>>> v4.14.187
 		return NULL;
 	}
 
@@ -1123,8 +1155,11 @@ static struct lock_list *alloc_list_entry(void)
 
 		print_lockdep_off("BUG: MAX_LOCKDEP_ENTRIES too low!");
 		dump_stack();
+<<<<<<< HEAD
 		lockdep_aee();
 
+=======
+>>>>>>> v4.14.187
 		return NULL;
 	}
 	return list_entries + nr_list_entries++;
@@ -1473,8 +1508,11 @@ print_circular_bug_header(struct lock_list *entry, unsigned int depth,
 
 	print_circular_bug_entry(entry, depth);
 
+<<<<<<< HEAD
 	lockdep_aee();
 
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -1494,12 +1532,15 @@ static noinline int print_circular_bug(struct lock_list *this,
 	struct lock_list *first_parent;
 	int depth;
 
+<<<<<<< HEAD
 	if (is_log_lock_held(current)) {
 		tracing_on();
 		trace_circular_bug(this, target, check_src, check_tgt, trace);
 		return 0;
 	}
 
+=======
+>>>>>>> v4.14.187
 	if (!debug_locks_off_graph_unlock() || debug_locks_silent)
 		return 0;
 
@@ -1879,7 +1920,10 @@ print_bad_irq_dependency(struct task_struct *curr,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -2071,7 +2115,10 @@ print_deadlock_bug(struct task_struct *curr, struct held_lock *prev,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -2244,6 +2291,7 @@ check_prev_add(struct task_struct *curr, struct held_lock *prev,
 	if (!ret)
 		return 0;
 
+<<<<<<< HEAD
 #ifdef MTK_LOCK_DEBUG_NEW_DEPENDENCY
 	if (check_lock_name(hlock_class(prev), PREV_LOCK_NAME) &&
 		check_lock_name(hlock_class(next), NEXT_LOCK_NAME)) {
@@ -2272,6 +2320,8 @@ check_prev_add(struct task_struct *curr, struct held_lock *prev,
 	}
 #endif
 
+=======
+>>>>>>> v4.14.187
 	return 2;
 }
 
@@ -2889,7 +2939,10 @@ print_usage_bug(struct task_struct *curr, struct held_lock *this,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -2971,7 +3024,10 @@ print_irq_inversion_bug(struct task_struct *curr,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -3238,7 +3294,10 @@ EXPORT_SYMBOL(trace_hardirqs_on_caller);
 
 void trace_hardirqs_on(void)
 {
+<<<<<<< HEAD
 	trace_hardirqs_on_time();
+=======
+>>>>>>> v4.14.187
 	trace_hardirqs_on_caller(CALLER_ADDR0);
 }
 EXPORT_SYMBOL(trace_hardirqs_on);
@@ -3278,7 +3337,10 @@ EXPORT_SYMBOL(trace_hardirqs_off_caller);
 void trace_hardirqs_off(void)
 {
 	trace_hardirqs_off_caller(CALLER_ADDR0);
+<<<<<<< HEAD
 	trace_hardirqs_off_time();
+=======
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL(trace_hardirqs_off);
 
@@ -3565,7 +3627,10 @@ static void __lockdep_init_map(struct lockdep_map *lock, const char *name,
 		 * What it says above ^^^^^, I suggest you read it.
 		 */
 		DEBUG_LOCKS_WARN_ON(1);
+<<<<<<< HEAD
 		lockdep_aee();
+=======
+>>>>>>> v4.14.187
 		return;
 	}
 	lock->key = key;
@@ -3638,7 +3703,10 @@ print_lock_nested_lock_not_held(struct task_struct *curr,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -3663,12 +3731,17 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
 	u64 chain_key;
 	int ret;
 
+<<<<<<< HEAD
 	if (unlikely(!debug_locks)) {
 		__add_held_lock(lock, subclass, trylock, read, check,
 				hardirqs_off, nest_lock, ip,
 				references, pin_count);
 		return 0;
 	}
+=======
+	if (unlikely(!debug_locks))
+		return 0;
+>>>>>>> v4.14.187
 
 	/*
 	 * Lockdep should run with IRQs disabled, otherwise we could
@@ -3757,6 +3830,7 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
 #endif
 	hlock->pin_count = pin_count;
 
+<<<<<<< HEAD
 	/* MTK_LOCK_DEBUG_HELD_LOCK */
 	held_lock_save_trace(&hlock->trace, hlock->entries);
 
@@ -3764,6 +3838,8 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
 	hlock->timestamp = sched_clock();
 	hlock->acquired = true;
 
+=======
+>>>>>>> v4.14.187
 	if (check && !mark_irqflags(curr, hlock))
 		return 0;
 
@@ -3869,7 +3945,10 @@ print_unlock_imbalance_bug(struct task_struct *curr, struct lockdep_map *lock,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -4061,10 +4140,15 @@ __lock_release(struct lockdep_map *lock, int nested, unsigned long ip)
 	unsigned int depth;
 	int ret, i;
 
+<<<<<<< HEAD
 	if (unlikely(!debug_locks)) {
 		__remove_held_lock(lock, nested, ip);
 		return 0;
 	}
+=======
+	if (unlikely(!debug_locks))
+		return 0;
+>>>>>>> v4.14.187
 
 	ret = lock_release_crosslock(lock);
 	/*
@@ -4079,8 +4163,13 @@ __lock_release(struct lockdep_map *lock, int nested, unsigned long ip)
 	 * So we're all set to release this lock.. wait what lock? We don't
 	 * own any locks, you've been drinking again?
 	 */
+<<<<<<< HEAD
 	if (depth <= 0)
 		return print_unlock_imbalance_bug(curr, lock, ip);
+=======
+	if (DEBUG_LOCKS_WARN_ON(depth <= 0))
+		 return print_unlock_imbalance_bug(curr, lock, ip);
+>>>>>>> v4.14.187
 
 	/*
 	 * Check whether the lock exists in the current stack
@@ -4093,9 +4182,12 @@ __lock_release(struct lockdep_map *lock, int nested, unsigned long ip)
 	if (hlock->instance == lock)
 		lock_release_holdtime(hlock);
 
+<<<<<<< HEAD
 	/* MTK_LOCK_MONITOR */
 	hlock->timestamp = 0;
 
+=======
+>>>>>>> v4.14.187
 	WARN(hlock->pin_count, "releasing a pinned lock\n");
 
 	if (hlock->references) {
@@ -4446,7 +4538,10 @@ print_lock_contention_bug(struct task_struct *curr, struct lockdep_map *lock,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -4491,9 +4586,12 @@ __lock_contended(struct lockdep_map *lock, unsigned long ip)
 	if (lock->cpu != smp_processor_id())
 		stats->bounces[bounce_contended + !!hlock->read]++;
 	put_lock_stats(stats);
+<<<<<<< HEAD
 #ifdef MTK_LOCK_MONITOR
 	hlock->acquired = false;
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 static void
@@ -4545,16 +4643,23 @@ __lock_acquired(struct lockdep_map *lock, unsigned long ip)
 
 	lock->cpu = cpu;
 	lock->ip = ip;
+<<<<<<< HEAD
 #ifdef MTK_LOCK_MONITOR
 	hlock->acquired = true;
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 void lock_contended(struct lockdep_map *lock, unsigned long ip)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (unlikely(!lock_stat || !debug_locks) && !lock_mon_enabled())
+=======
+	if (unlikely(!lock_stat || !debug_locks))
+>>>>>>> v4.14.187
 		return;
 
 	if (unlikely(current->lockdep_recursion))
@@ -4574,7 +4679,11 @@ void lock_acquired(struct lockdep_map *lock, unsigned long ip)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (unlikely(!lock_stat || !debug_locks) && !lock_mon_enabled())
+=======
+	if (unlikely(!lock_stat || !debug_locks))
+>>>>>>> v4.14.187
 		return;
 
 	if (unlikely(current->lockdep_recursion))
@@ -4588,6 +4697,7 @@ void lock_acquired(struct lockdep_map *lock, unsigned long ip)
 	raw_local_irq_restore(flags);
 }
 EXPORT_SYMBOL_GPL(lock_acquired);
+<<<<<<< HEAD
 #elif defined(MTK_LOCK_MONITOR)
 static void
 set_acquired(struct lockdep_map *lock, unsigned long ip, bool acquired)
@@ -4638,6 +4748,8 @@ void lock_acquired(struct lockdep_map *lock, unsigned long ip)
 #else
 void lock_contended(struct lockdep_map *lock, unsigned long ip) {}
 void lock_acquired(struct lockdep_map *lock, unsigned long ip) {}
+=======
+>>>>>>> v4.14.187
 #endif
 
 /*
@@ -4843,7 +4955,10 @@ print_freed_lock_bug(struct task_struct *curr, const void *mem_from,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 }
 
 static inline int not_in_range(const void* mem_from, unsigned long mem_len,
@@ -4899,7 +5014,10 @@ static void print_held_locks_bug(void)
 	lockdep_print_held_locks(current);
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 }
 
 void debug_check_no_locks_held(void)
@@ -4916,7 +5034,11 @@ void debug_show_all_locks(void)
 	int count = 10;
 	int unlock = 1;
 
+<<<<<<< HEAD
 	if (unlikely(!debug_locks) && !lock_mon_enabled()) {
+=======
+	if (unlikely(!debug_locks)) {
+>>>>>>> v4.14.187
 		pr_warn("INFO: lockdep is turned off.\n");
 		return;
 	}
@@ -4949,6 +5071,7 @@ retry:
 		/*
 		 * It's not reliable to print a task's held locks
 		 * if it's not sleeping (or if it's not the current
+<<<<<<< HEAD
 		 * task). But we still think the information from
 		 * non-sleeping tasks are valuable.
 		 */
@@ -4956,6 +5079,12 @@ retry:
 		if (p->state == TASK_RUNNING && p != current)
 			continue;
 #endif
+=======
+		 * task):
+		 */
+		if (p->state == TASK_RUNNING && p != current)
+			continue;
+>>>>>>> v4.14.187
 		if (p->lockdep_depth)
 			lockdep_print_held_locks(p);
 		if (!unlock)
@@ -4978,7 +5107,11 @@ EXPORT_SYMBOL_GPL(debug_show_all_locks);
  */
 void debug_show_held_locks(struct task_struct *task)
 {
+<<<<<<< HEAD
 	if (unlikely(!debug_locks) && !lock_mon_enabled()) {
+=======
+	if (unlikely(!debug_locks)) {
+>>>>>>> v4.14.187
 		printk("INFO: lockdep is turned off.\n");
 		return;
 	}
@@ -4993,7 +5126,10 @@ asmlinkage __visible void lockdep_sys_exit(void)
 	if (unlikely(curr->lockdep_depth)) {
 		if (!debug_locks_off())
 			return;
+<<<<<<< HEAD
 
+=======
+>>>>>>> v4.14.187
 		pr_warn("\n");
 		pr_warn("================================================\n");
 		pr_warn("WARNING: lock held when returning to user space!\n");
@@ -5002,7 +5138,10 @@ asmlinkage __visible void lockdep_sys_exit(void)
 		pr_warn("%s/%d is leaving the kernel with locks still held!\n",
 				curr->comm, curr->pid);
 		lockdep_print_held_locks(curr);
+<<<<<<< HEAD
 		lockdep_aee();
+=======
+>>>>>>> v4.14.187
 	}
 
 	/*
@@ -5016,9 +5155,12 @@ void lockdep_rcu_suspicious(const char *file, const int line, const char *s)
 {
 	struct task_struct *curr = current;
 
+<<<<<<< HEAD
 	if (!debug_locks_off())
 		return;
 
+=======
+>>>>>>> v4.14.187
 	/* Note: the following can be executed concurrently, so be careful. */
 	pr_warn("\n");
 	pr_warn("=============================\n");
@@ -5034,8 +5176,11 @@ void lockdep_rcu_suspicious(const char *file, const int line, const char *s)
 				? "RCU used illegally from idle CPU!\n"
 				: "",
 	       rcu_scheduler_active, debug_locks);
+<<<<<<< HEAD
 	pr_info("cpu_id = %d, cpu_is_offline = %ld\n",
 		raw_smp_processor_id(), cpu_is_offline(raw_smp_processor_id()));
+=======
+>>>>>>> v4.14.187
 
 	/*
 	 * If a CPU is in the RCU-free window in idle (ie: in the section
@@ -5061,7 +5206,10 @@ void lockdep_rcu_suspicious(const char *file, const int line, const char *s)
 	lockdep_print_held_locks(curr);
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
+<<<<<<< HEAD
 	lockdep_aee();
+=======
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL_GPL(lockdep_rcu_suspicious);
 
@@ -5550,6 +5698,7 @@ void lockdep_free_task(struct task_struct *task)
 	}
 }
 #endif
+<<<<<<< HEAD
 
 #if defined(CONFIG_PROVE_LOCKING) || defined(MTK_LOCK_MONITOR)
 static void get_lock_name(struct lock_class *class, char name[MAX_LOCK_NAME])
@@ -6583,3 +6732,5 @@ static void lockdep_aee(void)
 #else
 static void lockdep_aee(void) {};
 #endif
+=======
+>>>>>>> v4.14.187

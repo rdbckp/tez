@@ -88,11 +88,17 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
 
 	if (skb->encapsulation &&
 	    skb_shinfo(skb)->gso_type & (SKB_GSO_IPXIP4 | SKB_GSO_IPXIP6))
+<<<<<<< HEAD
 		udpfrag = proto == IPPROTO_UDP && encap &&
 			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP);
 	else
 		udpfrag = proto == IPPROTO_UDP && !skb->encapsulation &&
 			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP);
+=======
+		udpfrag = proto == IPPROTO_UDP && encap;
+	else
+		udpfrag = proto == IPPROTO_UDP && !skb->encapsulation;
+>>>>>>> v4.14.187
 
 	ops = rcu_dereference(inet6_offloads[proto]);
 	if (likely(ops && ops->callbacks.gso_segment)) {
@@ -164,11 +170,19 @@ static int ipv6_exthdrs_len(struct ipv6hdr *iph,
 	return len;
 }
 
+<<<<<<< HEAD
 static struct sk_buff *ipv6_gro_receive(struct list_head *head,
 					struct sk_buff *skb)
 {
 	const struct net_offload *ops;
 	struct sk_buff *pp = NULL;
+=======
+static struct sk_buff **ipv6_gro_receive(struct sk_buff **head,
+					 struct sk_buff *skb)
+{
+	const struct net_offload *ops;
+	struct sk_buff **pp = NULL;
+>>>>>>> v4.14.187
 	struct sk_buff *p;
 	struct ipv6hdr *iph;
 	unsigned int nlen;
@@ -215,7 +229,11 @@ static struct sk_buff *ipv6_gro_receive(struct list_head *head,
 	flush--;
 	nlen = skb_network_header_len(skb);
 
+<<<<<<< HEAD
 	list_for_each_entry(p, head, list) {
+=======
+	for (p = *head; p; p = p->next) {
+>>>>>>> v4.14.187
 		const struct ipv6hdr *iph2;
 		__be32 first_word; /* <Version:4><Traffic_Class:8><Flow_Label:20> */
 
@@ -264,8 +282,13 @@ out:
 	return pp;
 }
 
+<<<<<<< HEAD
 static struct sk_buff *sit_ip6ip6_gro_receive(struct list_head *head,
 					      struct sk_buff *skb)
+=======
+static struct sk_buff **sit_ip6ip6_gro_receive(struct sk_buff **head,
+					       struct sk_buff *skb)
+>>>>>>> v4.14.187
 {
 	/* Common GRO receive for SIT and IP6IP6 */
 
@@ -279,8 +302,13 @@ static struct sk_buff *sit_ip6ip6_gro_receive(struct list_head *head,
 	return ipv6_gro_receive(head, skb);
 }
 
+<<<<<<< HEAD
 static struct sk_buff *ip4ip6_gro_receive(struct list_head *head,
 					  struct sk_buff *skb)
+=======
+static struct sk_buff **ip4ip6_gro_receive(struct sk_buff **head,
+					   struct sk_buff *skb)
+>>>>>>> v4.14.187
 {
 	/* Common GRO receive for SIT and IP6IP6 */
 

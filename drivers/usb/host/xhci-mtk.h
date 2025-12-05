@@ -132,8 +132,11 @@ struct xhci_hcd_mtk {
 	int num_phys;
 	int wakeup_src;
 	bool lpm_support;
+<<<<<<< HEAD
 	struct dentry *debugfs_root;
 	int last_speed;
+=======
+>>>>>>> v4.14.187
 };
 
 static inline struct xhci_hcd_mtk *hcd_to_mtk(struct usb_hcd *hcd)
@@ -141,9 +144,12 @@ static inline struct xhci_hcd_mtk *hcd_to_mtk(struct usb_hcd *hcd)
 	return dev_get_drvdata(hcd->self.controller);
 }
 
+<<<<<<< HEAD
 int mtk_xhci_wakelock_lock(struct xhci_hcd_mtk *mtk);
 int mtk_xhci_wakelock_unlock(struct xhci_hcd_mtk *mtk);
 
+=======
+>>>>>>> v4.14.187
 #if IS_ENABLED(CONFIG_USB_XHCI_MTK)
 int xhci_mtk_sch_init(struct xhci_hcd_mtk *mtk);
 void xhci_mtk_sch_exit(struct xhci_hcd_mtk *mtk);
@@ -151,8 +157,11 @@ int xhci_mtk_add_ep_quirk(struct usb_hcd *hcd, struct usb_device *udev,
 		struct usb_host_endpoint *ep);
 void xhci_mtk_drop_ep_quirk(struct usb_hcd *hcd, struct usb_device *udev,
 		struct usb_host_endpoint *ep);
+<<<<<<< HEAD
 void xhci_mtk_set_port_mode(struct usb_hcd *hcd, __le32 __iomem **port_array,
 				int port_id);
+=======
+>>>>>>> v4.14.187
 
 #else
 static inline int xhci_mtk_add_ep_quirk(struct usb_hcd *hcd,
@@ -166,6 +175,7 @@ static inline void xhci_mtk_drop_ep_quirk(struct usb_hcd *hcd,
 {
 }
 
+<<<<<<< HEAD
 static inline void xhci_mtk_set_port_mode(struct usb_hcd *hcd,
 	__le32 __iomem **port_array, int port_id)
 {
@@ -217,6 +227,8 @@ void *mtk_usb_alloc_sram(unsigned int id, size_t size, dma_addr_t *dma);
 void mtk_usb_free_sram(unsigned int id);
 void xhci_mtk_allow_sleep(unsigned int sleep_ms, int speed);
 void xhci_mtk_set_sleep(bool enable);
+=======
+>>>>>>> v4.14.187
 #endif
 
 #endif		/* _XHCI_MTK_H_ */

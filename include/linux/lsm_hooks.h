@@ -1170,11 +1170,16 @@
  *
  * @binder_set_context_mgr:
  *	Check whether @mgr is allowed to be the binder context manager.
+<<<<<<< HEAD
  *	@mgr contains the struct cred for the current binder process.
+=======
+ *	@mgr contains the task_struct for the task being registered.
+>>>>>>> v4.14.187
  *	Return 0 if permission is granted.
  * @binder_transaction:
  *	Check whether @from is allowed to invoke a binder transaction call
  *	to @to.
+<<<<<<< HEAD
  *	@from contains the struct cred for the sending process.
  *	@to contains the struct cred for the receiving process.
  * @binder_transfer_binder:
@@ -1186,6 +1191,19 @@
  *	@from contains the struct cred for the sending process.
  *	@file contains the struct file being transferred.
  *	@to contains the struct cred for the receiving process.
+=======
+ *	@from contains the task_struct for the sending task.
+ *	@to contains the task_struct for the receiving task.
+ * @binder_transfer_binder:
+ *	Check whether @from is allowed to transfer a binder reference to @to.
+ *	@from contains the task_struct for the sending task.
+ *	@to contains the task_struct for the receiving task.
+ * @binder_transfer_file:
+ *	Check whether @from is allowed to transfer @file to @to.
+ *	@from contains the task_struct for the sending task.
+ *	@file contains the struct file being transferred.
+ *	@to contains the task_struct for the receiving task.
+>>>>>>> v4.14.187
  *
  * @ptrace_access_check:
  *	Check permission before allowing the current process to trace the
@@ -1351,6 +1369,7 @@
  *	@inode we wish to get the security context of.
  *	@ctx is a pointer in which to place the allocated security context.
  *	@ctxlen points to the place to put the length of @ctx.
+<<<<<<< HEAD
  *
  * Security hooks for using the eBPF maps and programs functionalities through
  * eBPF syscalls.
@@ -1394,6 +1413,17 @@ union security_list_options {
 					const struct cred *to);
 	int (*binder_transfer_file)(const struct cred *from,
 					const struct cred *to,
+=======
+ */
+union security_list_options {
+	int (*binder_set_context_mgr)(struct task_struct *mgr);
+	int (*binder_transaction)(struct task_struct *from,
+					struct task_struct *to);
+	int (*binder_transfer_binder)(struct task_struct *from,
+					struct task_struct *to);
+	int (*binder_transfer_file)(struct task_struct *from,
+					struct task_struct *to,
+>>>>>>> v4.14.187
 					struct file *file);
 
 	int (*ptrace_access_check)(struct task_struct *child,
@@ -1716,6 +1746,7 @@ union security_list_options {
 				struct audit_context *actx);
 	void (*audit_rule_free)(void *lsmrule);
 #endif /* CONFIG_AUDIT */
+<<<<<<< HEAD
 
 #ifdef CONFIG_BPF_SYSCALL
 	int (*bpf)(int cmd, union bpf_attr *attr,
@@ -1735,6 +1766,8 @@ union security_list_options {
 	int (*perf_event_write)(struct perf_event *event);
 
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 struct security_hook_heads {
@@ -1954,6 +1987,7 @@ struct security_hook_heads {
 	struct list_head audit_rule_match;
 	struct list_head audit_rule_free;
 #endif /* CONFIG_AUDIT */
+<<<<<<< HEAD
 #ifdef CONFIG_BPF_SYSCALL
 	struct list_head bpf;
 	struct list_head bpf_map;
@@ -1970,6 +2004,8 @@ struct security_hook_heads {
 	struct list_head perf_event_read;
 	struct list_head perf_event_write;
 #endif
+=======
+>>>>>>> v4.14.187
 } __randomize_layout;
 
 /*

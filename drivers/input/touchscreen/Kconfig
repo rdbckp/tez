@@ -9,8 +9,11 @@ menuconfig INPUT_TOUCHSCREEN
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD
 source "drivers/input/touchscreen/mediatek/Kconfig"
 
+=======
+>>>>>>> v4.14.187
 if INPUT_TOUCHSCREEN
 
 config TOUCHSCREEN_PROPERTIES
@@ -1248,6 +1251,7 @@ config TOUCHSCREEN_ROHM_BU21023
 	  To compile this driver as a module, choose M here: the
 	  module will be called bu21023_ts.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_MTK_TOUCH
        string "Touch IC name for Mediatek package"
        help
@@ -1261,4 +1265,6 @@ source "drivers/input/touchscreen/ili9881x/Kconfig"
 source "drivers/input/touchscreen/novatek/nt36525/Kconfig"
 source "drivers/input/touchscreen/imagis/ist4050/Kconfig"
 source "drivers/input/touchscreen/zinitix/zt75xx/Kconfig"
+=======
+>>>>>>> v4.14.187
 endif

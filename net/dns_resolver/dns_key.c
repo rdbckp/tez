@@ -42,11 +42,15 @@ unsigned int dns_resolver_debug;
 module_param_named(debug, dns_resolver_debug, uint, S_IWUSR | S_IRUGO);
 MODULE_PARM_DESC(debug, "DNS Resolver debugging mask");
 
+<<<<<<< HEAD
 #ifdef CONFIG_RUSTUH_KDP_CRED
 struct cred *dns_resolver_cache;
 #else
 const struct cred *dns_resolver_cache;
 #endif
+=======
+const struct cred *dns_resolver_cache;
+>>>>>>> v4.14.187
 
 #define	DNS_ERRORNO_OPTION	"dnserror"
 

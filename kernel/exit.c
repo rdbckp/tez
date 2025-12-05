@@ -68,10 +68,13 @@
 #include <asm/pgtable.h>
 #include <asm/mmu_context.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_SECURITY_DEFEX
 #include <linux/defex.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 static void __unhash_process(struct task_struct *p, bool group_dead)
 {
 	nr_threads--;
@@ -717,7 +720,10 @@ static void exit_notify(struct task_struct *tsk, int group_dead)
 	if (group_dead)
 		kill_orphaned_pgrp(tsk->group_leader, NULL);
 
+<<<<<<< HEAD
 	tsk->exit_state = EXIT_ZOMBIE;
+=======
+>>>>>>> v4.14.187
 	if (unlikely(tsk->ptrace)) {
 		int sig = thread_group_leader(tsk) &&
 				thread_group_empty(tsk) &&
@@ -782,10 +788,13 @@ void __noreturn do_exit(long code)
 	 * Then do everything else.
 	 */
 
+<<<<<<< HEAD
 #ifdef CONFIG_SECURITY_DEFEX
 	task_defex_zero_creds(current);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	WARN_ON(blk_needs_flush_plug(tsk));
 
 	if (unlikely(in_interrupt()))
@@ -884,7 +893,10 @@ void __noreturn do_exit(long code)
 
 	sched_autogroup_exit_task(tsk);
 	cgroup_exit(tsk);
+<<<<<<< HEAD
 	uclamp_exit_task(tsk);
+=======
+>>>>>>> v4.14.187
 
 	/*
 	 * FIXME: do that only when needed, using sched_exit tracepoint
@@ -950,6 +962,7 @@ do_group_exit(int exit_code)
 {
 	struct signal_struct *sig = current->signal;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_INIT_EXIT_PANIC
 	if (current->pid == 1) {
 		pr_err("[%s] trap before init(1) group exit, exit_code:%d\n",
@@ -958,6 +971,8 @@ do_group_exit(int exit_code)
 	}
 #endif
 
+=======
+>>>>>>> v4.14.187
 	BUG_ON(exit_code & 0x80); /* core dumps don't get here */
 
 	if (signal_group_exit(sig))

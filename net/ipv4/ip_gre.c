@@ -443,9 +443,12 @@ static void __gre_xmit(struct sk_buff *skb, struct net_device *dev,
 
 static int gre_handle_offloads(struct sk_buff *skb, bool csum)
 {
+<<<<<<< HEAD
 	if (csum && skb_checksum_start(skb) < skb->data)
 	return -EINVAL;
 
+=======
+>>>>>>> v4.14.187
 	return iptunnel_handle_offloads(skb, csum ? SKB_GSO_GRE_CSUM : SKB_GSO_GRE);
 }
 

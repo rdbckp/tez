@@ -141,11 +141,14 @@
 
 #include <net/tcp.h>
 #include <net/busy_poll.h>
+<<<<<<< HEAD
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 #include <linux/sched.h>
 #include <linux/pid.h>
 #include <net/ncm.h>
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
+=======
+>>>>>>> v4.14.187
 
 static DEFINE_MUTEX(proto_list_mutex);
 static LIST_HEAD(proto_list);
@@ -661,6 +664,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 /** The function sets the domain name associated with the socket. **/
 static int sock_set_domain_name(struct sock *sk, char __user *optval,
@@ -749,6 +753,8 @@ out:
 }
 
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
+=======
+>>>>>>> v4.14.187
 static inline void sock_valbool_flag(struct sock *sk, int bit, int valbool)
 {
 	if (valbool)
@@ -797,6 +803,7 @@ int sock_setsockopt(struct socket *sock, int level, int optname,
 	if (optname == SO_BINDTODEVICE)
 		return sock_setbindtodevice(sk, optval, optlen);
 
+<<<<<<< HEAD
 	// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 	if (optname == SO_SET_DOMAIN_NAME)
 		return sock_set_domain_name(sk, optval, optlen);
@@ -805,6 +812,8 @@ int sock_setsockopt(struct socket *sock, int level, int optname,
 	if (optname == SO_SET_DNS_PID)
 		return sock_set_dns_pid(sk, optval, optlen);
 	// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
+=======
+>>>>>>> v4.14.187
 	if (optlen < sizeof(int))
 		return -EINVAL;
 
@@ -1562,7 +1571,11 @@ static struct sock *sk_prot_alloc(struct proto *prot, gfp_t priority,
 		sk = kmem_cache_alloc(slab, priority & ~__GFP_ZERO);
 		if (!sk)
 			return sk;
+<<<<<<< HEAD
 		if (want_init_on_alloc(priority))
+=======
+		if (priority & __GFP_ZERO)
+>>>>>>> v4.14.187
 			sk_prot_clear_nulls(sk, prot->obj_size);
 	} else
 		sk = kmalloc(prot->obj_size, priority);
@@ -1619,6 +1632,7 @@ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
 {
 	struct sock *sk;
 
+<<<<<<< HEAD
 	// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 	struct pid *pid_struct = NULL;
 	struct task_struct *task = NULL;
@@ -1675,6 +1689,11 @@ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
 			}
 		}
 		// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
+=======
+	sk = sk_prot_alloc(prot, priority | __GFP_ZERO, family);
+	if (sk) {
+		sk->sk_family = family;
+>>>>>>> v4.14.187
 		/*
 		 * See comment in struct sock definition to understand
 		 * why we need sk_prot_creator -acme

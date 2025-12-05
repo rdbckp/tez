@@ -1272,8 +1272,12 @@ static int vgacon_adjust_height(struct vc_data *vc, unsigned fontheight)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int vgacon_font_set(struct vc_data *c, struct console_font *font,
 			   unsigned int flags)
+=======
+static int vgacon_font_set(struct vc_data *c, struct console_font *font, unsigned flags)
+>>>>>>> v4.14.187
 {
 	unsigned charcount = font->charcount;
 	int rc;
@@ -1411,20 +1415,35 @@ static bool vgacon_scroll(struct vc_data *c, unsigned int t, unsigned int b,
  *  The console `switch' structure for the VGA based console
  */
 
+<<<<<<< HEAD
 static void vgacon_clear(struct vc_data *vc, int sy, int sx, int height,
 			 int width) { }
 static void vgacon_putc(struct vc_data *vc, int c, int ypos, int xpos) { }
 static void vgacon_putcs(struct vc_data *vc, const unsigned short *s,
 			 int count, int ypos, int xpos) { }
+=======
+static int vgacon_dummy(struct vc_data *c)
+{
+	return 0;
+}
+
+#define DUMMY (void *) vgacon_dummy
+>>>>>>> v4.14.187
 
 const struct consw vga_con = {
 	.owner = THIS_MODULE,
 	.con_startup = vgacon_startup,
 	.con_init = vgacon_init,
 	.con_deinit = vgacon_deinit,
+<<<<<<< HEAD
 	.con_clear = vgacon_clear,
 	.con_putc = vgacon_putc,
 	.con_putcs = vgacon_putcs,
+=======
+	.con_clear = DUMMY,
+	.con_putc = DUMMY,
+	.con_putcs = DUMMY,
+>>>>>>> v4.14.187
 	.con_cursor = vgacon_cursor,
 	.con_scroll = vgacon_scroll,
 	.con_switch = vgacon_switch,

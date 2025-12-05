@@ -32,6 +32,7 @@
 #define CORESIGHT_DEVID		0xfc8
 #define CORESIGHT_DEVTYPE	0xfcc
 
+<<<<<<< HEAD
 
 /*
  * Coresight device CLAIM protocol.
@@ -39,6 +40,8 @@
  */
 #define CORESIGHT_CLAIM_SELF_HOSTED	BIT(1)
 
+=======
+>>>>>>> v4.14.187
 #define TIMEOUT_US		100
 #define BMVAL(val, lsb, msb)	((val & GENMASK(msb, lsb)) >> lsb)
 
@@ -71,8 +74,12 @@ static DEVICE_ATTR_RO(name)
 #define coresight_simple_reg64(type, name, lo_off, hi_off)		\
 	__coresight_simple_func(type, NULL, name, lo_off, hi_off)
 
+<<<<<<< HEAD
 extern const u32 barrier_pkt[4];
 #define CORESIGHT_BARRIER_PKT_SIZE (sizeof(barrier_pkt))
+=======
+extern const u32 barrier_pkt[5];
+>>>>>>> v4.14.187
 
 enum etm_addr_type {
 	ETM_ADDR_TYPE_NONE,
@@ -106,6 +113,7 @@ struct cs_buffers {
 	void			**data_pages;
 };
 
+<<<<<<< HEAD
 static inline void coresight_insert_barrier_packet(void *buf)
 {
 	if (buf)
@@ -113,6 +121,8 @@ static inline void coresight_insert_barrier_packet(void *buf)
 }
 
 
+=======
+>>>>>>> v4.14.187
 static inline void CS_LOCK(void __iomem *addr)
 {
 	do {
@@ -151,10 +161,16 @@ static inline void coresight_write_reg_pair(void __iomem *addr, u64 val,
 }
 
 void coresight_disable_path(struct list_head *path);
+<<<<<<< HEAD
 int coresight_enable_path(struct list_head *path, u32 mode, void *sink_data);
 struct coresight_device *coresight_get_sink(struct list_head *path);
 struct coresight_device *coresight_get_enabled_sink(bool reset);
 struct coresight_device *coresight_get_sink_by_id(u32 id);
+=======
+int coresight_enable_path(struct list_head *path, u32 mode);
+struct coresight_device *coresight_get_sink(struct list_head *path);
+struct coresight_device *coresight_get_enabled_sink(bool reset);
+>>>>>>> v4.14.187
 struct list_head *coresight_build_path(struct coresight_device *csdev,
 				       struct coresight_device *sink);
 void coresight_release_path(struct list_head *path);

@@ -25,6 +25,7 @@ enum {
 	LO_FLAGS_DIRECT_IO	= 16,
 };
 
+<<<<<<< HEAD
 /* LO_FLAGS that can be set using LOOP_SET_STATUS(64) */
 #define LOOP_SET_STATUS_SETTABLE_FLAGS (LO_FLAGS_AUTOCLEAR | LO_FLAGS_PARTSCAN)
 
@@ -35,6 +36,8 @@ enum {
 #define LOOP_CONFIGURE_SETTABLE_FLAGS (LO_FLAGS_READ_ONLY | LO_FLAGS_AUTOCLEAR \
 				       | LO_FLAGS_PARTSCAN | LO_FLAGS_DIRECT_IO)
 
+=======
+>>>>>>> v4.14.187
 #include <asm/posix_types.h>	/* for __kernel_old_dev_t */
 #include <linux/types.h>	/* for __u64 */
 
@@ -47,7 +50,11 @@ struct loop_info {
 	int		   lo_offset;
 	int		   lo_encrypt_type;
 	int		   lo_encrypt_key_size; 	/* ioctl w/o */
+<<<<<<< HEAD
 	int		   lo_flags;
+=======
+	int		   lo_flags;			/* ioctl r/o */
+>>>>>>> v4.14.187
 	char		   lo_name[LO_NAME_SIZE];
 	unsigned char	   lo_encrypt_key[LO_KEY_SIZE]; /* ioctl w/o */
 	unsigned long	   lo_init[2];
@@ -63,13 +70,18 @@ struct loop_info64 {
 	__u32		   lo_number;			/* ioctl r/o */
 	__u32		   lo_encrypt_type;
 	__u32		   lo_encrypt_key_size;		/* ioctl w/o */
+<<<<<<< HEAD
 	__u32		   lo_flags;
+=======
+	__u32		   lo_flags;			/* ioctl r/o */
+>>>>>>> v4.14.187
 	__u8		   lo_file_name[LO_NAME_SIZE];
 	__u8		   lo_crypt_name[LO_NAME_SIZE];
 	__u8		   lo_encrypt_key[LO_KEY_SIZE]; /* ioctl w/o */
 	__u64		   lo_init[2];
 };
 
+<<<<<<< HEAD
 /**
  * struct loop_config - Complete configuration for a loop device.
  * @fd: fd of the file to be used as a backing file for the loop device.
@@ -86,6 +98,8 @@ struct loop_config {
 	__u64			__reserved[8];
 };
 
+=======
+>>>>>>> v4.14.187
 /*
  * Loop filter types
  */
@@ -116,7 +130,10 @@ struct loop_config {
 #define LOOP_SET_CAPACITY	0x4C07
 #define LOOP_SET_DIRECT_IO	0x4C08
 #define LOOP_SET_BLOCK_SIZE	0x4C09
+<<<<<<< HEAD
 #define LOOP_CONFIGURE		0x4C0A
+=======
+>>>>>>> v4.14.187
 
 /* /dev/loop-control interface */
 #define LOOP_CTL_ADD		0x4C80

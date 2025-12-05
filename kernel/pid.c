@@ -38,8 +38,11 @@
 #include <linux/syscalls.h>
 #include <linux/proc_ns.h>
 #include <linux/proc_fs.h>
+<<<<<<< HEAD
 #include <linux/anon_inodes.h>
 #include <linux/sched/signal.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/sched/task.h>
 
 #define pid_hashfn(nr, ns)	\
@@ -334,8 +337,11 @@ struct pid *alloc_pid(struct pid_namespace *ns)
 	for (type = 0; type < PIDTYPE_MAX; ++type)
 		INIT_HLIST_HEAD(&pid->tasks[type]);
 
+<<<<<<< HEAD
 	init_waitqueue_head(&pid->wait_pidfd);
 
+=======
+>>>>>>> v4.14.187
 	upid = pid->numbers + ns->level;
 	spin_lock_irq(&pidmap_lock);
 	if (!(ns->nr_hashed & PIDNS_HASH_ADDING))
@@ -569,6 +575,7 @@ struct pid *find_ge_pid(int nr, struct pid_namespace *ns)
 	return pid;
 }
 
+<<<<<<< HEAD
 /**
  * pidfd_create() - Create a new pid file descriptor.
  *
@@ -639,6 +646,8 @@ SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
 	return fd;
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * The pid hash table is scaled according to the amount of memory in the
  * machine.  From a minimum of 16 slots up to 4096 slots at one gigabyte or
@@ -646,12 +655,18 @@ SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
  */
 void __init pidhash_init(void)
 {
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_PIDHASH);
+=======
+>>>>>>> v4.14.187
 	pid_hash = alloc_large_system_hash("PID", sizeof(*pid_hash), 0, 18,
 					   HASH_EARLY | HASH_SMALL | HASH_ZERO,
 					   &pidhash_shift, NULL,
 					   0, 4096);
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_OTHERS);
+=======
+>>>>>>> v4.14.187
 }
 
 void __init pidmap_init(void)

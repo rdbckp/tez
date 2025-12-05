@@ -1348,10 +1348,13 @@ static void audit_log_exit(struct audit_context *context, struct task_struct *ts
 	/* tsk == current */
 	context->personality = tsk->personality;
 
+<<<<<<< HEAD
 // [ SEC_SELINUX_PORTING_COMMON
 	if (context->major != __NR_setsockopt) {
 // ] SEC_SELINUX_PORTING_COMMON
 
+=======
+>>>>>>> v4.14.187
 	ab = audit_log_start(context, GFP_KERNEL, AUDIT_SYSCALL);
 	if (!ab)
 		return;		/* audit_panic has been called */
@@ -1463,10 +1466,13 @@ static void audit_log_exit(struct audit_context *context, struct task_struct *ts
 
 	audit_log_proctitle(tsk, context);
 
+<<<<<<< HEAD
 // [ SEC_SELINUX_PORTING_COMMON
 	} // End of context->major != __NR_setsockopt
 // ] SEC_SELINUX_PORTING_COMMON
 
+=======
+>>>>>>> v4.14.187
 	/* Send end of event record to help user space know we are finished */
 	ab = audit_log_start(context, GFP_KERNEL, AUDIT_EOE);
 	if (ab)

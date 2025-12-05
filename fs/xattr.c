@@ -131,7 +131,11 @@ xattr_permission(struct inode *inode, const char *name, int mask)
 			return -EPERM;
 	}
 
+<<<<<<< HEAD
 	return inode_permission2(ERR_PTR(-EOPNOTSUPP), inode, mask);
+=======
+	return inode_permission(inode, mask);
+>>>>>>> v4.14.187
 }
 
 int
@@ -307,9 +311,12 @@ __vfs_getxattr(struct dentry *dentry, struct inode *inode, const char *name,
 	handler = xattr_resolve_name(inode, &name);
 	if (IS_ERR(handler))
 		return PTR_ERR(handler);
+<<<<<<< HEAD
 	if (unlikely(handler->__get))
 		return handler->__get(handler, dentry, inode, name, value,
 				      size);
+=======
+>>>>>>> v4.14.187
 	if (!handler->get)
 		return -EOPNOTSUPP;
 	return handler->get(handler, dentry, inode, name, value, size);
@@ -321,7 +328,10 @@ vfs_getxattr(struct dentry *dentry, const char *name, void *value, size_t size)
 {
 	struct inode *inode = dentry->d_inode;
 	int error;
+<<<<<<< HEAD
 	const struct xattr_handler *handler;
+=======
+>>>>>>> v4.14.187
 
 	error = xattr_permission(inode, name, MAY_READ);
 	if (error)
@@ -344,12 +354,16 @@ vfs_getxattr(struct dentry *dentry, const char *name, void *value, size_t size)
 		return ret;
 	}
 nolsm:
+<<<<<<< HEAD
 	handler = xattr_resolve_name(inode, &name);
 	if (IS_ERR(handler))
 		return PTR_ERR(handler);
 	if (!handler->get)
 		return -EOPNOTSUPP;
 	return handler->get(handler, dentry, inode, name, value, size);
+=======
+	return __vfs_getxattr(dentry, inode, name, value, size);
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL_GPL(vfs_getxattr);
 

@@ -117,8 +117,11 @@ source "drivers/usb/mtu3/Kconfig"
 
 source "drivers/usb/musb/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/usb/notify/Kconfig"
 
+=======
+>>>>>>> v4.14.187
 source "drivers/usb/dwc3/Kconfig"
 
 source "drivers/usb/dwc2/Kconfig"

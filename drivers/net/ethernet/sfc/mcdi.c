@@ -376,7 +376,11 @@ static int efx_mcdi_poll(struct efx_nic *efx)
 	 * because generally mcdi responses are fast. After that, back off
 	 * and poll once a jiffy (approximately)
 	 */
+<<<<<<< HEAD
 	spins = USER_TICK_USEC;
+=======
+	spins = TICK_USEC;
+>>>>>>> v4.14.187
 	finish = jiffies + MCDI_RPC_TIMEOUT;
 
 	while (1) {

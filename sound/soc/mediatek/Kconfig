@@ -1,12 +1,15 @@
 config SND_SOC_MEDIATEK
 	tristate
 
+<<<<<<< HEAD
 config SND_SOC_MTK_SRAM
 	tristate
 
 config SND_SOC_MTK_SMART_PHONE
 	tristate
 
+=======
+>>>>>>> v4.14.187
 config SND_SOC_MT2701
 	tristate "ASoC support for Mediatek MT2701 chip"
 	depends on ARCH_MEDIATEK
@@ -38,6 +41,7 @@ config SND_SOC_MT2701_WM8960
 	  Select Y if you have such device.
 	  If unsure select "N".
 
+<<<<<<< HEAD
 config SND_SOC_MT6768
 	tristate "ASoC support for Mediatek MT6768 chip"
 	select REGMAP_MMIO
@@ -205,6 +209,8 @@ config SND_SOC_MT8168_P1
 	  If unsure select "N".
 	  Ex: MT8168
 
+=======
+>>>>>>> v4.14.187
 config SND_SOC_MT8173
 	tristate "ASoC support for Mediatek MT8173 chip"
 	depends on ARCH_MEDIATEK
@@ -258,6 +264,7 @@ config SND_SOC_MT8173_RT5650_RT5676
 	  with the RT5650 and RT5676 codecs.
 	  Select Y if you have such device.
 	  If unsure select "N".
+<<<<<<< HEAD
 
 
 config SND_SOC_MT8167
@@ -338,3 +345,5 @@ config SND_SOC_MTK_AUDIO_DSP
 	  that can be used with other platforms
 	  Select Y if you have such device.
 	  If unsure select "N".
+=======
+>>>>>>> v4.14.187

@@ -267,6 +267,7 @@ set_table_entry(struct ctl_table *entry,
 }
 
 static struct ctl_table *
+<<<<<<< HEAD
 sd_alloc_ctl_energy_table(struct sched_group_energy *sge)
 {
 	struct ctl_table *table = sd_alloc_ctl_entry(5);
@@ -327,6 +328,11 @@ sd_alloc_ctl_domain_table(struct sched_domain *sd)
 	}
 
 	table = sd_alloc_ctl_entry(nr_entries);
+=======
+sd_alloc_ctl_domain_table(struct sched_domain *sd)
+{
+	struct ctl_table *table = sd_alloc_ctl_entry(14);
+>>>>>>> v4.14.187
 
 	if (table == NULL)
 		return NULL;
@@ -359,6 +365,7 @@ sd_alloc_ctl_domain_table(struct sched_domain *sd)
 		sizeof(long), 0644, proc_doulongvec_minmax, false);
 	set_table_entry(&table[12], "name", sd->name,
 		CORENAME_MAX_SIZE, 0444, proc_dostring, false);
+<<<<<<< HEAD
 	sg = sd->groups;
 	if (sg->sge) {
 		char buf[32];
@@ -372,6 +379,9 @@ sd_alloc_ctl_domain_table(struct sched_domain *sd)
 		} while (entry++, i++, sg = sg->next, sg != sd->groups);
 	}
 	/* &table[nr_entries-1] is terminator */
+=======
+	/* &table[13] is terminator */
+>>>>>>> v4.14.187
 
 	return table;
 }
@@ -637,8 +647,11 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
 			cfs_rq->runnable_load_avg);
 	SEQ_printf(m, "  .%-30s: %lu\n", "util_avg",
 			cfs_rq->avg.util_avg);
+<<<<<<< HEAD
 	SEQ_printf(m, "  .%-30s: %u\n", "util_est_enqueued",
 			cfs_rq->avg.util_est.enqueued);
+=======
+>>>>>>> v4.14.187
 	SEQ_printf(m, "  .%-30s: %ld\n", "removed_load_avg",
 			atomic_long_read(&cfs_rq->removed_load_avg));
 	SEQ_printf(m, "  .%-30s: %ld\n", "removed_util_avg",
@@ -727,8 +740,12 @@ static void print_cpu(struct seq_file *m, int cpu)
 			   cpu, freq / 1000, (freq % 1000));
 	}
 #else
+<<<<<<< HEAD
 	SEQ_printf(m, "cpu#%d: %s\n", cpu,
 			cpu_is_offline(cpu) ? "Offline" : "Online");
+=======
+	SEQ_printf(m, "cpu#%d\n", cpu);
+>>>>>>> v4.14.187
 #endif
 
 #define P(x)								\
@@ -849,6 +866,7 @@ static int sched_debug_show(struct seq_file *m, void *v)
 {
 	int cpu = (unsigned long)(v - 2);
 
+<<<<<<< HEAD
 	if (cpu != -1) {
 		unsigned long flags;
 
@@ -858,6 +876,11 @@ static int sched_debug_show(struct seq_file *m, void *v)
 		read_unlock_irqrestore(&tasklist_lock, flags);
 		SEQ_printf(m, "\n");
 	} else
+=======
+	if (cpu != -1)
+		print_cpu(m, cpu);
+	else
+>>>>>>> v4.14.187
 		sched_debug_header(m);
 
 	return 0;
@@ -866,6 +889,7 @@ static int sched_debug_show(struct seq_file *m, void *v)
 void sysrq_sched_debug_show(void)
 {
 	int cpu;
+<<<<<<< HEAD
 	unsigned long flags;
 
 	read_lock_irqsave(&tasklist_lock, flags);
@@ -873,6 +897,12 @@ void sysrq_sched_debug_show(void)
 	for_each_possible_cpu(cpu)
 		print_cpu(NULL, cpu);
 	read_unlock_irqrestore(&tasklist_lock, flags);
+=======
+
+	sched_debug_header(NULL);
+	for_each_online_cpu(cpu)
+		print_cpu(NULL, cpu);
+>>>>>>> v4.14.187
 
 }
 
@@ -1095,8 +1125,11 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
 	P(se.avg.load_avg);
 	P(se.avg.util_avg);
 	P(se.avg.last_update_time);
+<<<<<<< HEAD
 	P(se.avg.util_est.ewma);
 	P(se.avg.util_est.enqueued);
+=======
+>>>>>>> v4.14.187
 #endif
 	P(policy);
 	P(prio);
@@ -1130,5 +1163,8 @@ void proc_sched_set_task(struct task_struct *p)
 	memset(&p->se.statistics, 0, sizeof(p->se.statistics));
 #endif
 }
+<<<<<<< HEAD
 
 #include "debug_aee.c"
+=======
+>>>>>>> v4.14.187

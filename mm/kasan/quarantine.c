@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> v4.14.187
 /*
  * KASAN quarantine.
  *
@@ -104,7 +107,11 @@ static int quarantine_head;
 static int quarantine_tail;
 /* Total size of all objects in global_quarantine across all batches. */
 static unsigned long quarantine_size;
+<<<<<<< HEAD
 static DEFINE_RAW_SPINLOCK(quarantine_lock);
+=======
+static DEFINE_SPINLOCK(quarantine_lock);
+>>>>>>> v4.14.187
 DEFINE_STATIC_SRCU(remove_cache_srcu);
 
 /* Maximum size of the global queue. */
@@ -191,7 +198,11 @@ void quarantine_put(struct kasan_free_meta *info, struct kmem_cache *cache)
 	if (unlikely(q->bytes > QUARANTINE_PERCPU_SIZE)) {
 		qlist_move_all(q, &temp);
 
+<<<<<<< HEAD
 		raw_spin_lock(&quarantine_lock);
+=======
+		spin_lock(&quarantine_lock);
+>>>>>>> v4.14.187
 		WRITE_ONCE(quarantine_size, quarantine_size + temp.bytes);
 		qlist_move_all(&temp, &global_quarantine[quarantine_tail]);
 		if (global_quarantine[quarantine_tail].bytes >=
@@ -204,7 +215,11 @@ void quarantine_put(struct kasan_free_meta *info, struct kmem_cache *cache)
 			if (new_tail != quarantine_head)
 				quarantine_tail = new_tail;
 		}
+<<<<<<< HEAD
 		raw_spin_unlock(&quarantine_lock);
+=======
+		spin_unlock(&quarantine_lock);
+>>>>>>> v4.14.187
 	}
 
 	local_irq_restore(flags);
@@ -231,7 +246,11 @@ void quarantine_reduce(void)
 	 * expected case).
 	 */
 	srcu_idx = srcu_read_lock(&remove_cache_srcu);
+<<<<<<< HEAD
 	raw_spin_lock_irqsave(&quarantine_lock, flags);
+=======
+	spin_lock_irqsave(&quarantine_lock, flags);
+>>>>>>> v4.14.187
 
 	/*
 	 * Update quarantine size in case of hotplug. Allocate a fraction of
@@ -255,7 +274,11 @@ void quarantine_reduce(void)
 			quarantine_head = 0;
 	}
 
+<<<<<<< HEAD
 	raw_spin_unlock_irqrestore(&quarantine_lock, flags);
+=======
+	spin_unlock_irqrestore(&quarantine_lock, flags);
+>>>>>>> v4.14.187
 
 	qlist_free_all(&to_free, NULL);
 	srcu_read_unlock(&remove_cache_srcu, srcu_idx);
@@ -311,17 +334,29 @@ void quarantine_remove_cache(struct kmem_cache *cache)
 	 */
 	on_each_cpu(per_cpu_remove_cache, cache, 1);
 
+<<<<<<< HEAD
 	raw_spin_lock_irqsave(&quarantine_lock, flags);
+=======
+	spin_lock_irqsave(&quarantine_lock, flags);
+>>>>>>> v4.14.187
 	for (i = 0; i < QUARANTINE_BATCHES; i++) {
 		if (qlist_empty(&global_quarantine[i]))
 			continue;
 		qlist_move_cache(&global_quarantine[i], &to_free, cache);
 		/* Scanning whole quarantine can take a while. */
+<<<<<<< HEAD
 		raw_spin_unlock_irqrestore(&quarantine_lock, flags);
 		cond_resched();
 		raw_spin_lock_irqsave(&quarantine_lock, flags);
 	}
 	raw_spin_unlock_irqrestore(&quarantine_lock, flags);
+=======
+		spin_unlock_irqrestore(&quarantine_lock, flags);
+		cond_resched();
+		spin_lock_irqsave(&quarantine_lock, flags);
+	}
+	spin_unlock_irqrestore(&quarantine_lock, flags);
+>>>>>>> v4.14.187
 
 	qlist_free_all(&to_free, cache);
 

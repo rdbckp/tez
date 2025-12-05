@@ -29,9 +29,15 @@
  * @gem_obj: array of gem objects.
  */
 struct mtk_drm_fb {
+<<<<<<< HEAD
 	struct drm_framebuffer base;
 	/* For now we only support a single plane */
 	struct drm_gem_object *gem_obj;
+=======
+	struct drm_framebuffer	base;
+	/* For now we only support a single plane */
+	struct drm_gem_object	*gem_obj;
+>>>>>>> v4.14.187
 };
 
 #define to_mtk_fb(x) container_of(x, struct mtk_drm_fb, base)
@@ -43,6 +49,7 @@ struct drm_gem_object *mtk_fb_get_gem_obj(struct drm_framebuffer *fb)
 	return mtk_fb->gem_obj;
 }
 
+<<<<<<< HEAD
 size_t mtk_fb_get_size(struct drm_framebuffer *fb)
 {
 	struct mtk_drm_fb *mtk_fb = to_mtk_fb(fb);
@@ -88,6 +95,8 @@ bool mtk_drm_fb_is_secure(struct drm_framebuffer *fb)
 	return mtk_gem->sec;
 }
 
+=======
+>>>>>>> v4.14.187
 static int mtk_drm_fb_create_handle(struct drm_framebuffer *fb,
 				    struct drm_file *file_priv,
 				    unsigned int *handle)
@@ -103,7 +112,11 @@ static void mtk_drm_fb_destroy(struct drm_framebuffer *fb)
 
 	drm_framebuffer_cleanup(fb);
 
+<<<<<<< HEAD
 	drm_gem_object_unreference_unlocked(mtk_fb->gem_obj);
+=======
+	drm_gem_object_put_unlocked(mtk_fb->gem_obj);
+>>>>>>> v4.14.187
 
 	kfree(mtk_fb);
 }
@@ -113,14 +126,26 @@ static const struct drm_framebuffer_funcs mtk_drm_fb_funcs = {
 	.destroy = mtk_drm_fb_destroy,
 };
 
+<<<<<<< HEAD
 static struct mtk_drm_fb *
 mtk_drm_framebuffer_init(struct drm_device *dev,
 			 const struct drm_mode_fb_cmd2 *mode,
 			 struct drm_gem_object *obj)
+=======
+static struct mtk_drm_fb *mtk_drm_framebuffer_init(struct drm_device *dev,
+					const struct drm_mode_fb_cmd2 *mode,
+					struct drm_gem_object *obj)
+>>>>>>> v4.14.187
 {
 	struct mtk_drm_fb *mtk_fb;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (drm_format_num_planes(mode->pixel_format) != 1)
+		return ERR_PTR(-EINVAL);
+
+>>>>>>> v4.14.187
 	mtk_fb = kzalloc(sizeof(*mtk_fb), GFP_KERNEL);
 	if (!mtk_fb)
 		return ERR_PTR(-ENOMEM);
@@ -139,6 +164,7 @@ mtk_drm_framebuffer_init(struct drm_device *dev,
 	return mtk_fb;
 }
 
+<<<<<<< HEAD
 struct drm_framebuffer *
 mtk_drm_framebuffer_create(struct drm_device *dev,
 			   const struct drm_mode_fb_cmd2 *mode,
@@ -153,6 +179,8 @@ mtk_drm_framebuffer_create(struct drm_device *dev,
 	return &mtk_fb->base;
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * Wait for any exclusive fence in fb's gem object's reservation object.
  *
@@ -175,16 +203,22 @@ int mtk_fb_wait(struct drm_framebuffer *fb)
 	ret = reservation_object_wait_timeout_rcu(resv, false, true,
 						  MAX_SCHEDULE_TIMEOUT);
 	/* MAX_SCHEDULE_TIMEOUT on success, -ERESTARTSYS if interrupted */
+<<<<<<< HEAD
 	if (ret < 0) {
 		DDPAEE("%s:%d, invalid ret:%ld\n",
 			__func__, __LINE__,
 			ret);
 		return ret;
 	}
+=======
+	if (WARN_ON(ret < 0))
+		return ret;
+>>>>>>> v4.14.187
 
 	return 0;
 }
 
+<<<<<<< HEAD
 struct drm_framebuffer *
 mtk_drm_mode_fb_create(struct drm_device *dev, struct drm_file *file,
 		       const struct drm_mode_fb_cmd2 *cmd)
@@ -192,13 +226,26 @@ mtk_drm_mode_fb_create(struct drm_device *dev, struct drm_file *file,
 	struct mtk_drm_fb *mtk_fb = NULL;
 	struct drm_gem_object *gem = NULL;
 	struct mtk_drm_gem_obj *mtk_gem = NULL;
+=======
+struct drm_framebuffer *mtk_drm_mode_fb_create(struct drm_device *dev,
+					       struct drm_file *file,
+					       const struct drm_mode_fb_cmd2 *cmd)
+{
+	struct mtk_drm_fb *mtk_fb;
+	struct drm_gem_object *gem;
+>>>>>>> v4.14.187
 	unsigned int width = cmd->width;
 	unsigned int height = cmd->height;
 	unsigned int size, bpp;
 	int ret;
 
+<<<<<<< HEAD
 	if (cmd->pixel_format == DRM_FORMAT_C8)
 		goto fb_init;
+=======
+	if (drm_format_num_planes(cmd->pixel_format) != 1)
+		return ERR_PTR(-EINVAL);
+>>>>>>> v4.14.187
 
 	gem = drm_gem_object_lookup(file, cmd->handles[0]);
 	if (!gem)
@@ -208,6 +255,7 @@ mtk_drm_mode_fb_create(struct drm_device *dev, struct drm_file *file,
 	size = (height - 1) * cmd->pitches[0] + width * bpp;
 	size += cmd->offsets[0];
 
+<<<<<<< HEAD
 	mtk_gem = to_mtk_gem_obj(gem);
 	if (gem->size < size && !mtk_gem->sec) {
 		DRM_ERROR("%s:%d, size:(%ld,%d), sec:%d\n",
@@ -219,11 +267,17 @@ mtk_drm_mode_fb_create(struct drm_device *dev, struct drm_file *file,
 			cmd->pixel_format, bpp,
 			cmd->pitches[0],
 			cmd->offsets[0]);
+=======
+	if (gem->size < size) {
+>>>>>>> v4.14.187
 		ret = -EINVAL;
 		goto unreference;
 	}
 
+<<<<<<< HEAD
 fb_init:
+=======
+>>>>>>> v4.14.187
 	mtk_fb = mtk_drm_framebuffer_init(dev, cmd, gem);
 	if (IS_ERR(mtk_fb)) {
 		ret = PTR_ERR(mtk_fb);
@@ -233,6 +287,10 @@ fb_init:
 	return &mtk_fb->base;
 
 unreference:
+<<<<<<< HEAD
 	drm_gem_object_unreference_unlocked(gem);
+=======
+	drm_gem_object_put_unlocked(gem);
+>>>>>>> v4.14.187
 	return ERR_PTR(ret);
 }

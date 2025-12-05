@@ -344,6 +344,7 @@ struct ttm_bo_driver {
 					struct page *dummy_read_page);
 
 	/**
+<<<<<<< HEAD
 	 * ttm_tt_create2
 	 *
 	 * @bo: pointer to a struct ttm_buffer_object
@@ -360,6 +361,8 @@ struct ttm_bo_driver {
 					 struct page *dummy_read_page);
 
 	/**
+=======
+>>>>>>> v4.14.187
 	 * ttm_tt_populate
 	 *
 	 * @ttm: The struct ttm_tt to contain the backing pages.

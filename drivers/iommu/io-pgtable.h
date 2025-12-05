@@ -62,10 +62,17 @@ struct io_pgtable_cfg {
 	 *	(unmapped) entries but the hardware might do so anyway, perform
 	 *	TLB maintenance when mapping as well as when unmapping.
 	 *
+<<<<<<< HEAD
 	 * IO_PGTABLE_QUIRK_ARM_MTK_4GB: (ARM v7s format) Set bit 4 and 9 in all
 	 *	PTEs, for Mediatek IOMMUs which treat it as the 33rd and 32rd
 	 *	address bit when the SoC dram is over 4GB and they can access
 	 *	the physical address from 0x4000_0000 to 0x3_ffff_ffff.
+=======
+	 * IO_PGTABLE_QUIRK_ARM_MTK_4GB: (ARM v7s format) Set bit 9 in all
+	 *	PTEs, for Mediatek IOMMUs which treat it as a 33rd address bit
+	 *	when the SoC is in "4GB mode" and they can only access the high
+	 *	remap of DRAM (0x1_00000000 to 0x1_ffffffff).
+>>>>>>> v4.14.187
 	 *
 	 * IO_PGTABLE_QUIRK_NO_DMA: Guarantees that the tables will only ever
 	 *	be accessed by a fully cache-coherent IOMMU or CPU (e.g. for a
@@ -123,11 +130,14 @@ struct io_pgtable_ops {
 		     size_t size);
 	phys_addr_t (*iova_to_phys)(struct io_pgtable_ops *ops,
 				    unsigned long iova);
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_IOMMU_V2
 	int (*switch_acp)(struct io_pgtable_ops *ops,
 				    unsigned long iova, size_t size,
 				    bool is_acp);
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 /**

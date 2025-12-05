@@ -1,31 +1,57 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2019 MediaTek Inc.
+=======
+/*
+ * Copyright (c) 2016 MediaTek Inc.
+ * Author: Ming Hsiu Tsai <minghsiu.tsai@mediatek.com>
+ *         Rick Chang <rick.chang@mediatek.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> v4.14.187
  */
 
 #ifndef _MTK_JPEG_CORE_H
 #define _MTK_JPEG_CORE_H
 
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/semaphore.h>
 #include <media/v4l2-ctrls.h>
 #include <media/v4l2-device.h>
 #include <media/v4l2-fh.h>
 #include "mmdvfs_pmqos.h"
 
+=======
+#include <media/v4l2-ctrls.h>
+#include <media/v4l2-device.h>
+#include <media/v4l2-fh.h>
+>>>>>>> v4.14.187
 
 #define MTK_JPEG_NAME		"mtk-jpeg"
 
 #define MTK_JPEG_FMT_FLAG_DEC_OUTPUT	BIT(0)
 #define MTK_JPEG_FMT_FLAG_DEC_CAPTURE	BIT(1)
+<<<<<<< HEAD
 #define MTK_JPEG_FMT_FLAG_ENC_OUTPUT	BIT(2)
 #define MTK_JPEG_FMT_FLAG_ENC_CAPTURE	BIT(3)
+=======
+>>>>>>> v4.14.187
 
 #define MTK_JPEG_FMT_TYPE_OUTPUT	1
 #define MTK_JPEG_FMT_TYPE_CAPTURE	2
 
 #define MTK_JPEG_MIN_WIDTH	32
 #define MTK_JPEG_MIN_HEIGHT	32
+<<<<<<< HEAD
 #define MTK_JPEG_MAX_WIDTH	65536
 #define MTK_JPEG_MAX_HEIGHT	65536
 
@@ -46,6 +72,13 @@
 /**
  * enum mtk_jpeg_ctx_state - contex state of jpeg
  */
+=======
+#define MTK_JPEG_MAX_WIDTH	8192
+#define MTK_JPEG_MAX_HEIGHT	8192
+
+#define MTK_JPEG_DEFAULT_SIZEIMAGE	(1 * 1024 * 1024)
+
+>>>>>>> v4.14.187
 enum mtk_jpeg_ctx_state {
 	MTK_JPEG_INIT = 0,
 	MTK_JPEG_RUNNING,
@@ -53,6 +86,7 @@ enum mtk_jpeg_ctx_state {
 };
 
 /**
+<<<<<<< HEAD
  * enum mtk_jpeg_mode - mode of jpeg
  */
 enum mtk_jpeg_mode {
@@ -103,6 +137,8 @@ struct mtk_jpeg_variant {
 };
 
 /**
+=======
+>>>>>>> v4.14.187
  * struct mt_jpeg - JPEG IP abstraction
  * @lock:		the mutex protecting this structure
  * @hw_lock:		spinlock protecting the hw device resource
@@ -111,6 +147,7 @@ struct mtk_jpeg_variant {
  * @v4l2_dev:		v4l2 device for mem2mem mode
  * @m2m_dev:		v4l2 mem2mem device data
  * @alloc_ctx:		videobuf2 memory allocator's context
+<<<<<<< HEAD
  * @vfd_jpeg:		video device node for jpeg mem2mem mode
  * @reg_base:		JPEG registers mapping
  * @clk_jpeg:		JPEG hw working clock
@@ -122,11 +159,23 @@ struct mtk_jpeg_dev {
 	struct mutex		lock;
 	struct semaphore    sem;
 	spinlock_t		hw_lock[MTK_JPEG_MAX_NCORE];
+=======
+ * @dec_vdev:		video device node for decoder mem2mem mode
+ * @dec_reg_base:	JPEG registers mapping
+ * @clk_jdec:		JPEG hw working clock
+ * @clk_jdec_smi:	JPEG SMI bus clock
+ * @larb:		SMI device
+ */
+struct mtk_jpeg_dev {
+	struct mutex		lock;
+	spinlock_t		hw_lock;
+>>>>>>> v4.14.187
 	struct workqueue_struct	*workqueue;
 	struct device		*dev;
 	struct v4l2_device	v4l2_dev;
 	struct v4l2_m2m_dev	*m2m_dev;
 	void			*alloc_ctx;
+<<<<<<< HEAD
 	struct video_device	*vfd_jpeg;
 	void __iomem		*reg_base[MTK_JPEG_MAX_NCORE];
 	struct clk		*clk_jpeg[MTK_JPEG_MAX_NCORE];
@@ -147,6 +196,13 @@ struct mtk_jpeg_dev {
 	struct mm_qos_request jpeg_qtbl;
 	struct mm_qos_request jpeg_bsdma;
 	const struct mtk_jpeg_variant *variant;
+=======
+	struct video_device	*dec_vdev;
+	void __iomem		*dec_reg_base;
+	struct clk		*clk_jdec;
+	struct clk		*clk_jdec_smi;
+	struct device		*larb;
+>>>>>>> v4.14.187
 };
 
 /**
@@ -184,6 +240,7 @@ struct mtk_jpeg_q_data {
 	u32			h;
 	u32			bytesperline[VIDEO_MAX_PLANES];
 	u32			sizeimage[VIDEO_MAX_PLANES];
+<<<<<<< HEAD
 	u32			align_h;
 };
 
@@ -225,14 +282,25 @@ struct mtk_jpeg_enc_param {
 	u32 align_h;
 };
 /**
+=======
+};
+
+/**
+>>>>>>> v4.14.187
  * mtk_jpeg_ctx - the device context data
  * @jpeg:		JPEG IP device for this context
  * @out_q:		source (output) queue information
  * @cap_q:		destination (capture) queue queue information
  * @fh:			V4L2 file handle
+<<<<<<< HEAD
  * @state:		state of the context
  * @jpeg_param:		jpeg encode parameters
  * @ctrl_hdl:		controls handler
+=======
+ * @dec_param		parameters for HW decoding
+ * @state:		state of the context
+ * @header_valid:	set if header has been parsed and valid
+>>>>>>> v4.14.187
  * @colorspace: enum v4l2_colorspace; supplemental to pixelformat
  * @ycbcr_enc: enum v4l2_ycbcr_encoding, Y'CbCr encoding
  * @quantization: enum v4l2_quantization, colorspace quantization
@@ -244,14 +312,20 @@ struct mtk_jpeg_ctx {
 	struct mtk_jpeg_q_data		cap_q;
 	struct v4l2_fh			fh;
 	enum mtk_jpeg_ctx_state		state;
+<<<<<<< HEAD
 	struct jpeg_enc_param		jpeg_param;
 	struct v4l2_ctrl_handler	ctrl_hdl;
+=======
+>>>>>>> v4.14.187
 
 	enum v4l2_colorspace colorspace;
 	enum v4l2_ycbcr_encoding ycbcr_enc;
 	enum v4l2_quantization quantization;
 	enum v4l2_xfer_func xfer_func;
+<<<<<<< HEAD
 	u32  coreid;
+=======
+>>>>>>> v4.14.187
 };
 
 #endif /* _MTK_JPEG_CORE_H */

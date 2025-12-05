@@ -191,14 +191,22 @@ config HID_CHERRY
 
 config HID_CHICONY
 	tristate "Chicony devices"
+<<<<<<< HEAD
 	depends on USB_HID
+=======
+	depends on HID
+>>>>>>> v4.14.187
 	default !EXPERT
 	---help---
 	Support for Chicony Tactical pad and special keys on Chicony keyboards.
 
 config HID_CORSAIR
 	tristate "Corsair devices"
+<<<<<<< HEAD
 	depends on USB_HID && LEDS_CLASS
+=======
+	depends on HID && USB && LEDS_CLASS
+>>>>>>> v4.14.187
 	---help---
 	Support for Corsair devices that are not fully compliant with the
 	HID standard.
@@ -209,7 +217,11 @@ config HID_CORSAIR
 
 config HID_PRODIKEYS
 	tristate "Prodikeys PC-MIDI Keyboard support"
+<<<<<<< HEAD
 	depends on USB_HID && SND
+=======
+	depends on HID && SND
+>>>>>>> v4.14.187
 	select SND_RAWMIDI
 	---help---
 	Support for Prodikeys PC-MIDI Keyboard device support.
@@ -448,7 +460,11 @@ config HID_LENOVO
 
 config HID_LOGITECH
 	tristate "Logitech devices"
+<<<<<<< HEAD
 	depends on USB_HID
+=======
+	depends on HID
+>>>>>>> v4.14.187
 	default !EXPERT
 	---help---
 	Support for Logitech devices that are not fully compliant with HID standard.
@@ -609,6 +625,7 @@ config HID_MULTITOUCH
 	  To compile this driver as a module, choose M here: the
 	  module will be called hid-multitouch.
 
+<<<<<<< HEAD
 config HID_NINTENDO
 	tristate "Nintendo Joy-Con and Pro Controller support"
 	depends on HID
@@ -620,6 +637,8 @@ config HID_NINTENDO
 	To compile this driver as a module, choose M here: the
 	module will be called hid-nintendo.
 
+=======
+>>>>>>> v4.14.187
 config HID_NTI
 	tristate "NTI keyboard adapters"
 	---help---
@@ -791,7 +810,11 @@ config HID_SAITEK
 
 config HID_SAMSUNG
 	tristate "Samsung InfraRed remote control or keyboards"
+<<<<<<< HEAD
 	depends on USB_HID
+=======
+	depends on HID
+>>>>>>> v4.14.187
 	---help---
 	Support for Samsung InfraRed remote control or keyboards.
 
@@ -824,6 +847,7 @@ config HID_SPEEDLINK
 	---help---
 	Support for Speedlink Vicious and Divine Cezanne mouse.
 
+<<<<<<< HEAD
 config HID_STEAM
 	tristate "Steam Controller support"
 	depends on HID
@@ -832,6 +856,8 @@ config HID_STEAM
 	without running the Steam Client. It supports both the wired and
 	the wireless adaptor.
 
+=======
+>>>>>>> v4.14.187
 config HID_STEELSERIES
 	tristate "Steelseries SRW-S1 steering wheel support"
 	depends on HID

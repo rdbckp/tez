@@ -550,6 +550,7 @@ config REGULATOR_MT6311
 	  This driver supports the control of different power rails of device
 	  through regulator interface.
 
+<<<<<<< HEAD
 config REGULATOR_MT6315
 	tristate "MediaTek MT6315 PMIC"
 	depends on MTK_MFD_SPMI_PMIC
@@ -559,6 +560,8 @@ config REGULATOR_MT6315
 	  This driver supports the control of different power rails of device
 	  through regulator interface.
 
+=======
+>>>>>>> v4.14.187
 config REGULATOR_MT6323
 	tristate "MediaTek MT6323 PMIC"
 	depends on MFD_MT6397
@@ -568,6 +571,7 @@ config REGULATOR_MT6323
 	  This driver supports the control of different power rails of device
 	  through regulator interface.
 
+<<<<<<< HEAD
 config REGULATOR_MT6358
 	tristate "MediaTek MT6358 PMIC"
 	depends on MFD_MT6358
@@ -605,6 +609,8 @@ config REGULATOR_MT6362
 	  The driver can also be build as a module.
 	  If so, the module will be called mt6362_regulator
 
+=======
+>>>>>>> v4.14.187
 config REGULATOR_MT6380
 	tristate "MediaTek MT6380 PMIC"
 	depends on MTK_PMIC_WRAP
@@ -614,6 +620,7 @@ config REGULATOR_MT6380
 	  This driver supports the control of different power rails of device
 	  through regulator interface.
 
+<<<<<<< HEAD
 config REGULATOR_MT6392
 	tristate "MediaTek MT6392 PMIC"
 	depends on MFD_MT6397
@@ -623,6 +630,8 @@ config REGULATOR_MT6392
 	  This driver supports the control of different power rails of device
 	  through regulator interface.
 
+=======
+>>>>>>> v4.14.187
 config REGULATOR_MT6397
 	tristate "MediaTek MT6397 PMIC"
 	depends on MFD_MT6397
@@ -780,7 +789,11 @@ config REGULATOR_S2MPA01
 	depends on MFD_SEC_CORE
 	help
 	 This driver controls Samsung S2MPA01 voltage output regulator
+<<<<<<< HEAD
 	 via I2C bus. S2MPA01 has 10 Bucks and 26 LDO outputs
+=======
+	 via I2C bus. S2MPA01 has 10 Bucks and 26 LDO outputs.
+>>>>>>> v4.14.187
 
 config REGULATOR_S2MPS11
 	tristate "Samsung S2MPS11/13/14/15/S2MPU02 voltage regulator"

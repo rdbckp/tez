@@ -8,7 +8,10 @@
  *
  */
 
+<<<<<<< HEAD
 #define DEBUG 1
+=======
+>>>>>>> v4.14.187
 #define pr_fmt(fmt) fmt
 
 #include <linux/workqueue.h>
@@ -28,8 +31,11 @@
 
 #include "trace_output.h"
 
+<<<<<<< HEAD
 #include "mtk_ftrace.h"
 
+=======
+>>>>>>> v4.14.187
 #undef TRACE_SYSTEM
 #define TRACE_SYSTEM "TRACE_SYSTEM"
 
@@ -377,10 +383,13 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
 	int ret = 0;
 	int disable;
 
+<<<<<<< HEAD
 	if (call->name && ((file->flags & EVENT_FILE_FL_ENABLED) ^ enable))
 		pr_debug("[ftrace]event '%s' is %s\n", trace_event_name(call),
 			 enable ? "enabled" : "disabled");
 
+=======
+>>>>>>> v4.14.187
 	switch (enable) {
 	case 0:
 		/*
@@ -895,12 +904,17 @@ ftrace_event_write(struct file *file, const char __user *ubuf,
 		parser.buffer[parser.idx] = 0;
 
 		ret = ftrace_set_clr_event(tr, parser.buffer + !set, set);
+<<<<<<< HEAD
 		if (ret) {
 			pr_debug("[ftrace]fail to %s event '%s'\n",
 				 set ? "enable" : "disable",
 				 parser.buffer + !set);
 			goto out_put;
 		}
+=======
+		if (ret)
+			goto out_put;
+>>>>>>> v4.14.187
 	}
 
 	ret = read;

@@ -281,6 +281,9 @@
 /* MediaTek BTIF */
 #define PORT_MTK_BTIF	117
 
+<<<<<<< HEAD
 /* Mediatek */
 #define PORT_MTK	118
+=======
+>>>>>>> v4.14.187
 #endif /* _UAPILINUX_SERIAL_CORE_H */

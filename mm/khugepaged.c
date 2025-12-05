@@ -887,8 +887,11 @@ static bool __collapse_huge_page_swapin(struct mm_struct *mm,
 		.flags = FAULT_FLAG_ALLOW_RETRY,
 		.pmd = pmd,
 		.pgoff = linear_page_index(vma, address),
+<<<<<<< HEAD
 		.vma_flags = vma->vm_flags,
 		.vma_page_prot = vma->vm_page_prot,
+=======
+>>>>>>> v4.14.187
 	};
 
 	/* we only decide to swapin, if there is enough young ptes */
@@ -1018,7 +1021,10 @@ static void collapse_huge_page(struct mm_struct *mm,
 	if (mm_find_pmd(mm, address) != pmd)
 		goto out;
 
+<<<<<<< HEAD
 	vm_write_begin(vma);
+=======
+>>>>>>> v4.14.187
 	anon_vma_lock_write(vma->anon_vma);
 
 	pte = pte_offset_map(pmd, address);
@@ -1054,7 +1060,10 @@ static void collapse_huge_page(struct mm_struct *mm,
 		pmd_populate(mm, pmd, pmd_pgtable(_pmd));
 		spin_unlock(pmd_ptl);
 		anon_vma_unlock_write(vma->anon_vma);
+<<<<<<< HEAD
 		vm_write_end(vma);
+=======
+>>>>>>> v4.14.187
 		result = SCAN_FAIL;
 		goto out;
 	}
@@ -1089,7 +1098,10 @@ static void collapse_huge_page(struct mm_struct *mm,
 	set_pmd_at(mm, address, pmd, _pmd);
 	update_mmu_cache_pmd(vma, address, pmd);
 	spin_unlock(pmd_ptl);
+<<<<<<< HEAD
 	vm_write_end(vma);
+=======
+>>>>>>> v4.14.187
 
 	*hpage = NULL;
 

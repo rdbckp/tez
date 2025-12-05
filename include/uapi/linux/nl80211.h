@@ -983,6 +983,7 @@
  *	configured PMK for the authenticator address identified by
  *	&NL80211_ATTR_MAC.
  *
+<<<<<<< HEAD
  * @NL80211_CMD_EXTERNAL_AUTH: This interface is exclusively defined for host
  *	drivers that do not define separate commands for authentication and
  *	association, but rely on user space for the authentication to happen.
@@ -1004,6 +1005,8 @@
  *	user space through the connect result as the user space would have
  *	initiated the connection through the connect request.
  *
+=======
+>>>>>>> v4.14.187
  * @NL80211_CMD_MAX: highest used command number
  * @__NL80211_CMD_AFTER_LAST: internal use
  */
@@ -1206,12 +1209,15 @@ enum nl80211_commands {
 	NL80211_CMD_SET_PMK,
 	NL80211_CMD_DEL_PMK,
 
+<<<<<<< HEAD
 	NL80211_CMD_PORT_AUTHORIZED,
 
 	NL80211_CMD_RELOAD_REGDB,
 
 	NL80211_CMD_EXTERNAL_AUTH,
 
+=======
+>>>>>>> v4.14.187
 	/* add new commands above here */
 
 	/* used to define NL80211_CMD_MAX below */
@@ -2166,6 +2172,7 @@ enum nl80211_commands {
  *	the driver or is not needed (because roaming used the Fast Transition
  *	protocol).
  *
+<<<<<<< HEAD
  * @NL80211_ATTR_EXTERNAL_AUTH_ACTION: Identify the requested external
  *     authentication operation (u32 attribute with an
  *     &enum nl80211_external_auth_action value). This is used with the
@@ -2176,6 +2183,8 @@ enum nl80211_commands {
  *     authentication processing to user space if this capability is indicated
  *     in NL80211_CMD_CONNECT requests from the user space.
  *
+=======
+>>>>>>> v4.14.187
  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
  * @NL80211_ATTR_MAX: highest attribute number currently defined
  * @__NL80211_ATTR_AFTER_LAST: internal use
@@ -2602,9 +2611,12 @@ enum nl80211_attrs {
 	NL80211_ATTR_PMKR0_NAME,
 	NL80211_ATTR_PORT_AUTHORIZED,
 
+<<<<<<< HEAD
 	NL80211_ATTR_EXTERNAL_AUTH_ACTION,
 	NL80211_ATTR_EXTERNAL_AUTH_SUPPORT,
 
+=======
+>>>>>>> v4.14.187
 	/* add attributes here, update the policy in nl80211.c */
 
 	__NL80211_ATTR_AFTER_LAST,
@@ -2643,7 +2655,10 @@ enum nl80211_attrs {
 #define NL80211_ATTR_KEY NL80211_ATTR_KEY
 #define NL80211_ATTR_KEYS NL80211_ATTR_KEYS
 #define NL80211_ATTR_FEATURE_FLAGS NL80211_ATTR_FEATURE_FLAGS
+<<<<<<< HEAD
 #define NL80211_ATTR_EXTERNAL_AUTH_SUPPORT NL80211_ATTR_EXTERNAL_AUTH_SUPPORT
+=======
+>>>>>>> v4.14.187
 
 #define NL80211_WIPHY_NAME_MAXLEN		64
 
@@ -5460,6 +5475,7 @@ enum nl80211_nan_match_attributes {
 	NL80211_NAN_MATCH_ATTR_MAX = NUM_NL80211_NAN_MATCH_ATTR - 1
 };
 
+<<<<<<< HEAD
 /**
  * nl80211_external_auth_action - Action to perform with external
  *     authentication request. Used by NL80211_ATTR_EXTERNAL_AUTH_ACTION.
@@ -5471,4 +5487,6 @@ enum nl80211_external_auth_action {
 	NL80211_EXTERNAL_AUTH_ABORT,
 };
 
+=======
+>>>>>>> v4.14.187
 #endif /* __LINUX_NL80211_H */

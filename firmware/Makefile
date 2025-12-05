@@ -2,7 +2,10 @@
 #
 # kbuild file for firmware/
 #
+<<<<<<< HEAD
 CONFIG_EXTRA_FIRMWARE_DIR="firmware"
+=======
+>>>>>>> v4.14.187
 
 # Create $(fwabs) from $(CONFIG_EXTRA_FIRMWARE_DIR) -- if it doesn't have a
 # leading /, it's relative to $(srctree).
@@ -10,6 +13,7 @@ fwdir := $(subst $(quote),,$(CONFIG_EXTRA_FIRMWARE_DIR))
 fwabs := $(addprefix $(srctree)/,$(filter-out /%,$(fwdir)))$(filter /%,$(fwdir))
 
 fw-external-y := $(subst $(quote),,$(CONFIG_EXTRA_FIRMWARE))
+<<<<<<< HEAD
 fw-external-$(CONFIG_FIVE_TEE_DRIVER) += five/ffffffff000000000000000000000072.tlbin
 
 ifeq (,$(filter $(CONFIG_MTK_PLATFORM), "mt6739"))
@@ -37,6 +41,8 @@ fw-external-$(CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI) += tsp_novatek/nt36525_a32_
 							tsp_novatek/nt36525_a02_boe.bin tsp_novatek/nt36525_a02_mp_boe.bin
 fw-external-$(CONFIG_TOUCHSCREEN_STM) += tsp_stm/fts5cu56a_a32.bin tsp_stm/fts5cu56a_a22.bin
 fw-external-$(CONFIG_TOUCHSCREEN_ZINITIX_ZT75XX) += tsp_zinitix/zt7548_a41.bin tsp_zinitix/zt7548_a415d.bin
+=======
+>>>>>>> v4.14.187
 
 quiet_cmd_fwbin = MK_FW   $@
       cmd_fwbin = FWNAME="$(patsubst firmware/%.gen.S,%,$@)";		     \
@@ -70,10 +76,15 @@ wordsize_deps := $(wildcard include/config/64bit.h include/config/32bit.h \
 		include/config/x86_32.h include/config/x86_64.h \
 		firmware/Makefile)
 
+<<<<<<< HEAD
 $(patsubst %,$(obj)/%.gen.S, $(fw-shipped-y)): %: $(wordsize_deps)
 	$(call cmd,fwbin,$(patsubst %.gen.S,%,$@))
 $(patsubst %,$(obj)/%.gen.S, $(fw-external-y)): %: $(wordsize_deps)
 
+=======
+$(patsubst %,$(obj)/%.gen.S, $(fw-external-y)): %: $(wordsize_deps) \
+		include/config/extra/firmware/dir.h
+>>>>>>> v4.14.187
 	$(call cmd,fwbin,$(fwabs)/$(patsubst $(obj)/%.gen.S,%,$@))
 
 # The .o files depend on the binaries directly; the .S files don't.

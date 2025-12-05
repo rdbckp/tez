@@ -85,7 +85,10 @@ extern void put_unused_fd(unsigned int fd);
 extern void fd_install(unsigned int fd, struct file *file);
 
 extern void flush_delayed_fput(void);
+<<<<<<< HEAD
 extern void flush_delayed_fput_wait(void);
+=======
+>>>>>>> v4.14.187
 extern void __fput_sync(struct file *);
 
 #endif /* __LINUX_FILE_H */

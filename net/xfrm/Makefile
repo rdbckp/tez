@@ -10,4 +10,7 @@ obj-$(CONFIG_XFRM_STATISTICS) += xfrm_proc.o
 obj-$(CONFIG_XFRM_ALGO) += xfrm_algo.o
 obj-$(CONFIG_XFRM_USER) += xfrm_user.o
 obj-$(CONFIG_XFRM_IPCOMP) += xfrm_ipcomp.o
+<<<<<<< HEAD
 obj-$(CONFIG_XFRM_INTERFACE) += xfrm_interface.o
+=======
+>>>>>>> v4.14.187

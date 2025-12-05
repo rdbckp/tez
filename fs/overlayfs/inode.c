@@ -49,7 +49,11 @@ int ovl_setattr(struct dentry *dentry, struct iattr *attr)
 		inode_lock(upperdentry->d_inode);
 		old_cred = ovl_override_creds(dentry->d_sb);
 		err = notify_change(upperdentry, attr, NULL);
+<<<<<<< HEAD
 		ovl_revert_creds(old_cred);
+=======
+		revert_creds(old_cred);
+>>>>>>> v4.14.187
 		if (!err)
 			ovl_copyattr(upperdentry->d_inode, dentry->d_inode);
 		inode_unlock(upperdentry->d_inode);
@@ -142,7 +146,11 @@ int ovl_getattr(const struct path *path, struct kstat *stat,
 		stat->nlink = dentry->d_inode->i_nlink;
 
 out:
+<<<<<<< HEAD
 	ovl_revert_creds(old_cred);
+=======
+	revert_creds(old_cred);
+>>>>>>> v4.14.187
 
 	return err;
 }
@@ -176,7 +184,11 @@ int ovl_permission(struct inode *inode, int mask)
 		mask |= MAY_READ;
 	}
 	err = inode_permission(realinode, mask);
+<<<<<<< HEAD
 	ovl_revert_creds(old_cred);
+=======
+	revert_creds(old_cred);
+>>>>>>> v4.14.187
 
 	return err;
 }
@@ -193,7 +205,11 @@ static const char *ovl_get_link(struct dentry *dentry,
 
 	old_cred = ovl_override_creds(dentry->d_sb);
 	p = vfs_get_link(ovl_dentry_real(dentry), done);
+<<<<<<< HEAD
 	ovl_revert_creds(old_cred);
+=======
+	revert_creds(old_cred);
+>>>>>>> v4.14.187
 	return p;
 }
 
@@ -236,7 +252,11 @@ int ovl_xattr_set(struct dentry *dentry, struct inode *inode, const char *name,
 		WARN_ON(flags != XATTR_REPLACE);
 		err = vfs_removexattr(realdentry, name);
 	}
+<<<<<<< HEAD
 	ovl_revert_creds(old_cred);
+=======
+	revert_creds(old_cred);
+>>>>>>> v4.14.187
 
 out_drop_write:
 	ovl_drop_write(dentry);
@@ -244,6 +264,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 int __ovl_xattr_get(struct dentry *dentry, struct inode *inode,
 		    const char *name, void *value, size_t size)
 {
@@ -259,6 +280,8 @@ int __ovl_xattr_get(struct dentry *dentry, struct inode *inode,
 	return res;
 }
 
+=======
+>>>>>>> v4.14.187
 int ovl_xattr_get(struct dentry *dentry, struct inode *inode, const char *name,
 		  void *value, size_t size)
 {
@@ -269,7 +292,11 @@ int ovl_xattr_get(struct dentry *dentry, struct inode *inode, const char *name,
 
 	old_cred = ovl_override_creds(dentry->d_sb);
 	res = vfs_getxattr(realdentry, name, value, size);
+<<<<<<< HEAD
 	ovl_revert_creds(old_cred);
+=======
+	revert_creds(old_cred);
+>>>>>>> v4.14.187
 	return res;
 }
 
@@ -294,7 +321,11 @@ ssize_t ovl_listxattr(struct dentry *dentry, char *list, size_t size)
 
 	old_cred = ovl_override_creds(dentry->d_sb);
 	res = vfs_listxattr(realdentry, list, size);
+<<<<<<< HEAD
 	ovl_revert_creds(old_cred);
+=======
+	revert_creds(old_cred);
+>>>>>>> v4.14.187
 	if (res <= 0 || size == 0)
 		return res;
 
@@ -329,7 +360,11 @@ struct posix_acl *ovl_get_acl(struct inode *inode, int type)
 
 	old_cred = ovl_override_creds(inode->i_sb);
 	acl = get_acl(realinode, type);
+<<<<<<< HEAD
 	ovl_revert_creds(old_cred);
+=======
+	revert_creds(old_cred);
+>>>>>>> v4.14.187
 
 	return acl;
 }
@@ -539,13 +574,21 @@ unsigned int ovl_get_nlink(struct dentry *lowerdentry,
 	int nlink_diff;
 	int nlink;
 	char buf[13];
+<<<<<<< HEAD
 	ssize_t err;
+=======
+	int err;
+>>>>>>> v4.14.187
 
 	if (!lowerdentry || !upperdentry || d_inode(lowerdentry)->i_nlink == 1)
 		return fallback;
 
+<<<<<<< HEAD
 	err = ovl_vfs_getxattr(upperdentry, OVL_XATTR_NLINK,
 			       &buf, sizeof(buf) - 1);
+=======
+	err = vfs_getxattr(upperdentry, OVL_XATTR_NLINK, &buf, sizeof(buf) - 1);
+>>>>>>> v4.14.187
 	if (err < 0)
 		goto fail;
 
@@ -567,7 +610,11 @@ unsigned int ovl_get_nlink(struct dentry *lowerdentry,
 	return nlink;
 
 fail:
+<<<<<<< HEAD
 	pr_warn_ratelimited("overlayfs: failed to get index nlink (%pd2, err=%zi)\n",
+=======
+	pr_warn_ratelimited("overlayfs: failed to get index nlink (%pd2, err=%i)\n",
+>>>>>>> v4.14.187
 			    upperdentry, err);
 	return fallback;
 }

@@ -99,6 +99,7 @@ static const struct mmc_fixup mmc_blk_fixups[] = {
 	MMC_FIXUP("V10016", CID_MANFID_KINGSTON, CID_OEMID_ANY, add_quirk_mmc,
 		  MMC_QUIRK_TRIM_BROKEN),
 
+<<<<<<< HEAD
 	MMC_FIXUP("SEM16G", CID_MANFID_SANDISK_EMMC, CID_OEMID_ANY,
 		add_quirk_mmc, MMC_QUIRK_DISABLE_SNO),
 	MMC_FIXUP("SEM08G", CID_MANFID_SANDISK_EMMC, CID_OEMID_ANY,
@@ -107,6 +108,8 @@ static const struct mmc_fixup mmc_blk_fixups[] = {
 		add_quirk_mmc, MMC_QUIRK_DISABLE_SNO),
 
 
+=======
+>>>>>>> v4.14.187
 	END_FIXUP
 };
 

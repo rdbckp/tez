@@ -440,6 +440,10 @@ static bool has_ssbd_mitigation(const struct arm64_cpu_capabilities *entry,
 		WARN_ON(1);
 		break;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> v4.14.187
 out_printmsg:
 	switch (ssbd_state) {
 	case ARM64_SSBD_FORCE_DISABLE:

@@ -14,7 +14,10 @@
 #include <linux/export.h>
 #include <net/ndisc.h>
 #include <net/ipv6.h>
+<<<<<<< HEAD
 #include <net/ip6_route.h>
+=======
+>>>>>>> v4.14.187
 #include <net/addrconf.h>
 #include <net/inet_frag.h>
 #ifdef CONFIG_NETLABEL
@@ -137,6 +140,7 @@ static struct ctl_table ipv6_rotable[] = {
 	{ }
 };
 
+<<<<<<< HEAD
 static struct ctl_table net_table[] = {
 	{
 		.procname = "optr",
@@ -148,12 +152,17 @@ static struct ctl_table net_table[] = {
 	{ }
 };
 
+=======
+>>>>>>> v4.14.187
 static int __net_init ipv6_sysctl_net_init(struct net *net)
 {
 	struct ctl_table *ipv6_table;
 	struct ctl_table *ipv6_route_table;
 	struct ctl_table *ipv6_icmp_table;
+<<<<<<< HEAD
 	struct ctl_table_header *vzw_hdr;
+=======
+>>>>>>> v4.14.187
 	int err;
 
 	err = -ENOMEM;
@@ -194,10 +203,13 @@ static int __net_init ipv6_sysctl_net_init(struct net *net)
 	if (!net->ipv6.sysctl.icmp_hdr)
 		goto out_unregister_route_table;
 
+<<<<<<< HEAD
 	vzw_hdr = register_net_sysctl(net, "net", net_table);
 	if (!vzw_hdr)
 		pr_info("[mtk_net] register net sysctl optr is fail.\n");
 
+=======
+>>>>>>> v4.14.187
 	err = 0;
 out:
 	return err;

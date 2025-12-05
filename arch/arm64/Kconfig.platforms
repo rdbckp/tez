@@ -98,6 +98,7 @@ config ARCH_MEDIATEK
 	help
 	  Support for Mediatek MT65xx & MT81xx ARMv8 SoCs
 
+<<<<<<< HEAD
 config MTK_IGNORE_SSBS
 	bool "Mediatek option to ignore SSBS check"
 	help
@@ -740,6 +741,8 @@ config MACH_MT6893
 	  Support for fpga_64_mt6893 related projects
 	  Support for mt6893 related projects
 
+=======
+>>>>>>> v4.14.187
 config ARCH_MESON
 	bool "Amlogic Platforms"
 	select PINCTRL

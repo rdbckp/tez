@@ -30,7 +30,10 @@
 #include <linux/kernel.h>
 #include <linux/mm.h>
 #include <linux/stddef.h>
+<<<<<<< HEAD
 #include <linux/sysctl.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/unistd.h>
 #include <linux/user.h>
 #include <linux/delay.h>
@@ -50,10 +53,13 @@
 #include <linux/notifier.h>
 #include <trace/events/power.h>
 #include <linux/percpu.h>
+<<<<<<< HEAD
 #include <linux/prctl.h>
 #ifdef CONFIG_SEC_DEBUG
 #include <linux/sec_debug.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 #include <asm/alternative.h>
 #include <asm/compat.h>
@@ -62,9 +68,13 @@
 #include <asm/fpsimd.h>
 #include <asm/mmu_context.h>
 #include <asm/processor.h>
+<<<<<<< HEAD
 #include <asm/scs.h>
 #include <asm/stacktrace.h>
 #include <asm/esr.h>
+=======
+#include <asm/stacktrace.h>
+>>>>>>> v4.14.187
 
 #ifdef CONFIG_CC_STACKPROTECTOR
 #include <linux/stackprotector.h>
@@ -177,6 +187,7 @@ void machine_restart(char *cmd)
 	while (1);
 }
 
+<<<<<<< HEAD
 /*
  * dump a block of kernel memory from around the given address
  */
@@ -259,6 +270,8 @@ static unsigned int is_external_abort(void)
 	return 0;
 }
 
+=======
+>>>>>>> v4.14.187
 void __show_regs(struct pt_regs *regs)
 {
 	int i, top_reg;
@@ -274,12 +287,15 @@ void __show_regs(struct pt_regs *regs)
 		top_reg = 29;
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 	if (!user_mode(regs)) {
 		sec_save_context(_THIS_CPU, regs);
 	}
 #endif
 
+=======
+>>>>>>> v4.14.187
 	show_regs_print_info(KERN_DEFAULT);
 	print_symbol("pc : %s\n", regs->pc);
 	print_symbol("lr : %s\n", lr);
@@ -298,9 +314,12 @@ void __show_regs(struct pt_regs *regs)
 
 		pr_cont("\n");
 	}
+<<<<<<< HEAD
 	if (!user_mode(regs) && !is_external_abort())
 		show_extra_register_data(regs, 128);
 	printk("\n");
+=======
+>>>>>>> v4.14.187
 }
 
 void show_regs(struct pt_regs * regs)
@@ -326,18 +345,24 @@ static void tls_thread_flush(void)
 	}
 }
 
+<<<<<<< HEAD
 static void flush_tagged_addr_state(void)
 {
 	if (IS_ENABLED(CONFIG_ARM64_TAGGED_ADDR_ABI))
 		clear_thread_flag(TIF_TAGGED_ADDR);
 }
 
+=======
+>>>>>>> v4.14.187
 void flush_thread(void)
 {
 	fpsimd_flush_thread();
 	tls_thread_flush();
 	flush_ptrace_hw_breakpoint(current);
+<<<<<<< HEAD
 	flush_tagged_addr_state();
+=======
+>>>>>>> v4.14.187
 }
 
 void release_thread(struct task_struct *dead_task)
@@ -441,6 +466,10 @@ void uao_thread_switch(struct task_struct *next)
 			asm(ALTERNATIVE("nop", SET_PSTATE_UAO(0), ARM64_HAS_UAO));
 	}
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> v4.14.187
 /*
  * Force SSBS state on context-switch, since it may be lost after migrating
  * from a CPU which treats the bit as RES0 in a heterogeneous system.
@@ -503,7 +532,10 @@ __notrace_funcgraph struct task_struct *__switch_to(struct task_struct *prev,
 	entry_task_switch(next);
 	uao_thread_switch(next);
 	ssbs_thread_switch(next);
+<<<<<<< HEAD
 	scs_overflow_check(next);
+=======
+>>>>>>> v4.14.187
 
 	/*
 	 * Complete any pending TLB or cache maintenance on this CPU in case
@@ -572,6 +604,7 @@ void arch_setup_new_exec(void)
 {
 	current->mm->context.flags = is_compat_task() ? MMCF_AARCH32 : 0;
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_ARM64_TAGGED_ADDR_ABI
 /*
@@ -639,3 +672,5 @@ static int __init tagged_addr_init(void)
 
 core_initcall(tagged_addr_init);
 #endif	/* CONFIG_ARM64_TAGGED_ADDR_ABI */
+=======
+>>>>>>> v4.14.187

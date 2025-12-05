@@ -771,7 +771,10 @@ static void phy_v1_banks_init(struct mtk_tphy *tphy,
 	}
 }
 
+<<<<<<< HEAD
 static struct mtk_phy_instance *bc11_instance;
+=======
+>>>>>>> v4.14.187
 static void phy_v2_banks_init(struct mtk_tphy *tphy,
 			      struct mtk_phy_instance *instance)
 {
@@ -795,9 +798,12 @@ static void phy_v2_banks_init(struct mtk_tphy *tphy,
 		dev_err(tphy->dev, "incompatible PHY type\n");
 		return;
 	}
+<<<<<<< HEAD
 
 	if ((tphy->phys[0] == instance) && (instance->type == PHY_TYPE_USB2))
 		bc11_instance = instance;
+=======
+>>>>>>> v4.14.187
 }
 
 static int mtk_phy_init(struct phy *phy)
@@ -836,9 +842,12 @@ static int mtk_phy_init(struct phy *phy)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	clk_disable_unprepare(instance->ref_clk);
 	clk_disable_unprepare(tphy->u3phya_ref);
 
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -846,6 +855,7 @@ static int mtk_phy_power_on(struct phy *phy)
 {
 	struct mtk_phy_instance *instance = phy_get_drvdata(phy);
 	struct mtk_tphy *tphy = dev_get_drvdata(phy->dev.parent);
+<<<<<<< HEAD
 	int ret;
 
 	ret = clk_prepare_enable(tphy->u3phya_ref);
@@ -859,6 +869,8 @@ static int mtk_phy_power_on(struct phy *phy)
 		dev_err(tphy->dev, "failed to enable ref_clk\n");
 		return ret;
 	}
+=======
+>>>>>>> v4.14.187
 
 	if (instance->type == PHY_TYPE_USB2) {
 		u2_phy_instance_power_on(tphy, instance);
@@ -880,9 +892,12 @@ static int mtk_phy_power_off(struct phy *phy)
 	else if (instance->type == PHY_TYPE_PCIE)
 		pcie_phy_instance_power_off(tphy, instance);
 
+<<<<<<< HEAD
 	clk_disable_unprepare(instance->ref_clk);
 	clk_disable_unprepare(tphy->u3phya_ref);
 
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -890,6 +905,7 @@ static int mtk_phy_exit(struct phy *phy)
 {
 	struct mtk_phy_instance *instance = phy_get_drvdata(phy);
 	struct mtk_tphy *tphy = dev_get_drvdata(phy->dev.parent);
+<<<<<<< HEAD
 	int ret;
 
 	ret = clk_prepare_enable(tphy->u3phya_ref);
@@ -903,6 +919,8 @@ static int mtk_phy_exit(struct phy *phy)
 		dev_err(tphy->dev, "failed to enable ref_clk\n");
 		return ret;
 	}
+=======
+>>>>>>> v4.14.187
 
 	if (instance->type == PHY_TYPE_USB2)
 		u2_phy_instance_exit(tphy, instance);
@@ -1078,6 +1096,13 @@ static int mtk_tphy_probe(struct platform_device *pdev)
 		phy_set_drvdata(phy, instance);
 		port++;
 
+<<<<<<< HEAD
+=======
+		/* if deprecated clock is provided, ignore instance's one */
+		if (tphy->u3phya_ref)
+			continue;
+
+>>>>>>> v4.14.187
 		instance->ref_clk = devm_clk_get(&phy->dev, "ref");
 		if (IS_ERR(instance->ref_clk)) {
 			dev_err(dev, "failed to get ref_clk(id-%d)\n", port);
@@ -1104,6 +1129,7 @@ static struct platform_driver mtk_tphy_driver = {
 
 module_platform_driver(mtk_tphy_driver);
 
+<<<<<<< HEAD
 void Charger_Detect_Init(void)
 {
 	struct u2phy_banks *u2_banks;
@@ -1183,6 +1209,8 @@ int usb2jtag_usb_init(void)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 MODULE_AUTHOR("Chunfeng Yun <chunfeng.yun@mediatek.com>");
 MODULE_DESCRIPTION("MediaTek T-PHY driver");
 MODULE_LICENSE("GPL v2");

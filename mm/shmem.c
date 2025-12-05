@@ -256,7 +256,11 @@ static int shmem_reserve_inode(struct super_block *sb)
 static void shmem_free_inode(struct super_block *sb)
 {
 	struct shmem_sb_info *sbinfo = SHMEM_SB(sb);
+<<<<<<< HEAD
 	if (sbinfo && sbinfo->max_inodes) {
+=======
+	if (sbinfo->max_inodes) {
+>>>>>>> v4.14.187
 		spin_lock(&sbinfo->stat_lock);
 		sbinfo->free_inodes++;
 		spin_unlock(&sbinfo->stat_lock);
@@ -2153,6 +2157,7 @@ out_nomem:
 
 static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	struct shmem_inode_info *info = SHMEM_I(file_inode(file));
 
 
@@ -2172,6 +2177,8 @@ static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
 		vma->vm_flags &= ~(VM_MAYWRITE);
 	}
 
+=======
+>>>>>>> v4.14.187
 	file_accessed(file);
 	vma->vm_ops = &shmem_vm_ops;
 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGE_PAGECACHE) &&
@@ -2425,9 +2432,14 @@ shmem_write_begin(struct file *file, struct address_space *mapping,
 	pgoff_t index = pos >> PAGE_SHIFT;
 
 	/* i_mutex is held by caller */
+<<<<<<< HEAD
 	if (unlikely(info->seals & (F_SEAL_GROW |
 				   F_SEAL_WRITE | F_SEAL_FUTURE_WRITE))) {
 		if (info->seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE))
+=======
+	if (unlikely(info->seals & (F_SEAL_WRITE | F_SEAL_GROW))) {
+		if (info->seals & F_SEAL_WRITE)
+>>>>>>> v4.14.187
 			return -EPERM;
 		if ((info->seals & F_SEAL_GROW) && pos + len > inode->i_size)
 			return -EPERM;
@@ -2786,8 +2798,12 @@ continue_resched:
 #define F_ALL_SEALS (F_SEAL_SEAL | \
 		     F_SEAL_SHRINK | \
 		     F_SEAL_GROW | \
+<<<<<<< HEAD
 		     F_SEAL_WRITE | \
 		     F_SEAL_FUTURE_WRITE)
+=======
+		     F_SEAL_WRITE)
+>>>>>>> v4.14.187
 
 int shmem_add_seals(struct file *file, unsigned int seals)
 {
@@ -2914,7 +2930,11 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
 		DECLARE_WAIT_QUEUE_HEAD_ONSTACK(shmem_falloc_waitq);
 
 		/* protected by i_mutex */
+<<<<<<< HEAD
 		if (info->seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
+=======
+		if (info->seals & F_SEAL_WRITE) {
+>>>>>>> v4.14.187
 			error = -EPERM;
 			goto out;
 		}
@@ -4337,6 +4357,7 @@ struct file *shmem_file_setup(const char *name, loff_t size, unsigned long flags
 }
 EXPORT_SYMBOL_GPL(shmem_file_setup);
 
+<<<<<<< HEAD
 void shmem_set_file(struct vm_area_struct *vma, struct file *file)
 {
 	if (vma->vm_file)
@@ -4345,6 +4366,8 @@ void shmem_set_file(struct vm_area_struct *vma, struct file *file)
 	vma->vm_ops = &shmem_vm_ops;
 }
 
+=======
+>>>>>>> v4.14.187
 /**
  * shmem_zero_setup - setup a shared anonymous mapping
  * @vma: the vma to be mmapped is prepared by do_mmap_pgoff
@@ -4364,7 +4387,14 @@ int shmem_zero_setup(struct vm_area_struct *vma)
 	if (IS_ERR(file))
 		return PTR_ERR(file);
 
+<<<<<<< HEAD
 	shmem_set_file(vma, file);
+=======
+	if (vma->vm_file)
+		fput(vma->vm_file);
+	vma->vm_file = file;
+	vma->vm_ops = &shmem_vm_ops;
+>>>>>>> v4.14.187
 
 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGE_PAGECACHE) &&
 			((vma->vm_start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK) <

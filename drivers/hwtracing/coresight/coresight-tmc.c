@@ -16,13 +16,19 @@
 #include <linux/init.h>
 #include <linux/types.h>
 #include <linux/device.h>
+<<<<<<< HEAD
 #include <linux/idr.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/io.h>
 #include <linux/err.h>
 #include <linux/fs.h>
 #include <linux/miscdevice.h>
+<<<<<<< HEAD
 #include <linux/mutex.h>
 #include <linux/property.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/uaccess.h>
 #include <linux/slab.h>
 #include <linux/dma-mapping.h>
@@ -74,6 +80,7 @@ void tmc_disable_hw(struct tmc_drvdata *drvdata)
 	writel_relaxed(0x0, drvdata->base + TMC_CTL);
 }
 
+<<<<<<< HEAD
 u32 tmc_get_memwidth_mask(struct tmc_drvdata *drvdata)
 {
 	u32 mask = 0;
@@ -102,6 +109,8 @@ u32 tmc_get_memwidth_mask(struct tmc_drvdata *drvdata)
 	return mask;
 }
 
+=======
+>>>>>>> v4.14.187
 static int tmc_read_prepare(struct tmc_drvdata *drvdata)
 {
 	int ret = 0;
@@ -119,7 +128,11 @@ static int tmc_read_prepare(struct tmc_drvdata *drvdata)
 	}
 
 	if (!ret)
+<<<<<<< HEAD
 		dev_dbg(drvdata->dev, "TMC read start\n");
+=======
+		dev_info(drvdata->dev, "TMC read start\n");
+>>>>>>> v4.14.187
 
 	return ret;
 }
@@ -141,7 +154,11 @@ static int tmc_read_unprepare(struct tmc_drvdata *drvdata)
 	}
 
 	if (!ret)
+<<<<<<< HEAD
 		dev_dbg(drvdata->dev, "TMC read end\n");
+=======
+		dev_info(drvdata->dev, "TMC read end\n");
+>>>>>>> v4.14.187
 
 	return ret;
 }
@@ -162,6 +179,7 @@ static int tmc_open(struct inode *inode, struct file *file)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline ssize_t tmc_get_sysfs_trace(struct tmc_drvdata *drvdata,
 					  loff_t pos, size_t len, char **bufpp)
 {
@@ -188,14 +206,44 @@ static ssize_t tmc_read(struct file *file, char __user *data, size_t len,
 		return 0;
 
 	if (copy_to_user(data, bufp, actual)) {
+=======
+static ssize_t tmc_read(struct file *file, char __user *data, size_t len,
+			loff_t *ppos)
+{
+	struct tmc_drvdata *drvdata = container_of(file->private_data,
+						   struct tmc_drvdata, miscdev);
+	char *bufp = drvdata->buf + *ppos;
+
+	if (*ppos + len > drvdata->len)
+		len = drvdata->len - *ppos;
+
+	if (drvdata->config_type == TMC_CONFIG_TYPE_ETR) {
+		if (bufp == (char *)(drvdata->vaddr + drvdata->size))
+			bufp = drvdata->vaddr;
+		else if (bufp > (char *)(drvdata->vaddr + drvdata->size))
+			bufp -= drvdata->size;
+		if ((bufp + len) > (char *)(drvdata->vaddr + drvdata->size))
+			len = (char *)(drvdata->vaddr + drvdata->size) - bufp;
+	}
+
+	if (copy_to_user(data, bufp, len)) {
+>>>>>>> v4.14.187
 		dev_dbg(drvdata->dev, "%s: copy_to_user failed\n", __func__);
 		return -EFAULT;
 	}
 
+<<<<<<< HEAD
 	*ppos += actual;
 	dev_dbg(drvdata->dev, "%zu bytes copied\n", actual);
 
 	return actual;
+=======
+	*ppos += len;
+
+	dev_dbg(drvdata->dev, "%s: %zu bytes copied, %d bytes left\n",
+		__func__, len, (int)(drvdata->len - *ppos));
+	return len;
+>>>>>>> v4.14.187
 }
 
 static int tmc_release(struct inode *inode, struct file *file)
@@ -267,7 +315,10 @@ coresight_tmc_reg(ffcr, TMC_FFCR);
 coresight_tmc_reg(mode, TMC_MODE);
 coresight_tmc_reg(pscr, TMC_PSCR);
 coresight_tmc_reg(axictl, TMC_AXICTL);
+<<<<<<< HEAD
 coresight_tmc_reg(authstatus, TMC_AUTHSTATUS);
+=======
+>>>>>>> v4.14.187
 coresight_tmc_reg(devid, CORESIGHT_DEVID);
 coresight_tmc_reg64(rrp, TMC_RRP, TMC_RRPHI);
 coresight_tmc_reg64(rwp, TMC_RWP, TMC_RWPHI);
@@ -287,7 +338,10 @@ static struct attribute *coresight_tmc_mgmt_attrs[] = {
 	&dev_attr_devid.attr,
 	&dev_attr_dba.attr,
 	&dev_attr_axictl.attr,
+<<<<<<< HEAD
 	&dev_attr_authstatus.attr,
+=======
+>>>>>>> v4.14.187
 	NULL,
 };
 
@@ -317,6 +371,7 @@ static ssize_t trigger_cntr_store(struct device *dev,
 }
 static DEVICE_ATTR_RW(trigger_cntr);
 
+<<<<<<< HEAD
 static ssize_t buffer_size_show(struct device *dev,
 				struct device_attribute *attr, char *buf)
 {
@@ -352,6 +407,10 @@ static DEVICE_ATTR_RW(buffer_size);
 static struct attribute *coresight_tmc_attrs[] = {
 	&dev_attr_trigger_cntr.attr,
 	&dev_attr_buffer_size.attr,
+=======
+static struct attribute *coresight_tmc_attrs[] = {
+	&dev_attr_trigger_cntr.attr,
+>>>>>>> v4.14.187
 	NULL,
 };
 
@@ -370,6 +429,7 @@ const struct attribute_group *coresight_tmc_groups[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static inline bool tmc_etr_can_use_sg(struct tmc_drvdata *drvdata)
 {
 	return fwnode_property_present(drvdata->dev->fwnode,
@@ -383,10 +443,13 @@ static inline bool tmc_etr_has_non_secure_access(struct tmc_drvdata *drvdata)
 	return (auth & TMC_AUTH_NSID_MASK) == 0x3;
 }
 
+=======
+>>>>>>> v4.14.187
 /* Detect and initialise the capabilities of a TMC ETR */
 static int tmc_etr_setup_caps(struct tmc_drvdata *drvdata,
 			     u32 devid, void *dev_caps)
 {
+<<<<<<< HEAD
 	int rc;
 
 	u32 dma_mask = 0;
@@ -398,6 +461,14 @@ static int tmc_etr_setup_caps(struct tmc_drvdata *drvdata,
 	tmc_etr_init_caps(drvdata, (u32)(unsigned long)dev_caps);
 
 	if (!(devid & TMC_DEVID_NOSCAT) && tmc_etr_can_use_sg(drvdata))
+=======
+	u32 dma_mask = 0;
+
+	/* Set the unadvertised capabilities */
+	tmc_etr_init_caps(drvdata, (u32)(unsigned long)dev_caps);
+
+	if (!(devid & TMC_DEVID_NOSCAT))
+>>>>>>> v4.14.187
 		tmc_etr_set_cap(drvdata, TMC_ETR_SG);
 
 	/* Check if the AXI address width is available */
@@ -421,10 +492,14 @@ static int tmc_etr_setup_caps(struct tmc_drvdata *drvdata,
 		dma_mask = 40;
 	}
 
+<<<<<<< HEAD
 	rc = dma_set_mask_and_coherent(drvdata->dev, DMA_BIT_MASK(dma_mask));
 	if (rc)
 		dev_err(drvdata->dev, "Failed to setup DMA mask: %d\n", rc);
 	return rc;
+=======
+	return dma_set_mask_and_coherent(drvdata->dev, DMA_BIT_MASK(dma_mask));
+>>>>>>> v4.14.187
 }
 
 static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
@@ -470,8 +545,11 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
 	devid = readl_relaxed(drvdata->base + CORESIGHT_DEVID);
 	drvdata->config_type = BMVAL(devid, 6, 7);
 	drvdata->memwidth = tmc_get_memwidth(devid);
+<<<<<<< HEAD
 	/* This device is not associated with a session */
 	drvdata->pid = -1;
+=======
+>>>>>>> v4.14.187
 
 	if (drvdata->config_type == TMC_CONFIG_TYPE_ETR) {
 		if (np)
@@ -484,6 +562,11 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
 		drvdata->size = readl_relaxed(drvdata->base + TMC_RSZ) * 4;
 	}
 
+<<<<<<< HEAD
+=======
+	pm_runtime_put(&adev->dev);
+
+>>>>>>> v4.14.187
 	desc.pdata = pdata;
 	desc.dev = dev;
 	desc.groups = coresight_tmc_groups;
@@ -501,8 +584,11 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
 		ret = tmc_etr_setup_caps(drvdata, devid, id->data);
 		if (ret)
 			goto out;
+<<<<<<< HEAD
 		idr_init(&drvdata->idr);
 		mutex_init(&drvdata->idr_mutex);
+=======
+>>>>>>> v4.14.187
 		break;
 	case TMC_CONFIG_TYPE_ETF:
 		desc.type = CORESIGHT_DEV_TYPE_LINKSINK;
@@ -527,8 +613,11 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
 	ret = misc_register(&drvdata->miscdev);
 	if (ret)
 		coresight_unregister(drvdata->csdev);
+<<<<<<< HEAD
 	else
 		pm_runtime_put(&adev->dev);
+=======
+>>>>>>> v4.14.187
 out:
 	return ret;
 }

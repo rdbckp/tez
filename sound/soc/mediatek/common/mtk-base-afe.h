@@ -22,25 +22,32 @@ struct mtk_base_memif_data {
 	const char *name;
 	int reg_ofs_base;
 	int reg_ofs_cur;
+<<<<<<< HEAD
 	int reg_ofs_end;
 	int reg_ofs_base_msb;
 	int reg_ofs_cur_msb;
 	int reg_ofs_end_msb;
+=======
+>>>>>>> v4.14.187
 	int fs_reg;
 	int fs_shift;
 	int fs_maskbit;
 	int mono_reg;
 	int mono_shift;
+<<<<<<< HEAD
 	int mono_invert;
 	int quad_ch_reg;
 	int quad_ch_mask_shift;
 	int quad_ch_shift;
+=======
+>>>>>>> v4.14.187
 	int enable_reg;
 	int enable_shift;
 	int hd_reg;
 	int hd_shift;
 	int msb_reg;
 	int msb_shift;
+<<<<<<< HEAD
 	int msb2_reg;
 	int msb2_shift;
 	int agent_disable_reg;
@@ -52,6 +59,10 @@ struct mtk_base_memif_data {
 	int minlen_reg;
 	int minlen_mask_shift;
 	int minlen_shift;
+=======
+	int agent_disable_reg;
+	int agent_disable_shift;
+>>>>>>> v4.14.187
 };
 
 struct mtk_base_irq_data {
@@ -66,6 +77,7 @@ struct mtk_base_irq_data {
 	int irq_en_shift;
 	int irq_clr_reg;
 	int irq_clr_shift;
+<<<<<<< HEAD
 	int irq_ap_en_reg;
 	int irq_ap_en_shift;
 	int irq_scp_en_reg;
@@ -85,6 +97,16 @@ struct snd_soc_dai_driver;
 typedef int (*mtk_sp_copy_f)(struct snd_pcm_substream *substream,
 				 int channel, unsigned long hwoff,
 				 void *buf, unsigned long bytes);
+=======
+};
+
+struct device;
+struct mtk_base_afe_memif;
+struct mtk_base_afe_irq;
+struct regmap;
+struct snd_pcm_substream;
+struct snd_soc_dai;
+>>>>>>> v4.14.187
 
 struct mtk_base_afe {
 	void __iomem *base_addr;
@@ -102,6 +124,7 @@ struct mtk_base_afe {
 
 	struct mtk_base_afe_memif *memif;
 	int memif_size;
+<<<<<<< HEAD
 	int memif_32bit_supported;
 	struct mtk_base_afe_irq *irqs;
 	int irqs_size;
@@ -110,11 +133,17 @@ struct mtk_base_afe {
 	struct snd_soc_dai_driver *dai_drivers;
 	unsigned int num_dai_drivers;
 
+=======
+	struct mtk_base_afe_irq *irqs;
+	int irqs_size;
+
+>>>>>>> v4.14.187
 	const struct snd_pcm_hardware *mtk_afe_hardware;
 	int (*memif_fs)(struct snd_pcm_substream *substream,
 			unsigned int rate);
 	int (*irq_fs)(struct snd_pcm_substream *substream,
 		      unsigned int rate);
+<<<<<<< HEAD
 	int (*get_dai_fs)(struct mtk_base_afe *afe,
 			  int dai_id, unsigned int rate);
 	int (*get_memif_pbuf_size)(struct snd_pcm_substream *substream);
@@ -139,10 +168,20 @@ struct mtk_base_afe_memif {
 	dma_addr_t dma_addr;
 	size_t dma_bytes;
 
+=======
+
+	void *platform_priv;
+};
+
+struct mtk_base_afe_memif {
+	unsigned int phys_buf_addr;
+	int buffer_size;
+>>>>>>> v4.14.187
 	struct snd_pcm_substream *substream;
 	const struct mtk_base_memif_data *data;
 	int irq_usage;
 	int const_irq;
+<<<<<<< HEAD
 	unsigned int phys_buf_addr;
 	int buffer_size;
 
@@ -160,6 +199,8 @@ struct mtk_base_afe_memif {
 
 	bool ack_enable;
 	int (*ack)(struct snd_pcm_substream *substream);
+=======
+>>>>>>> v4.14.187
 };
 
 struct mtk_base_afe_irq {
@@ -167,6 +208,7 @@ struct mtk_base_afe_irq {
 	int irq_occupyed;
 };
 
+<<<<<<< HEAD
 struct mtk_base_afe_dai {
 	struct snd_soc_dai_driver *dai_drivers;
 	unsigned int num_dai_drivers;
@@ -181,5 +223,7 @@ struct mtk_base_afe_dai {
 	struct list_head list;
 };
 
+=======
+>>>>>>> v4.14.187
 #endif
 

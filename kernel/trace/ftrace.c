@@ -123,9 +123,14 @@ static void ftrace_ops_list_func(unsigned long ip, unsigned long parent_ip,
 				 struct ftrace_ops *op, struct pt_regs *regs);
 #else
 /* See comment below, where ftrace_ops_list_func is defined */
+<<<<<<< HEAD
 static void ftrace_ops_no_ops(unsigned long ip, unsigned long parent_ip,
 			      struct ftrace_ops *op, struct pt_regs *regs);
 #define ftrace_ops_list_func ftrace_ops_no_ops
+=======
+static void ftrace_ops_no_ops(unsigned long ip, unsigned long parent_ip);
+#define ftrace_ops_list_func ((ftrace_func_t)ftrace_ops_no_ops)
+>>>>>>> v4.14.187
 #endif
 
 /*
@@ -5613,9 +5618,15 @@ static int ftrace_cmp_ips(const void *a, const void *b)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __norecordmcount ftrace_process_locs(struct module *mod,
 						unsigned long *start,
 						unsigned long *end)
+=======
+static int ftrace_process_locs(struct module *mod,
+			       unsigned long *start,
+			       unsigned long *end)
+>>>>>>> v4.14.187
 {
 	struct ftrace_page *start_pg;
 	struct ftrace_page *pg;
@@ -6140,8 +6151,12 @@ static void ftrace_ops_list_func(unsigned long ip, unsigned long parent_ip,
 }
 NOKPROBE_SYMBOL(ftrace_ops_list_func);
 #else
+<<<<<<< HEAD
 static void ftrace_ops_no_ops(unsigned long ip, unsigned long parent_ip,
 			      struct ftrace_ops *op, struct pt_regs *regs)
+=======
+static void ftrace_ops_no_ops(unsigned long ip, unsigned long parent_ip)
+>>>>>>> v4.14.187
 {
 	__ftrace_ops_list_func(ip, parent_ip, NULL, NULL);
 }
@@ -6608,17 +6623,25 @@ void ftrace_graph_graph_time_control(bool enable)
 	fgraph_graph_time = enable;
 }
 
+<<<<<<< HEAD
 void ftrace_graph_return_stub(struct ftrace_graph_ret *trace)
 {
 }
 
+=======
+>>>>>>> v4.14.187
 int ftrace_graph_entry_stub(struct ftrace_graph_ent *trace)
 {
 	return 0;
 }
 
 /* The callbacks that hook a function */
+<<<<<<< HEAD
 trace_func_graph_ret_t ftrace_graph_return = ftrace_graph_return_stub;
+=======
+trace_func_graph_ret_t ftrace_graph_return =
+			(trace_func_graph_ret_t)ftrace_stub;
+>>>>>>> v4.14.187
 trace_func_graph_ent_t ftrace_graph_entry = ftrace_graph_entry_stub;
 static trace_func_graph_ent_t __ftrace_graph_entry = ftrace_graph_entry_stub;
 
@@ -6846,7 +6869,11 @@ void unregister_ftrace_graph(void)
 		goto out;
 
 	ftrace_graph_active--;
+<<<<<<< HEAD
 	ftrace_graph_return = ftrace_graph_return_stub;
+=======
+	ftrace_graph_return = (trace_func_graph_ret_t)ftrace_stub;
+>>>>>>> v4.14.187
 	ftrace_graph_entry = ftrace_graph_entry_stub;
 	__ftrace_graph_entry = ftrace_graph_entry_stub;
 	ftrace_shutdown(&graph_ops, FTRACE_STOP_FUNC_RET);

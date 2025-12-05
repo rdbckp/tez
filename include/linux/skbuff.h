@@ -41,10 +41,13 @@
 #include <linux/if_packet.h>
 #include <net/flow.h>
 
+<<<<<<< HEAD
 
 #define NET_RX_BATCH_SOLUTION 1
 
 
+=======
+>>>>>>> v4.14.187
 /* The interface for checksum offload between the stack and networking drivers
  * is as follows...
  *
@@ -513,12 +516,15 @@ struct skb_shared_info {
 	 * remains valid until skb destructor */
 	void *		destructor_arg;
 
+<<<<<<< HEAD
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_VPN {
 	uid_t uid;
 	pid_t pid;
 	u_int32_t knox_mark;
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_VPN }
 
+=======
+>>>>>>> v4.14.187
 	/* must be last field, see pskb_expand_head() */
 	skb_frag_t	frags[MAX_SKB_FRAGS];
 };
@@ -580,8 +586,11 @@ enum {
 	SKB_GSO_ESP = 1 << 15,
 
 	SKB_GSO_UDP = 1 << 16,
+<<<<<<< HEAD
 
 	SKB_GSO_UDP_L4 = 1 << 17,
+=======
+>>>>>>> v4.14.187
 };
 
 #if BITS_PER_LONG > 32
@@ -684,9 +693,13 @@ struct sk_buff {
 			};
 		};
 		struct rb_node		rbnode; /* used in netem, ip4 defrag, and tcp stack */
+<<<<<<< HEAD
 #ifndef NET_RX_BATCH_SOLUTION
 		struct list_head	list;
 #endif
+=======
+		struct list_head	list;
+>>>>>>> v4.14.187
 	};
 
 	union {
@@ -705,9 +718,13 @@ struct sk_buff {
 	 * first. This is owned by whoever has the skb queued ATM.
 	 */
 	char			cb[48] __aligned(8);
+<<<<<<< HEAD
 #ifdef NET_RX_BATCH_SOLUTION
 	struct list_head list;
 #endif
+=======
+
+>>>>>>> v4.14.187
 	unsigned long		_skb_refdst;
 	void			(*destructor)(struct sk_buff *skb);
 #ifdef CONFIG_XFRM
@@ -1351,6 +1368,7 @@ static inline void skb_zcopy_abort(struct sk_buff *skb)
 	}
 }
 
+<<<<<<< HEAD
 static inline void skb_mark_not_on_list(struct sk_buff *skb)
 {
 	skb->next = NULL;
@@ -1362,6 +1380,8 @@ static inline void skb_list_del_init(struct sk_buff *skb)
 	skb_mark_not_on_list(skb);
 }
 
+=======
+>>>>>>> v4.14.187
 /**
  *	skb_queue_empty - check if a queue is empty
  *	@list: queue head

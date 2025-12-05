@@ -28,9 +28,12 @@
 #include <linux/interrupt.h>
 #include <linux/debug_locks.h>
 #include <linux/osq_lock.h>
+<<<<<<< HEAD
 #ifdef CONFIG_KPERFMON
 #include <linux/ologk.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 #ifdef CONFIG_DEBUG_MUTEXES
 # include "mutex-debug.h"
@@ -49,12 +52,15 @@ __mutex_init(struct mutex *lock, const char *name, struct lock_class_key *key)
 #endif
 
 	debug_mutex_init(lock, name, key);
+<<<<<<< HEAD
 
 #ifdef CONFIG_KPERFMON
 	if (lock != 0) {
 		lock->time = 0;
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL(__mutex_init);
 
@@ -616,6 +622,7 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
  */
 void __sched mutex_unlock(struct mutex *lock)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_KPERFMON
 	unsigned long lock_jiffies = 0;
 
@@ -623,11 +630,14 @@ void __sched mutex_unlock(struct mutex *lock)
 		lock_jiffies = lock->time;
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 #ifndef CONFIG_DEBUG_LOCK_ALLOC
 	if (__mutex_unlock_fast(lock))
 		return;
 #endif
 	__mutex_unlock_slowpath(lock, _RET_IP_);
+<<<<<<< HEAD
 #ifdef CONFIG_KPERFMON
 	if (lock != 0 && lock_jiffies > 0 && jiffies > lock_jiffies) {
 		unsigned long diff_jiffies = jiffies - lock_jiffies;
@@ -637,6 +647,8 @@ void __sched mutex_unlock(struct mutex *lock)
 		}
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL(mutex_unlock);
 

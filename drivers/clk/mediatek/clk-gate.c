@@ -23,6 +23,7 @@
 #include "clk-mtk.h"
 #include "clk-gate.h"
 
+<<<<<<< HEAD
 #define INV_OFS		-1
 
 static int is_subsys_pwr_on(struct mtk_clk_gate *cg)
@@ -48,6 +49,8 @@ static int is_subsys_pwr_on(struct mtk_clk_gate *cg)
 	return true;
 }
 
+=======
+>>>>>>> v4.14.187
 static int mtk_cg_bit_is_cleared(struct clk_hw *hw)
 {
 	struct mtk_clk_gate *cg = to_mtk_clk_gate(hw);
@@ -72,6 +75,7 @@ static int mtk_cg_bit_is_set(struct clk_hw *hw)
 	return val != 0;
 }
 
+<<<<<<< HEAD
 static int mtk_cg_is_enabled(struct clk_hw *hw)
 {
 	struct mtk_clk_gate *cg = to_mtk_clk_gate(hw);
@@ -112,11 +116,19 @@ static void mtk_cg_set_bit(struct clk_hw *hw)
 		i++;
 	}
 #endif
+=======
+static void mtk_cg_set_bit(struct clk_hw *hw)
+{
+	struct mtk_clk_gate *cg = to_mtk_clk_gate(hw);
+
+	regmap_write(cg->regmap, cg->set_ofs, BIT(cg->bit));
+>>>>>>> v4.14.187
 }
 
 static void mtk_cg_clr_bit(struct clk_hw *hw)
 {
 	struct mtk_clk_gate *cg = to_mtk_clk_gate(hw);
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_MT6853
 	int val = 0;
 	int i = 0;
@@ -152,6 +164,8 @@ static void mtk_cg_clr_bit_unused(struct clk_hw *hw)
 	const char *c_n = clk_hw_get_name(hw);
 
 	pr_notice("disable_unused - %s\n", c_n);
+=======
+>>>>>>> v4.14.187
 
 	regmap_write(cg->regmap, cg->clr_ofs, BIT(cg->bit));
 }
@@ -184,11 +198,14 @@ static void mtk_cg_disable(struct clk_hw *hw)
 	mtk_cg_set_bit(hw);
 }
 
+<<<<<<< HEAD
 static void mtk_cg_disable_unused(struct clk_hw *hw)
 {
 	mtk_cg_set_bit_unused(hw);
 }
 
+=======
+>>>>>>> v4.14.187
 static int mtk_cg_enable_inv(struct clk_hw *hw)
 {
 	mtk_cg_set_bit(hw);
@@ -201,11 +218,14 @@ static void mtk_cg_disable_inv(struct clk_hw *hw)
 	mtk_cg_clr_bit(hw);
 }
 
+<<<<<<< HEAD
 static void mtk_cg_disable_inv_unused(struct clk_hw *hw)
 {
 	mtk_cg_clr_bit_unused(hw);
 }
 
+=======
+>>>>>>> v4.14.187
 static int mtk_cg_enable_no_setclr(struct clk_hw *hw)
 {
 	mtk_cg_clr_bit_no_setclr(hw);
@@ -231,6 +251,7 @@ static void mtk_cg_disable_inv_no_setclr(struct clk_hw *hw)
 }
 
 const struct clk_ops mtk_clk_gate_ops_setclr = {
+<<<<<<< HEAD
 	.is_enabled	= mtk_cg_is_enabled,
 	.enable		= mtk_cg_enable,
 	.disable	= mtk_cg_disable,
@@ -246,12 +267,31 @@ const struct clk_ops mtk_clk_gate_ops_setclr_inv = {
 
 const struct clk_ops mtk_clk_gate_ops_no_setclr = {
 	.is_enabled	= mtk_cg_is_enabled,
+=======
+	.is_enabled	= mtk_cg_bit_is_cleared,
+	.enable		= mtk_cg_enable,
+	.disable	= mtk_cg_disable,
+};
+
+const struct clk_ops mtk_clk_gate_ops_setclr_inv = {
+	.is_enabled	= mtk_cg_bit_is_set,
+	.enable		= mtk_cg_enable_inv,
+	.disable	= mtk_cg_disable_inv,
+};
+
+const struct clk_ops mtk_clk_gate_ops_no_setclr = {
+	.is_enabled	= mtk_cg_bit_is_cleared,
+>>>>>>> v4.14.187
 	.enable		= mtk_cg_enable_no_setclr,
 	.disable	= mtk_cg_disable_no_setclr,
 };
 
 const struct clk_ops mtk_clk_gate_ops_no_setclr_inv = {
+<<<<<<< HEAD
 	.is_enabled	= mtk_en_is_enabled,
+=======
+	.is_enabled	= mtk_cg_bit_is_set,
+>>>>>>> v4.14.187
 	.enable		= mtk_cg_enable_inv_no_setclr,
 	.disable	= mtk_cg_disable_inv_no_setclr,
 };
@@ -264,10 +304,14 @@ struct clk *mtk_clk_register_gate(
 		int clr_ofs,
 		int sta_ofs,
 		u8 bit,
+<<<<<<< HEAD
 		const struct clk_ops *ops,
 		unsigned long flags,
 		struct pwr_status *pwr_stat,
 		struct regmap *pwr_regmap)
+=======
+		const struct clk_ops *ops)
+>>>>>>> v4.14.187
 {
 	struct mtk_clk_gate *cg;
 	struct clk *clk;
@@ -278,7 +322,11 @@ struct clk *mtk_clk_register_gate(
 		return ERR_PTR(-ENOMEM);
 
 	init.name = name;
+<<<<<<< HEAD
 	init.flags = flags | CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE;
+=======
+	init.flags = CLK_SET_RATE_PARENT;
+>>>>>>> v4.14.187
 	init.parent_names = parent_name ? &parent_name : NULL;
 	init.num_parents = parent_name ? 1 : 0;
 	init.ops = ops;
@@ -288,8 +336,11 @@ struct clk *mtk_clk_register_gate(
 	cg->clr_ofs = clr_ofs;
 	cg->sta_ofs = sta_ofs;
 	cg->bit = bit;
+<<<<<<< HEAD
 	cg->pwr_stat = pwr_stat;
 	cg->pwr_regmap = pwr_regmap;
+=======
+>>>>>>> v4.14.187
 
 	cg->hw.init = &init;
 

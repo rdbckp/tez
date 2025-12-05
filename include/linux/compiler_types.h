@@ -158,10 +158,13 @@ struct ftrace_likely_data {
 #define __malloc
 #endif
 
+<<<<<<< HEAD
 #ifndef __noscs
 # define __noscs
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Allow us to avoid 'defined but not used' warnings on functions and data,
  * as well as force them to be emitted to the assembly file.
@@ -273,6 +276,7 @@ struct ftrace_likely_data {
 # define __nostackprotector
 #endif
 
+<<<<<<< HEAD
 #ifndef __norecordmcount
 #define __norecordmcount
 #endif
@@ -281,6 +285,8 @@ struct ftrace_likely_data {
 #define __nocfi
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Assume alignment of return value.
  */

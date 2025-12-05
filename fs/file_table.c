@@ -27,7 +27,10 @@
 #include <linux/task_work.h>
 #include <linux/ima.h>
 #include <linux/swap.h>
+<<<<<<< HEAD
 #include <linux/task_integrity.h>
+=======
+>>>>>>> v4.14.187
 
 #include <linux/atomic.h>
 
@@ -206,7 +209,10 @@ static void __fput(struct file *file)
 		if (file->f_op->fasync)
 			file->f_op->fasync(-1, file, 0);
 	}
+<<<<<<< HEAD
 	five_file_free(file);
+=======
+>>>>>>> v4.14.187
 	ima_file_free(file);
 	if (file->f_op->release)
 		file->f_op->release(inode, file);
@@ -263,12 +269,15 @@ void flush_delayed_fput(void)
 
 static DECLARE_DELAYED_WORK(delayed_fput_work, delayed_fput);
 
+<<<<<<< HEAD
 void flush_delayed_fput_wait(void)
 {
 	delayed_fput(NULL);
 	flush_delayed_work(&delayed_fput_work);
 }
 
+=======
+>>>>>>> v4.14.187
 void fput(struct file *file)
 {
 	if (atomic_long_dec_and_test(&file->f_count)) {

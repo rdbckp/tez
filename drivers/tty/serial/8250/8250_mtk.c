@@ -14,10 +14,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+<<<<<<< HEAD
 
 #include <linux/clk.h>
 #include <linux/console.h>
 #include <linux/dma-mapping.h>
+=======
+#include <linux/clk.h>
+>>>>>>> v4.14.187
 #include <linux/io.h>
 #include <linux/module.h>
 #include <linux/of_irq.h>
@@ -26,6 +30,7 @@
 #include <linux/pm_runtime.h>
 #include <linux/serial_8250.h>
 #include <linux/serial_reg.h>
+<<<<<<< HEAD
 #include <linux/tty.h>
 #include <linux/tty_flip.h>
 #include <linux/delay.h>
@@ -342,6 +347,22 @@ static void mtk8250_set_flow_ctrl(struct uart_8250_port *up, int mode)
 	}
 }
 
+=======
+
+#include "8250.h"
+
+#define UART_MTK_HIGHS		0x09	/* Highspeed register */
+#define UART_MTK_SAMPLE_COUNT	0x0a	/* Sample count register */
+#define UART_MTK_SAMPLE_POINT	0x0b	/* Sample point register */
+#define MTK_UART_RATE_FIX	0x0d	/* UART Rate Fix Register */
+
+struct mtk8250_data {
+	int			line;
+	struct clk		*uart_clk;
+	struct clk		*bus_clk;
+};
+
+>>>>>>> v4.14.187
 static void
 mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 			struct ktermios *old)
@@ -349,6 +370,7 @@ mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 	struct uart_8250_port *up = up_to_u8250p(port);
 	unsigned long flags;
 	unsigned int baud, quot;
+<<<<<<< HEAD
 	int mode;
 
 	/*
@@ -363,11 +385,17 @@ mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 		up->dma = NULL;
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 
 	serial8250_do_set_termios(port, termios, old);
 
 	/*
+<<<<<<< HEAD
 	 * Mediatek UARTs use an extra highspeed register (MTK_UART_HIGHS)
+=======
+	 * Mediatek UARTs use an extra highspeed register (UART_MTK_HIGHS)
+>>>>>>> v4.14.187
 	 *
 	 * We need to recalcualte the quot register, as the claculation depends
 	 * on the vaule in the highspeed register.
@@ -384,17 +412,30 @@ mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 				  port->uartclk);
 
 	if (baud <= 115200) {
+<<<<<<< HEAD
 		serial_port_out(port, MTK_UART_HIGHS, 0x0);
 		quot = uart_get_divisor(port, baud);
 	} else if (baud <= 576000) {
 		serial_port_out(port, MTK_UART_HIGHS, 0x2);
+=======
+		serial_port_out(port, UART_MTK_HIGHS, 0x0);
+		quot = uart_get_divisor(port, baud);
+	} else if (baud <= 576000) {
+		serial_port_out(port, UART_MTK_HIGHS, 0x2);
+>>>>>>> v4.14.187
 
 		/* Set to next lower baudrate supported */
 		if ((baud == 500000) || (baud == 576000))
 			baud = 460800;
+<<<<<<< HEAD
 		quot = DIV_ROUND_CLOSEST(port->uartclk, 4 * baud);
 	} else {
 		serial_port_out(port, MTK_UART_HIGHS, 0x3);
+=======
+		quot = DIV_ROUND_UP(port->uartclk, 4 * baud);
+	} else {
+		serial_port_out(port, UART_MTK_HIGHS, 0x3);
+>>>>>>> v4.14.187
 		quot = DIV_ROUND_UP(port->uartclk, 256 * baud);
 	}
 
@@ -415,6 +456,7 @@ mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 		unsigned int tmp;
 
 		tmp = DIV_ROUND_CLOSEST(port->uartclk, quot * baud);
+<<<<<<< HEAD
 		serial_port_out(port, MTK_UART_SAMPLE_COUNT, tmp - 1);
 		serial_port_out(port, MTK_UART_SAMPLE_POINT,
 					(tmp - 2) >> 1);
@@ -435,6 +477,16 @@ mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 	if (uart_console(port))
 		up->port.cons->cflag = termios->c_cflag;
 
+=======
+		serial_port_out(port, UART_MTK_SAMPLE_COUNT, tmp - 1);
+		serial_port_out(port, UART_MTK_SAMPLE_POINT,
+					(tmp - 2) >> 1);
+	} else {
+		serial_port_out(port, UART_MTK_SAMPLE_COUNT, 0x00);
+		serial_port_out(port, UART_MTK_SAMPLE_POINT, 0xff);
+	}
+
+>>>>>>> v4.14.187
 	spin_unlock_irqrestore(&port->lock, flags);
 	/* Don't rewrite B0 */
 	if (tty_termios_baud_rate(termios))
@@ -444,6 +496,7 @@ mtk8250_set_termios(struct uart_port *port, struct ktermios *termios,
 static int __maybe_unused mtk8250_runtime_suspend(struct device *dev)
 {
 	struct mtk8250_data *data = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	struct uart_8250_port *up;
 
 	if (data == NULL)
@@ -462,6 +515,11 @@ static int __maybe_unused mtk8250_runtime_suspend(struct device *dev)
 		clk_disable_unprepare(data->bus_clk);
 		data->clk_count--;
 	}
+=======
+
+	clk_disable_unprepare(data->uart_clk);
+	clk_disable_unprepare(data->bus_clk);
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -471,6 +529,7 @@ static int __maybe_unused mtk8250_runtime_resume(struct device *dev)
 	struct mtk8250_data *data = dev_get_drvdata(dev);
 	int err;
 
+<<<<<<< HEAD
 	if (data == NULL)
 		return 0;
 
@@ -483,6 +542,18 @@ static int __maybe_unused mtk8250_runtime_resume(struct device *dev)
 			return err;
 		}
 		data->clk_count++;
+=======
+	err = clk_prepare_enable(data->uart_clk);
+	if (err) {
+		dev_warn(dev, "Can't enable clock\n");
+		return err;
+	}
+
+	err = clk_prepare_enable(data->bus_clk);
+	if (err) {
+		dev_warn(dev, "Can't enable bus clock\n");
+		return err;
+>>>>>>> v4.14.187
 	}
 
 	return 0;
@@ -492,12 +563,17 @@ static void
 mtk8250_do_pm(struct uart_port *port, unsigned int state, unsigned int old)
 {
 	if (!state)
+<<<<<<< HEAD
 		if (pm_runtime_get_sync(port->dev))
 			mtk8250_runtime_resume(port->dev);
+=======
+		pm_runtime_get_sync(port->dev);
+>>>>>>> v4.14.187
 
 	serial8250_do_pm(port, state, old);
 
 	if (state)
+<<<<<<< HEAD
 		if (pm_runtime_put_sync_suspend(port->dev))
 			mtk8250_runtime_suspend(port->dev);
 }
@@ -554,6 +630,14 @@ static int mtk8250_probe_of(struct platform_device *pdev, struct uart_port *p,
 	int dmacnt;
 #endif
 
+=======
+		pm_runtime_put_sync_suspend(port->dev);
+}
+
+static int mtk8250_probe_of(struct platform_device *pdev, struct uart_port *p,
+			   struct mtk8250_data *data)
+{
+>>>>>>> v4.14.187
 	data->uart_clk = devm_clk_get(&pdev->dev, "baud");
 	if (IS_ERR(data->uart_clk)) {
 		/*
@@ -570,6 +654,7 @@ static int mtk8250_probe_of(struct platform_device *pdev, struct uart_port *p,
 	}
 
 	data->bus_clk = devm_clk_get(&pdev->dev, "bus");
+<<<<<<< HEAD
 	if (IS_ERR(data->bus_clk))
 		return PTR_ERR(data->bus_clk);
 
@@ -589,6 +674,10 @@ static int mtk8250_probe_of(struct platform_device *pdev, struct uart_port *p,
 	return 0;
 }
 #endif
+=======
+	return PTR_ERR_OR_ZERO(data->bus_clk);
+}
+>>>>>>> v4.14.187
 
 static int mtk8250_probe(struct platform_device *pdev)
 {
@@ -612,16 +701,22 @@ static int mtk8250_probe(struct platform_device *pdev)
 	if (!data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	data->clk_count = 0;
 
 #ifndef CONFIG_FPGA_EARLY_PORTING
+=======
+>>>>>>> v4.14.187
 	if (pdev->dev.of_node) {
 		err = mtk8250_probe_of(pdev, &uart.port, data);
 		if (err)
 			return err;
 	} else
 		return -ENODEV;
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 
 	spin_lock_init(&uart.port.lock);
 	uart.port.mapbase = regs->start;
@@ -633,6 +728,7 @@ static int mtk8250_probe(struct platform_device *pdev)
 	uart.port.iotype = UPIO_MEM32;
 	uart.port.regshift = 2;
 	uart.port.private_data = data;
+<<<<<<< HEAD
 	uart.port.shutdown = mtk8250_shutdown;
 	uart.port.startup = mtk8250_startup;
 	uart.port.set_termios = mtk8250_set_termios;
@@ -644,6 +740,10 @@ static int mtk8250_probe(struct platform_device *pdev)
 	if (data->dma)
 		uart.dma = data->dma;
 #endif
+=======
+	uart.port.set_termios = mtk8250_set_termios;
+	uart.port.uartclk = clk_get_rate(data->uart_clk);
+>>>>>>> v4.14.187
 
 	/* Disable Rate Fix function */
 	writel(0x0, uart.port.membase +
@@ -651,7 +751,10 @@ static int mtk8250_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, data);
 
+<<<<<<< HEAD
 	pm_runtime_enable(&pdev->dev);
+=======
+>>>>>>> v4.14.187
 	err = mtk8250_runtime_resume(&pdev->dev);
 	if (err)
 		return err;
@@ -660,22 +763,36 @@ static int mtk8250_probe(struct platform_device *pdev)
 	if (data->line < 0)
 		return data->line;
 
+<<<<<<< HEAD
+=======
+	pm_runtime_set_active(&pdev->dev);
+	pm_runtime_enable(&pdev->dev);
+
+>>>>>>> v4.14.187
 	return 0;
 }
 
 static int mtk8250_remove(struct platform_device *pdev)
 {
 	struct mtk8250_data *data = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	if (data == NULL)
 		return 0;
+=======
+>>>>>>> v4.14.187
 
 	pm_runtime_get_sync(&pdev->dev);
 
 	serial8250_unregister_port(data->line);
+<<<<<<< HEAD
+=======
+	mtk8250_runtime_suspend(&pdev->dev);
+>>>>>>> v4.14.187
 
 	pm_runtime_disable(&pdev->dev);
 	pm_runtime_put_noidle(&pdev->dev);
 
+<<<<<<< HEAD
 	if (!pm_runtime_status_suspended(&pdev->dev))
 		mtk8250_runtime_suspend(&pdev->dev);
 
@@ -965,6 +1082,15 @@ static int __maybe_unused mtk8250_suspend(struct device *dev)
 		return 0;
 	if (uart_console(&up->port) == 1)
 		mtk8250_save_dev(dev);
+=======
+	return 0;
+}
+
+static int __maybe_unused mtk8250_suspend(struct device *dev)
+{
+	struct mtk8250_data *data = dev_get_drvdata(dev);
+
+>>>>>>> v4.14.187
 	serial8250_suspend_port(data->line);
 
 	return 0;
@@ -974,13 +1100,19 @@ static int __maybe_unused mtk8250_resume(struct device *dev)
 {
 	struct mtk8250_data *data = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	if (data == NULL)
 		return 0;
+=======
+>>>>>>> v4.14.187
 	serial8250_resume_port(data->line);
 
 	return 0;
 }
+<<<<<<< HEAD
 #endif /* CONFIG_PM_SLEEP */
+=======
+>>>>>>> v4.14.187
 
 static const struct dev_pm_ops mtk8250_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(mtk8250_suspend, mtk8250_resume)
@@ -1013,6 +1145,7 @@ static int __init early_mtk8250_setup(struct earlycon_device *device,
 		return -ENODEV;
 
 	device->port.iotype = UPIO_MEM32;
+<<<<<<< HEAD
 #ifdef CONFIG_FPGA_EARLY_PORTING
 	device->port.uartclk = MTK_UART_FPGA_CLK;
 	device->baud = MTK_UART_FPGA_BAUD;
@@ -1022,6 +1155,12 @@ static int __init early_mtk8250_setup(struct earlycon_device *device,
 #ifdef CONFIG_FPGA_EARLY_PORTING
 EARLYCON_DECLARE(mtk8250, early_mtk8250_setup);
 #endif
+=======
+
+	return early_serial8250_setup(device, NULL);
+}
+
+>>>>>>> v4.14.187
 OF_EARLYCON_DECLARE(mtk8250, "mediatek,mt6577-uart", early_mtk8250_setup);
 #endif
 

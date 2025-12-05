@@ -252,6 +252,7 @@ int scsi_execute(struct scsi_device *sdev, const unsigned char *cmd,
 	struct scsi_request *rq;
 	int ret = DRIVER_ERROR << 24;
 
+<<<<<<< HEAD
 	/*
 	 * MTK PATCH
 	 *
@@ -282,6 +283,13 @@ int scsi_execute(struct scsi_device *sdev, const unsigned char *cmd,
 			ret = -EAGAIN;
 		return ret;
 	}
+=======
+	req = blk_get_request(sdev->request_queue,
+			data_direction == DMA_TO_DEVICE ?
+			REQ_OP_SCSI_OUT : REQ_OP_SCSI_IN, __GFP_RECLAIM);
+	if (IS_ERR(req))
+		return ret;
+>>>>>>> v4.14.187
 	rq = scsi_req(req);
 
 	if (bufflen &&	blk_rq_map_kern(sdev->request_queue, req,
@@ -1451,6 +1459,7 @@ static void scsi_unprep_fn(struct request_queue *q, struct request *req)
 	scsi_uninit_cmd(blk_mq_rq_to_pdu(req));
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_TURBO_WRITE
 static void scsi_tw_try_on_fn(struct request_queue *q)
 {
@@ -1491,6 +1500,8 @@ void scsi_alloc_tw(struct scsi_device *sdev)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * scsi_dev_queue_ready: if we can send requests to sdev, return 1 else
  * return 0.
@@ -2233,9 +2244,12 @@ void __scsi_init_queue(struct Scsi_Host *shost, struct request_queue *q)
 	if (!shost->use_clustering)
 		q->limits.cluster = 0;
 
+<<<<<<< HEAD
 	if (shost->use_inline_crypt)
 		queue_flag_set_unlocked(QUEUE_FLAG_INLINECRYPT, q);
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Set a reasonable default alignment:  The larger of 32-byte (dword),
 	 * which is a common minimum for HBAs, and the minimum DMA alignment,

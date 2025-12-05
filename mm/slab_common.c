@@ -917,10 +917,21 @@ struct kmem_cache *__init create_kmalloc_cache(const char *name, size_t size,
 	return s;
 }
 
+<<<<<<< HEAD
 struct kmem_cache *
 kmalloc_caches[NR_KMALLOC_TYPES][KMALLOC_SHIFT_HIGH + 1] __ro_after_init;
 EXPORT_SYMBOL(kmalloc_caches);
 
+=======
+struct kmem_cache *kmalloc_caches[KMALLOC_SHIFT_HIGH + 1];
+EXPORT_SYMBOL(kmalloc_caches);
+
+#ifdef CONFIG_ZONE_DMA
+struct kmem_cache *kmalloc_dma_caches[KMALLOC_SHIFT_HIGH + 1];
+EXPORT_SYMBOL(kmalloc_dma_caches);
+#endif
+
+>>>>>>> v4.14.187
 /*
  * Conversion table for small slabs sizes / 8 to the index in the
  * kmalloc array. This is necessary for slabs < 192 since we have non power
@@ -980,7 +991,16 @@ struct kmem_cache *kmalloc_slab(size_t size, gfp_t flags)
 		index = fls(size - 1);
 	}
 
+<<<<<<< HEAD
 	return kmalloc_caches[kmalloc_type(flags)][index];
+=======
+#ifdef CONFIG_ZONE_DMA
+	if (unlikely((flags & GFP_DMA)))
+		return kmalloc_dma_caches[index];
+
+#endif
+	return kmalloc_caches[index];
+>>>>>>> v4.14.187
 }
 
 /*
@@ -994,6 +1014,7 @@ const struct kmalloc_info_struct kmalloc_info[] __initconst = {
 	{"kmalloc-16",             16},		{"kmalloc-32",             32},
 	{"kmalloc-64",             64},		{"kmalloc-128",           128},
 	{"kmalloc-256",           256},		{"kmalloc-512",           512},
+<<<<<<< HEAD
 	{"kmalloc-1k",           1024},		{"kmalloc-2k",           2048},
 	{"kmalloc-4k",           4096},		{"kmalloc-8k",           8192},
 	{"kmalloc-16k",         16384},		{"kmalloc-32k",         32768},
@@ -1003,6 +1024,17 @@ const struct kmalloc_info_struct kmalloc_info[] __initconst = {
 	{"kmalloc-4M",        4194304},		{"kmalloc-8M",        8388608},
 	{"kmalloc-16M",      16777216},		{"kmalloc-32M",      33554432},
 	{"kmalloc-64M",      67108864}
+=======
+	{"kmalloc-1024",         1024},		{"kmalloc-2048",         2048},
+	{"kmalloc-4096",         4096},		{"kmalloc-8192",         8192},
+	{"kmalloc-16384",       16384},		{"kmalloc-32768",       32768},
+	{"kmalloc-65536",       65536},		{"kmalloc-131072",     131072},
+	{"kmalloc-262144",     262144},		{"kmalloc-524288",     524288},
+	{"kmalloc-1048576",   1048576},		{"kmalloc-2097152",   2097152},
+	{"kmalloc-4194304",   4194304},		{"kmalloc-8388608",   8388608},
+	{"kmalloc-16777216", 16777216},		{"kmalloc-33554432", 33554432},
+	{"kmalloc-67108864", 67108864}
+>>>>>>> v4.14.187
 };
 
 /*
@@ -1052,6 +1084,7 @@ void __init setup_kmalloc_cache_index_table(void)
 	}
 }
 
+<<<<<<< HEAD
 static const char *
 kmalloc_cache_name(const char *prefix, unsigned int size)
 {
@@ -1082,6 +1115,11 @@ new_kmalloc_cache(int idx, int type, unsigned long flags)
 	}
 
 	kmalloc_caches[type][idx] = create_kmalloc_cache(name,
+=======
+static void __init new_kmalloc_cache(int idx, unsigned long flags)
+{
+	kmalloc_caches[idx] = create_kmalloc_cache(kmalloc_info[idx].name,
+>>>>>>> v4.14.187
 					kmalloc_info[idx].size, flags);
 }
 
@@ -1092,6 +1130,7 @@ new_kmalloc_cache(int idx, int type, unsigned long flags)
  */
 void __init create_kmalloc_caches(unsigned long flags)
 {
+<<<<<<< HEAD
 	int i, type;
 
 	for (type = KMALLOC_NORMAL; type <= KMALLOC_RECLAIM; type++) {
@@ -1111,6 +1150,23 @@ void __init create_kmalloc_caches(unsigned long flags)
 					!kmalloc_caches[type][2])
 				new_kmalloc_cache(2, type, flags);
 		}
+=======
+	int i;
+
+	for (i = KMALLOC_SHIFT_LOW; i <= KMALLOC_SHIFT_HIGH; i++) {
+		if (!kmalloc_caches[i])
+			new_kmalloc_cache(i, flags);
+
+		/*
+		 * Caches that are not of the two-to-the-power-of size.
+		 * These have to be created immediately after the
+		 * earlier power of two caches
+		 */
+		if (KMALLOC_MIN_SIZE <= 32 && !kmalloc_caches[1] && i == 6)
+			new_kmalloc_cache(1, flags);
+		if (KMALLOC_MIN_SIZE <= 64 && !kmalloc_caches[2] && i == 7)
+			new_kmalloc_cache(2, flags);
+>>>>>>> v4.14.187
 	}
 
 	/* Kmalloc array is now usable */
@@ -1118,6 +1174,7 @@ void __init create_kmalloc_caches(unsigned long flags)
 
 #ifdef CONFIG_ZONE_DMA
 	for (i = 0; i <= KMALLOC_SHIFT_HIGH; i++) {
+<<<<<<< HEAD
 		struct kmem_cache *s = kmalloc_caches[KMALLOC_NORMAL][i];
 
 		if (s) {
@@ -1127,6 +1184,18 @@ void __init create_kmalloc_caches(unsigned long flags)
 			BUG_ON(!n);
 			kmalloc_caches[KMALLOC_DMA][i] = create_kmalloc_cache(
 				n, size, SLAB_CACHE_DMA | flags);
+=======
+		struct kmem_cache *s = kmalloc_caches[i];
+
+		if (s) {
+			int size = kmalloc_size(i);
+			char *n = kasprintf(GFP_NOWAIT,
+				 "dma-kmalloc-%d", size);
+
+			BUG_ON(!n);
+			kmalloc_dma_caches[i] = create_kmalloc_cache(n,
+				size, SLAB_CACHE_DMA | flags);
+>>>>>>> v4.14.187
 		}
 	}
 #endif
@@ -1146,8 +1215,13 @@ void *kmalloc_order(size_t size, gfp_t flags, unsigned int order)
 	flags |= __GFP_COMP;
 	page = alloc_pages(flags, order);
 	ret = page ? page_address(page) : NULL;
+<<<<<<< HEAD
 	ret = kasan_kmalloc_large(ret, size, flags);
 	kmemleak_alloc(ret, size, 1, flags);
+=======
+	kmemleak_alloc(ret, size, 1, flags);
+	kasan_kmalloc_large(ret, size, flags);
+>>>>>>> v4.14.187
 	return ret;
 }
 EXPORT_SYMBOL(kmalloc_order);
@@ -1392,7 +1466,11 @@ static __always_inline void *__do_krealloc(const void *p, size_t new_size,
 		ks = ksize(p);
 
 	if (ks >= new_size) {
+<<<<<<< HEAD
 		p = kasan_krealloc((void *)p, new_size, flags);
+=======
+		kasan_krealloc((void *)p, new_size, flags);
+>>>>>>> v4.14.187
 		return (void *)p;
 	}
 
@@ -1444,7 +1522,11 @@ void *krealloc(const void *p, size_t new_size, gfp_t flags)
 	}
 
 	ret = __do_krealloc(p, new_size, flags);
+<<<<<<< HEAD
 	if (ret && kasan_reset_tag(p) != kasan_reset_tag(ret))
+=======
+	if (ret && p != ret)
+>>>>>>> v4.14.187
 		kfree(p);
 
 	return ret;
@@ -1470,7 +1552,11 @@ void kzfree(const void *p)
 	if (unlikely(ZERO_OR_NULL_PTR(mem)))
 		return;
 	ks = ksize(mem);
+<<<<<<< HEAD
 	memset(mem, 0, ks);
+=======
+	memzero_explicit(mem, ks);
+>>>>>>> v4.14.187
 	kfree(mem);
 }
 EXPORT_SYMBOL(kzfree);

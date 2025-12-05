@@ -29,10 +29,13 @@
 #include "sdio_cis.h"
 #include "sdio_bus.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_EMBEDDED_SDIO
 #include <linux/mmc/host.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 #define to_sdio_driver(d)	container_of(d, struct sdio_driver, drv)
 
 /* show configuration fields */
@@ -268,6 +271,7 @@ static void sdio_release_func(struct device *dev)
 {
 	struct sdio_func *func = dev_to_sdio_func(dev);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_EMBEDDED_SDIO
 	/*
 	 * If this device is embedded then we never allocated
@@ -276,6 +280,9 @@ static void sdio_release_func(struct device *dev)
 	if (!func->card->host->embedded_sdio_data.funcs)
 #endif
 		sdio_free_func_cis(func);
+=======
+	sdio_free_func_cis(func);
+>>>>>>> v4.14.187
 
 	kfree(func->info);
 	kfree(func->tmpbuf);

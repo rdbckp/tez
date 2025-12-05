@@ -75,12 +75,15 @@
 
 #include "audit.h"
 
+<<<<<<< HEAD
 // [ SEC_SELINUX_PORTING_QUALCOMM
 #ifdef CONFIG_PROC_AVC
 #include <linux/proc_avc.h>
 #endif
 // ] SEC_SELINUX_PORTING_QUALCOMM
 
+=======
+>>>>>>> v4.14.187
 /* No auditing will take place until audit_initialized == AUDIT_INITIALIZED.
  * (Initialization happens after skb_init is called.) */
 #define AUDIT_DISABLED		-1
@@ -91,19 +94,28 @@ static int	audit_initialized;
 #define AUDIT_OFF	0
 #define AUDIT_ON	1
 #define AUDIT_LOCKED	2
+<<<<<<< HEAD
 /* Default state when kernel boots without any parameters. */
 // [ SEC_SELINUX_PORTING_COMMON
 u32		audit_enabled = AUDIT_ON;
 u32		audit_ever_enabled = !!AUDIT_ON;
 // ] SEC_SELINUX_PORTING_COMMON
+=======
+u32		audit_enabled = AUDIT_OFF;
+u32		audit_ever_enabled = !!AUDIT_OFF;
+>>>>>>> v4.14.187
 
 EXPORT_SYMBOL_GPL(audit_enabled);
 
 /* Default state when kernel boots without any parameters. */
+<<<<<<< HEAD
 // [ SEC_SELINUX_PORTING_COMMON
 // Samsung Change Value from AUDIT_OFF to AUDIT_ON
 static u32	audit_default = AUDIT_ON;
 // ] SEC_SELINUX_PORTING_COMMON
+=======
+static u32	audit_default = AUDIT_OFF;
+>>>>>>> v4.14.187
 
 /* If auditing cannot proceed, audit_failure selects what happens. */
 static u32	audit_failure = AUDIT_FAIL_PRINTK;
@@ -514,6 +526,7 @@ static void kauditd_printk_skb(struct sk_buff *skb)
 	struct nlmsghdr *nlh = nlmsg_hdr(skb);
 	char *data = nlmsg_data(nlh);
 
+<<<<<<< HEAD
 // [ SEC_SELINUX_PORTING_QUALCOMM
 #ifdef CONFIG_PROC_AVC
 	if (nlh->nlmsg_type != AUDIT_EOE && nlh->nlmsg_type != AUDIT_NETFILTER_CFG)
@@ -523,6 +536,10 @@ static void kauditd_printk_skb(struct sk_buff *skb)
 		pr_notice("type=%d %s\n", nlh->nlmsg_type, data);
 #endif
 // ] SEC_SELINUX_PORTING_QUALCOMM
+=======
+	if (nlh->nlmsg_type != AUDIT_EOE && printk_ratelimit())
+		pr_notice("type=%d %s\n", nlh->nlmsg_type, data);
+>>>>>>> v4.14.187
 }
 
 /**
@@ -741,6 +758,7 @@ static int kauditd_send_queue(struct sock *sk, u32 portid,
 				/* no - requeue to preserve ordering */
 				skb_queue_head(queue, skb);
 		} else {
+<<<<<<< HEAD
 // [ SEC_SELINUX_PORTING_QUALCOMM
 #ifdef CONFIG_PROC_AVC
 			struct nlmsghdr *nlh = nlmsg_hdr(skb);
@@ -750,6 +768,8 @@ static int kauditd_send_queue(struct sock *sk, u32 portid,
 				sec_avc_log("%s\n", data);
 #endif
 // ] SEC_SELINUX_PORTING_QUALCOMM
+=======
+>>>>>>> v4.14.187
 			/* it worked - drop the extra reference and continue */
 			consume_skb(skb);
 			failed = 0;
@@ -881,6 +901,7 @@ main_queue:
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_SELINUX_AEE_WARNING
 /*
  * return skb field of audit buffer
@@ -894,6 +915,8 @@ struct sk_buff *audit_get_skb(struct audit_buffer *ab)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 int audit_send_list_thread(void *_dest)
 {
 	struct audit_netlink_list *dest = _dest;

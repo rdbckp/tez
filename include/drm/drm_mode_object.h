@@ -27,7 +27,10 @@
 struct drm_object_properties;
 struct drm_property;
 struct drm_device;
+<<<<<<< HEAD
 struct drm_file;
+=======
+>>>>>>> v4.14.187
 
 /**
  * struct drm_mode_object - base structure for modeset objects
@@ -114,7 +117,10 @@ struct drm_object_properties {
 	}
 
 struct drm_mode_object *drm_mode_object_find(struct drm_device *dev,
+<<<<<<< HEAD
 					     struct drm_file *file_priv,
+=======
+>>>>>>> v4.14.187
 					     uint32_t id, uint32_t type);
 void drm_mode_object_get(struct drm_mode_object *obj);
 void drm_mode_object_put(struct drm_mode_object *obj);

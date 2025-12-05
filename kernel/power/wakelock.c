@@ -27,7 +27,11 @@ static DEFINE_MUTEX(wakelocks_lock);
 struct wakelock {
 	char			*name;
 	struct rb_node		node;
+<<<<<<< HEAD
 	struct wakeup_source	*ws;
+=======
+	struct wakeup_source	ws;
+>>>>>>> v4.14.187
 #ifdef CONFIG_PM_WAKELOCKS_GC
 	struct list_head	lru;
 #endif
@@ -46,7 +50,11 @@ ssize_t pm_show_wakelocks(char *buf, bool show_active)
 
 	for (node = rb_first(&wakelocks_tree); node; node = rb_next(node)) {
 		wl = rb_entry(node, struct wakelock, node);
+<<<<<<< HEAD
 		if (wl->ws->active == show_active)
+=======
+		if (wl->ws.active == show_active)
+>>>>>>> v4.14.187
 			str += scnprintf(str, end - str, "%s ", wl->name);
 	}
 	if (str > buf)
@@ -112,16 +120,27 @@ static void __wakelocks_gc(struct work_struct *work)
 		u64 idle_time_ns;
 		bool active;
 
+<<<<<<< HEAD
 		spin_lock_irq(&wl->ws->lock);
 		idle_time_ns = ktime_to_ns(ktime_sub(now, wl->ws->last_time));
 		active = wl->ws->active;
 		spin_unlock_irq(&wl->ws->lock);
+=======
+		spin_lock_irq(&wl->ws.lock);
+		idle_time_ns = ktime_to_ns(ktime_sub(now, wl->ws.last_time));
+		active = wl->ws.active;
+		spin_unlock_irq(&wl->ws.lock);
+>>>>>>> v4.14.187
 
 		if (idle_time_ns < ((u64)WL_GC_TIME_SEC * NSEC_PER_SEC))
 			break;
 
 		if (!active) {
+<<<<<<< HEAD
 			wakeup_source_unregister(wl->ws);
+=======
+			wakeup_source_remove(&wl->ws);
+>>>>>>> v4.14.187
 			rb_erase(&wl->node, &wakelocks_tree);
 			list_del(&wl->lru);
 			kfree(wl->name);
@@ -187,6 +206,7 @@ static struct wakelock *wakelock_lookup_add(const char *name, size_t len,
 		kfree(wl);
 		return ERR_PTR(-ENOMEM);
 	}
+<<<<<<< HEAD
 
 	wl->ws = wakeup_source_register(NULL, wl->name);
 	if (!wl->ws) {
@@ -196,6 +216,10 @@ static struct wakelock *wakelock_lookup_add(const char *name, size_t len,
 	}
 	wl->ws->last_time = ktime_get();
 
+=======
+	wl->ws.name = wl->name;
+	wakeup_source_add(&wl->ws);
+>>>>>>> v4.14.187
 	rb_link_node(&wl->node, parent, node);
 	rb_insert_color(&wl->node, &wakelocks_tree);
 	wakelocks_lru_add(wl);
@@ -239,9 +263,15 @@ int pm_wake_lock(const char *buf)
 		u64 timeout_ms = timeout_ns + NSEC_PER_MSEC - 1;
 
 		do_div(timeout_ms, NSEC_PER_MSEC);
+<<<<<<< HEAD
 		__pm_wakeup_event(wl->ws, timeout_ms);
 	} else {
 		__pm_stay_awake(wl->ws);
+=======
+		__pm_wakeup_event(&wl->ws, timeout_ms);
+	} else {
+		__pm_stay_awake(&wl->ws);
+>>>>>>> v4.14.187
 	}
 
 	wakelocks_lru_most_recent(wl);
@@ -277,7 +307,11 @@ int pm_wake_unlock(const char *buf)
 		ret = PTR_ERR(wl);
 		goto out;
 	}
+<<<<<<< HEAD
 	__pm_relax(wl->ws);
+=======
+	__pm_relax(&wl->ws);
+>>>>>>> v4.14.187
 
 	wakelocks_lru_most_recent(wl);
 	wakelocks_gc();

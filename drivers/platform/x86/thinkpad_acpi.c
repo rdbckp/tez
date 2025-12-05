@@ -9621,7 +9621,11 @@ static struct ibm_init_struct ibms_init[] __initdata = {
 	},
 };
 
+<<<<<<< HEAD
 static int __init set_ibm_param(const char *val, const struct kernel_param *kp)
+=======
+static int __init set_ibm_param(const char *val, struct kernel_param *kp)
+>>>>>>> v4.14.187
 {
 	unsigned int i;
 	struct ibm_struct *ibm;

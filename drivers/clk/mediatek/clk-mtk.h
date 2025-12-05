@@ -15,6 +15,7 @@
 #ifndef __DRV_CLK_MTK_H
 #define __DRV_CLK_MTK_H
 
+<<<<<<< HEAD
 #include <linux/bitops.h>
 #include <linux/clk-provider.h>
 #include <linux/regmap.h>
@@ -33,6 +34,17 @@ struct clk *mtk_clk_register_fixed_factor_pdn(struct device *dev,
 #define INVALID_OFS		-1
 #define INVALID_SHFT		-1
 #define INVALID_WIDTH		-1
+=======
+#include <linux/regmap.h>
+#include <linux/bitops.h>
+#include <linux/clk-provider.h>
+
+struct clk;
+
+#define MAX_MUX_GATE_BIT	31
+#define INVALID_MUX_GATE_BIT	(MAX_MUX_GATE_BIT + 1)
+
+>>>>>>> v4.14.187
 #define MHZ (1000 * 1000)
 
 struct mtk_fixed_clk {
@@ -60,6 +72,7 @@ struct mtk_fixed_factor {
 	int div;
 };
 
+<<<<<<< HEAD
 struct mtk_fixed_factor_pdn {
 	int id;
 	const char *name;
@@ -70,6 +83,8 @@ struct mtk_fixed_factor_pdn {
 	int pd_reg;
 };
 
+=======
+>>>>>>> v4.14.187
 #define FACTOR(_id, _name, _parent, _mult, _div) {	\
 		.id = _id,				\
 		.name = _name,				\
@@ -78,6 +93,7 @@ struct mtk_fixed_factor_pdn {
 		.div = _div,				\
 	}
 
+<<<<<<< HEAD
 #define FACTOR_PDN(_id, _name, _parent, _mult, _div, _shift, _pd_reg) {	\
 		.id = _id,				\
 		.name = _name,				\
@@ -94,12 +110,21 @@ void mtk_clk_register_factors(const struct mtk_fixed_factor *clks,
 void mtk_clk_register_factors_pdn(const struct mtk_fixed_factor_pdn *clks,
 		int num, struct clk_onecell_data *clk_data, void __iomem *base);
 
+=======
+void mtk_clk_register_factors(const struct mtk_fixed_factor *clks,
+		int num, struct clk_onecell_data *clk_data);
+
+>>>>>>> v4.14.187
 struct mtk_composite {
 	int id;
 	const char *name;
 	const char * const *parent_names;
 	const char *parent;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+	unsigned flags;
+>>>>>>> v4.14.187
 
 	uint32_t mux_reg;
 	uint32_t divider_reg;
@@ -112,6 +137,7 @@ struct mtk_composite {
 	signed char divider_shift;
 	signed char divider_width;
 
+<<<<<<< HEAD
 	u8 mux_flags;
 
 	signed char num_parents;
@@ -119,6 +145,17 @@ struct mtk_composite {
 
 #define MUX_GATE_FLAGS_2(_id, _name, _parents, _reg, _shift,		\
 				_width, _gate, _flags, _muxflags) {	\
+=======
+	signed char num_parents;
+};
+
+/*
+ * In case the rate change propagation to parent clocks is undesirable,
+ * this macro allows to specify the clock flags manually.
+ */
+#define MUX_GATE_FLAGS(_id, _name, _parents, _reg, _shift, _width,	\
+			_gate, _flags) {				\
+>>>>>>> v4.14.187
 		.id = _id,						\
 		.name = _name,						\
 		.mux_reg = _reg,					\
@@ -130,6 +167,7 @@ struct mtk_composite {
 		.parent_names = _parents,				\
 		.num_parents = ARRAY_SIZE(_parents),			\
 		.flags = _flags,					\
+<<<<<<< HEAD
 		.mux_flags = _muxflags,					\
 	}
 
@@ -143,6 +181,11 @@ struct mtk_composite {
 					_shift, _width, _gate, _flags, 0)
 
 /*
+=======
+	}
+
+/*
+>>>>>>> v4.14.187
  * Unless necessary, all MUX_GATE clocks propagate rate changes to their
  * parent clock by default.
  */
@@ -150,11 +193,15 @@ struct mtk_composite {
 	MUX_GATE_FLAGS(_id, _name, _parents, _reg, _shift, _width,	\
 		_gate, CLK_SET_RATE_PARENT)
 
+<<<<<<< HEAD
 #define MUX(_id, _name, _parents, _reg, _shift, _width)			\
 	MUX_FLAGS(_id, _name, _parents, _reg,				\
 		  _shift, _width, CLK_SET_RATE_PARENT)
 
 #define MUX_FLAGS(_id, _name, _parents, _reg, _shift, _width, _flags) {	\
+=======
+#define MUX(_id, _name, _parents, _reg, _shift, _width) {		\
+>>>>>>> v4.14.187
 		.id = _id,						\
 		.name = _name,						\
 		.mux_reg = _reg,					\
@@ -164,7 +211,11 @@ struct mtk_composite {
 		.divider_shift = -1,					\
 		.parent_names = _parents,				\
 		.num_parents = ARRAY_SIZE(_parents),			\
+<<<<<<< HEAD
 		.flags = _flags,					\
+=======
+		.flags = CLK_SET_RATE_PARENT,				\
+>>>>>>> v4.14.187
 	}
 
 #define DIV_GATE(_id, _name, _parent, _gate_reg, _gate_shift, _div_reg,	\
@@ -201,8 +252,11 @@ struct mtk_gate {
 	const struct mtk_gate_regs *regs;
 	int shift;
 	const struct clk_ops *ops;
+<<<<<<< HEAD
 	unsigned long flags;
 	struct pwr_status *pwr_stat;
+=======
+>>>>>>> v4.14.187
 };
 
 int mtk_clk_register_gates(struct device_node *node,
@@ -216,7 +270,10 @@ struct mtk_clk_divider {
 	unsigned long flags;
 
 	u32 div_reg;
+<<<<<<< HEAD
 	u32 div_reg_fixup;
+=======
+>>>>>>> v4.14.187
 	unsigned char div_shift;
 	unsigned char div_width;
 	unsigned char clk_divider_flags;
@@ -236,6 +293,7 @@ void mtk_clk_register_dividers(const struct mtk_clk_divider *mcds,
 			int num, void __iomem *base, spinlock_t *lock,
 				struct clk_onecell_data *clk_data);
 
+<<<<<<< HEAD
 void mtk_clk_register_fixup_dividers(const struct mtk_clk_divider *mcds,
 			int num, void __iomem *base, spinlock_t *lock,
 				struct clk_onecell_data *clk_data);
@@ -245,6 +303,12 @@ struct clk_onecell_data *mtk_alloc_clk_data(unsigned int clk_num);
 #define HAVE_RST_BAR		BIT(0)
 #define PLL_AO			BIT(1)
 #define HAVE_RST_BAR_4_TIMES	(BIT(2) | BIT(0))
+=======
+struct clk_onecell_data *mtk_alloc_clk_data(unsigned int clk_num);
+
+#define HAVE_RST_BAR	BIT(0)
+#define PLL_AO		BIT(1)
+>>>>>>> v4.14.187
 
 struct mtk_pll_div_table {
 	u32 div;
@@ -256,6 +320,7 @@ struct mtk_pll_data {
 	const char *name;
 	uint32_t reg;
 	uint32_t pwr_reg;
+<<<<<<< HEAD
 	uint32_t en_reg;
 	uint32_t en_mask;
 	uint32_t iso_mask;
@@ -274,6 +339,17 @@ struct mtk_pll_data {
 	uint32_t pcwchgreg;
 	int pcwbits;
 	int pcwibits;
+=======
+	uint32_t en_mask;
+	uint32_t pd_reg;
+	uint32_t tuner_reg;
+	int pd_shift;
+	unsigned int flags;
+	const struct clk_ops *ops;
+	u32 rst_bar_mask;
+	unsigned long fmax;
+	int pcwbits;
+>>>>>>> v4.14.187
 	uint32_t pcw_reg;
 	int pcw_shift;
 	const struct mtk_pll_div_table *div_table;
@@ -297,7 +373,10 @@ static inline void mtk_register_reset_controller(struct device_node *np,
 }
 #endif
 
+<<<<<<< HEAD
 int mtk_is_pll_enable(void);
 int mtk_is_cg_enable(void);
 
+=======
+>>>>>>> v4.14.187
 #endif /* __DRV_CLK_MTK_H */

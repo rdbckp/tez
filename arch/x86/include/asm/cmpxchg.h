@@ -75,7 +75,11 @@ extern void __add_wrong_size(void)
  * use "asm volatile" and "memory" clobbers to prevent gcc from moving
  * information around.
  */
+<<<<<<< HEAD
 #define arch_xchg(ptr, v)	__xchg_op((ptr), (v), xchg, "")
+=======
+#define xchg(ptr, v)	__xchg_op((ptr), (v), xchg, "")
+>>>>>>> v4.14.187
 
 /*
  * Atomic compare and exchange.  Compare OLD with MEM, if identical,
@@ -145,6 +149,7 @@ extern void __add_wrong_size(void)
 # include <asm/cmpxchg_64.h>
 #endif
 
+<<<<<<< HEAD
 #define arch_cmpxchg(ptr, old, new)					\
 	__cmpxchg(ptr, old, new, sizeof(*(ptr)))
 
@@ -152,6 +157,15 @@ extern void __add_wrong_size(void)
 	__sync_cmpxchg(ptr, old, new, sizeof(*(ptr)))
 
 #define arch_cmpxchg_local(ptr, old, new)				\
+=======
+#define cmpxchg(ptr, old, new)						\
+	__cmpxchg(ptr, old, new, sizeof(*(ptr)))
+
+#define sync_cmpxchg(ptr, old, new)					\
+	__sync_cmpxchg(ptr, old, new, sizeof(*(ptr)))
+
+#define cmpxchg_local(ptr, old, new)					\
+>>>>>>> v4.14.187
 	__cmpxchg_local(ptr, old, new, sizeof(*(ptr)))
 
 
@@ -221,7 +235,11 @@ extern void __add_wrong_size(void)
 #define __try_cmpxchg(ptr, pold, new, size)				\
 	__raw_try_cmpxchg((ptr), (pold), (new), (size), LOCK_PREFIX)
 
+<<<<<<< HEAD
 #define try_cmpxchg(ptr, pold, new) 					\
+=======
+#define try_cmpxchg(ptr, pold, new)					\
+>>>>>>> v4.14.187
 	__try_cmpxchg((ptr), (pold), (new), sizeof(*(ptr)))
 
 /*
@@ -250,10 +268,17 @@ extern void __add_wrong_size(void)
 	__ret;								\
 })
 
+<<<<<<< HEAD
 #define arch_cmpxchg_double(p1, p2, o1, o2, n1, n2) \
 	__cmpxchg_double(LOCK_PREFIX, p1, p2, o1, o2, n1, n2)
 
 #define arch_cmpxchg_double_local(p1, p2, o1, o2, n1, n2) \
+=======
+#define cmpxchg_double(p1, p2, o1, o2, n1, n2) \
+	__cmpxchg_double(LOCK_PREFIX, p1, p2, o1, o2, n1, n2)
+
+#define cmpxchg_double_local(p1, p2, o1, o2, n1, n2) \
+>>>>>>> v4.14.187
 	__cmpxchg_double(, p1, p2, o1, o2, n1, n2)
 
 #endif	/* ASM_X86_CMPXCHG_H */

@@ -24,7 +24,10 @@
 #include <linux/scatterlist.h>
 #include <linux/vmalloc.h>
 #include "ion.h"
+<<<<<<< HEAD
 #include "ion_priv.h"
+=======
+>>>>>>> v4.14.187
 
 void *ion_heap_map_kernel(struct ion_heap *heap,
 			  struct ion_buffer *buffer)
@@ -38,10 +41,15 @@ void *ion_heap_map_kernel(struct ion_heap *heap,
 	struct page **pages = vmalloc(sizeof(struct page *) * npages);
 	struct page **tmp = pages;
 
+<<<<<<< HEAD
 	if (!pages) {
 		IONMSG("%s vmalloc failed pages is null.\n", __func__);
 		return ERR_PTR(-ENOMEM);
 	}
+=======
+	if (!pages)
+		return ERR_PTR(-ENOMEM);
+>>>>>>> v4.14.187
 
 	if (buffer->flags & ION_FLAG_CACHED)
 		pgprot = PAGE_KERNEL;
@@ -59,10 +67,15 @@ void *ion_heap_map_kernel(struct ion_heap *heap,
 	vaddr = vmap(pages, npages, VM_MAP, pgprot);
 	vfree(pages);
 
+<<<<<<< HEAD
 	if (!vaddr) {
 		IONMSG("%s vmap failed vaddr is null.\n", __func__);
 		return ERR_PTR(-ENOMEM);
 	}
+=======
+	if (!vaddr)
+		return ERR_PTR(-ENOMEM);
+>>>>>>> v4.14.187
 
 	return vaddr;
 }
@@ -83,6 +96,7 @@ int ion_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
 	int i;
 	int ret;
 
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_IOMMU_PGTABLE_EXT) && \
 	(CONFIG_MTK_IOMMU_PGTABLE_EXT > 32)
 	if (heap->ops->get_table)
@@ -91,6 +105,8 @@ int ion_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
 		return -1;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	for_each_sg(table->sgl, sg, table->nents, i) {
 		struct page *page = sg_page(sg);
 		unsigned long remainder = vma->vm_end - addr;
@@ -106,6 +122,7 @@ int ion_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
 		}
 		len = min(len, remainder);
 		ret = remap_pfn_range(vma, addr, page_to_pfn(page), len,
+<<<<<<< HEAD
 				vma->vm_page_prot);
 		if (ret) {
 			IONMSG("%s h:%d remap fail 0x%p, %lu, %lu, %lu, %d.\n",
@@ -113,6 +130,11 @@ int ion_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
 			       page_to_pfn(page), len, ret);
 			return ret;
 		}
+=======
+				      vma->vm_page_prot);
+		if (ret)
+			return ret;
+>>>>>>> v4.14.187
 		addr += len;
 		if (addr >= vma->vm_end)
 			return 0;
@@ -124,10 +146,15 @@ static int ion_heap_clear_pages(struct page **pages, int num, pgprot_t pgprot)
 {
 	void *addr = vmap(pages, num, VM_MAP, pgprot);
 
+<<<<<<< HEAD
 	if (!addr) {
 		IONMSG("%s vm_map_ram failed addr is null.\n", __func__);
 		return -ENOMEM;
 	}
+=======
+	if (!addr)
+		return -ENOMEM;
+>>>>>>> v4.14.187
 	memset(addr, 0, PAGE_SIZE * num);
 	vunmap(addr);
 
@@ -146,11 +173,16 @@ static int ion_heap_sglist_zero(struct scatterlist *sgl, unsigned int nents,
 		pages[p++] = sg_page_iter_page(&piter);
 		if (p == ARRAY_SIZE(pages)) {
 			ret = ion_heap_clear_pages(pages, p, pgprot);
+<<<<<<< HEAD
 			if (ret) {
 				IONMSG("%s ion_heap_clear_pages failed.\n",
 				       __func__);
 				return ret;
 			}
+=======
+			if (ret)
+				return ret;
+>>>>>>> v4.14.187
 			p = 0;
 		}
 	}
@@ -184,6 +216,7 @@ int ion_heap_pages_zero(struct page *page, size_t size, pgprot_t pgprot)
 
 void ion_heap_freelist_add(struct ion_heap *heap, struct ion_buffer *buffer)
 {
+<<<<<<< HEAD
 	long nice;
 	size_t free_list_size = 0;
 	size_t unit = 200 * 1024 * 1024; //200M
@@ -215,6 +248,12 @@ void ion_heap_freelist_add(struct ion_heap *heap, struct ion_buffer *buffer)
 			heap->free_list_size, heap->id, nice);
 	}
 	set_user_nice(heap->task, nice);
+=======
+	spin_lock(&heap->free_lock);
+	list_add(&buffer->list, &heap->free_list);
+	heap->free_list_size += buffer->size;
+	spin_unlock(&heap->free_lock);
+>>>>>>> v4.14.187
 	wake_up(&heap->waitqueue);
 }
 
@@ -299,7 +338,11 @@ static int ion_heap_deferred_free(void *data)
 
 int ion_heap_init_deferred_free(struct ion_heap *heap)
 {
+<<<<<<< HEAD
 	struct sched_param param = { .sched_priority = 120 };
+=======
+	struct sched_param param = { .sched_priority = 0 };
+>>>>>>> v4.14.187
 
 	INIT_LIST_HEAD(&heap->free_list);
 	init_waitqueue_head(&heap->waitqueue);
@@ -310,7 +353,11 @@ int ion_heap_init_deferred_free(struct ion_heap *heap)
 		       __func__);
 		return PTR_ERR_OR_ZERO(heap->task);
 	}
+<<<<<<< HEAD
 	sched_setscheduler(heap->task, SCHED_NORMAL, &param);
+=======
+	sched_setscheduler(heap->task, SCHED_IDLE, &param);
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -363,6 +410,7 @@ void ion_heap_init_shrinker(struct ion_heap *heap)
 	heap->shrinker.batch = 0;
 	register_shrinker(&heap->shrinker);
 }
+<<<<<<< HEAD
 
 struct ion_heap *ion_heap_create(struct ion_platform_heap *heap_data)
 {
@@ -437,3 +485,5 @@ void ion_heap_destroy(struct ion_heap *heap)
 	}
 }
 EXPORT_SYMBOL(ion_heap_destroy);
+=======
+>>>>>>> v4.14.187

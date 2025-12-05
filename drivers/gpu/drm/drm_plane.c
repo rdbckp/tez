@@ -516,7 +516,11 @@ int drm_mode_getplane(struct drm_device *dev, void *data,
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	plane = drm_plane_find(dev, file_priv, plane_resp->plane_id);
+=======
+	plane = drm_plane_find(dev, plane_resp->plane_id);
+>>>>>>> v4.14.187
 	if (!plane)
 		return -ENOENT;
 
@@ -705,7 +709,11 @@ int drm_mode_setplane(struct drm_device *dev, void *data,
 	 * First, find the plane, crtc, and fb objects.  If not available,
 	 * we don't bother to call the driver.
 	 */
+<<<<<<< HEAD
 	plane = drm_plane_find(dev, file_priv, plane_req->plane_id);
+=======
+	plane = drm_plane_find(dev, plane_req->plane_id);
+>>>>>>> v4.14.187
 	if (!plane) {
 		DRM_DEBUG_KMS("Unknown plane ID %d\n",
 			      plane_req->plane_id);
@@ -713,14 +721,22 @@ int drm_mode_setplane(struct drm_device *dev, void *data,
 	}
 
 	if (plane_req->fb_id) {
+<<<<<<< HEAD
 		fb = drm_framebuffer_lookup(dev, file_priv, plane_req->fb_id);
+=======
+		fb = drm_framebuffer_lookup(dev, plane_req->fb_id);
+>>>>>>> v4.14.187
 		if (!fb) {
 			DRM_DEBUG_KMS("Unknown framebuffer ID %d\n",
 				      plane_req->fb_id);
 			return -ENOENT;
 		}
 
+<<<<<<< HEAD
 		crtc = drm_crtc_find(dev, file_priv, plane_req->crtc_id);
+=======
+		crtc = drm_crtc_find(dev, plane_req->crtc_id);
+>>>>>>> v4.14.187
 		if (!crtc) {
 			drm_framebuffer_put(fb);
 			DRM_DEBUG_KMS("Unknown crtc ID %d\n",
@@ -831,7 +847,11 @@ static int drm_mode_cursor_common(struct drm_device *dev,
 	if (!req->flags || (~DRM_MODE_CURSOR_FLAGS & req->flags))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	crtc = drm_crtc_find(dev, file_priv, req->crtc_id);
+=======
+	crtc = drm_crtc_find(dev, req->crtc_id);
+>>>>>>> v4.14.187
 	if (!crtc) {
 		DRM_DEBUG_KMS("Unknown CRTC ID %d\n", req->crtc_id);
 		return -ENOENT;
@@ -945,7 +965,11 @@ int drm_mode_page_flip_ioctl(struct drm_device *dev,
 	if ((page_flip->flags & DRM_MODE_PAGE_FLIP_ASYNC) && !dev->mode_config.async_page_flip)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	crtc = drm_crtc_find(dev, file_priv, page_flip->crtc_id);
+=======
+	crtc = drm_crtc_find(dev, page_flip->crtc_id);
+>>>>>>> v4.14.187
 	if (!crtc)
 		return -ENOENT;
 
@@ -1006,7 +1030,11 @@ retry:
 		goto out;
 	}
 
+<<<<<<< HEAD
 	fb = drm_framebuffer_lookup(dev, file_priv, page_flip->fb_id);
+=======
+	fb = drm_framebuffer_lookup(dev, page_flip->fb_id);
+>>>>>>> v4.14.187
 	if (!fb) {
 		ret = -ENOENT;
 		goto out;

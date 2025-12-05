@@ -21,7 +21,10 @@
 #include <linux/of.h>
 #include <linux/sched.h>
 #include <linux/sched/topology.h>
+<<<<<<< HEAD
 #include <linux/sched/energy.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/slab.h>
 #include <linux/string.h>
 
@@ -29,8 +32,11 @@
 #include <asm/cputype.h>
 #include <asm/topology.h>
 
+<<<<<<< HEAD
 #include "topology_dts.c"
 
+=======
+>>>>>>> v4.14.187
 static int __init get_cpu_for_node(struct device_node *node)
 {
 	struct device_node *cpu_node;
@@ -283,6 +289,7 @@ void store_cpu_topology(unsigned int cpuid)
 
 topology_populated:
 	update_siblings_masks(cpuid);
+<<<<<<< HEAD
 	topology_detect_flags();
 }
 
@@ -337,6 +344,10 @@ static struct sched_domain_topology_level arm64_topology[] = {
 	{ NULL, }
 };
 
+=======
+}
+
+>>>>>>> v4.14.187
 static void __init reset_cpu_topology(void)
 {
 	unsigned int cpu;
@@ -365,6 +376,9 @@ void __init init_cpu_topology(void)
 	 */
 	if (of_have_populated_dt() && parse_dt_topology())
 		reset_cpu_topology();
+<<<<<<< HEAD
 	else
 		set_sched_topology(arm64_topology);
+=======
+>>>>>>> v4.14.187
 }

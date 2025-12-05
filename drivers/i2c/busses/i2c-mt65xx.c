@@ -27,7 +27,10 @@
 #include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/of_address.h>
+<<<<<<< HEAD
 #include <linux/of_device.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/of_irq.h>
 #include <linux/platform_device.h>
 #include <linux/scatterlist.h>
@@ -62,7 +65,10 @@
 #define I2C_DMA_HARD_RST		0x0002
 #define I2C_DMA_4G_MODE			0x0001
 
+<<<<<<< HEAD
 #define I2C_DEFAULT_CLK_DIV		5
+=======
+>>>>>>> v4.14.187
 #define I2C_DEFAULT_SPEED		100000	/* hz */
 #define MAX_FS_MODE_SPEED		400000
 #define MAX_HS_MODE_SPEED		3400000
@@ -77,8 +83,12 @@
 #define I2C_CONTROL_ACKERR_DET_EN       (0x1 << 5)
 #define I2C_CONTROL_TRANSFER_LEN_CHANGE (0x1 << 6)
 #define I2C_CONTROL_WRAPPER             (0x1 << 0)
+<<<<<<< HEAD
 #define I2C_CONTROL_DMAACK_EN           (0x1 << 8)
 #define I2C_CONTROL_ASYNC_MODE          (0x1 << 9)
+=======
+
+>>>>>>> v4.14.187
 #define I2C_DRV_NAME		"i2c-mt65xx"
 
 enum DMA_REGS_OFFSET {
@@ -130,7 +140,10 @@ enum I2C_REGS_OFFSET {
 	OFFSET_DEBUGSTAT = 0x64,
 	OFFSET_DEBUGCTRL = 0x68,
 	OFFSET_TRANSFER_LEN_AUX = 0x6c,
+<<<<<<< HEAD
 	OFFSET_CLOCK_DIV = 0x70,
+=======
+>>>>>>> v4.14.187
 };
 
 struct mtk_i2c_compatible {
@@ -140,7 +153,10 @@ struct mtk_i2c_compatible {
 	unsigned char auto_restart: 1;
 	unsigned char aux_len_reg: 1;
 	unsigned char support_33bits: 1;
+<<<<<<< HEAD
 	unsigned char timing_adjust: 1;
+=======
+>>>>>>> v4.14.187
 };
 
 struct mtk_i2c {
@@ -181,6 +197,7 @@ static const struct i2c_adapter_quirks mt7622_i2c_quirks = {
 	.max_num_msgs = 255,
 };
 
+<<<<<<< HEAD
 static const struct mtk_i2c_compatible mt2712_compat = {
 	.pmic_i2c = 0,
 	.dcm = 1,
@@ -190,6 +207,8 @@ static const struct mtk_i2c_compatible mt2712_compat = {
 	.timing_adjust = 1,
 };
 
+=======
+>>>>>>> v4.14.187
 static const struct mtk_i2c_compatible mt6577_compat = {
 	.quirks = &mt6577_i2c_quirks,
 	.pmic_i2c = 0,
@@ -197,7 +216,10 @@ static const struct mtk_i2c_compatible mt6577_compat = {
 	.auto_restart = 0,
 	.aux_len_reg = 0,
 	.support_33bits = 0,
+<<<<<<< HEAD
 	.timing_adjust = 0,
+=======
+>>>>>>> v4.14.187
 };
 
 static const struct mtk_i2c_compatible mt6589_compat = {
@@ -207,7 +229,10 @@ static const struct mtk_i2c_compatible mt6589_compat = {
 	.auto_restart = 0,
 	.aux_len_reg = 0,
 	.support_33bits = 0,
+<<<<<<< HEAD
 	.timing_adjust = 0,
+=======
+>>>>>>> v4.14.187
 };
 
 static const struct mtk_i2c_compatible mt7622_compat = {
@@ -217,7 +242,10 @@ static const struct mtk_i2c_compatible mt7622_compat = {
 	.auto_restart = 1,
 	.aux_len_reg = 1,
 	.support_33bits = 0,
+<<<<<<< HEAD
 	.timing_adjust = 0,
+=======
+>>>>>>> v4.14.187
 };
 
 static const struct mtk_i2c_compatible mt8173_compat = {
@@ -226,11 +254,17 @@ static const struct mtk_i2c_compatible mt8173_compat = {
 	.auto_restart = 1,
 	.aux_len_reg = 1,
 	.support_33bits = 1,
+<<<<<<< HEAD
 	.timing_adjust = 0,
 };
 
 static const struct of_device_id mtk_i2c_of_match[] = {
 	{ .compatible = "mediatek,mt2712-i2c", .data = &mt2712_compat },
+=======
+};
+
+static const struct of_device_id mtk_i2c_of_match[] = {
+>>>>>>> v4.14.187
 	{ .compatible = "mediatek,mt6577-i2c", .data = &mt6577_compat },
 	{ .compatible = "mediatek,mt6589-i2c", .data = &mt6589_compat },
 	{ .compatible = "mediatek,mt7622-i2c", .data = &mt7622_compat },
@@ -279,9 +313,12 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 {
 	u16 control_reg;
 
+<<<<<<< HEAD
 	writel(I2C_DMA_HARD_RST, i2c->pdmabase + OFFSET_RST);
 	writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_RST);
 
+=======
+>>>>>>> v4.14.187
 	writew(I2C_SOFT_RST, i2c->base + OFFSET_SOFTRESET);
 
 	/* Set ioconfig */
@@ -293,9 +330,12 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 	if (i2c->dev_comp->dcm)
 		writew(I2C_DCM_DISABLE, i2c->base + OFFSET_DCM_EN);
 
+<<<<<<< HEAD
 	if (i2c->dev_comp->timing_adjust)
 		writew(I2C_DEFAULT_CLK_DIV - 1, i2c->base + OFFSET_CLOCK_DIV);
 
+=======
+>>>>>>> v4.14.187
 	writew(i2c->timing_reg, i2c->base + OFFSET_TIMING);
 	writew(i2c->high_speed_reg, i2c->base + OFFSET_HS);
 
@@ -304,11 +344,21 @@ static void mtk_i2c_init_hw(struct mtk_i2c *i2c)
 		writew(I2C_CONTROL_WRAPPER, i2c->base + OFFSET_PATH_DIR);
 
 	control_reg = I2C_CONTROL_ACKERR_DET_EN |
+<<<<<<< HEAD
 		      I2C_CONTROL_CLK_EXT_EN | I2C_CONTROL_DMA_EN |
 		      I2C_CONTROL_DMAACK_EN | I2C_CONTROL_ASYNC_MODE;
 
 	writew(control_reg, i2c->base + OFFSET_CONTROL);
 	writew(I2C_DELAY_LEN, i2c->base + OFFSET_DELAY_LEN);
+=======
+		      I2C_CONTROL_CLK_EXT_EN | I2C_CONTROL_DMA_EN;
+	writew(control_reg, i2c->base + OFFSET_CONTROL);
+	writew(I2C_DELAY_LEN, i2c->base + OFFSET_DELAY_LEN);
+
+	writel(I2C_DMA_HARD_RST, i2c->pdmabase + OFFSET_RST);
+	udelay(50);
+	writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_RST);
+>>>>>>> v4.14.187
 }
 
 /*
@@ -443,8 +493,11 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	u16 control_reg;
 	u16 restart_flag = 0;
 	u32 reg_4g_mode;
+<<<<<<< HEAD
 	u8 *w_buf = NULL;
 	u8 *r_buf = NULL;
+=======
+>>>>>>> v4.14.187
 	dma_addr_t rpaddr = 0;
 	dma_addr_t wpaddr = 0;
 	int ret;
@@ -504,6 +557,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	if (i2c->op == I2C_MASTER_RD) {
 		writel(I2C_DMA_INT_FLAG_NONE, i2c->pdmabase + OFFSET_INT_FLAG);
 		writel(I2C_DMA_CON_RX, i2c->pdmabase + OFFSET_CON);
+<<<<<<< HEAD
 
 		r_buf = kzalloc(msgs->len, GFP_KERNEL);
 		if (r_buf == NULL)
@@ -515,6 +569,12 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			kfree(r_buf);
 			return -ENOMEM;
 		}
+=======
+		rpaddr = dma_map_single(i2c->dev, msgs->buf,
+					msgs->len, DMA_FROM_DEVICE);
+		if (dma_mapping_error(i2c->dev, rpaddr))
+			return -ENOMEM;
+>>>>>>> v4.14.187
 
 		if (i2c->dev_comp->support_33bits) {
 			reg_4g_mode = mtk_i2c_set_4g_mode(rpaddr);
@@ -526,6 +586,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	} else if (i2c->op == I2C_MASTER_WR) {
 		writel(I2C_DMA_INT_FLAG_NONE, i2c->pdmabase + OFFSET_INT_FLAG);
 		writel(I2C_DMA_CON_TX, i2c->pdmabase + OFFSET_CON);
+<<<<<<< HEAD
 
 		w_buf = kzalloc(msgs->len, GFP_KERNEL);
 		if (w_buf == NULL)
@@ -539,6 +600,12 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			kfree(w_buf);
 			return -ENOMEM;
 		}
+=======
+		wpaddr = dma_map_single(i2c->dev, msgs->buf,
+					msgs->len, DMA_TO_DEVICE);
+		if (dma_mapping_error(i2c->dev, wpaddr))
+			return -ENOMEM;
+>>>>>>> v4.14.187
 
 		if (i2c->dev_comp->support_33bits) {
 			reg_4g_mode = mtk_i2c_set_4g_mode(wpaddr);
@@ -550,6 +617,7 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	} else {
 		writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_INT_FLAG);
 		writel(I2C_DMA_CLR_FLAG, i2c->pdmabase + OFFSET_CON);
+<<<<<<< HEAD
 
 		w_buf = kzalloc(msgs->len, GFP_KERNEL);
 		if (w_buf == NULL)
@@ -570,13 +638,23 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 			return -ENOMEM;
 		}
 		rpaddr = dma_map_single(i2c->dev, r_buf,
+=======
+		wpaddr = dma_map_single(i2c->dev, msgs->buf,
+					msgs->len, DMA_TO_DEVICE);
+		if (dma_mapping_error(i2c->dev, wpaddr))
+			return -ENOMEM;
+		rpaddr = dma_map_single(i2c->dev, (msgs + 1)->buf,
+>>>>>>> v4.14.187
 					(msgs + 1)->len,
 					DMA_FROM_DEVICE);
 		if (dma_mapping_error(i2c->dev, rpaddr)) {
 			dma_unmap_single(i2c->dev, wpaddr,
 					 msgs->len, DMA_TO_DEVICE);
+<<<<<<< HEAD
 			kfree(w_buf);
 			kfree(r_buf);
+=======
+>>>>>>> v4.14.187
 			return -ENOMEM;
 		}
 
@@ -615,20 +693,29 @@ static int mtk_i2c_do_transfer(struct mtk_i2c *i2c, struct i2c_msg *msgs,
 	if (i2c->op == I2C_MASTER_WR) {
 		dma_unmap_single(i2c->dev, wpaddr,
 				 msgs->len, DMA_TO_DEVICE);
+<<<<<<< HEAD
 		kfree(w_buf);
 	} else if (i2c->op == I2C_MASTER_RD) {
 		dma_unmap_single(i2c->dev, rpaddr,
 				 msgs->len, DMA_FROM_DEVICE);
 		memcpy(msgs->buf, r_buf, msgs->len);
 		kfree(r_buf);
+=======
+	} else if (i2c->op == I2C_MASTER_RD) {
+		dma_unmap_single(i2c->dev, rpaddr,
+				 msgs->len, DMA_FROM_DEVICE);
+>>>>>>> v4.14.187
 	} else {
 		dma_unmap_single(i2c->dev, wpaddr, msgs->len,
 				 DMA_TO_DEVICE);
 		dma_unmap_single(i2c->dev, rpaddr, (msgs + 1)->len,
 				 DMA_FROM_DEVICE);
+<<<<<<< HEAD
 		memcpy((msgs + 1)->buf, r_buf, (msgs + 1)->len);
 		kfree(w_buf);
 		kfree(r_buf);
+=======
+>>>>>>> v4.14.187
 	}
 
 	if (ret == 0) {
@@ -659,8 +746,11 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	mtk_i2c_init_hw(i2c);
 
+=======
+>>>>>>> v4.14.187
 	i2c->auto_restart = i2c->dev_comp->auto_restart;
 
 	/* checking if we can skip restart and optimize using WRRD mode */
@@ -780,6 +870,10 @@ static int mtk_i2c_parse_dt(struct device_node *np, struct mtk_i2c *i2c)
 
 static int mtk_i2c_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
+=======
+	const struct of_device_id *of_id;
+>>>>>>> v4.14.187
 	int ret = 0;
 	struct mtk_i2c *i2c;
 	struct clk *clk;
@@ -790,6 +884,13 @@ static int mtk_i2c_probe(struct platform_device *pdev)
 	if (!i2c)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	ret = mtk_i2c_parse_dt(pdev->dev.of_node, i2c);
+	if (ret)
+		return -EINVAL;
+
+>>>>>>> v4.14.187
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	i2c->base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(i2c->base))
@@ -806,7 +907,15 @@ static int mtk_i2c_probe(struct platform_device *pdev)
 
 	init_completion(&i2c->msg_complete);
 
+<<<<<<< HEAD
 	i2c->dev_comp = of_device_get_match_data(&pdev->dev);
+=======
+	of_id = of_match_node(mtk_i2c_of_match, pdev->dev.of_node);
+	if (!of_id)
+		return -EINVAL;
+
+	i2c->dev_comp = of_id->data;
+>>>>>>> v4.14.187
 	i2c->adap.dev.of_node = pdev->dev.of_node;
 	i2c->dev = &pdev->dev;
 	i2c->adap.dev.parent = &pdev->dev;
@@ -816,6 +925,7 @@ static int mtk_i2c_probe(struct platform_device *pdev)
 	i2c->adap.timeout = 2 * HZ;
 	i2c->adap.retries = 1;
 
+<<<<<<< HEAD
 	ret = mtk_i2c_parse_dt(pdev->dev.of_node, i2c);
 	if (ret)
 		return -EINVAL;
@@ -823,6 +933,8 @@ static int mtk_i2c_probe(struct platform_device *pdev)
 	if (i2c->dev_comp->timing_adjust)
 		i2c->clk_src_div *= I2C_DEFAULT_CLK_DIV;
 
+=======
+>>>>>>> v4.14.187
 	if (i2c->have_pmic && !i2c->dev_comp->pmic_i2c)
 		return -EINVAL;
 
@@ -899,11 +1011,33 @@ static int mtk_i2c_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PM_SLEEP
+static int mtk_i2c_resume(struct device *dev)
+{
+	struct mtk_i2c *i2c = dev_get_drvdata(dev);
+
+	mtk_i2c_init_hw(i2c);
+
+	return 0;
+}
+#endif
+
+static const struct dev_pm_ops mtk_i2c_pm = {
+	SET_SYSTEM_SLEEP_PM_OPS(NULL, mtk_i2c_resume)
+};
+
+>>>>>>> v4.14.187
 static struct platform_driver mtk_i2c_driver = {
 	.probe = mtk_i2c_probe,
 	.remove = mtk_i2c_remove,
 	.driver = {
 		.name = I2C_DRV_NAME,
+<<<<<<< HEAD
+=======
+		.pm = &mtk_i2c_pm,
+>>>>>>> v4.14.187
 		.of_match_table = of_match_ptr(mtk_i2c_of_match),
 	},
 };

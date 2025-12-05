@@ -23,9 +23,12 @@ obj-$(CONFIG_MMC_SDHCI_SPEAR)	+= sdhci-spear.o
 obj-$(CONFIG_MMC_WBSD)		+= wbsd.o
 obj-$(CONFIG_MMC_AU1X)		+= au1xmmc.o
 obj-$(CONFIG_MMC_MTK)		+= mtk-sd.o
+<<<<<<< HEAD
 ccflags-y += -I$(srctree)/drivers/devfreq/
 obj-$(CONFIG_MMC_MTK_COMM_SDIO) += mtk-sdio.o
 obj-$(CONFIG_MMC_MTK_SDIO)	+= mtk-sdio.o mtk-sdio-proc.o
+=======
+>>>>>>> v4.14.187
 obj-$(CONFIG_MMC_OMAP)		+= omap.o
 obj-$(CONFIG_MMC_OMAP_HS)	+= omap_hsmmc.o
 obj-$(CONFIG_MMC_ATMELMCI)	+= atmel-mci.o
@@ -98,6 +101,7 @@ ifeq ($(CONFIG_CB710_DEBUG),y)
 	CFLAGS-cb710-mmc	+= -DDEBUG
 endif
 
+<<<<<<< HEAD
 obj-$(CONFIG_MMC_MTK_PRO)		+= mediatek/
 ifeq ($(CONFIG_MTK_EMMC_HW_CQ), y)
 ccflags-y += -I$(srctree)/drivers/mmc/core
@@ -110,5 +114,7 @@ obj-y		+= cmdq_hci.o
 obj-$(CONFIG_MMC_CRYPTO)	+= cqhci-crypto.o
 endif
 
+=======
+>>>>>>> v4.14.187
 obj-$(CONFIG_MMC_SDHCI_XENON)	+= sdhci-xenon-driver.o
 sdhci-xenon-driver-y		+= sdhci-xenon.o sdhci-xenon-phy.o

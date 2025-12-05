@@ -354,9 +354,12 @@ static const struct vm_operations_struct ext4_file_vm_ops = {
 	.fault		= ext4_filemap_fault,
 	.map_pages	= filemap_map_pages,
 	.page_mkwrite   = ext4_page_mkwrite,
+<<<<<<< HEAD
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
 	.suitable_for_spf = true,
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 static int ext4_file_mmap(struct file *file, struct vm_area_struct *vma)
@@ -381,6 +384,10 @@ static int ext4_file_open(struct inode * inode, struct file * filp)
 	struct super_block *sb = inode->i_sb;
 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
 	struct vfsmount *mnt = filp->f_path.mnt;
+<<<<<<< HEAD
+=======
+	struct dentry *dir;
+>>>>>>> v4.14.187
 	struct path path;
 	char buf[64], *cp;
 	int ret;
@@ -420,6 +427,7 @@ static int ext4_file_open(struct inode * inode, struct file * filp)
 			ext4_journal_stop(handle);
 		}
 	}
+<<<<<<< HEAD
 
 	ret = fscrypt_file_open(inode, filp);
 	if (ret)
@@ -429,6 +437,27 @@ static int ext4_file_open(struct inode * inode, struct file * filp)
 	if (ret)
 		return ret;
 
+=======
+	if (ext4_encrypted_inode(inode)) {
+		ret = fscrypt_get_encryption_info(inode);
+		if (ret)
+			return -EACCES;
+		if (!fscrypt_has_encryption_key(inode))
+			return -ENOKEY;
+	}
+
+	dir = dget_parent(file_dentry(filp));
+	if (ext4_encrypted_inode(d_inode(dir)) &&
+			!fscrypt_has_permitted_context(d_inode(dir), inode)) {
+		ext4_warning(inode->i_sb,
+			     "Inconsistent encryption contexts: %lu/%lu",
+			     (unsigned long) d_inode(dir)->i_ino,
+			     (unsigned long) inode->i_ino);
+		dput(dir);
+		return -EPERM;
+	}
+	dput(dir);
+>>>>>>> v4.14.187
 	/*
 	 * Set up the jbd2_inode if we are opening the inode for
 	 * writing and the journal is present

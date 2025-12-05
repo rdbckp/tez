@@ -178,20 +178,26 @@ DTC_INCLUDE    := $(srctree)/scripts/dtc/include-prefixes
 
 dtc_cpp_flags  = -Wp,-MD,$(depfile).pre.tmp -nostdinc                    \
 		 $(addprefix -I,$(DTC_INCLUDE))                          \
+<<<<<<< HEAD
 		 -I$(srctree)/arch/$(SRCARCH)/boot/dts                   \
 		 -I$(srctree)/arch/$(SRCARCH)/boot/dts/include           \
 		 -I$(objtree)/include/                                   \
 		 -Iarch/$(SRCARCH)/boot/dts                              \
+=======
+>>>>>>> v4.14.187
 		 -undef -D__DTS__
 
 # Finds the multi-part object the current object will be linked into
 modname-multi = $(sort $(foreach m,$(multi-used),\
 		$(if $(filter $(subst $(obj)/,,$*.o), $($(m:.o=-objs)) $($(m:.o=-y))),$(m:.o=))))
 
+<<<<<<< HEAD
 ifeq ($(CONFIG_SEC_FACTORY),y)
 dtc_cpp_flags += -DCONFIG_SEC_FACTORY
 endif
 
+=======
+>>>>>>> v4.14.187
 # Useful for describing the dependency of composite objects
 # Usage:
 #   $(call multi_depend, multi_used_targets, suffix_to_remove, suffix_to_add)
@@ -310,6 +316,7 @@ cmd_dt_S_dtb=						\
 	echo '.balign STRUCT_ALIGNMENT'; 		\
 ) > $@
 
+<<<<<<< HEAD
 show_dtc_error =                                                          \
 (                                                                         \
 	cat $1;                                                           \
@@ -323,16 +330,24 @@ show_dtc_error =                                                          \
 	false;                                                            \
 )
 
+=======
+>>>>>>> v4.14.187
 $(obj)/%.dtb.S: $(obj)/%.dtb
 	$(call cmd,dt_S_dtb)
 
 quiet_cmd_dtc = DTC     $@
 cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
 	$(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+<<<<<<< HEAD
 	$(srctree)/scripts/dtc/dtc_overlay -@ -O dtb -o $@ -b 0 \
 		$(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS) \
 		-d $(depfile).dtc.tmp $(dtc-tmp) 2>$@.dtout || $(call show_dtc_error, $@.dtout) ;\
 	$(DTC) -q -O dts -I dtb -o $@.reverse.dts $@ ; \
+=======
+	$(DTC) -O dtb -o $@ -b 0 \
+		$(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS) \
+		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
+>>>>>>> v4.14.187
 	cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
 
 $(obj)/%.dtb: $(src)/%.dts FORCE
@@ -340,12 +355,15 @@ $(obj)/%.dtb: $(src)/%.dts FORCE
 
 dtc-tmp = $(subst $(comma),_,$(dot-target).dts.tmp)
 
+<<<<<<< HEAD
 # cat
 # ---------------------------------------------------------------------------
 # Concatentate multiple files together
 quiet_cmd_cat = CAT     $@
 cmd_cat = (cat $(filter-out FORCE,$^) > $@) || (rm -f $@; false)
 
+=======
+>>>>>>> v4.14.187
 # Bzip2
 # ---------------------------------------------------------------------------
 
@@ -386,8 +404,12 @@ cmd_lzo = (cat $(filter-out FORCE,$^) | \
 
 quiet_cmd_lz4 = LZ4     $@
 cmd_lz4 = (cat $(filter-out FORCE,$^) | \
+<<<<<<< HEAD
 	lz4 -c -l -12 --favor-decSpeed stdin stdout && \
 	$(call size_append, $(filter-out FORCE,$^))) > $@ || \
+=======
+	lz4c -l -c1 stdin stdout && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
+>>>>>>> v4.14.187
 	(rm -f $@ ; false)
 
 # U-Boot mkimage

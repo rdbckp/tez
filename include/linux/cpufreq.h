@@ -912,6 +912,7 @@ static inline bool policy_has_boost_freq(struct cpufreq_policy *policy)
 extern void arch_freq_prepare_all(void);
 extern unsigned int arch_freq_get_on_cpu(int cpu);
 
+<<<<<<< HEAD
 extern void arch_set_freq_scale(struct cpumask *cpus, unsigned long cur_freq,
 				unsigned long max_freq);
 extern void arch_set_max_freq_scale(struct cpumask *cpus,
@@ -919,6 +920,8 @@ extern void arch_set_max_freq_scale(struct cpumask *cpus,
 extern void arch_set_min_freq_scale(struct cpumask *cpus,
 				    unsigned long policy_min_freq);
 
+=======
+>>>>>>> v4.14.187
 /* the following are really really optional */
 extern struct freq_attr cpufreq_freq_attr_scaling_available_freqs;
 extern struct freq_attr cpufreq_freq_attr_scaling_boost_freqs;

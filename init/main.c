@@ -89,6 +89,7 @@
 #include <linux/cache.h>
 #include <linux/rodata_test.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_BOOTSTAT
 #include <linux/sec_ext.h>
 #endif
@@ -97,12 +98,15 @@
 #include <linux/secgpio_dvs.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 #include <asm/io.h>
 #include <asm/bugs.h>
 #include <asm/setup.h>
 #include <asm/sections.h>
 #include <asm/cacheflush.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_UH
 #include <linux/uh.h>
 #ifdef CONFIG_UH_RKP
@@ -126,6 +130,8 @@
 void __init __weak defex_load_rules(void) { }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static int kernel_init(void *);
 
 extern void init_IRQ(void);
@@ -217,6 +223,7 @@ static bool __init obsolete_checksetup(char *line)
 			} else if (!p->setup_func) {
 				pr_warn("Parameter %s is obsolete, ignored\n",
 					p->str);
+<<<<<<< HEAD
 				had_early_param = true;
 				goto fail;
 			} else {
@@ -226,12 +233,20 @@ static bool __init obsolete_checksetup(char *line)
 					goto fail;
 				}
 			}
+=======
+				return true;
+			} else if (p->setup_func(line + n))
+				return true;
+>>>>>>> v4.14.187
 		}
 		p++;
 	} while (p < __setup_end);
 
+<<<<<<< HEAD
 fail:
 	unset_memsize_reserved_name();
+=======
+>>>>>>> v4.14.187
 	return had_early_param;
 }
 
@@ -473,10 +488,13 @@ static noinline void __ref rest_init(void)
 	cpu_startup_entry(CPUHP_ONLINE);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_CRED
 int is_recovery __kdp_ro = 0;
 #endif
 
+=======
+>>>>>>> v4.14.187
 /* Check for early params. */
 static int __init do_early_param(char *param, char *val,
 				 const char *unused, void *arg)
@@ -488,11 +506,15 @@ static int __init do_early_param(char *param, char *val,
 		    (strcmp(param, "console") == 0 &&
 		     strcmp(p->str, "earlycon") == 0)
 		) {
+<<<<<<< HEAD
 			set_memsize_reserved_name(p->str);
+=======
+>>>>>>> v4.14.187
 			if (p->setup_func(val) != 0)
 				pr_warn("Malformed early option '%s'\n", param);
 		}
 	}
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_CRED
 	if ((strncmp(param, "bootmode", 9) == 0)) {
 			//printk("\n [KDP] In Recovery Mode= %d\n",*val);
@@ -503,6 +525,9 @@ static int __init do_early_param(char *param, char *val,
 #endif
 	/* We accept everything at this stage. */
 	unset_memsize_reserved_name();
+=======
+	/* We accept everything at this stage. */
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -541,6 +566,7 @@ void __init __weak thread_stack_cache_init(void)
 
 void __init __weak mem_encrypt_init(void) { }
 
+<<<<<<< HEAD
 /* Report memory auto-initialization states for this boot. */
 static void __init report_meminit(void)
 {
@@ -564,18 +590,26 @@ static void __init report_meminit(void)
 		pr_info("mem auto-init: clearing system memory may take some time...\n");
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * Set up kernel memory allocators
  */
 static void __init mm_init(void)
 {
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_MM_INIT);
+=======
+>>>>>>> v4.14.187
 	/*
 	 * page_ext requires contiguous pages,
 	 * bigger than MAX_ORDER unless SPARSEMEM.
 	 */
 	page_ext_init_flatmem();
+<<<<<<< HEAD
 	report_meminit();
+=======
+>>>>>>> v4.14.187
 	mem_init();
 	kmem_cache_init();
 	pgtable_init();
@@ -585,6 +619,7 @@ static void __init mm_init(void)
 	init_espfix_bsp();
 	/* Should be run after espfix64 is set up. */
 	pti_init();
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_OTHERS);
 }
 
@@ -683,12 +718,19 @@ void kdp_init(void)
 }
 #endif
 
+=======
+}
+
+>>>>>>> v4.14.187
 asmlinkage __visible void __init start_kernel(void)
 {
 	char *command_line;
 	char *after_dashes;
 
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_OTHERS);
+=======
+>>>>>>> v4.14.187
 	set_task_stack_end_magic(&init_task);
 	smp_setup_processor_id();
 	debug_objects_early_init();
@@ -705,9 +747,12 @@ asmlinkage __visible void __init start_kernel(void)
 	boot_cpu_init();
 	page_address_init();
 	pr_notice("%s", linux_banner);
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	rkp_robuffer_init();
 #endif
+=======
+>>>>>>> v4.14.187
 	setup_arch(&command_line);
 	/*
 	 * Set up the the initial canary and entropy after arch
@@ -748,6 +793,7 @@ asmlinkage __visible void __init start_kernel(void)
 	sort_main_extable();
 	trap_init();
 	mm_init();
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	rkp_init();
 #endif
@@ -761,6 +807,8 @@ asmlinkage __visible void __init start_kernel(void)
 #if defined(CONFIG_SEC_BOOTSTAT)
 	sec_boot_stat_get_start_kernel();
 #endif
+=======
+>>>>>>> v4.14.187
 
 	ftrace_init();
 
@@ -868,6 +916,7 @@ asmlinkage __visible void __init start_kernel(void)
 		efi_enter_virtual_mode();
 #endif
 	thread_stack_cache_init();
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_CRED
 	if (rkp_cred_enable)
 	    kdp_init();
@@ -876,6 +925,8 @@ asmlinkage __visible void __init start_kernel(void)
 	if (kdp_enable)
 		kdp_init();
 #endif
+=======
+>>>>>>> v4.14.187
 	cred_init();
 	fork_init();
 	proc_caches_init();
@@ -903,7 +954,10 @@ asmlinkage __visible void __init start_kernel(void)
 		efi_free_boot_services();
 	}
 
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_STOP);
+=======
+>>>>>>> v4.14.187
 	/* Do the rest non-__init'ed, we're now alive */
 	rest_init();
 
@@ -993,6 +1047,7 @@ static bool __init_or_module initcall_blacklisted(initcall_t fn)
 #endif
 __setup("initcall_blacklist=", initcall_blacklist);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEVICE_BOOTSTAT
 static bool __init_or_module initcall_sec_debug = true;
 
@@ -1026,6 +1081,8 @@ static int __init_or_module do_one_initcall_sec_debug(initcall_t fn)
 	return ret;
 }
 #else
+=======
+>>>>>>> v4.14.187
 static int __init_or_module do_one_initcall_debug(initcall_t fn)
 {
 	ktime_t calltime, delta, rettime;
@@ -1043,6 +1100,7 @@ static int __init_or_module do_one_initcall_debug(initcall_t fn)
 
 	return ret;
 }
+<<<<<<< HEAD
 #endif
 
 #ifdef CONFIG_MTPROF
@@ -1052,12 +1110,15 @@ static int __init_or_module do_one_initcall_debug(initcall_t fn)
 #define TIME_LOG_END()
 #define bootprof_initcall(fn, ts)
 #endif
+=======
+>>>>>>> v4.14.187
 
 int __init_or_module do_one_initcall(initcall_t fn)
 {
 	int count = preempt_count();
 	int ret;
 	char msgbuf[64];
+<<<<<<< HEAD
 #ifdef CONFIG_MTPROF
 	unsigned long long ts = 0;
 #endif
@@ -1081,6 +1142,17 @@ int __init_or_module do_one_initcall(initcall_t fn)
 	else
 		ret = fn();
 	TIME_LOG_END();
+=======
+
+	if (initcall_blacklisted(fn))
+		return -EPERM;
+
+	if (initcall_debug)
+		ret = do_one_initcall_debug(fn);
+	else
+		ret = fn();
+
+>>>>>>> v4.14.187
 	msgbuf[0] = 0;
 
 	if (preempt_count() != count) {
@@ -1094,7 +1166,10 @@ int __init_or_module do_one_initcall(initcall_t fn)
 	WARN(msgbuf[0], "initcall %pF returned with %s\n", fn, msgbuf);
 
 	add_latent_entropy();
+<<<<<<< HEAD
 	bootprof_initcall(fn, ts);
+=======
+>>>>>>> v4.14.187
 	return ret;
 }
 
@@ -1147,10 +1222,13 @@ static void __init do_initcall_level(int level)
 
 	for (fn = initcall_levels[level]; fn < initcall_levels[level+1]; fn++)
 		do_one_initcall(*fn);
+<<<<<<< HEAD
 
 #if defined(CONFIG_SEC_BOOTSTAT)
 	sec_boot_stat_add_initcall(initcall_level_names[level]);
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 static void __init do_initcalls(void)
@@ -1159,9 +1237,12 @@ static void __init do_initcalls(void)
 
 	for (level = 0; level < ARRAY_SIZE(initcall_levels) - 1; level++)
 		do_initcall_level(level);
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_RAM_CONSOLE
 	aee_rr_rec_last_init_func(~(unsigned long)(0));
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 /*
@@ -1262,6 +1343,7 @@ static int __ref kernel_init(void *unused)
 	int ret;
 
 	kernel_init_freeable();
+<<<<<<< HEAD
 
 #ifdef CONFIG_SEC_GPIO_DVS
 	/************************ Caution !!! ****************************/
@@ -1272,6 +1354,8 @@ static int __ref kernel_init(void *unused)
 	gpio_dvs_check_initgpio();
 #endif
 
+=======
+>>>>>>> v4.14.187
 	/* need to finish all async __init code before freeing the memory */
 	async_synchronize_full();
 	ftrace_free_init_mem();
@@ -1281,6 +1365,7 @@ static int __ref kernel_init(void *unused)
 	numa_default_policy();
 
 	rcu_end_inkernel_boot();
+<<<<<<< HEAD
 #ifdef CONFIG_MTPROF
 		log_boot("Kernel_init_done");
 #endif
@@ -1291,6 +1376,12 @@ static int __ref kernel_init(void *unused)
 			rkp_deferred_init();
 #endif
 }
+=======
+
+	if (ramdisk_execute_command) {
+		ret = run_init_process(ramdisk_execute_command);
+		if (!ret)
+>>>>>>> v4.14.187
 			return 0;
 		pr_err("Failed to execute %s (error %d)\n",
 		       ramdisk_execute_command, ret);
@@ -1384,7 +1475,10 @@ static noinline void __init kernel_init_freeable(void)
 
 	integrity_load_keys();
 	load_default_modules();
+<<<<<<< HEAD
 #ifdef CONFIG_SECURITY_DEFEX
 	defex_load_rules();
 #endif
+=======
+>>>>>>> v4.14.187
 }

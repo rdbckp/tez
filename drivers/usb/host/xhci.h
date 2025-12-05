@@ -718,7 +718,11 @@ struct xhci_ep_ctx {
  * 4 - TRB error
  * 5-7 - reserved
  */
+<<<<<<< HEAD
 #define EP_STATE_MASK		(0xf)
+=======
+#define EP_STATE_MASK		(0x7)
+>>>>>>> v4.14.187
 #define EP_STATE_DISABLED	0
 #define EP_STATE_RUNNING	1
 #define EP_STATE_HALTED		2
@@ -1513,9 +1517,12 @@ struct xhci_segment {
 	void			*bounce_buf;
 	unsigned int		bounce_offs;
 	unsigned int		bounce_len;
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTK_UAC_POWER_SAVING)
 	int sram_flag;
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 struct xhci_td {
@@ -1843,7 +1850,10 @@ struct xhci_hcd {
 #define XHCI_INTEL_USB_ROLE_SW	BIT_ULL(31)
 #define XHCI_RESET_PLL_ON_DISCONNECT	BIT_ULL(34)
 #define XHCI_SNPS_BROKEN_SUSPEND    BIT_ULL(35)
+<<<<<<< HEAD
 #define XHCI_DEV_WITH_SYNC_EP	BIT_ULL(63)
+=======
+>>>>>>> v4.14.187
 
 	unsigned int		num_active_eps;
 	unsigned int		limit_active_eps;
@@ -1874,10 +1884,14 @@ struct xhci_hcd {
 	u16			test_mode;
 /* Compliance Mode Timer Triggered every 2 seconds */
 #define COMP_MODE_RCVRY_MSECS 2000
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTK_UAC_POWER_SAVING)
 	dma_addr_t		msram_phys_addr;
 	void			*msram_virt_addr;
 #endif
+=======
+
+>>>>>>> v4.14.187
 	/* platform-specific data -- must come last */
 	unsigned long		priv[0] __aligned(sizeof(s64));
 };
@@ -2023,8 +2037,11 @@ void xhci_free_command(struct xhci_hcd *xhci,
 /* xHCI host controller glue */
 typedef void (*xhci_get_quirks_t)(struct device *, struct xhci_hcd *);
 int xhci_handshake(void __iomem *ptr, u32 mask, u32 done, int usec);
+<<<<<<< HEAD
 int xhci_handshake_check_state(struct xhci_hcd *xhci,
 		void __iomem *ptr, u32 mask, u32 done, int usec);
+=======
+>>>>>>> v4.14.187
 void xhci_quiesce(struct xhci_hcd *xhci);
 int xhci_halt(struct xhci_hcd *xhci);
 int xhci_start(struct xhci_hcd *xhci);

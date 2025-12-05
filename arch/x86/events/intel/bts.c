@@ -85,12 +85,19 @@ static size_t buf_size(struct page *page)
 }
 
 static void *
+<<<<<<< HEAD
 bts_buffer_setup_aux(struct perf_event *event, void **pages,
 		     int nr_pages, bool overwrite)
 {
 	struct bts_buffer *buf;
 	struct page *page;
 	int cpu = event->cpu;
+=======
+bts_buffer_setup_aux(int cpu, void **pages, int nr_pages, bool overwrite)
+{
+	struct bts_buffer *buf;
+	struct page *page;
+>>>>>>> v4.14.187
 	int node = (cpu == -1) ? cpu : cpu_to_node(cpu);
 	unsigned long offset;
 	size_t size = nr_pages << PAGE_SHIFT;
@@ -563,11 +570,17 @@ static int bts_event_init(struct perf_event *event)
 	 * Note that the default paranoia setting permits unprivileged
 	 * users to profile the kernel.
 	 */
+<<<<<<< HEAD
 	if (event->attr.exclude_kernel) {
 		ret = perf_allow_kernel(&event->attr);
 		if (ret)
 			return ret;
 	}
+=======
+	if (event->attr.exclude_kernel && perf_paranoid_kernel() &&
+	    !capable(CAP_SYS_ADMIN))
+		return -EACCES;
+>>>>>>> v4.14.187
 
 	if (x86_add_exclusive(x86_lbr_exclusive_bts))
 		return -EBUSY;

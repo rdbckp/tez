@@ -35,7 +35,10 @@
 #include <linux/sizes.h>
 #include <linux/syscalls.h>
 #include <linux/mm_types.h>
+<<<<<<< HEAD
 #include <linux/kasan.h>
+=======
+>>>>>>> v4.14.187
 
 #include <asm/atomic.h>
 #include <asm/bug.h>
@@ -50,11 +53,14 @@
 #include <asm/exception.h>
 #include <asm/system_misc.h>
 #include <asm/sysreg.h>
+<<<<<<< HEAD
 #include <mt-plat/aee.h>
 
 #ifdef CONFIG_SEC_DEBUG
 #include <linux/sec_debug.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 static const char *handler[]= {
 	"Synchronous Abort",
@@ -67,6 +73,7 @@ int show_unhandled_signals = 0;
 
 static void dump_backtrace_entry(unsigned long where)
 {
+<<<<<<< HEAD
 	/*
 	 * Note that 'where' can have a physical address, but it's not handled.
 	 */
@@ -83,6 +90,11 @@ static void dump_backtrace_entry_auto_comment(unsigned long where)
 }
 #endif
 
+=======
+	printk(" %pS\n", (void *)where);
+}
+
+>>>>>>> v4.14.187
 static void __dump_instr(const char *lvl, struct pt_regs *regs)
 {
 	unsigned long addr = instruction_pointer(regs);
@@ -116,18 +128,24 @@ static void dump_instr(const char *lvl, struct pt_regs *regs)
 	}
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_LIMIT_BACKTRACE
 #define MAX_UNWINDING_LOOP 256 /* maximum number of unwind frame */
 #endif
 
+=======
+>>>>>>> v4.14.187
 void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 {
 	struct stackframe frame;
 	int skip = 0;
+<<<<<<< HEAD
 	unsigned long prev_fp = 0;
 #ifdef CONFIG_SEC_DEBUG_LIMIT_BACKTRACE
 	int cnt = 0;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	pr_debug("%s(regs = %p tsk = %p)\n", __func__, regs, tsk);
 
@@ -159,12 +177,15 @@ void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 
 	printk("Call trace:\n");
 	do {
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_LIMIT_BACKTRACE
 		if (MAX_UNWINDING_LOOP < cnt) {
 				pr_info("%s: Forcely break dump_backtrace to avoid infinity backtrace\n", __func__);
 				break;
 		}
 #endif
+=======
+>>>>>>> v4.14.187
 		/* skip until specified stack frame */
 		if (!skip) {
 			dump_backtrace_entry(frame.pc);
@@ -179,6 +200,7 @@ void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 			 */
 			dump_backtrace_entry(regs->pc);
 		}
+<<<<<<< HEAD
 
 		if (prev_fp && frame.fp == prev_fp)
 			break;
@@ -188,11 +210,14 @@ void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 #ifdef CONFIG_SEC_DEBUG_LIMIT_BACKTRACE
 		cnt++;
 #endif
+=======
+>>>>>>> v4.14.187
 	} while (!unwind_frame(tsk, &frame));
 
 	put_task_stack(tsk);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 void dump_backtrace_auto_comment(struct pt_regs *regs, struct task_struct *tsk)
 {
@@ -269,12 +294,15 @@ void dump_backtrace_auto_comment(struct pt_regs *regs, struct task_struct *tsk)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 void show_stack(struct task_struct *tsk, unsigned long *sp)
 {
 	dump_backtrace(NULL, tsk);
 	barrier();
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 void show_stack_auto_comment(struct task_struct *tsk, unsigned long *sp)
 {
@@ -283,6 +311,8 @@ void show_stack_auto_comment(struct task_struct *tsk, unsigned long *sp)
 }
 #endif /* CONFIG_SEC_DEBUG_AUTO_COMMENT */
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_PREEMPT
 #define S_PREEMPT " PREEMPT"
 #else
@@ -326,6 +356,7 @@ void die(const char *str, struct pt_regs *regs, int err)
 	int ret;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	struct thread_info *thread = current_thread_info();
 	int cpu = -1;
 	static int die_owner = -1;
@@ -361,6 +392,12 @@ void die(const char *str, struct pt_regs *regs, int err)
 		}
 	}
 	die_owner = cpu;
+=======
+	raw_spin_lock_irqsave(&die_lock, flags);
+
+	oops_enter();
+
+>>>>>>> v4.14.187
 	console_verbose();
 	bust_spinlocks(1);
 	ret = __die(str, err, regs);
@@ -372,6 +409,7 @@ void die(const char *str, struct pt_regs *regs, int err)
 	add_taint(TAINT_DIE, LOCKDEP_NOW_UNRELIABLE);
 	oops_exit();
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 	if (in_interrupt()) {
 		if (regs)
@@ -390,11 +428,16 @@ void die(const char *str, struct pt_regs *regs, int err)
 			panic("Fatal exception");
 	}
 #else
+=======
+>>>>>>> v4.14.187
 	if (in_interrupt())
 		panic("Fatal exception in interrupt");
 	if (panic_on_oops)
 		panic("Fatal exception");
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 
 	raw_spin_unlock_irqrestore(&die_lock, flags);
 
@@ -455,6 +498,7 @@ static int call_undef_hook(struct pt_regs *regs)
 	int (*fn)(struct pt_regs *regs, u32 instr) = NULL;
 	void __user *pc = (void __user *)instruction_pointer(regs);
 
+<<<<<<< HEAD
 	if (!user_mode(regs)) {
 		__le32 instr_le;
 
@@ -462,6 +506,12 @@ static int call_undef_hook(struct pt_regs *regs)
 			goto exit;
 		instr = le32_to_cpu(instr_le);
 	} else if (compat_thumb_mode(regs)) {
+=======
+	if (!user_mode(regs))
+		return 1;
+
+	if (compat_thumb_mode(regs)) {
+>>>>>>> v4.14.187
 		/* 16-bit Thumb instruction */
 		__le16 instr_le;
 		if (get_user(instr_le, (__le16 __user *)pc))
@@ -515,6 +565,7 @@ static void force_signal_inject(int signal, int code, struct pt_regs *regs,
 
 	if (unhandled_signal(current, signal) &&
 	    show_unhandled_signals_ratelimited()) {
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 		pr_auto(ASL1, "%s[%d]: %s: pc=%p\n",
 			current->comm, task_pid_nr(current), desc, pc);
@@ -522,6 +573,10 @@ static void force_signal_inject(int signal, int code, struct pt_regs *regs,
 		pr_info("%s[%d]: %s: pc=%p\n",
 			current->comm, task_pid_nr(current), desc, pc);
 #endif
+=======
+		pr_info("%s[%d]: %s: pc=%p\n",
+			current->comm, task_pid_nr(current), desc, pc);
+>>>>>>> v4.14.187
 		dump_instr(KERN_INFO, regs);
 	}
 
@@ -552,12 +607,15 @@ void arm64_notify_segfault(struct pt_regs *regs, unsigned long addr)
 
 asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_EXTRA_INFO
 	if (!user_mode(regs)) {
 		sec_debug_set_extra_info_fault((unsigned long)regs->pc, regs);
 	}
 #endif
 
+=======
+>>>>>>> v4.14.187
 	/* check for AArch32 breakpoint instructions */
 	if (!aarch32_break_handler(regs))
 		return;
@@ -565,7 +623,10 @@ asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 	if (call_undef_hook(regs) == 0)
 		return;
 
+<<<<<<< HEAD
 	BUG_ON(!user_mode(regs));
+=======
+>>>>>>> v4.14.187
 	force_signal_inject(SIGILL, ILL_ILLOPC, regs, 0);
 }
 
@@ -723,6 +784,7 @@ asmlinkage long do_ni_syscall(struct pt_regs *regs)
 	return sys_ni_syscall();
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MEDIATEK_SOLUTION
 static void (*async_abort_handler)(struct pt_regs *regs, void *);
 static void *async_abort_priv;
@@ -737,6 +799,8 @@ int register_async_abort_handler(
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static const char *esr_class_str[] = {
 	[0 ... ESR_ELx_EC_MAX]		= "UNRECOGNIZED EC",
 	[ESR_ELx_EC_UNKNOWN]		= "Unknown/Uncategorized",
@@ -790,6 +854,7 @@ asmlinkage void bad_mode(struct pt_regs *regs, int reason, unsigned int esr)
 {
 	console_verbose();
 
+<<<<<<< HEAD
 #ifdef CONFIG_MEDIATEK_SOLUTION
 	/*
 	 * reason is defined in entry.S, 3 means BAD_ERROR,
@@ -815,6 +880,11 @@ asmlinkage void bad_mode(struct pt_regs *regs, int reason, unsigned int esr)
 		sec_debug_set_extra_info_esr(esr);
 	}
 #endif
+=======
+	pr_crit("Bad mode in %s handler detected on CPU%d, code 0x%08x -- %s\n",
+		handler[reason], smp_processor_id(), esr,
+		esr_get_class_string(esr));
+>>>>>>> v4.14.187
 
 	local_irq_disable();
 	panic("bad mode");
@@ -834,6 +904,7 @@ asmlinkage void bad_el0_sync(struct pt_regs *regs, int reason, unsigned int esr)
 		smp_processor_id(), esr, esr_get_class_string(esr));
 	__show_regs(regs);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_EXTRA_INFO
 	if (!user_mode(regs)) {
 		sec_debug_set_extra_info_fault(SEC_DEBUG_BADMODE_MAGIC, regs);
@@ -841,6 +912,8 @@ asmlinkage void bad_el0_sync(struct pt_regs *regs, int reason, unsigned int esr)
 	}
 #endif
 
+=======
+>>>>>>> v4.14.187
 	info.si_signo = SIGILL;
 	info.si_errno = 0;
 	info.si_code  = ILL_ILLOPC;
@@ -930,11 +1003,14 @@ static int bug_handler(struct pt_regs *regs, unsigned int esr)
 
 	switch (report_bug(regs->pc, regs)) {
 	case BUG_TRAP_TYPE_BUG:
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_EXTRA_INFO
 		sec_debug_set_extra_info_fault((unsigned long)regs->pc, regs);
 		sec_debug_set_extra_info_esr(esr);
 #endif
 
+=======
+>>>>>>> v4.14.187
 		die("Oops - BUG", regs, 0);
 		break;
 
@@ -957,6 +1033,7 @@ static struct break_hook bug_break_hook = {
 	.fn = bug_handler,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_KASAN_SW_TAGS
 
 #define KASAN_ESR_RECOVER	0x20
@@ -1009,6 +1086,8 @@ static struct break_hook kasan_break_hook = {
 };
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Initial handler for AArch64 BRK exceptions
  * This handler only used until debug_traps_init().
@@ -1016,10 +1095,13 @@ static struct break_hook kasan_break_hook = {
 int __init early_brk64(unsigned long addr, unsigned int esr,
 		struct pt_regs *regs)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_KASAN_SW_TAGS
 	if ((esr & KASAN_ESR_MASK) == KASAN_ESR_VAL)
 		return kasan_handler(regs, esr) != DBG_HOOK_HANDLED;
 #endif
+=======
+>>>>>>> v4.14.187
 	return bug_handler(regs, esr) != DBG_HOOK_HANDLED;
 }
 
@@ -1027,7 +1109,10 @@ int __init early_brk64(unsigned long addr, unsigned int esr,
 void __init trap_init(void)
 {
 	register_break_hook(&bug_break_hook);
+<<<<<<< HEAD
 #ifdef CONFIG_KASAN_SW_TAGS
 	register_break_hook(&kasan_break_hook);
 #endif
+=======
+>>>>>>> v4.14.187
 }

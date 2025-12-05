@@ -3,12 +3,15 @@
 # Makefile for the linux kernel.
 #
 
+<<<<<<< HEAD
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/mtprof
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/sched
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/mcdi/include
 
+=======
+>>>>>>> v4.14.187
 obj-y     = fork.o exec_domain.o panic.o \
 	    cpu.o exit.o softirq.o resource.o \
 	    sysctl.o sysctl_binary.o capability.o ptrace.o user.o \
@@ -41,9 +44,12 @@ CFLAGS_kcov.o := $(call cc-option, -fno-conserve-stack -fno-stack-protector)
 # cond_syscall is currently not LTO compatible
 CFLAGS_sys_ni.o = $(DISABLE_LTO)
 
+<<<<<<< HEAD
 # Don't instrument error handlers
 CFLAGS_cfi.o = $(DISABLE_CFI_CLANG)
 
+=======
+>>>>>>> v4.14.187
 obj-y += sched/
 obj-y += locking/
 obj-y += power/
@@ -79,7 +85,10 @@ obj-$(CONFIG_UTS_NS) += utsname.o
 obj-$(CONFIG_USER_NS) += user_namespace.o
 obj-$(CONFIG_PID_NS) += pid_namespace.o
 obj-$(CONFIG_IKCONFIG) += configs.o
+<<<<<<< HEAD
 obj-$(CONFIG_IKHEADERS) += kheaders.o
+=======
+>>>>>>> v4.14.187
 obj-$(CONFIG_SMP) += stop_machine.o
 obj-$(CONFIG_KPROBES_SANITY_TEST) += test_kprobes.o
 obj-$(CONFIG_AUDIT) += audit.o auditfilter.o
@@ -109,8 +118,11 @@ obj-$(CONFIG_TRACEPOINTS) += trace/
 obj-$(CONFIG_IRQ_WORK) += irq_work.o
 obj-$(CONFIG_CPU_PM) += cpu_pm.o
 obj-$(CONFIG_BPF) += bpf/
+<<<<<<< HEAD
 obj-$(CONFIG_CFI_CLANG) += cfi.o
 obj-$(CONFIG_SHADOW_CALL_STACK) += scs.o
+=======
+>>>>>>> v4.14.187
 
 obj-$(CONFIG_PERF_EVENTS) += events/
 
@@ -133,6 +145,7 @@ $(obj)/config_data.gz: $(KCONFIG_CONFIG) FORCE
 targets += config_data.h
 $(obj)/config_data.h: $(obj)/config_data.gz FORCE
 	$(call filechk,ikconfiggz)
+<<<<<<< HEAD
 
 $(obj)/kheaders.o: $(obj)/kheaders_data.tar.xz
 
@@ -142,3 +155,5 @@ $(obj)/kheaders_data.tar.xz: FORCE
 	$(call cmd,genikh)
 
 clean-files := kheaders_data.tar.xz kheaders.md5
+=======
+>>>>>>> v4.14.187

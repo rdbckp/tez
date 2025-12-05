@@ -121,7 +121,11 @@
 #include <linux/string.h>
 #include <linux/errno.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/skbuff.h>
+=======
+
+>>>>>>> v4.14.187
 #include <linux/net.h>
 #include <linux/socket.h>
 #include <linux/sockios.h>
@@ -189,6 +193,7 @@ bool ip_call_ra_chain(struct sk_buff *skb)
 	return false;
 }
 
+<<<<<<< HEAD
 void ip_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int protocol)
 {
 	const struct net_protocol *ipprot;
@@ -230,11 +235,57 @@ resubmit:
 
 static int ip_local_deliver_finish(struct net *net, struct sock *sk,
 				   struct sk_buff *skb)
+=======
+static int ip_local_deliver_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
+>>>>>>> v4.14.187
 {
 	__skb_pull(skb, skb_network_header_len(skb));
 
 	rcu_read_lock();
+<<<<<<< HEAD
 	ip_protocol_deliver_rcu(net, skb, ip_hdr(skb)->protocol);
+=======
+	{
+		int protocol = ip_hdr(skb)->protocol;
+		const struct net_protocol *ipprot;
+		int raw;
+
+	resubmit:
+		raw = raw_local_deliver(skb, protocol);
+
+		ipprot = rcu_dereference(inet_protos[protocol]);
+		if (ipprot) {
+			int ret;
+
+			if (!ipprot->no_policy) {
+				if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb)) {
+					kfree_skb(skb);
+					goto out;
+				}
+				nf_reset(skb);
+			}
+			ret = ipprot->handler(skb);
+			if (ret < 0) {
+				protocol = -ret;
+				goto resubmit;
+			}
+			__IP_INC_STATS(net, IPSTATS_MIB_INDELIVERS);
+		} else {
+			if (!raw) {
+				if (xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb)) {
+					__IP_INC_STATS(net, IPSTATS_MIB_INUNKNOWNPROTOS);
+					icmp_send(skb, ICMP_DEST_UNREACH,
+						  ICMP_PROT_UNREACH, 0);
+				}
+				kfree_skb(skb);
+			} else {
+				__IP_INC_STATS(net, IPSTATS_MIB_INDELIVERS);
+				consume_skb(skb);
+			}
+		}
+	}
+ out:
+>>>>>>> v4.14.187
 	rcu_read_unlock();
 
 	return 0;
@@ -308,8 +359,12 @@ drop:
 	return true;
 }
 
+<<<<<<< HEAD
 static int ip_rcv_finish_core(struct net *net, struct sock *sk,
 			      struct sk_buff *skb)
+=======
+static int ip_rcv_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
+>>>>>>> v4.14.187
 {
 	const struct iphdr *iph = ip_hdr(skb);
 	int (*edemux)(struct sk_buff *skb);
@@ -317,6 +372,16 @@ static int ip_rcv_finish_core(struct net *net, struct sock *sk,
 	struct rtable *rt;
 	int err;
 
+<<<<<<< HEAD
+=======
+	/* if ingress device is enslaved to an L3 master device pass the
+	 * skb to its handler for processing
+	 */
+	skb = l3mdev_ip_rcv(skb);
+	if (!skb)
+		return NET_RX_SUCCESS;
+
+>>>>>>> v4.14.187
 	if (net->ipv4.sysctl_ip_early_demux &&
 	    !skb_dst(skb) &&
 	    !skb->sk &&
@@ -388,7 +453,11 @@ static int ip_rcv_finish_core(struct net *net, struct sock *sk,
 			goto drop;
 	}
 
+<<<<<<< HEAD
 	return NET_RX_SUCCESS;
+=======
+	return dst_input(skb);
+>>>>>>> v4.14.187
 
 drop:
 	kfree_skb(skb);
@@ -400,6 +469,7 @@ drop_error:
 	goto drop;
 }
 
+<<<<<<< HEAD
 static int ip_rcv_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
 {
 	int ret;
@@ -423,6 +493,15 @@ static int ip_rcv_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
 static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
 {
 	const struct iphdr *iph;
+=======
+/*
+ * 	Main IP Receive routine.
+ */
+int ip_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt, struct net_device *orig_dev)
+{
+	const struct iphdr *iph;
+	struct net *net;
+>>>>>>> v4.14.187
 	u32 len;
 
 	/* When the interface is in promisc. mode, drop all the crap
@@ -432,6 +511,10 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
 		goto drop;
 
 
+<<<<<<< HEAD
+=======
+	net = dev_net(dev);
+>>>>>>> v4.14.187
 	__IP_UPD_PO_STATS(net, IPSTATS_MIB_IN, skb->len);
 
 	skb = skb_share_check(skb, GFP_ATOMIC);
@@ -500,7 +583,13 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
 	/* Must drop socket now because of tproxy. */
 	skb_orphan(skb);
 
+<<<<<<< HEAD
 	return skb;
+=======
+	return NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING,
+		       net, NULL, skb, dev, NULL,
+		       ip_rcv_finish);
+>>>>>>> v4.14.187
 
 csum_error:
 	__IP_INC_STATS(net, IPSTATS_MIB_CSUMERRORS);
@@ -509,6 +598,7 @@ inhdr_error:
 drop:
 	kfree_skb(skb);
 out:
+<<<<<<< HEAD
 	return NULL;
 }
 
@@ -620,3 +710,7 @@ void ip_list_rcv(struct list_head *head, struct packet_type *pt,
 	ip_sublist_rcv(&sublist, curr_dev, curr_net);
 }
 
+=======
+	return NET_RX_DROP;
+}
+>>>>>>> v4.14.187

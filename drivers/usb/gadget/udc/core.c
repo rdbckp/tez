@@ -1346,6 +1346,7 @@ static int udc_bind_to_driver(struct usb_udc *udc, struct usb_gadget_driver *dri
 		driver->unbind(udc->gadget);
 		goto err1;
 	}
+<<<<<<< HEAD
 
 	/* HACK to support Android */
 	/* usb_udc_connect_control(udc) */
@@ -1354,6 +1355,9 @@ static int udc_bind_to_driver(struct usb_udc *udc, struct usb_gadget_driver *dri
 	/* Just do pullup */
 	usb_gadget_connect(udc->gadget);
 #endif
+=======
+	usb_udc_connect_control(udc);
+>>>>>>> v4.14.187
 
 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
 	return 0;
@@ -1378,8 +1382,11 @@ int usb_gadget_probe_driver(struct usb_gadget_driver *driver)
 	mutex_lock(&udc_lock);
 	if (driver->udc_name) {
 		list_for_each_entry(udc, &udc_list, list) {
+<<<<<<< HEAD
 			pr_info("%s %s %s\n", __func__,
 					driver->udc_name, dev_name(&udc->dev));
+=======
+>>>>>>> v4.14.187
 			ret = strcmp(driver->udc_name, dev_name(&udc->dev));
 			if (!ret)
 				break;

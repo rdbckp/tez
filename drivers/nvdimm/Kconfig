@@ -102,6 +102,7 @@ config NVDIMM_DAX
 
 	  Select Y if unsure
 
+<<<<<<< HEAD
 config OF_PMEM
 	tristate "Device-tree support for persistent memory regions"
 	depends on OF
@@ -112,4 +113,6 @@ config OF_PMEM
 
 	  Select Y if unsure.
 
+=======
+>>>>>>> v4.14.187
 endif

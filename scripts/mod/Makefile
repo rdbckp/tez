@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: GPL-2.0
 OBJECT_FILES_NON_STANDARD := y
+<<<<<<< HEAD
 CFLAGS_empty.o += $(DISABLE_LTO)
+=======
+>>>>>>> v4.14.187
 
 hostprogs-y	:= modpost mk_elfconfig
 always		:= $(hostprogs-y) empty.o

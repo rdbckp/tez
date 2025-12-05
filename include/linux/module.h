@@ -19,7 +19,10 @@
 #include <linux/jump_label.h>
 #include <linux/export.h>
 #include <linux/rbtree_latch.h>
+<<<<<<< HEAD
 #include <linux/cfi.h>
+=======
+>>>>>>> v4.14.187
 
 #include <linux/percpu.h>
 #include <asm/module.h>
@@ -347,10 +350,13 @@ struct module {
 	const s32 *crcs;
 	unsigned int num_syms;
 
+<<<<<<< HEAD
 #ifdef CONFIG_CFI_CLANG
 	cfi_check_fn cfi_check;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	/* Kernel parameters. */
 #ifdef CONFIG_SYSFS
 	struct mutex param_lock;
@@ -676,6 +682,7 @@ static inline bool is_module_text_address(unsigned long addr)
 	return false;
 }
 
+<<<<<<< HEAD
 static inline bool within_module_core(unsigned long addr,
 				      const struct module *mod)
 {
@@ -693,6 +700,8 @@ static inline bool within_module(unsigned long addr, const struct module *mod)
 	return false;
 }
 
+=======
+>>>>>>> v4.14.187
 /* Get/put a kernel symbol (calls should be symmetric) */
 #define symbol_get(x) ({ extern typeof(x) x __attribute__((weak)); &(x); })
 #define symbol_put(x) do { } while (0)

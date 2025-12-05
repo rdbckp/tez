@@ -20,7 +20,10 @@
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/proc_fs.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/iopoll.h>
 #include <linux/io.h>
 #include <linux/iio/iio.h>
@@ -28,8 +31,11 @@
 /* Register definitions */
 #define MT6577_AUXADC_CON0                    0x00
 #define MT6577_AUXADC_CON1                    0x04
+<<<<<<< HEAD
 #define MT6577_AUXADC_CON1_SET                0x08
 #define MT6577_AUXADC_CON1_CLR                0x0C
+=======
+>>>>>>> v4.14.187
 #define MT6577_AUXADC_CON2                    0x10
 #define MT6577_AUXADC_STA                     BIT(0)
 
@@ -45,15 +51,19 @@
 #define MT6577_AUXADC_POWER_READY_MS          1
 #define MT6577_AUXADC_SAMPLE_READY_US         25
 
+<<<<<<< HEAD
 struct mtk_auxadc_compatible {
 	bool sample_data_cali;
 	bool check_global_idle;
 };
 
+=======
+>>>>>>> v4.14.187
 struct mt6577_auxadc_device {
 	void __iomem *reg_base;
 	struct clk *adc_clk;
 	struct mutex lock;
+<<<<<<< HEAD
 	const struct mtk_auxadc_compatible *dev_comp;
 };
 
@@ -65,6 +75,8 @@ static const struct mtk_auxadc_compatible mt8173_compat = {
 static const struct mtk_auxadc_compatible mt6768_compat = {
 	.sample_data_cali = true,
 	.check_global_idle = false,
+=======
+>>>>>>> v4.14.187
 };
 
 #define MT6577_AUXADC_CHANNEL(idx) {				    \
@@ -93,6 +105,7 @@ static const struct iio_chan_spec mt6577_auxadc_iio_channels[] = {
 	MT6577_AUXADC_CHANNEL(15),
 };
 
+<<<<<<< HEAD
 /* For calibration */
 #define ADC_GE_OE_MASK          0x000003ff
 #define ADC_GE_OE_EN_MASK       0x00000001
@@ -200,6 +213,8 @@ static int mt_auxadc_get_cali_data(unsigned int rawdata, bool enable_cali)
 	return data;
 }
 
+=======
+>>>>>>> v4.14.187
 static inline void mt6577_auxadc_mod_reg(void __iomem *reg,
 					 u32 or_mask, u32 and_mask)
 {
@@ -224,7 +239,12 @@ static int mt6577_auxadc_read(struct iio_dev *indio_dev,
 
 	mutex_lock(&adc_dev->lock);
 
+<<<<<<< HEAD
 	writel(1 << chan->channel, adc_dev->reg_base + MT6577_AUXADC_CON1_CLR);
+=======
+	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_CON1,
+			      0, 1 << chan->channel);
+>>>>>>> v4.14.187
 
 	/* read channel and make sure old ready bit == 0 */
 	ret = readl_poll_timeout(reg_channel, val,
@@ -239,11 +259,17 @@ static int mt6577_auxadc_read(struct iio_dev *indio_dev,
 	}
 
 	/* set bit to trigger sample */
+<<<<<<< HEAD
 	writel(1 << chan->channel, adc_dev->reg_base + MT6577_AUXADC_CON1_SET);
+=======
+	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_CON1,
+			      1 << chan->channel, 0);
+>>>>>>> v4.14.187
 
 	/* we must delay here for hardware sample channel data */
 	udelay(MT6577_AUXADC_SAMPLE_READY_US);
 
+<<<<<<< HEAD
 	if (adc_dev->dev_comp->check_global_idle) {
 		/* check MTK_AUXADC_CON2 if auxadc is idle */
 		ret = readl_poll_timeout(adc_dev->reg_base + MT6577_AUXADC_CON2,
@@ -255,6 +281,17 @@ static int mt6577_auxadc_read(struct iio_dev *indio_dev,
 				"wait for auxadc idle time out\n");
 			goto err_timeout;
 		}
+=======
+	/* check MTK_AUXADC_CON2 if auxadc is idle */
+	ret = readl_poll_timeout(adc_dev->reg_base + MT6577_AUXADC_CON2, val,
+				 ((val & MT6577_AUXADC_STA) == 0),
+				 MT6577_AUXADC_SLEEP_US,
+				 MT6577_AUXADC_TIMEOUT_US);
+	if (ret < 0) {
+		dev_err(indio_dev->dev.parent,
+			"wait for auxadc idle time out\n");
+		goto err_timeout;
+>>>>>>> v4.14.187
 	}
 
 	/* read channel and make sure ready bit == 1 */
@@ -289,9 +326,12 @@ static int mt6577_auxadc_read_raw(struct iio_dev *indio_dev,
 				  int *val2,
 				  long info)
 {
+<<<<<<< HEAD
 	struct mt6577_auxadc_device *adc_dev = iio_priv(indio_dev);
 	int raw_val;
 
+=======
+>>>>>>> v4.14.187
 	switch (info) {
 	case IIO_CHAN_INFO_PROCESSED:
 		*val = mt6577_auxadc_read(indio_dev, chan);
@@ -301,10 +341,13 @@ static int mt6577_auxadc_read_raw(struct iio_dev *indio_dev,
 				chan->channel);
 			return *val;
 		}
+<<<<<<< HEAD
 		raw_val = *val;
 		if (adc_dev->dev_comp->sample_data_cali)
 			*val = mt_auxadc_get_cali_data(*val, true);
 
+=======
+>>>>>>> v4.14.187
 		return IIO_VAL_INT;
 
 	default:
@@ -348,6 +391,7 @@ static int __maybe_unused mt6577_auxadc_suspend(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int proc_utilization_show(struct seq_file *m, void *v)
 {
 	int raw, raw_cali;
@@ -402,6 +446,8 @@ static void adc_debug_init(void)
 	pr_debug("proc_create auxadc_debug_proc_fops\n");
 }
 
+=======
+>>>>>>> v4.14.187
 static int mt6577_auxadc_probe(struct platform_device *pdev)
 {
 	struct mt6577_auxadc_device *adc_dev;
@@ -448,6 +494,7 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
 		goto err_disable_clk;
 	}
 
+<<<<<<< HEAD
 	adc_dev->dev_comp = of_device_get_match_data(&pdev->dev);
 	if (!adc_dev->dev_comp) {
 		ret = -EINVAL;
@@ -458,6 +505,8 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
 	if (adc_dev->dev_comp->sample_data_cali)
 		mt_auxadc_update_cali(&pdev->dev);
 
+=======
+>>>>>>> v4.14.187
 	mutex_init(&adc_dev->lock);
 
 	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_MISC,
@@ -472,8 +521,11 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
 		goto err_power_off;
 	}
 
+<<<<<<< HEAD
 	adc_debug_init();
 
+=======
+>>>>>>> v4.14.187
 	return 0;
 
 err_power_off:
@@ -499,6 +551,7 @@ static int mt6577_auxadc_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct dev_pm_ops mt6577_auxadc_pm_ops = {
 	SET_LATE_SYSTEM_SLEEP_PM_OPS(mt6577_auxadc_suspend,
 		mt6577_auxadc_resume)
@@ -509,6 +562,16 @@ static const struct of_device_id mt6577_auxadc_of_match[] = {
 	{ .compatible = "mediatek,mt7622-auxadc", .data = &mt8173_compat},
 	{ .compatible = "mediatek,mt8173-auxadc", .data = &mt8173_compat},
 	{ .compatible = "mediatek,mt6768-auxadc", .data = &mt6768_compat},
+=======
+static SIMPLE_DEV_PM_OPS(mt6577_auxadc_pm_ops,
+			 mt6577_auxadc_suspend,
+			 mt6577_auxadc_resume);
+
+static const struct of_device_id mt6577_auxadc_of_match[] = {
+	{ .compatible = "mediatek,mt2701-auxadc", },
+	{ .compatible = "mediatek,mt7622-auxadc", },
+	{ .compatible = "mediatek,mt8173-auxadc", },
+>>>>>>> v4.14.187
 	{ }
 };
 MODULE_DEVICE_TABLE(of, mt6577_auxadc_of_match);
@@ -522,6 +585,7 @@ static struct platform_driver mt6577_auxadc_driver = {
 	.probe	= mt6577_auxadc_probe,
 	.remove	= mt6577_auxadc_remove,
 };
+<<<<<<< HEAD
 
 static int __init mt6577_auxadc_init(void)
 {
@@ -535,6 +599,9 @@ static void __exit mt6577_auxadc_exit(void)
 
 subsys_initcall(mt6577_auxadc_init);
 module_exit(mt6577_auxadc_exit);
+=======
+module_platform_driver(mt6577_auxadc_driver);
+>>>>>>> v4.14.187
 
 MODULE_AUTHOR("Zhiyong Tao <zhiyong.tao@mediatek.com>");
 MODULE_DESCRIPTION("MTK AUXADC Device Driver");

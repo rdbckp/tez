@@ -12,11 +12,14 @@
 #include <linux/memcontrol.h>
 #include <linux/highmem.h>
 
+<<<<<<< HEAD
 extern int isolate_lru_page(struct page *page);
 extern void putback_lru_page(struct page *page);
 extern unsigned long reclaim_pages_from_list(struct list_head *page_list,
 					     struct vm_area_struct *vma);
 
+=======
+>>>>>>> v4.14.187
 /*
  * The anon_vma heads a list of private "related" vmas, to scan if
  * an anonymous page pointing to this anon_vma needs to be unmapped:
@@ -64,8 +67,11 @@ struct anon_vma {
 
 	/* Interval tree of private "related" vmas */
 	struct rb_root_cached rb_root;
+<<<<<<< HEAD
 	/* key to tell if a valid anon_vma type */
 	unsigned long private;
+=======
+>>>>>>> v4.14.187
 };
 
 /*
@@ -181,6 +187,7 @@ void page_add_anon_rmap(struct page *, struct vm_area_struct *,
 		unsigned long, bool);
 void do_page_add_anon_rmap(struct page *, struct vm_area_struct *,
 			   unsigned long, int);
+<<<<<<< HEAD
 void __page_add_new_anon_rmap(struct page *page, struct vm_area_struct *vma,
 			      unsigned long address, bool compound);
 static inline void page_add_new_anon_rmap(struct page *page,
@@ -191,6 +198,10 @@ static inline void page_add_new_anon_rmap(struct page *page,
 	__page_add_new_anon_rmap(page, vma, address, compound);
 }
 
+=======
+void page_add_new_anon_rmap(struct page *, struct vm_area_struct *,
+		unsigned long, bool);
+>>>>>>> v4.14.187
 void page_add_file_rmap(struct page *, bool);
 void page_remove_rmap(struct page *, bool);
 
@@ -210,8 +221,12 @@ static inline void page_dup_rmap(struct page *page, bool compound)
 int page_referenced(struct page *, int is_locked,
 			struct mem_cgroup *memcg, unsigned long *vm_flags);
 
+<<<<<<< HEAD
 bool try_to_unmap(struct page *page, enum ttu_flags flags,
 				struct vm_area_struct *vma);
+=======
+bool try_to_unmap(struct page *, enum ttu_flags flags);
+>>>>>>> v4.14.187
 
 /* Avoid racy checks */
 #define PVMW_SYNC		(1 << 0)
@@ -277,7 +292,10 @@ int page_mapped_in_vma(struct page *page, struct vm_area_struct *vma);
  */
 struct rmap_walk_control {
 	void *arg;
+<<<<<<< HEAD
 	struct vm_area_struct *target_vma;
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Return false if page table scanning in rmap_walk should be stopped.
 	 * Otherwise, return true.
@@ -306,7 +324,11 @@ static inline int page_referenced(struct page *page, int is_locked,
 	return 0;
 }
 
+<<<<<<< HEAD
 #define try_to_unmap(page, refs, vma) false
+=======
+#define try_to_unmap(page, refs) false
+>>>>>>> v4.14.187
 
 static inline int page_mkclean(struct page *page)
 {

@@ -1046,15 +1046,21 @@ const char * const vmstat_text[] = {
 	"nr_mlock",
 	"nr_page_table_pages",
 	"nr_kernel_stack",
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
 	"nr_shadow_call_stack_bytes",
 #endif
+=======
+>>>>>>> v4.14.187
 	"nr_bounce",
 #if IS_ENABLED(CONFIG_ZSMALLOC)
 	"nr_zspages",
 #endif
 	"nr_free_cma",
+<<<<<<< HEAD
 	"nr_free_rbin",
+=======
+>>>>>>> v4.14.187
 
 	/* enum numa_stat_item counters */
 #ifdef CONFIG_NUMA
@@ -1078,7 +1084,10 @@ const char * const vmstat_text[] = {
 	"nr_isolated_file",
 	"workingset_refault",
 	"workingset_activate",
+<<<<<<< HEAD
 	"workingset_restore",
+=======
+>>>>>>> v4.14.187
 	"workingset_nodereclaim",
 	"nr_anon_pages",
 	"nr_mapped",
@@ -1095,7 +1104,11 @@ const char * const vmstat_text[] = {
 	"nr_vmscan_immediate_reclaim",
 	"nr_dirtied",
 	"nr_written",
+<<<<<<< HEAD
 	"nr_kernel_misc_reclaimable",
+=======
+	"", /* nr_indirectly_reclaimable */
+>>>>>>> v4.14.187
 
 	/* enum writeback_stat_item counters */
 	"nr_dirty_threshold",
@@ -1119,7 +1132,10 @@ const char * const vmstat_text[] = {
 
 	"pgfault",
 	"pgmajfault",
+<<<<<<< HEAD
 	"pgfmfault",
+=======
+>>>>>>> v4.14.187
 	"pglazyfreed",
 
 	"pgrefill",
@@ -1221,6 +1237,7 @@ const char * const vmstat_text[] = {
 	"swap_ra",
 	"swap_ra_hit",
 #endif
+<<<<<<< HEAD
 
 #ifdef CONFIG_ZONE_MOVABLE_CMA
 	"zmc_lru_migrated",
@@ -1237,6 +1254,9 @@ const char * const vmstat_text[] = {
 	"sqzr_write",
 #endif
 #endif /* CONFIG_VM_EVENT_COUNTERS */
+=======
+#endif /* CONFIG_VM_EVENTS_COUNTERS */
+>>>>>>> v4.14.187
 };
 #endif /* CONFIG_PROC_FS || CONFIG_SYSFS || CONFIG_NUMA */
 
@@ -1693,6 +1713,13 @@ static int vmstat_show(struct seq_file *m, void *arg)
 	unsigned long *l = arg;
 	unsigned long off = l - (unsigned long *)m->private;
 
+<<<<<<< HEAD
+=======
+	/* Skip hidden vmstat items. */
+	if (*vmstat_text[off] == '\0')
+		return 0;
+
+>>>>>>> v4.14.187
 	seq_puts(m, vmstat_text[off]);
 	seq_put_decimal_ull(m, " ", *l);
 	seq_putc(m, '\n');

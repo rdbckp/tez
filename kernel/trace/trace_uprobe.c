@@ -611,7 +611,11 @@ static int probes_seq_show(struct seq_file *m, void *v)
 
 	/* Don't print "0x  (null)" when offset is 0 */
 	if (tu->offset) {
+<<<<<<< HEAD
 		seq_printf(m, "0x%px", (void *)tu->offset);
+=======
+		seq_printf(m, "0x%p", (void *)tu->offset);
+>>>>>>> v4.14.187
 	} else {
 		switch (sizeof(void *)) {
 		case 4:
@@ -1118,12 +1122,20 @@ static void __uprobe_perf_func(struct trace_uprobe *tu,
 {
 	struct trace_event_call *call = &tu->tp.call;
 	struct uprobe_trace_entry_head *entry;
+<<<<<<< HEAD
+=======
+	struct bpf_prog *prog = call->prog;
+>>>>>>> v4.14.187
 	struct hlist_head *head;
 	void *data;
 	int size, esize;
 	int rctx;
 
+<<<<<<< HEAD
 	if (bpf_prog_array_valid(call) && !trace_call_bpf(call, regs))
+=======
+	if (prog && !trace_call_bpf(prog, regs))
+>>>>>>> v4.14.187
 		return;
 
 	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));

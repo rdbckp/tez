@@ -10,17 +10,27 @@ obj-$(CONFIG_PHY_PISTACHIO_USB)		+= phy-pistachio-usb.o
 obj-$(CONFIG_ARCH_SUNXI)		+= allwinner/
 obj-$(CONFIG_ARCH_MESON)		+= amlogic/
 obj-$(CONFIG_LANTIQ)			+= lantiq/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_ARCH_MEDIATEK)		+= mediatek/
+>>>>>>> v4.14.187
 obj-$(CONFIG_ARCH_RENESAS)		+= renesas/
 obj-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip/
 obj-$(CONFIG_ARCH_TEGRA)		+= tegra/
 obj-y					+= broadcom/	\
 					   hisilicon/	\
 					   marvell/	\
+<<<<<<< HEAD
                        mediatek/	\
+=======
+>>>>>>> v4.14.187
 					   motorola/	\
 					   qualcomm/	\
 					   ralink/	\
 					   samsung/	\
 					   st/		\
 					   ti/
+<<<<<<< HEAD
 
+=======
+>>>>>>> v4.14.187

@@ -41,6 +41,7 @@ static void dummycon_init(struct vc_data *vc, int init)
 	vc_resize(vc, DUMMY_COLUMNS, DUMMY_ROWS);
 }
 
+<<<<<<< HEAD
 static void dummycon_deinit(struct vc_data *vc) { }
 static void dummycon_clear(struct vc_data *vc, int sy, int sx, int height,
 			   int width) { }
@@ -82,6 +83,14 @@ static int dummycon_font_copy(struct vc_data *vc, int con)
 {
 	return 0;
 }
+=======
+static int dummycon_dummy(void)
+{
+    return 0;
+}
+
+#define DUMMY	(void *)dummycon_dummy
+>>>>>>> v4.14.187
 
 /*
  *  The console `switch' structure for the dummy console
@@ -90,6 +99,7 @@ static int dummycon_font_copy(struct vc_data *vc, int con)
  */
 
 const struct consw dummy_con = {
+<<<<<<< HEAD
 	.owner =		THIS_MODULE,
 	.con_startup =	dummycon_startup,
 	.con_init =		dummycon_init,
@@ -104,5 +114,21 @@ const struct consw dummy_con = {
 	.con_font_set =	dummycon_font_set,
 	.con_font_default =	dummycon_font_default,
 	.con_font_copy =	dummycon_font_copy,
+=======
+    .owner =		THIS_MODULE,
+    .con_startup =	dummycon_startup,
+    .con_init =		dummycon_init,
+    .con_deinit =	DUMMY,
+    .con_clear =	DUMMY,
+    .con_putc =		DUMMY,
+    .con_putcs =	DUMMY,
+    .con_cursor =	DUMMY,
+    .con_scroll =	DUMMY,
+    .con_switch =	DUMMY,
+    .con_blank =	DUMMY,
+    .con_font_set =	DUMMY,
+    .con_font_default =	DUMMY,
+    .con_font_copy =	DUMMY,
+>>>>>>> v4.14.187
 };
 EXPORT_SYMBOL_GPL(dummy_con);

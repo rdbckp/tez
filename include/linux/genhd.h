@@ -88,9 +88,12 @@ struct disk_stats {
 	unsigned long ticks[2];
 	unsigned long io_ticks;
 	unsigned long time_in_queue;
+<<<<<<< HEAD
 	unsigned long discard_sectors;
 	unsigned long discard_ios;
 	unsigned long flush_ios;
+=======
+>>>>>>> v4.14.187
 };
 
 #define PARTITION_META_INFO_VOLNAMELTH	64
@@ -172,12 +175,15 @@ struct blk_integrity {
 
 #endif	/* CONFIG_BLK_DEV_INTEGRITY */
 
+<<<<<<< HEAD
 struct accumulated_stats {
 	struct timespec uptime;
 	unsigned long sectors[3];	/* READ, WRITE, DISCARD */
 	unsigned long ios[3];
 };
 
+=======
+>>>>>>> v4.14.187
 struct gendisk {
 	/* major, first_minor and minors are input parameters only,
 	 * don't use directly.  Use disk_devt() and disk_max_parts().
@@ -211,7 +217,10 @@ struct gendisk {
 	struct timer_rand_state *random;
 	atomic_t sync_io;		/* RAID */
 	struct disk_events *ev;
+<<<<<<< HEAD
 	struct accumulated_stats accios;
+=======
+>>>>>>> v4.14.187
 #ifdef  CONFIG_BLK_DEV_INTEGRITY
 	struct kobject integrity_kobj;
 #endif	/* CONFIG_BLK_DEV_INTEGRITY */

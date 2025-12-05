@@ -396,8 +396,11 @@ is not associated with a file:
  [stack]                  = the stack of the main process
  [vdso]                   = the "virtual dynamic shared object",
                             the kernel system call handler
+<<<<<<< HEAD
  [anon:<name>]            = an anonymous mapping that has been
                             named by userspace
+=======
+>>>>>>> v4.14.187
 
  or if empty, the mapping is anonymous.
 
@@ -426,7 +429,10 @@ KernelPageSize:        4 kB
 MMUPageSize:           4 kB
 Locked:                0 kB
 VmFlags: rd ex mr mw me dw
+<<<<<<< HEAD
 Name:           name from userspace
+=======
+>>>>>>> v4.14.187
 
 the first of these lines shows the same information as is displayed for the
 mapping in /proc/PID/maps.  The remaining lines show the size of the mapping
@@ -501,9 +507,12 @@ be vanished or the reverse -- new added. Interpretation of their meaning
 might change in future as well. So each consumer of these flags has to
 follow each specific kernel version for the exact semantic.
 
+<<<<<<< HEAD
 The "Name" field will only be present on a mapping that has been named by
 userspace, and will show the name passed in by userspace.
 
+=======
+>>>>>>> v4.14.187
 This file is only present if the CONFIG_MMU kernel configuration option is
 enabled.
 
@@ -862,7 +871,10 @@ Writeback:           0 kB
 AnonPages:      861800 kB
 Mapped:         280372 kB
 Shmem:             644 kB
+<<<<<<< HEAD
 KReclaimable:   168048 kB
+=======
+>>>>>>> v4.14.187
 Slab:           284364 kB
 SReclaimable:   159856 kB
 SUnreclaim:     124508 kB
@@ -926,9 +938,12 @@ AnonHugePages: Non-file backed huge pages mapped into userspace page tables
 ShmemHugePages: Memory used by shared memory (shmem) and tmpfs allocated
               with huge pages
 ShmemPmdMapped: Shared memory mapped into userspace with huge pages
+<<<<<<< HEAD
 KReclaimable: Kernel allocations that the kernel will attempt to reclaim
               under memory pressure. Includes SReclaimable (below), and other
               direct allocations with a shrinker.
+=======
+>>>>>>> v4.14.187
         Slab: in-kernel data structures cache
 SReclaimable: Part of Slab, that might be reclaimed, such as caches
   SUnreclaim: Part of Slab, that cannot be reclaimed on memory pressure

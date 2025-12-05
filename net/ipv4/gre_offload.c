@@ -108,10 +108,17 @@ out:
 	return segs;
 }
 
+<<<<<<< HEAD
 static struct sk_buff *gre_gro_receive(struct list_head *head,
 				       struct sk_buff *skb)
 {
 	struct sk_buff *pp = NULL;
+=======
+static struct sk_buff **gre_gro_receive(struct sk_buff **head,
+					struct sk_buff *skb)
+{
+	struct sk_buff **pp = NULL;
+>>>>>>> v4.14.187
 	struct sk_buff *p;
 	const struct gre_base_hdr *greh;
 	unsigned int hlen, grehlen;
@@ -182,7 +189,11 @@ static struct sk_buff *gre_gro_receive(struct list_head *head,
 					     null_compute_pseudo);
 	}
 
+<<<<<<< HEAD
 	list_for_each_entry(p, head, list) {
+=======
+	for (p = *head; p; p = p->next) {
+>>>>>>> v4.14.187
 		const struct gre_base_hdr *greh2;
 
 		if (!NAPI_GRO_CB(p)->same_flow)

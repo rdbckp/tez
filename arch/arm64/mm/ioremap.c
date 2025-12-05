@@ -28,7 +28,10 @@
 #include <asm/fixmap.h>
 #include <asm/tlbflush.h>
 #include <asm/pgalloc.h>
+<<<<<<< HEAD
 #include <mt-plat/devapc_public.h>
+=======
+>>>>>>> v4.14.187
 
 static void __iomem *__ioremap_caller(phys_addr_t phys_addr, size_t size,
 				      pgprot_t prot, void *caller)
@@ -65,10 +68,13 @@ static void __iomem *__ioremap_caller(phys_addr_t phys_addr, size_t size,
 	addr = (unsigned long)area->addr;
 	area->phys_addr = phys_addr;
 
+<<<<<<< HEAD
 #ifdef CONFIG_DEVAPC_MMAP_DEBUG
 	devapc_catch_illegal_range(phys_addr, size);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	err = ioremap_page_range(addr, addr + size, phys_addr, prot);
 	if (err) {
 		vunmap((void *)addr);

@@ -23,7 +23,10 @@
 #include <linux/of.h>
 #include <linux/sched.h>
 #include <linux/sched/topology.h>
+<<<<<<< HEAD
 #include <linux/sched/energy.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/slab.h>
 #include <linux/string.h>
 
@@ -31,6 +34,7 @@
 #include <asm/cputype.h>
 #include <asm/topology.h>
 
+<<<<<<< HEAD
 #ifndef CONFIG_MTK_UNIFY_POWER
 inline
 const struct sched_group_energy * const cpu_core_energy(int cpu)
@@ -45,6 +49,8 @@ const struct sched_group_energy * const cpu_cluster_energy(int cpu)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * cpu capacity scale management
  */
@@ -80,6 +86,7 @@ struct cpu_efficiency {
 static const struct cpu_efficiency table_efficiency[] = {
 	{"arm,cortex-a15", 3891},
 	{"arm,cortex-a7",  2048},
+<<<<<<< HEAD
 	{ "arm,cortex-a75", 3630 },
 	{ "arm,cortex-a73", 3630 },
 	{ "arm,cortex-a72", 4186 },
@@ -92,12 +99,18 @@ static const struct cpu_efficiency table_efficiency[] = {
 
 #include "topology_dts.c"
 
+=======
+	{NULL, },
+};
+
+>>>>>>> v4.14.187
 static unsigned long *__cpu_capacity;
 #define cpu_capacity(cpu)	__cpu_capacity[cpu]
 
 static unsigned long middle_capacity = 1;
 static bool cap_from_dt = true;
 
+<<<<<<< HEAD
 static int __init get_cpu_for_node(struct device_node *node)
 {
 	struct device_node *cpu_node;
@@ -232,6 +245,8 @@ static int __init parse_cluster(struct device_node *cluster, int depth)
 	return 0;
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * Iterate all CPUs' descriptor in DT and compute the efficiency
  * (as per table_efficiency). Also calculate a middle efficiency
@@ -243,6 +258,7 @@ static int __init parse_cluster(struct device_node *cluster, int depth)
 static void __init parse_dt_topology(void)
 {
 	const struct cpu_efficiency *cpu_eff;
+<<<<<<< HEAD
 	struct device_node *cn = NULL, *cn_cpus = NULL;
 	struct device_node *map;
 	unsigned long min_capacity = ULONG_MAX;
@@ -257,6 +273,19 @@ static void __init parse_dt_topology(void)
 
 	cn_cpus = of_find_node_by_path("/cpus");
 	if (!cn_cpus) {
+=======
+	struct device_node *cn = NULL;
+	unsigned long min_capacity = ULONG_MAX;
+	unsigned long max_capacity = 0;
+	unsigned long capacity = 0;
+	int cpu = 0;
+
+	__cpu_capacity = kcalloc(nr_cpu_ids, sizeof(*__cpu_capacity),
+				 GFP_NOWAIT);
+
+	cn = of_find_node_by_path("/cpus");
+	if (!cn) {
+>>>>>>> v4.14.187
 		pr_err("No CPU information found in DT\n");
 		return;
 	}
@@ -319,6 +348,7 @@ static void __init parse_dt_topology(void)
 		middle_capacity = ((max_capacity / 3)
 				>> (SCHED_CAPACITY_SHIFT-1)) + 1;
 
+<<<<<<< HEAD
 	map = of_get_child_by_name(cn_cpus, "cpu-map");
 	if (!map)
 		goto out;
@@ -327,10 +357,31 @@ static void __init parse_dt_topology(void)
 	of_node_put(map);
 
 out:
+=======
+>>>>>>> v4.14.187
 	if (cap_from_dt)
 		topology_normalize_cpu_scale();
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Look for a customed capacity of a CPU in the cpu_capacity table during the
+ * boot. The update of all CPUs is in O(n^2) for heteregeneous system but the
+ * function returns directly for SMP system.
+ */
+static void update_cpu_capacity(unsigned int cpu)
+{
+	if (!cpu_capacity(cpu) || cap_from_dt)
+		return;
+
+	topology_set_cpu_scale(cpu, cpu_capacity(cpu) / middle_capacity);
+
+	pr_info("CPU%u: update cpu_capacity %lu\n",
+		cpu, topology_get_cpu_scale(NULL, cpu));
+}
+
+>>>>>>> v4.14.187
 #else
 static inline void parse_dt_topology(void) {}
 static inline void update_cpu_capacity(unsigned int cpuid) {}
@@ -389,6 +440,7 @@ static void update_siblings_masks(unsigned int cpuid)
  */
 void store_cpu_topology(unsigned int cpuid)
 {
+<<<<<<< HEAD
 	update_siblings_masks(cpuid);
 
 	topology_detect_flags();
@@ -403,10 +455,59 @@ void store_cpu_topology(unsigned int cpuid)
 static int core_flags(void)
 {
 	return cpu_core_flags() | topology_core_flags();
+=======
+	struct cputopo_arm *cpuid_topo = &cpu_topology[cpuid];
+	unsigned int mpidr;
+
+	/* If the cpu topology has been already set, just return */
+	if (cpuid_topo->core_id != -1)
+		return;
+
+	mpidr = read_cpuid_mpidr();
+
+	/* create cpu topology mapping */
+	if ((mpidr & MPIDR_SMP_BITMASK) == MPIDR_SMP_VALUE) {
+		/*
+		 * This is a multiprocessor system
+		 * multiprocessor format & multiprocessor mode field are set
+		 */
+
+		if (mpidr & MPIDR_MT_BITMASK) {
+			/* core performance interdependency */
+			cpuid_topo->thread_id = MPIDR_AFFINITY_LEVEL(mpidr, 0);
+			cpuid_topo->core_id = MPIDR_AFFINITY_LEVEL(mpidr, 1);
+			cpuid_topo->socket_id = MPIDR_AFFINITY_LEVEL(mpidr, 2);
+		} else {
+			/* largely independent cores */
+			cpuid_topo->thread_id = -1;
+			cpuid_topo->core_id = MPIDR_AFFINITY_LEVEL(mpidr, 0);
+			cpuid_topo->socket_id = MPIDR_AFFINITY_LEVEL(mpidr, 1);
+		}
+	} else {
+		/*
+		 * This is an uniprocessor system
+		 * we are in multiprocessor format but uniprocessor system
+		 * or in the old uniprocessor format
+		 */
+		cpuid_topo->thread_id = -1;
+		cpuid_topo->core_id = 0;
+		cpuid_topo->socket_id = -1;
+	}
+
+	update_siblings_masks(cpuid);
+
+	update_cpu_capacity(cpuid);
+
+	pr_info("CPU%u: thread %d, cpu %d, socket %d, mpidr %x\n",
+		cpuid, cpu_topology[cpuid].thread_id,
+		cpu_topology[cpuid].core_id,
+		cpu_topology[cpuid].socket_id, mpidr);
+>>>>>>> v4.14.187
 }
 
 static inline int cpu_corepower_flags(void)
 {
+<<<<<<< HEAD
 	return topology_core_flags()
 		| SD_SHARE_PKG_RESOURCES | SD_SHARE_POWERDOMAIN;
 }
@@ -415,13 +516,23 @@ static inline int cpu_corepower_flags(void)
 static int cpu_flags(void)
 {
 	return topology_cpu_flags();
+=======
+	return SD_SHARE_PKG_RESOURCES  | SD_SHARE_POWERDOMAIN;
+>>>>>>> v4.14.187
 }
 
 static struct sched_domain_topology_level arm_topology[] = {
 #ifdef CONFIG_SCHED_MC
+<<<<<<< HEAD
 	{ cpu_coregroup_mask, core_flags, cpu_core_energy, SD_INIT_NAME(MC) },
 #endif
 	{ cpu_cpu_mask, cpu_flags, cpu_cluster_energy, SD_INIT_NAME(DIE) },
+=======
+	{ cpu_corepower_mask, cpu_corepower_flags, SD_INIT_NAME(GMC) },
+	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
+#endif
+	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
+>>>>>>> v4.14.187
 	{ NULL, },
 };
 
@@ -450,6 +561,7 @@ void __init init_cpu_topology(void)
 	/* Set scheduler topology descriptor */
 	set_sched_topology(arm_topology);
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_MTK_SCHED_RQAVG_KS
 /* To add this function for sched_avg.c */
@@ -464,3 +576,5 @@ unsigned long get_cpu_orig_capacity(unsigned int cpu)
 	return capacity;
 }
 #endif
+=======
+>>>>>>> v4.14.187

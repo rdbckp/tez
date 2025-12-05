@@ -33,8 +33,11 @@
 #include <linux/uuid.h>
 #include <linux/of.h>
 #include <net/addrconf.h>
+<<<<<<< HEAD
 #include <linux/siphash.h>
 #include <linux/compiler.h>
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_BLOCK
 #include <linux/blkdev.h>
 #endif
@@ -1345,6 +1348,7 @@ char *uuid_string(char *buf, char *end, const u8 *addr,
 	return string(buf, end, uuid, spec);
 }
 
+<<<<<<< HEAD
 int kptr_restrict __read_mostly = 4;
 
 static noinline_for_stack
@@ -1398,6 +1402,8 @@ char *restricted_pointer(char *buf, char *end, const void *ptr,
 	return number(buf, end, (unsigned long)ptr, spec);
 }
 
+=======
+>>>>>>> v4.14.187
 static noinline_for_stack
 char *netdev_bits(char *buf, char *end, const void *addr, const char *fmt)
 {
@@ -1643,6 +1649,7 @@ char *device_node_string(char *buf, char *end, struct device_node *dn,
 	return widen_string(buf, buf - buf_start, end, spec);
 }
 
+<<<<<<< HEAD
 static noinline_for_stack
 char *pointer_string(char *buf, char *end, const void *ptr,
 		     struct printf_spec spec)
@@ -1723,6 +1730,9 @@ static char *ptr_to_id(char *buf, char *end, void *ptr, struct printf_spec spec)
 
 	return number(buf, end, hashval, spec);
 }
+=======
+int kptr_restrict __read_mostly;
+>>>>>>> v4.14.187
 
 /*
  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
@@ -1829,16 +1839,22 @@ static char *ptr_to_id(char *buf, char *end, void *ptr, struct printf_spec spec)
  *                        c major compatible string
  *                        C full compatible string
  *
+<<<<<<< HEAD
  * - 'x' For printing the address. Equivalent to "%lx".
  *
+=======
+>>>>>>> v4.14.187
  * ** Please update also Documentation/printk-formats.txt when making changes **
  *
  * Note: The difference between 'S' and 'F' is that on ia64 and ppc64
  * function pointers are really function descriptors, which contain a
  * pointer to the real address.
+<<<<<<< HEAD
  *
  * Note: The default behaviour (unadorned %p) is to hash the address,
  * rendering it useful as a unique identifier.
+=======
+>>>>>>> v4.14.187
  */
 static noinline_for_stack
 char *pointer(const char *fmt, char *buf, char *end, void *ptr,
@@ -1928,7 +1944,51 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
 			return buf;
 		}
 	case 'K':
+<<<<<<< HEAD
 		return restricted_pointer(buf, end, ptr, spec);
+=======
+		switch (kptr_restrict) {
+		case 0:
+			/* Always print %pK values */
+			break;
+		case 1: {
+			const struct cred *cred;
+
+			/*
+			 * kptr_restrict==1 cannot be used in IRQ context
+			 * because its test for CAP_SYSLOG would be meaningless.
+			 */
+			if (in_irq() || in_serving_softirq() || in_nmi()) {
+				if (spec.field_width == -1)
+					spec.field_width = default_width;
+				return string(buf, end, "pK-error", spec);
+			}
+
+			/*
+			 * Only print the real pointer value if the current
+			 * process has CAP_SYSLOG and is running with the
+			 * same credentials it started with. This is because
+			 * access to files is checked at open() time, but %pK
+			 * checks permission at read() time. We don't want to
+			 * leak pointer values if a binary opens a file using
+			 * %pK and then elevates privileges before reading it.
+			 */
+			cred = current_cred();
+			if (!has_capability_noaudit(current, CAP_SYSLOG) ||
+			    !uid_eq(cred->euid, cred->uid) ||
+			    !gid_eq(cred->egid, cred->gid))
+				ptr = NULL;
+			break;
+		}
+		case 2:
+		default:
+			/* Always print 0's for %pK */
+			ptr = NULL;
+			break;
+		}
+		break;
+
+>>>>>>> v4.14.187
 	case 'N':
 		return netdev_bits(buf, end, ptr, fmt);
 	case 'a':
@@ -1953,12 +2013,24 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
 		case 'F':
 			return device_node_string(buf, end, ptr, spec, fmt + 1);
 		}
+<<<<<<< HEAD
 	case 'x':
 		return pointer_string(buf, end, ptr, spec);
 	}
 
 	/* default is to _not_ leak addresses, hash before printing */
 	return ptr_to_id(buf, end, ptr, spec);
+=======
+	}
+	spec.flags |= SMALL;
+	if (spec.field_width == -1) {
+		spec.field_width = default_width;
+		spec.flags |= ZEROPAD;
+	}
+	spec.base = 16;
+
+	return number(buf, end, (unsigned long) ptr, spec);
+>>>>>>> v4.14.187
 }
 
 /*

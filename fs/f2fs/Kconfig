@@ -1,11 +1,16 @@
 config F2FS_FS
 	tristate "F2FS filesystem support"
 	depends on BLOCK
+<<<<<<< HEAD
 	select NLS
 	select CRYPTO
 	select CRYPTO_CRC32
 	select F2FS_FS_XATTR if FS_ENCRYPTION
 	select FS_ENCRYPTION_ALGS if FS_ENCRYPTION
+=======
+	select CRYPTO
+	select CRYPTO_CRC32
+>>>>>>> v4.14.187
 	help
 	  F2FS is based on Log-structured File System (LFS), which supports
 	  versatile "flash-friendly" features. The design has been focused on
@@ -21,7 +26,11 @@ config F2FS_FS
 
 config F2FS_STAT_FS
 	bool "F2FS Status Information"
+<<<<<<< HEAD
 	depends on F2FS_FS
+=======
+	depends on F2FS_FS && DEBUG_FS
+>>>>>>> v4.14.187
 	default y
 	help
 	  /sys/kernel/debug/f2fs/ contains information about all the partitions
@@ -65,21 +74,30 @@ config F2FS_FS_SECURITY
 	  Security Models (LSMs) accepted by AppArmor, SELinux, Smack and TOMOYO
 	  Linux. This option enables an extended attribute handler for file
 	  security labels in the f2fs filesystem, so that it requires enabling
+<<<<<<< HEAD
 	  the extended attribute support in advance. In particular you need this
 	  option if you use the setcap command to assign initial process capabi-
 	  lities to executables (the security.* extended attributes).
+=======
+	  the extended attribute support in advance.
+>>>>>>> v4.14.187
 
 	  If you are not using a security module, say N.
 
 config F2FS_CHECK_FS
 	bool "F2FS consistency checking feature"
+<<<<<<< HEAD
 	depends on F2FS_FS && SEC_FACTORY
 	default y
+=======
+	depends on F2FS_FS
+>>>>>>> v4.14.187
 	help
 	  Enables BUG_ONs which check the filesystem consistency in runtime.
 
 	  If you want to improve the performance, say N.
 
+<<<<<<< HEAD
 config F2FS_STRICT_BUG_ON
 	bool "F2FS consistency checking feature"
 	depends on F2FS_FS
@@ -98,6 +116,18 @@ config F2FS_FS_ENCRYPTION
 	  This kconfig symbol is deprecated; now it just selects
 	  FS_ENCRYPTION.  Use CONFIG_FS_ENCRYPTION=y in new config
 	  files.
+=======
+config F2FS_FS_ENCRYPTION
+	bool "F2FS Encryption"
+	depends on F2FS_FS
+	depends on F2FS_FS_XATTR
+	select FS_ENCRYPTION
+	help
+	  Enable encryption of f2fs files and directories.  This
+	  feature is similar to ecryptfs, but it is more memory
+	  efficient since it avoids caching the encrypted and
+	  decrypted pages in the page cache.
+>>>>>>> v4.14.187
 
 config F2FS_IO_TRACE
 	bool "F2FS IO tracer"
@@ -116,6 +146,7 @@ config F2FS_FAULT_INJECTION
 	  Test F2FS to inject faults such as ENOMEM, ENOSPC, and so on.
 
 	  If unsure, say N.
+<<<<<<< HEAD
 
 config F2FS_FS_COMPRESSION
 	bool "F2FS compression feature"
@@ -168,3 +199,5 @@ config F2FS_SEC_BLOCK_OPERATIONS_DEBUG
 	  Collect block_operations() log for debugging
 
 	  If unsure, say N.
+=======
+>>>>>>> v4.14.187

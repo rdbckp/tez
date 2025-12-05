@@ -8,6 +8,7 @@
 #include <linux/mmc/core.h>
 #include <linux/mmc/host.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 static inline bool mmc_req_is_special(struct request *req)
 {
@@ -18,6 +19,8 @@ static inline bool mmc_req_is_special(struct request *req)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static inline struct mmc_queue_req *req_to_mmc_queue_req(struct request *rq)
 {
 	return blk_mq_rq_to_pdu(rq);
@@ -35,6 +38,7 @@ struct mmc_blk_data;
 struct mmc_blk_ioc_data;
 
 struct mmc_blk_request {
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_CQ_SUPPORT
 	struct mmc_request	mrq_que;
 #endif
@@ -43,6 +47,10 @@ struct mmc_blk_request {
 #ifdef CONFIG_MTK_EMMC_CQ_SUPPORT
 	struct mmc_command	que;
 #endif
+=======
+	struct mmc_request	mrq;
+	struct mmc_command	sbc;
+>>>>>>> v4.14.187
 	struct mmc_command	cmd;
 	struct mmc_command	stop;
 	struct mmc_data		data;
@@ -66,9 +74,12 @@ enum mmc_drv_op {
 };
 
 struct mmc_queue_req {
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_EMMC_CQ_SUPPORT) || defined(CONFIG_MTK_EMMC_HW_CQ)
 	struct request		*req;
 #endif
+=======
+>>>>>>> v4.14.187
 	struct mmc_blk_request	brq;
 	struct scatterlist	*sg;
 	struct mmc_async_req	areq;
@@ -76,18 +87,22 @@ struct mmc_queue_req {
 	int			drv_op_result;
 	void			*drv_op_data;
 	unsigned int		ioc_count;
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_CQ_SUPPORT
 	atomic_t		index;
 #endif
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 	struct mmc_cmdq_req	cmdq_req;
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 struct mmc_queue {
 	struct mmc_card		*card;
 	struct task_struct	*thread;
 	struct semaphore	thread_sem;
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 	unsigned long	flags;
 #define MMC_QUEUE_SUSPENDED	(1 << 0)
@@ -100,12 +115,19 @@ struct mmc_queue {
 #ifdef CONFIG_MTK_EMMC_CQ_SUPPORT
 	struct mmc_queue_req	mqrq[EMMC_MAX_QUEUE_DEPTH];
 #endif
+=======
+	bool			suspended;
+	bool			asleep;
+	struct mmc_blk_data	*blkdata;
+	struct request_queue	*queue;
+>>>>>>> v4.14.187
 	/*
 	 * FIXME: this counter is not a very reliable way of keeping
 	 * track of how many requests that are ongoing. Switch to just
 	 * letting the block core keep track of requests and per-request
 	 * associated mmc_queue_req data.
 	 */
+<<<<<<< HEAD
 	atomic_t		qcnt;
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 	struct mmc_queue_req	*mqrq_cmdq;
@@ -154,4 +176,17 @@ extern bool mmc_blk_part_cmdq_en(struct mmc_queue *mq);
 extern int mmc_cmdq_init(struct mmc_queue *mq, struct mmc_card *card);
 extern void mmc_cmdq_clean(struct mmc_queue *mq, struct mmc_card *card);
 #endif
+=======
+	int			qcnt;
+};
+
+extern int mmc_init_queue(struct mmc_queue *, struct mmc_card *, spinlock_t *,
+			  const char *);
+extern void mmc_cleanup_queue(struct mmc_queue *);
+extern void mmc_queue_suspend(struct mmc_queue *);
+extern void mmc_queue_resume(struct mmc_queue *);
+extern unsigned int mmc_queue_map_sg(struct mmc_queue *,
+				     struct mmc_queue_req *);
+
+>>>>>>> v4.14.187
 #endif

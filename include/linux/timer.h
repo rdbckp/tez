@@ -21,9 +21,12 @@ struct timer_list {
 	unsigned long		data;
 	u32			flags;
 
+<<<<<<< HEAD
 #ifdef CONFIG_CFI_CLANG
 	void			(*__function)(struct timer_list *);
 #endif
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_LOCKDEP
 	struct lockdep_map	lockdep_map;
 #endif
@@ -175,6 +178,7 @@ static inline void init_timer_on_stack_key(struct timer_list *timer,
 #define TIMER_DATA_TYPE		unsigned long
 #define TIMER_FUNC_TYPE		void (*)(TIMER_DATA_TYPE)
 
+<<<<<<< HEAD
 #ifdef CONFIG_CFI_CLANG
 /*
  * With CFI_CLANG, we cannot cast the callback function to TIMER_FUNC_TYPE
@@ -199,6 +203,8 @@ static inline void timer_setup(struct timer_list *timer,
 		      (TIMER_DATA_TYPE)timer, flags);
 }
 #else
+=======
+>>>>>>> v4.14.187
 static inline void timer_setup(struct timer_list *timer,
 			       void (*callback)(struct timer_list *),
 			       unsigned int flags)
@@ -206,7 +212,10 @@ static inline void timer_setup(struct timer_list *timer,
 	__setup_timer(timer, (TIMER_FUNC_TYPE)callback,
 		      (TIMER_DATA_TYPE)timer, flags);
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 
 #define from_timer(var, callback_timer, timer_fieldname) \
 	container_of(callback_timer, typeof(*var), timer_fieldname)
@@ -237,9 +246,12 @@ extern int mod_timer_pending(struct timer_list *timer, unsigned long expires);
  */
 #define NEXT_TIMER_MAX_DELTA	((1UL << 30) - 1)
 
+<<<<<<< HEAD
 /* To be used from cpusets, only */
 extern void timer_quiesce_cpu(void *cpup);
 
+=======
+>>>>>>> v4.14.187
 extern void add_timer(struct timer_list *timer);
 
 extern int try_to_del_timer_sync(struct timer_list *timer);

@@ -16,12 +16,15 @@ config DEFCONFIG_LIST
 	default "$ARCH_DEFCONFIG"
 	default "arch/$ARCH/defconfig"
 
+<<<<<<< HEAD
 config TOOLS_SUPPORT_RELR
 	bool "Declare tool support for RELR"
 	# Prevent this from being enabled by default in allyesconfig or
 	# allmodconfig builds.
 	depends on !COMPILE_TEST
 
+=======
+>>>>>>> v4.14.187
 config CONSTRUCTORS
 	bool
 	depends on !UML
@@ -406,6 +409,7 @@ config IRQ_TIME_ACCOUNTING
 
 	  If in doubt, say N here.
 
+<<<<<<< HEAD
 config SCHED_WALT
         bool "Support window based load tracking"
         depends on SMP
@@ -415,6 +419,8 @@ config SCHED_WALT
 	used to guide task placement as well as task frequency requirements
 	for cpufreq governors.
 
+=======
+>>>>>>> v4.14.187
 config BSD_PROCESS_ACCT
 	bool "BSD Process Accounting"
 	depends on MULTIUSER
@@ -485,6 +491,7 @@ config TASK_IO_ACCOUNTING
 
 	  Say N if unsure.
 
+<<<<<<< HEAD
 config PSI
 	bool "Pressure stall information tracking"
 	help
@@ -524,6 +531,8 @@ config PSI_DEFAULT_DISABLED
 
 	  Say N if unsure.
 
+=======
+>>>>>>> v4.14.187
 endmenu # "CPU/Task time and stats accounting"
 
 source "kernel/rcu/Kconfig"
@@ -552,6 +561,7 @@ config IKCONFIG_PROC
 	  This option enables access to the kernel configuration file
 	  through /proc/config.gz.
 
+<<<<<<< HEAD
 config IKHEADERS
 	tristate "Enable kernel headers through /sys/kernel/kheaders.tar.xz"
 	depends on SYSFS
@@ -561,6 +571,8 @@ config IKHEADERS
 	  or similar programs.  If you build the headers as a module, a module called
 	  kheaders.ko is built which can be loaded on-demand to get access to headers.
 
+=======
+>>>>>>> v4.14.187
 config LOG_BUF_SHIFT
 	int "Kernel log buffer size (16 => 64KB, 17 => 128KB)"
 	range 12 25
@@ -649,6 +661,7 @@ config HAVE_UNSTABLE_SCHED_CLOCK
 config GENERIC_SCHED_CLOCK
 	bool
 
+<<<<<<< HEAD
 menu "Scheduler features"
 
 config UCLAMP_TASK
@@ -743,6 +756,8 @@ endchoice
 
 endmenu # FAIR Scheduler tunables"
 
+=======
+>>>>>>> v4.14.187
 #
 # For architectures that want to enable the support for NUMA-affine scheduler
 # balancing logic:
@@ -838,11 +853,14 @@ config MEMCG_SWAP_ENABLED
 	  select this option (if, for some reason, they need to disable it
 	  then swapaccount=0 does the trick).
 
+<<<<<<< HEAD
 config MEMCG_FORCE_USE_VM_SWAPPINESS
 	bool "Force to use vm_swappiness instead of memcg->swappiness"
 	depends on MEMCG_SWAP
 	default y
 
+=======
+>>>>>>> v4.14.187
 config BLK_CGROUP
 	bool "IO controller"
 	depends on BLOCK
@@ -916,6 +934,7 @@ config RT_GROUP_SCHED
 
 endif #CGROUP_SCHED
 
+<<<<<<< HEAD
 config UCLAMP_TASK_GROUP
 	bool "Utilization clamping per group of tasks"
 	depends on CGROUP_SCHED
@@ -938,6 +957,8 @@ config UCLAMP_TASK_GROUP
 
 	  If in doubt, say N.
 
+=======
+>>>>>>> v4.14.187
 config CGROUP_PIDS
 	bool "PIDs controller"
 	help
@@ -1143,6 +1164,7 @@ config SCHED_AUTOGROUP
 	  desktop applications.  Task group autogeneration is currently based
 	  upon task session.
 
+<<<<<<< HEAD
 config SCHED_TUNE
 	bool "Boosting for CFS tasks (EXPERIMENTAL)"
 	depends on SMP
@@ -1176,6 +1198,8 @@ config DEFAULT_USE_ENERGY_AWARE
 
 	  Say N if unsure.
 
+=======
+>>>>>>> v4.14.187
 config SYSFS_DEPRECATED
 	bool "Enable deprecated sysfs features to support old userspace tools"
 	depends on SYSFS
@@ -1272,6 +1296,12 @@ endchoice
 config SYSCTL
 	bool
 
+<<<<<<< HEAD
+=======
+config ANON_INODES
+	bool
+
+>>>>>>> v4.14.187
 config HAVE_UID16
 	bool
 
@@ -1418,7 +1448,11 @@ config KALLSYMS_ABSOLUTE_PERCPU
 	default X86_64 && SMP
 
 config KALLSYMS_BASE_RELATIVE
+<<<<<<< HEAD
 	bool "Enable KALLSYMS_BASE_RELATIVE or not"
+=======
+	bool
+>>>>>>> v4.14.187
 	depends on KALLSYMS
 	default !IA64 && !(TILE && 64BIT)
 	help
@@ -1511,12 +1545,20 @@ config HAVE_FUTEX_CMPXCHG
 config EPOLL
 	bool "Enable eventpoll support" if EXPERT
 	default y
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	help
 	  Disabling this option will cause the kernel to be built without
 	  support for epoll family of system calls.
 
 config SIGNALFD
 	bool "Enable signalfd() system call" if EXPERT
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	default y
 	help
 	  Enable the signalfd() system call that allows to receive signals
@@ -1526,6 +1568,10 @@ config SIGNALFD
 
 config TIMERFD
 	bool "Enable timerfd() system call" if EXPERT
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	default y
 	help
 	  Enable the timerfd() system call that allows to receive timer
@@ -1535,6 +1581,10 @@ config TIMERFD
 
 config EVENTFD
 	bool "Enable eventfd() system call" if EXPERT
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	default y
 	help
 	  Enable the eventfd() system call that allows to receive both
@@ -1545,6 +1595,10 @@ config EVENTFD
 # syscall, maps, verifier
 config BPF_SYSCALL
 	bool "Enable bpf() system call"
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	select BPF
 	default n
 	help
@@ -1589,6 +1643,10 @@ config ADVISE_SYSCALLS
 
 config USERFAULTFD
 	bool "Enable userfaultfd() system call"
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	depends on MMU
 	help
 	  Enable the userfaultfd() system call that allows to intercept and
@@ -1647,6 +1705,10 @@ config PERF_EVENTS
 	bool "Kernel performance events and counters"
 	default y if PROFILING
 	depends on HAVE_PERF_EVENTS
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	select IRQ_WORK
 	select SRCU
 	help
@@ -2094,7 +2156,11 @@ endif # MODULES
 
 config MODULES_TREE_LOOKUP
 	def_bool y
+<<<<<<< HEAD
 	depends on PERF_EVENTS || TRACING || CFI_CLANG
+=======
+	depends on PERF_EVENTS || TRACING
+>>>>>>> v4.14.187
 
 config INIT_ALL_POSSIBLE
 	bool

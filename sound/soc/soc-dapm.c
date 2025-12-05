@@ -2072,7 +2072,11 @@ static ssize_t dapm_widget_power_read_file(struct file *file,
 	snd_soc_dapm_for_each_direction(dir) {
 		rdir = SND_SOC_DAPM_DIR_REVERSE(dir);
 		snd_soc_dapm_widget_for_each_path(w, dir, p) {
+<<<<<<< HEAD
 			if (p->connected && !p->connected(p->source, p->sink))
+=======
+			if (p->connected && !p->connected(w, p->node[rdir]))
+>>>>>>> v4.14.187
 				continue;
 
 			if (!p->connect)

@@ -22,12 +22,15 @@
 #include <linux/pm_runtime.h>
 #include <linux/badblocks.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLOCK_SUPPORT_STLOG
 #include <linux/fslog.h>
 #else
 #define ST_LOG(fmt, ...)
 #endif
 
+=======
+>>>>>>> v4.14.187
 #include "blk.h"
 
 static DEFINE_MUTEX(block_class_lock);
@@ -578,11 +581,14 @@ static void register_disk(struct device *parent, struct gendisk *disk)
 	struct hd_struct *part;
 	int err;
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLOCK_SUPPORT_STLOG
 	int major = disk->major;
 	int first_minor = disk->first_minor;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	ddev->parent = parent;
 
 	dev_set_name(ddev, "%s", disk->disk_name);
@@ -633,6 +639,7 @@ exit:
 	/* announce disk after possible partitions are created */
 	dev_set_uevent_suppress(ddev, 0);
 	kobject_uevent(&ddev->kobj, KOBJ_ADD);
+<<<<<<< HEAD
 	ST_LOG("<%s> KOBJ_ADD %d:%d", __func__, major, first_minor);
 
 	/* announce possible partitions */
@@ -642,6 +649,13 @@ exit:
 		ST_LOG("<%s> KOBJ_ADD %d:%d", __func__, major,
 		                        first_minor + part->partno);
 	}
+=======
+
+	/* announce possible partitions */
+	disk_part_iter_init(&piter, disk, 0);
+	while ((part = disk_part_iter_next(&piter)))
+		kobject_uevent(&part_to_dev(part)->kobj, KOBJ_ADD);
+>>>>>>> v4.14.187
 	disk_part_iter_exit(&piter);
 }
 
@@ -714,10 +728,13 @@ void del_gendisk(struct gendisk *disk)
 	struct disk_part_iter piter;
 	struct hd_struct *part;
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLOCK_SUPPORT_STLOG
 	struct device *dev;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	blk_integrity_del(disk);
 	disk_del_events(disk);
 
@@ -757,11 +774,14 @@ void del_gendisk(struct gendisk *disk)
 	if (!sysfs_deprecated)
 		sysfs_remove_link(block_depr, dev_name(disk_to_dev(disk)));
 	pm_runtime_set_memalloc_noio(disk_to_dev(disk), false);
+<<<<<<< HEAD
 #ifdef CONFIG_BLOCK_SUPPORT_STLOG
 	dev = disk_to_dev(disk);
 	ST_LOG("<%s> KOBJ_REMOVE %d:%d %s", __func__,
 		MAJOR(dev->devt), MINOR(dev->devt), dev->kobj.name);
 #endif
+=======
+>>>>>>> v4.14.187
 	device_del(disk_to_dev(disk));
 }
 EXPORT_SYMBOL(del_gendisk);
@@ -1007,6 +1027,7 @@ static const struct file_operations proc_partitions_operations = {
 	.llseek		= seq_lseek,
 	.release	= seq_release,
 };
+<<<<<<< HEAD
 
 static void *show_iodevs_start(struct seq_file *seqf, loff_t *pos)
 {
@@ -1067,6 +1088,8 @@ static const struct file_operations proc_iodevs_operations = {
 	.llseek		= seq_lseek,
 	.release	= seq_release,
 };
+=======
+>>>>>>> v4.14.187
 #endif
 
 
@@ -1158,6 +1181,7 @@ static ssize_t disk_discard_alignment_show(struct device *dev,
 	return sprintf(buf, "%d\n", queue_discard_alignment(disk->queue));
 }
 
+<<<<<<< HEAD
 /* IOPP-bigdata-v1.0.4.14 */
 #undef DISCARD
 
@@ -1223,6 +1247,8 @@ static ssize_t disk_ios_show(struct device *dev,
 }
 #undef DISCARD
 
+=======
+>>>>>>> v4.14.187
 static DEVICE_ATTR(range, S_IRUGO, disk_range_show, NULL);
 static DEVICE_ATTR(ext_range, S_IRUGO, disk_ext_range_show, NULL);
 static DEVICE_ATTR(removable, S_IRUGO, disk_removable_show, NULL);
@@ -1236,7 +1262,10 @@ static DEVICE_ATTR(stat, S_IRUGO, part_stat_show, NULL);
 static DEVICE_ATTR(inflight, S_IRUGO, part_inflight_show, NULL);
 static DEVICE_ATTR(badblocks, S_IRUGO | S_IWUSR, disk_badblocks_show,
 		disk_badblocks_store);
+<<<<<<< HEAD
 static DEVICE_ATTR(diskios, 0600, disk_ios_show, NULL);
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_FAIL_MAKE_REQUEST
 static struct device_attribute dev_attr_fail =
 	__ATTR(make-it-fail, S_IRUGO|S_IWUSR, part_fail_show, part_fail_store);
@@ -1259,7 +1288,10 @@ static struct attribute *disk_attrs[] = {
 	&dev_attr_stat.attr,
 	&dev_attr_inflight.attr,
 	&dev_attr_badblocks.attr,
+<<<<<<< HEAD
 	&dev_attr_diskios.attr,
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_FAIL_MAKE_REQUEST
 	&dev_attr_fail.attr,
 #endif
@@ -1473,6 +1505,7 @@ static const struct file_operations proc_diskstats_operations = {
 	.release	= seq_release,
 };
 
+<<<<<<< HEAD
 /* IOPP-iod-v1.0.4.14 */
 #define PG2KB(x) ((unsigned long)((x) << (PAGE_SHIFT - 10)))
 static int iostats_show(struct seq_file *seqf, void *v)
@@ -1574,6 +1607,11 @@ static int __init proc_genhd_init(void)
 	proc_create("iostats", 0, NULL, &proc_iostats_operations);
 	proc_create("diskstats", 0, NULL, &proc_diskstats_operations);
 	proc_create("iodevs", 0, NULL, &proc_iodevs_operations);
+=======
+static int __init proc_genhd_init(void)
+{
+	proc_create("diskstats", 0, NULL, &proc_diskstats_operations);
+>>>>>>> v4.14.187
 	proc_create("partitions", 0, NULL, &proc_partitions_operations);
 	return 0;
 }

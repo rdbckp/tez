@@ -15,8 +15,13 @@
 #include <net/ip6_checksum.h>
 #include "ip6_offload.h"
 
+<<<<<<< HEAD
 static struct sk_buff *tcp6_gro_receive(struct list_head *head,
 					struct sk_buff *skb)
+=======
+static struct sk_buff **tcp6_gro_receive(struct sk_buff **head,
+					 struct sk_buff *skb)
+>>>>>>> v4.14.187
 {
 	/* Don't bother verifying checksum if we're going to flush anyway. */
 	if (!NAPI_GRO_CB(skb)->flush &&

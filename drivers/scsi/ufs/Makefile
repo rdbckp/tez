@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 # UFSHCD makefile
+<<<<<<< HEAD
 ifeq ($(CONFIG_MTK_GCOV_KERNEL),y)
 GCOV_PROFILE_ufs-mtk.o := y
 GCOV_PROFILE_ufs-mtk-platform.o := y
@@ -34,3 +35,11 @@ obj-$(CONFIG_MTK_UFS_SUPPORT) += ufs-mtk.o
 obj-$(CONFIG_MTK_UFS_SUPPORT) += mediatek/$(MTK_PLATFORM)/ufs-mtk-platform.o
 obj-$(CONFIG_MTK_UFS_BLOCK_IO_LOG) += ufs-mtk-block.o
 obj-$(CONFIG_MTK_UFS_SUPPORT) += ufs-mtk-dbg.o
+=======
+obj-$(CONFIG_SCSI_UFS_DWC_TC_PCI) += tc-dwc-g210-pci.o ufshcd-dwc.o tc-dwc-g210.o
+obj-$(CONFIG_SCSI_UFS_DWC_TC_PLATFORM) += tc-dwc-g210-pltfrm.o ufshcd-dwc.o tc-dwc-g210.o
+obj-$(CONFIG_SCSI_UFS_QCOM) += ufs-qcom.o
+obj-$(CONFIG_SCSI_UFSHCD) += ufshcd.o
+obj-$(CONFIG_SCSI_UFSHCD_PCI) += ufshcd-pci.o
+obj-$(CONFIG_SCSI_UFSHCD_PLATFORM) += ufshcd-pltfrm.o
+>>>>>>> v4.14.187

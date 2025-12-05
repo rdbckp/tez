@@ -86,6 +86,7 @@
 
 #endif	/* CONFIG_BROKEN_GAS_INST */
 
+<<<<<<< HEAD
 /*
  * Instructions for modifying PSTATE fields.
  * As per Arm ARM for v8-A, Section "C.5.1.3 op0 == 0b00, architectural hints,
@@ -107,6 +108,18 @@
 #define SET_PSTATE_UAO(x)		__emit_inst(0xd500401f | PSTATE_UAO | ((!!x) << PSTATE_Imm_shift))
 #define SET_PSTATE_SSBS(x)		__emit_inst(0xd500401f | PSTATE_SSBS | ((!!x) << PSTATE_Imm_shift))
 
+=======
+#define REG_PSTATE_PAN_IMM		sys_reg(0, 0, 4, 0, 4)
+#define REG_PSTATE_UAO_IMM		sys_reg(0, 0, 4, 0, 3)
+#define REG_PSTATE_SSBS_IMM		sys_reg(0, 3, 4, 0, 1)
+
+#define SET_PSTATE_PAN(x) __emit_inst(0xd5000000 | REG_PSTATE_PAN_IMM |	\
+				      (!!x)<<8 | 0x1f)
+#define SET_PSTATE_UAO(x) __emit_inst(0xd5000000 | REG_PSTATE_UAO_IMM |	\
+				      (!!x)<<8 | 0x1f)
+#define SET_PSTATE_SSBS(x) __emit_inst(0xd5000000 | REG_PSTATE_SSBS_IMM | \
+				       (!!x)<<8 | 0x1f)
+>>>>>>> v4.14.187
 
 #define SYS_DC_ISW			sys_insn(1, 0, 7, 6, 2)
 #define SYS_DC_CSW			sys_insn(1, 0, 7, 10, 2)
@@ -558,6 +571,7 @@
 #include <linux/build_bug.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #define __DEFINE_MRS_MSR_S_REGNUM				\
 "	.irp	num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30\n" \
 "	.equ	.L__reg_num_x\\num, \\num\n"			\
@@ -591,6 +605,22 @@
 	DEFINE_MSR_S						\
 "	msr_s " __stringify(r) ", %x0\n"			\
 	UNDEFINE_MSR_S : : "rZ" (v)
+=======
+asm(
+"	.irp	num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30\n"
+"	.equ	.L__reg_num_x\\num, \\num\n"
+"	.endr\n"
+"	.equ	.L__reg_num_xzr, 31\n"
+"\n"
+"	.macro	mrs_s, rt, sreg\n"
+	__emit_inst(0xd5200000|(\\sreg)|(.L__reg_num_\\rt))
+"	.endm\n"
+"\n"
+"	.macro	msr_s, sreg, rt\n"
+	__emit_inst(0xd5000000|(\\sreg)|(.L__reg_num_\\rt))
+"	.endm\n"
+);
+>>>>>>> v4.14.187
 
 /*
  * Unlike read_cpuid, calls to read_sysreg are never expected to be
@@ -616,6 +646,7 @@
  * For registers without architectural names, or simply unsupported by
  * GAS.
  */
+<<<<<<< HEAD
 #define read_sysreg_s(r) ({					\
 	u64 __val;						\
 	asm volatile(__mrs_s(r, __val));			\
@@ -625,6 +656,17 @@
 #define write_sysreg_s(v, r) do {				\
 	u64 __val = (u64)(v);					\
 	asm volatile(__msr_s(r, __val));			\
+=======
+#define read_sysreg_s(r) ({						\
+	u64 __val;							\
+	asm volatile("mrs_s %0, " __stringify(r) : "=r" (__val));	\
+	__val;								\
+})
+
+#define write_sysreg_s(v, r) do {					\
+	u64 __val = (u64)(v);						\
+	asm volatile("msr_s " __stringify(r) ", %x0" : : "rZ" (__val));	\
+>>>>>>> v4.14.187
 } while (0)
 
 /*

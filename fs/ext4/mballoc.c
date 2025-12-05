@@ -751,6 +751,7 @@ void ext4_mb_generate_buddy(struct super_block *sb,
 	grp->bb_fragments = fragments;
 
 	if (free != grp->bb_free) {
+<<<<<<< HEAD
 		struct ext4_group_desc *desc;
 		ext4_fsblk_t bitmap_blk;
 
@@ -758,6 +759,8 @@ void ext4_mb_generate_buddy(struct super_block *sb,
 		bitmap_blk = ext4_block_bitmap(sb, desc);
 
 		print_block_data(sb, bitmap_blk, bitmap, 0, EXT4_BLOCK_SIZE(sb));
+=======
+>>>>>>> v4.14.187
 		ext4_grp_locked_error(sb, group, 0, 0,
 				      "block bitmap and bg descriptor "
 				      "inconsistent: %u vs %u free clusters",
@@ -1464,6 +1467,7 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
 
 	if (unlikely(block != -1)) {
 		struct ext4_sb_info *sbi = EXT4_SB(sb);
+<<<<<<< HEAD
 		struct ext4_group_desc *desc;
 		ext4_fsblk_t blocknr, bitmap_blk;
 
@@ -1479,6 +1483,18 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
 				inode ? inode->i_ino : 0, blocknr,
 				"freeing already freed block "
 				"(bit %u); block bitmap corrupt.", block);
+=======
+		ext4_fsblk_t blocknr;
+
+		blocknr = ext4_group_first_block_no(sb, e4b->bd_group);
+		blocknr += EXT4_C2B(EXT4_SB(sb), block);
+		ext4_grp_locked_error(sb, e4b->bd_group,
+				      inode ? inode->i_ino : 0,
+				      blocknr,
+				      "freeing already freed block "
+				      "(bit %u); block bitmap corrupt.",
+				      block);
+>>>>>>> v4.14.187
 		if (!EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))
 			percpu_counter_sub(&sbi->s_freeclusters_counter,
 					   e4b->bd_info->bb_free);

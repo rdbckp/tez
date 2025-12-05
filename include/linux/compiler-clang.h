@@ -17,6 +17,7 @@
  */
 #define __UNIQUE_ID(prefix) __PASTE(__PASTE(__UNIQUE_ID_, prefix), __COUNTER__)
 
+<<<<<<< HEAD
 /* all clang versions usable with the kernel support KASAN ABI version 5 */
 #define KASAN_ABI_VERSION 5
 
@@ -31,12 +32,17 @@
 #else
 #define __no_sanitize_address
 #endif
+=======
+#undef __no_sanitize_address
+#define __no_sanitize_address __attribute__((no_sanitize("address")))
+>>>>>>> v4.14.187
 
 /* Clang doesn't have a way to turn it off per-function, yet. */
 #ifdef __noretpoline
 #undef __noretpoline
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_LTO_CLANG
 #ifdef CONFIG_FTRACE_MCOUNT_RECORD
 #define __norecordmcount \
@@ -46,6 +52,8 @@
 #define __nocfi		__attribute__((no_sanitize("cfi")))
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Not all versions of clang implement the the type-generic versions
  * of the builtin overflow checkers. Fortunately, clang implements
@@ -59,9 +67,12 @@
     __has_builtin(__builtin_sub_overflow)
 #define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
 #endif
+<<<<<<< HEAD
 
 #if __has_feature(shadow_call_stack)
 # define __noscs	__attribute__((__no_sanitize__("shadow-call-stack")))
 #else
 # define __noscs
 #endif
+=======
+>>>>>>> v4.14.187

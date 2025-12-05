@@ -50,6 +50,7 @@ config COMMON_CLK_MT2701_BDPSYS
 	---help---
 	  This driver supports Mediatek MT2701 bdpsys clocks.
 
+<<<<<<< HEAD
 config COMMON_CLK_MT6771
 	bool "Clock driver for Mediatek MT6771"
 	depends on COMMON_CLK
@@ -105,6 +106,8 @@ config COMMON_CLK_MT6785
 	  instead of old clkmgr architecture.
 	  MT6785 default will use CCF.
 
+=======
+>>>>>>> v4.14.187
 config COMMON_CLK_MT6797
        bool "Clock driver for Mediatek MT6797"
        depends on (ARCH_MEDIATEK && ARM64) || COMPILE_TEST
@@ -137,6 +140,7 @@ config COMMON_CLK_MT6797_VENCSYS
        ---help---
          This driver supports Mediatek MT6797 vencsys clocks.
 
+<<<<<<< HEAD
 config COMMON_CLK_MT6853
 	bool "Clock driver for MediaTek MT6853"
 	depends on MACH_MT6853
@@ -384,6 +388,8 @@ config COMMON_CLK_MT6885
 	  instead of old clkmgr architecture.
 	  MT6885 default will use CCF.
 
+=======
+>>>>>>> v4.14.187
 config COMMON_CLK_MT8135
 	bool "Clock driver for Mediatek MT8135"
 	depends on (ARCH_MEDIATEK && ARM) || COMPILE_TEST
@@ -392,6 +398,7 @@ config COMMON_CLK_MT8135
 	---help---
 	  This driver supports Mediatek MT8135 clocks.
 
+<<<<<<< HEAD
 config COMMON_CLK_MT8167
 	bool "Clock driver for Mediatek MT8167"
 	depends on ARCH_MEDIATEK || COMPILE_TEST
@@ -403,6 +410,8 @@ config COMMON_CLK_MT8167
 	  IC; It will be used to enable IC-special driver
 	  part of CCF framework on MT8167 platform.
 
+=======
+>>>>>>> v4.14.187
 config COMMON_CLK_MT8173
 	bool "Clock driver for Mediatek MT8173"
 	depends on ARCH_MEDIATEK || COMPILE_TEST
@@ -410,6 +419,7 @@ config COMMON_CLK_MT8173
 	default ARCH_MEDIATEK
 	---help---
 	  This driver supports Mediatek MT8173 clocks.
+<<<<<<< HEAD
 
 config COMMON_CLK_MT8168
 	bool "Clock driver for MediaTek MT8168"
@@ -528,3 +538,5 @@ config COMMON_CLK_MT8183_VENCSYS
 	depends on COMMON_CLK_MT8183
 	---help---
 	  This driver supports MediaTek MT8183 vencsys clocks.
+=======
+>>>>>>> v4.14.187

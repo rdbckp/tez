@@ -53,9 +53,12 @@ static inline void decode_ctrl_reg(u32 reg,
 #define ARM_DEBUG_ARCH_V7_MM	4
 #define ARM_DEBUG_ARCH_V7_1	5
 #define ARM_DEBUG_ARCH_V8	6
+<<<<<<< HEAD
 #define ARM_DEBUG_ARCH_V8_1	7
 #define ARM_DEBUG_ARCH_V8_2	8
 #define ARM_DEBUG_ARCH_V8_4	9
+=======
+>>>>>>> v4.14.187
 
 /* Breakpoint */
 #define ARM_BREAKPOINT_EXECUTE	0

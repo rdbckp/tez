@@ -213,7 +213,10 @@ static int bL_cpufreq_set_target(struct cpufreq_policy *policy,
 {
 	u32 cpu = policy->cpu, cur_cluster, new_cluster, actual_cluster;
 	unsigned int freqs_new;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> v4.14.187
 
 	cur_cluster = cpu_to_cluster(cpu);
 	new_cluster = actual_cluster = per_cpu(physical_cluster, cpu);
@@ -230,6 +233,7 @@ static int bL_cpufreq_set_target(struct cpufreq_policy *policy,
 		}
 	}
 
+<<<<<<< HEAD
 	ret = bL_cpufreq_set_rate(cpu, actual_cluster, new_cluster, freqs_new);
 
 	if (!ret) {
@@ -238,6 +242,9 @@ static int bL_cpufreq_set_target(struct cpufreq_policy *policy,
 	}
 
 	return ret;
+=======
+	return bL_cpufreq_set_rate(cpu, actual_cluster, new_cluster, freqs_new);
+>>>>>>> v4.14.187
 }
 
 static inline u32 get_table_count(struct cpufreq_frequency_table *table)

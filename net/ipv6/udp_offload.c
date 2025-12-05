@@ -42,16 +42,23 @@ static struct sk_buff *udp6_ufo_fragment(struct sk_buff *skb,
 		const struct ipv6hdr *ipv6h;
 		struct udphdr *uh;
 
+<<<<<<< HEAD
 		if (!(skb_shinfo(skb)->gso_type &
 		    (SKB_GSO_UDP | SKB_GSO_UDP_L4)))
+=======
+		if (!(skb_shinfo(skb)->gso_type & SKB_GSO_UDP))
+>>>>>>> v4.14.187
 			goto out;
 
 		if (!pskb_may_pull(skb, sizeof(struct udphdr)))
 			goto out;
 
+<<<<<<< HEAD
 		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
 			return __udp_gso_segment(skb, features);
 
+=======
+>>>>>>> v4.14.187
 		/* Do software UFO. Complete and fill in the UDP checksum as HW cannot
 		 * do checksum of UDP packets sent as multiple IP fragments.
 		 */
@@ -115,12 +122,19 @@ out:
 	return segs;
 }
 
+<<<<<<< HEAD
 static struct sk_buff *udp6_gro_receive(struct list_head *head,
 					struct sk_buff *skb)
 {
 	struct udphdr *uh = udp_gro_udphdr(skb);
 	struct sk_buff *pp;
 	struct sock *sk;
+=======
+static struct sk_buff **udp6_gro_receive(struct sk_buff **head,
+					 struct sk_buff *skb)
+{
+	struct udphdr *uh = udp_gro_udphdr(skb);
+>>>>>>> v4.14.187
 
 	if (unlikely(!uh))
 		goto flush;
@@ -138,6 +152,7 @@ static struct sk_buff *udp6_gro_receive(struct list_head *head,
 
 skip:
 	NAPI_GRO_CB(skb)->is_ipv6 = 1;
+<<<<<<< HEAD
 	rcu_read_lock();
 	sk = static_key_false(&udp_encap_needed) ?
 			      udp6_lib_lookup_skb(skb,
@@ -146,6 +161,9 @@ skip:
 	pp = udp_gro_receive(head, skb, uh, sk);
 	rcu_read_unlock();
 	return pp;
+=======
+	return udp_gro_receive(head, skb, uh, udp6_lib_lookup_skb);
+>>>>>>> v4.14.187
 
 flush:
 	NAPI_GRO_CB(skb)->flush = 1;
@@ -157,9 +175,19 @@ static int udp6_gro_complete(struct sk_buff *skb, int nhoff)
 	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
 	struct udphdr *uh = (struct udphdr *)(skb->data + nhoff);
 
+<<<<<<< HEAD
 	if (uh->check)
 		uh->check = ~udp_v6_check(skb->len - nhoff, &ipv6h->saddr,
 					  &ipv6h->daddr, 0);
+=======
+	if (uh->check) {
+		skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL_CSUM;
+		uh->check = ~udp_v6_check(skb->len - nhoff, &ipv6h->saddr,
+					  &ipv6h->daddr, 0);
+	} else {
+		skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL;
+	}
+>>>>>>> v4.14.187
 
 	return udp_gro_complete(skb, nhoff, udp6_lib_lookup_skb);
 }

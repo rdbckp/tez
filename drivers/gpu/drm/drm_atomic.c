@@ -30,7 +30,10 @@
 #include <drm/drm_atomic.h>
 #include <drm/drm_mode.h>
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/drm_writeback.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/sync_file.h>
 
 #include "drm_crtc_internal.h"
@@ -328,6 +331,7 @@ static s32 __user *get_out_fence_for_crtc(struct drm_atomic_state *state,
 	return fence_ptr;
 }
 
+<<<<<<< HEAD
 static int set_out_fence_for_connector(struct drm_atomic_state *state,
 					struct drm_connector *connector,
 					s32 __user *fence_ptr)
@@ -357,6 +361,8 @@ static s32 __user *get_out_fence_for_connector(struct drm_atomic_state *state,
 	return fence_ptr;
 }
 
+=======
+>>>>>>> v4.14.187
 /**
  * drm_atomic_set_mode_for_crtc - set mode for CRTC
  * @state: the CRTC whose incoming state to update
@@ -679,6 +685,7 @@ static void drm_atomic_crtc_print_state(struct drm_printer *p,
 }
 
 /**
+<<<<<<< HEAD
  * drm_atomic_connector_check - check connector state
  * @connector: connector to check
  * @state: connector state to check
@@ -728,6 +735,8 @@ static int drm_atomic_connector_check(struct drm_connector *connector,
 }
 
 /**
+=======
+>>>>>>> v4.14.187
  * drm_atomic_get_plane_state - get plane state
  * @state: global atomic state object
  * @plane: plane to get state object for
@@ -808,8 +817,12 @@ static int drm_atomic_plane_set_property(struct drm_plane *plane,
 	struct drm_mode_config *config = &dev->mode_config;
 
 	if (property == config->prop_fb_id) {
+<<<<<<< HEAD
 		struct drm_framebuffer *fb = drm_framebuffer_lookup(dev, NULL,
 								val);
+=======
+		struct drm_framebuffer *fb = drm_framebuffer_lookup(dev, val);
+>>>>>>> v4.14.187
 		drm_atomic_set_fb_for_plane(state, fb);
 		if (fb)
 			drm_framebuffer_put(fb);
@@ -825,7 +838,11 @@ static int drm_atomic_plane_set_property(struct drm_plane *plane,
 			return -EINVAL;
 
 	} else if (property == config->prop_crtc_id) {
+<<<<<<< HEAD
 		struct drm_crtc *crtc = drm_crtc_find(dev, NULL, val);
+=======
+		struct drm_crtc *crtc = drm_crtc_find(dev, val);
+>>>>>>> v4.14.187
 		return drm_atomic_set_crtc_for_plane(state, crtc);
 	} else if (property == config->prop_crtc_x) {
 		state->crtc_x = U642I64(val);
@@ -1240,7 +1257,11 @@ static int drm_atomic_connector_set_property(struct drm_connector *connector,
 	struct drm_mode_config *config = &dev->mode_config;
 
 	if (property == config->prop_crtc_id) {
+<<<<<<< HEAD
 		struct drm_crtc *crtc = drm_crtc_find(dev, NULL, val);
+=======
+		struct drm_crtc *crtc = drm_crtc_find(dev, val);
+>>>>>>> v4.14.187
 		return drm_atomic_set_crtc_for_connector(state, crtc);
 	} else if (property == config->dpms_property) {
 		/* setting DPMS property requires special handling, which
@@ -1290,6 +1311,7 @@ static int drm_atomic_connector_set_property(struct drm_connector *connector,
 		state->picture_aspect_ratio = val;
 	} else if (property == connector->scaling_mode_property) {
 		state->scaling_mode = val;
+<<<<<<< HEAD
 	} else if (property == config->writeback_fb_id_property) {
 		struct drm_framebuffer *fb = drm_framebuffer_lookup(dev,
 						NULL, val);
@@ -1303,6 +1325,8 @@ static int drm_atomic_connector_set_property(struct drm_connector *connector,
 
 		return set_out_fence_for_connector(state->state, connector,
 						   fence_ptr);
+=======
+>>>>>>> v4.14.187
 	} else if (connector->funcs->atomic_set_property) {
 		return connector->funcs->atomic_set_property(connector,
 				state, property, val);
@@ -1382,11 +1406,14 @@ drm_atomic_connector_get_property(struct drm_connector *connector,
 		*val = state->picture_aspect_ratio;
 	} else if (property == connector->scaling_mode_property) {
 		*val = state->scaling_mode;
+<<<<<<< HEAD
 	} else if (property == config->writeback_fb_id_property) {
 		/* Writeback framebuffer is one-shot, write and forget */
 		*val = 0;
 	} else if (property == config->writeback_out_fence_ptr_property) {
 		*val = 0;
+=======
+>>>>>>> v4.14.187
 	} else if (connector->funcs->atomic_get_property) {
 		return connector->funcs->atomic_get_property(connector,
 				state, property, val);
@@ -1596,6 +1623,7 @@ drm_atomic_set_crtc_for_connector(struct drm_connector_state *conn_state,
 }
 EXPORT_SYMBOL(drm_atomic_set_crtc_for_connector);
 
+<<<<<<< HEAD
 /*
  * drm_atomic_get_writeback_job - return or allocate a writeback job
  * @conn_state: Connector state to get the job for
@@ -1661,6 +1689,8 @@ int drm_atomic_set_writeback_fb_for_connector(
 }
 EXPORT_SYMBOL(drm_atomic_set_writeback_fb_for_connector);
 
+=======
+>>>>>>> v4.14.187
 /**
  * drm_atomic_add_affected_connectors - add connectors for crtc
  * @state: atomic state
@@ -1779,8 +1809,11 @@ int drm_atomic_check_only(struct drm_atomic_state *state)
 	struct drm_plane_state *plane_state;
 	struct drm_crtc *crtc;
 	struct drm_crtc_state *crtc_state;
+<<<<<<< HEAD
 	struct drm_connector *conn;
 	struct drm_connector_state *conn_state;
+=======
+>>>>>>> v4.14.187
 	int i, ret = 0;
 
 	DRM_DEBUG_ATOMIC("checking %p\n", state);
@@ -1803,6 +1836,7 @@ int drm_atomic_check_only(struct drm_atomic_state *state)
 		}
 	}
 
+<<<<<<< HEAD
 	for_each_new_connector_in_state(state, conn, conn_state, i) {
 		ret = drm_atomic_connector_check(conn, conn_state);
 		if (ret) {
@@ -1813,6 +1847,8 @@ int drm_atomic_check_only(struct drm_atomic_state *state)
 		}
 	}
 
+=======
+>>>>>>> v4.14.187
 	if (config->funcs->atomic_check)
 		ret = config->funcs->atomic_check(state->dev, state);
 
@@ -2245,7 +2281,11 @@ static int setup_out_fence(struct drm_out_fence_state *fence_state,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int prepare_signaling(struct drm_device *dev,
+=======
+static int prepare_crtc_signaling(struct drm_device *dev,
+>>>>>>> v4.14.187
 				  struct drm_atomic_state *state,
 				  struct drm_mode_atomic *arg,
 				  struct drm_file *file_priv,
@@ -2254,8 +2294,11 @@ static int prepare_signaling(struct drm_device *dev,
 {
 	struct drm_crtc *crtc;
 	struct drm_crtc_state *crtc_state;
+<<<<<<< HEAD
 	struct drm_connector *conn;
 	struct drm_connector_state *conn_state;
+=======
+>>>>>>> v4.14.187
 	int i, c = 0, ret;
 
 	if (arg->flags & DRM_MODE_ATOMIC_TEST_ONLY)
@@ -2321,6 +2364,7 @@ static int prepare_signaling(struct drm_device *dev,
 		c++;
 	}
 
+<<<<<<< HEAD
 	for_each_new_connector_in_state(state, conn, conn_state, i) {
 		struct drm_writeback_job *job;
 		struct drm_out_fence_state *f;
@@ -2359,6 +2403,8 @@ static int prepare_signaling(struct drm_device *dev,
 		job->out_fence = fence;
 	}
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Having this flag means user mode pends on event which will never
 	 * reach due to lack of at least one CRTC for signaling
@@ -2369,11 +2415,19 @@ static int prepare_signaling(struct drm_device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void complete_signaling(struct drm_device *dev,
 			       struct drm_atomic_state *state,
 			       struct drm_out_fence_state *fence_state,
 			       unsigned int num_fences,
 			       bool install_fds)
+=======
+static void complete_crtc_signaling(struct drm_device *dev,
+				    struct drm_atomic_state *state,
+				    struct drm_out_fence_state *fence_state,
+				    unsigned int num_fences,
+				    bool install_fds)
+>>>>>>> v4.14.187
 {
 	struct drm_crtc *crtc;
 	struct drm_crtc_state *crtc_state;
@@ -2487,8 +2541,12 @@ retry:
 			goto out;
 		}
 
+<<<<<<< HEAD
 		obj = drm_mode_object_find(dev, file_priv, obj_id,
 				DRM_MODE_OBJECT_ANY);
+=======
+		obj = drm_mode_object_find(dev, obj_id, DRM_MODE_OBJECT_ANY);
+>>>>>>> v4.14.187
 		if (!obj) {
 			ret = -ENOENT;
 			goto out;
@@ -2553,8 +2611,13 @@ retry:
 		drm_mode_object_put(obj);
 	}
 
+<<<<<<< HEAD
 	ret = prepare_signaling(dev, state, arg, file_priv, &fence_state,
 				&num_fences);
+=======
+	ret = prepare_crtc_signaling(dev, state, arg, file_priv, &fence_state,
+				     &num_fences);
+>>>>>>> v4.14.187
 	if (ret)
 		goto out;
 
@@ -2572,7 +2635,11 @@ retry:
 out:
 	drm_atomic_clean_old_fb(dev, plane_mask, ret);
 
+<<<<<<< HEAD
 	complete_signaling(dev, state, fence_state, num_fences, !ret);
+=======
+	complete_crtc_signaling(dev, state, fence_state, num_fences, !ret);
+>>>>>>> v4.14.187
 
 	if (ret == -EDEADLK) {
 		drm_atomic_state_clear(state);

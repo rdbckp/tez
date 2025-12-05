@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 subdir-ccflags-y += -Werror
 
 mediatek-drm-y := mtk_drm_drv.o \
@@ -16,11 +17,22 @@ mediatek-drm-y := mtk_drm_drv.o \
 		  mtk_drm_ddp.o \
 		  mtk_drm_ddp_addon.o \
 		  mtk_drm_ddp_comp.o \
+=======
+# SPDX-License-Identifier: GPL-2.0
+mediatek-drm-y := mtk_disp_color.o \
+		  mtk_disp_ovl.o \
+		  mtk_disp_rdma.o \
+		  mtk_drm_crtc.o \
+		  mtk_drm_ddp.o \
+		  mtk_drm_ddp_comp.o \
+		  mtk_drm_drv.o \
+>>>>>>> v4.14.187
 		  mtk_drm_fb.o \
 		  mtk_drm_gem.o \
 		  mtk_drm_plane.o \
 		  mtk_dsi.o \
 		  mtk_mipi_tx.o \
+<<<<<<< HEAD
 		  mtk_writeback.o \
 		  mtk_sync.o \
 		  mtk_fence.o \
@@ -66,6 +78,9 @@ endif
 endif
 
 mediatek-drm-$(CONFIG_DRM_FBDEV_EMULATION) += mtk_drm_fbdev.o
+=======
+		  mtk_dpi.o
+>>>>>>> v4.14.187
 
 obj-$(CONFIG_DRM_MEDIATEK) += mediatek-drm.o
 
@@ -74,6 +89,7 @@ mediatek-drm-hdmi-objs := mtk_cec.o \
 			  mtk_hdmi_ddc.o \
 			  mtk_mt8173_hdmi_phy.o
 
+<<<<<<< HEAD
 obj-$(CONFIG_DRM_MEDIATEK_HDMI) += mediatek-drm-hdmi.o \
 				  mtk_dpi.o \
 				  mtk_lvds.o \
@@ -109,3 +125,6 @@ ccflags-y += -DNOT_SUPPORT_CABC_HW
 ccflags-y += -DDISP_MDP_COLOR_ON
 ccflags-y += -DCCORR_SUPPORT
 endif
+=======
+obj-$(CONFIG_DRM_MEDIATEK_HDMI) += mediatek-drm-hdmi.o
+>>>>>>> v4.14.187

@@ -996,7 +996,11 @@ static bool hwpoison_user_mappings(struct page *p, unsigned long pfn,
 	if (kill)
 		collect_procs(hpage, &tokill, flags & MF_ACTION_REQUIRED);
 
+<<<<<<< HEAD
 	unmap_success = try_to_unmap(hpage, ttu, NULL);
+=======
+	unmap_success = try_to_unmap(hpage, ttu);
+>>>>>>> v4.14.187
 	if (!unmap_success)
 		pr_err("Memory failure: %#lx: failed to unmap page (mapcount=%d)\n",
 		       pfn, page_mapcount(hpage));

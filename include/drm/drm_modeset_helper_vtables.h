@@ -977,6 +977,7 @@ struct drm_connector_helper_funcs {
 	 */
 	int (*atomic_check)(struct drm_connector *connector,
 			    struct drm_connector_state *state);
+<<<<<<< HEAD
 
 	/**
 	 * @atomic_commit:
@@ -988,6 +989,8 @@ struct drm_connector_helper_funcs {
 	 */
 	void (*atomic_commit)(struct drm_connector *connector,
 			      struct drm_writeback_job *writeback_job);
+=======
+>>>>>>> v4.14.187
 };
 
 /**

@@ -8,6 +8,7 @@
 #define _SS_SERVICES_H_
 
 #include "policydb.h"
+<<<<<<< HEAD
 #include "context.h"
 
 /* Mapping for a single class */
@@ -32,6 +33,11 @@ struct selinux_ss {
 	struct page *status_page;
 	struct mutex status_lock;
 };
+=======
+#include "sidtab.h"
+
+extern struct policydb policydb;
+>>>>>>> v4.14.187
 
 void services_compute_xperms_drivers(struct extended_perms *xperms,
 				struct avtab_node *node);
@@ -39,6 +45,11 @@ void services_compute_xperms_drivers(struct extended_perms *xperms,
 void services_compute_xperms_decision(struct extended_perms_decision *xpermd,
 					struct avtab_node *node);
 
+<<<<<<< HEAD
 int context_add_hash(struct policydb *policydb, struct context *context);
 
 #endif	/* _SS_SERVICES_H_ */
+=======
+#endif	/* _SS_SERVICES_H_ */
+
+>>>>>>> v4.14.187

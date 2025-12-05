@@ -228,7 +228,10 @@ static inline pte_t *pmd_page_vaddr(pmd_t pmd)
 #define pte_dirty(pte)		(pte_isset((pte), L_PTE_DIRTY))
 #define pte_young(pte)		(pte_isset((pte), L_PTE_YOUNG))
 #define pte_exec(pte)		(pte_isclear((pte), L_PTE_XN))
+<<<<<<< HEAD
 #define pte_special(pte)	(pte_isset((pte), L_PTE_SPECIAL))
+=======
+>>>>>>> v4.14.187
 
 #define pte_valid_user(pte)	\
 	(pte_valid(pte) && pte_isset((pte), L_PTE_USER) && pte_young(pte))
@@ -307,11 +310,14 @@ static inline pte_t pte_mknexec(pte_t pte)
 	return set_pte_bit(pte, __pgprot(L_PTE_XN));
 }
 
+<<<<<<< HEAD
 static inline pte_t pte_mkspecial(pte_t pte)
 {
 	return set_pte_bit(pte, __pgprot(L_PTE_SPECIAL));
 }
 
+=======
+>>>>>>> v4.14.187
 static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
 {
 	const pteval_t mask = L_PTE_XN | L_PTE_RDONLY | L_PTE_USER |
@@ -364,6 +370,7 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
 
 #define pgtable_cache_init() do { } while (0)
 
+<<<<<<< HEAD
 #if defined(CONFIG_ARCH_HAS_PTE_SPECIAL) && !defined(CONFIG_ARM_LPAE)
 #define spf_pxd_flunked spf_pxd_flunked
 static inline bool spf_pgd_flunked(pgd_t *pgd)
@@ -382,6 +389,8 @@ static inline bool spf_p4d_flunked(p4d_t *p4d)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 #endif /* !__ASSEMBLY__ */
 
 #endif /* CONFIG_MMU */

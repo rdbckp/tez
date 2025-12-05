@@ -105,7 +105,11 @@ static struct drm_encoder*
 udl_best_single_encoder(struct drm_connector *connector)
 {
 	int enc_id = connector->encoder_ids[0];
+<<<<<<< HEAD
 	return drm_encoder_find(connector->dev, NULL, enc_id);
+=======
+	return drm_encoder_find(connector->dev, enc_id);
+>>>>>>> v4.14.187
 }
 
 static int udl_connector_set_property(struct drm_connector *connector,

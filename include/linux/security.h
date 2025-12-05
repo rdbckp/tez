@@ -56,12 +56,15 @@ struct msg_queue;
 struct xattr;
 struct xfrm_sec_ctx;
 struct mm_struct;
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_CRED
 #include <linux/kdp.h>
 #endif
 #ifdef CONFIG_RUSTUH_KDP_CRED
 #include <linux/rustkdp.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 /* If capable should audit the security request */
 #define SECURITY_CAP_NOAUDIT 0
@@ -79,10 +82,13 @@ enum lsm_event {
 	LSM_POLICY_CHANGE,
 };
 
+<<<<<<< HEAD
 #if !defined(CONFIG_KDP_CRED) && !defined(CONFIG_RUSTUH_KDP_CRED)
 #define security_integrity_current()  0
 #endif
 
+=======
+>>>>>>> v4.14.187
 /* These functions are in security/commoncap.c */
 extern int cap_capable(const struct cred *cred, struct user_namespace *ns,
 		       int cap, int audit);
@@ -207,6 +213,7 @@ static inline void security_free_mnt_opts(struct security_mnt_opts *opts)
 extern int security_init(void);
 
 /* Security operations */
+<<<<<<< HEAD
 int security_binder_set_context_mgr(const struct cred *mgr);
 int security_binder_transaction(const struct cred *from,
 				const struct cred *to);
@@ -214,6 +221,15 @@ int security_binder_transfer_binder(const struct cred *from,
 				    const struct cred *to);
 int security_binder_transfer_file(const struct cred *from,
 				  const struct cred *to, struct file *file);
+=======
+int security_binder_set_context_mgr(struct task_struct *mgr);
+int security_binder_transaction(struct task_struct *from,
+				struct task_struct *to);
+int security_binder_transfer_binder(struct task_struct *from,
+				    struct task_struct *to);
+int security_binder_transfer_file(struct task_struct *from,
+				  struct task_struct *to, struct file *file);
+>>>>>>> v4.14.187
 int security_ptrace_access_check(struct task_struct *child, unsigned int mode);
 int security_ptrace_traceme(struct task_struct *parent);
 int security_capget(struct task_struct *target,
@@ -434,25 +450,44 @@ static inline int security_init(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int security_binder_set_context_mgr(const struct cred *mgr)
+=======
+static inline int security_binder_set_context_mgr(struct task_struct *mgr)
+>>>>>>> v4.14.187
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int security_binder_transaction(const struct cred *from,
 					      const struct cred *to)
+=======
+static inline int security_binder_transaction(struct task_struct *from,
+					      struct task_struct *to)
+>>>>>>> v4.14.187
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int security_binder_transfer_binder(const struct cred *from,
 						  const struct cred *to)
+=======
+static inline int security_binder_transfer_binder(struct task_struct *from,
+						  struct task_struct *to)
+>>>>>>> v4.14.187
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int security_binder_transfer_file(const struct cred *from,
 						const struct cred *to,
+=======
+static inline int security_binder_transfer_file(struct task_struct *from,
+						struct task_struct *to,
+>>>>>>> v4.14.187
 						struct file *file)
 {
 	return 0;
@@ -1740,6 +1775,7 @@ static inline void securityfs_remove(struct dentry *dentry)
 
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_BPF_SYSCALL
 union bpf_attr;
 struct bpf_map;
@@ -1788,6 +1824,8 @@ static inline void security_bpf_prog_free(struct bpf_prog_aux *aux)
 #endif /* CONFIG_SECURITY */
 #endif /* CONFIG_BPF_SYSCALL */
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_SECURITY
 
 static inline char *alloc_secdata(void)
@@ -1811,6 +1849,7 @@ static inline void free_secdata(void *secdata)
 { }
 #endif /* CONFIG_SECURITY */
 
+<<<<<<< HEAD
 #ifdef CONFIG_PERF_EVENTS
 struct perf_event_attr;
 struct perf_event;
@@ -1850,3 +1889,7 @@ static inline int security_perf_event_write(struct perf_event *event)
 #endif /* CONFIG_PERF_EVENTS */
 
 #endif /* ! __LINUX_SECURITY_H */
+=======
+#endif /* ! __LINUX_SECURITY_H */
+
+>>>>>>> v4.14.187

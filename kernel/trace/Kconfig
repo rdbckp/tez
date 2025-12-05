@@ -73,9 +73,12 @@ config EVENT_TRACING
         select GLOB
 	bool
 
+<<<<<<< HEAD
 config GPU_TRACEPOINTS
 	bool
 
+=======
+>>>>>>> v4.14.187
 config CONTEXT_SWITCH_TRACER
 	bool
 
@@ -94,6 +97,10 @@ config RING_BUFFER_ALLOW_SWAP
 
 config TRACING
 	bool
+<<<<<<< HEAD
+=======
+	select DEBUG_FS
+>>>>>>> v4.14.187
 	select RING_BUFFER
 	select STACKTRACE if STACKTRACE_SUPPORT
 	select TRACEPOINTS
@@ -162,6 +169,7 @@ config FUNCTION_GRAPH_TRACER
 	  address on the current task structure into a stack of calls.
 
 
+<<<<<<< HEAD
 config PREEMPTIRQ_EVENTS
 	bool "Enable trace events for preempt and irq disable/enable"
 	select TRACE_IRQFLAGS
@@ -173,6 +181,8 @@ config PREEMPTIRQ_EVENTS
 	  enabled. For tracing irq disable/enable events, PROVE_LOCKING must
 	  be disabled.
 
+=======
+>>>>>>> v4.14.187
 config IRQSOFF_TRACER
 	bool "Interrupts-off Latency Tracer"
 	default n
@@ -719,6 +729,7 @@ endif # FTRACE
 
 endif # TRACING_SUPPORT
 
+<<<<<<< HEAD
 if TRACING
 # MTK enhancements
 config MTK_SCHED_TRACERS
@@ -752,3 +763,5 @@ config MTK_KERNEL_MARKER
 	  If unsure, say N
 
 endif # TRACING
+=======
+>>>>>>> v4.14.187

@@ -444,7 +444,10 @@ extern bool pm_get_wakeup_count(unsigned int *count, bool block);
 extern bool pm_save_wakeup_count(unsigned int count);
 extern void pm_wakep_autosleep_enabled(bool set);
 extern void pm_print_active_wakeup_sources(void);
+<<<<<<< HEAD
 extern void pm_get_active_wakeup_sources(char *pending_sources, size_t max);
+=======
+>>>>>>> v4.14.187
 
 static inline void lock_system_sleep(void)
 {
@@ -560,10 +563,13 @@ static inline void page_key_read(unsigned long *pfn) {}
 static inline void page_key_memorize(unsigned long *pfn) {}
 static inline void page_key_write(void *address) {}
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_PM
 int wakeup_sources_stats_active(void);
 #endif
 
+=======
+>>>>>>> v4.14.187
 #endif /* !CONFIG_ARCH_SAVE_PAGE_KEYS */
 
 #endif /* _LINUX_SUSPEND_H */

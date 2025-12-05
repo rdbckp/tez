@@ -140,7 +140,10 @@ struct inet_cork {
 	__u8			ttl;
 	__s16			tos;
 	char			priority;
+<<<<<<< HEAD
 	__u16			gso_size;
+=======
+>>>>>>> v4.14.187
 };
 
 struct inet_cork_full {

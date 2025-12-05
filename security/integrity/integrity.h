@@ -15,6 +15,7 @@
 #include <linux/integrity.h>
 #include <crypto/sha.h>
 #include <linux/key.h>
+<<<<<<< HEAD
 #include <crypto/hash_info.h>
 
 enum five_file_integrity {
@@ -25,6 +26,8 @@ enum five_file_integrity {
 	FIVE_FILE_FSVERITY,
 	FIVE_FILE_HMAC
 };
+=======
+>>>>>>> v4.14.187
 
 /* iint action cache flags */
 #define IMA_MEASURE		0x00000001
@@ -58,10 +61,13 @@ enum five_file_integrity {
 #define IMA_BPRM_APPRAISED	0x00002000
 #define IMA_READ_APPRAISE	0x00004000
 #define IMA_READ_APPRAISED	0x00008000
+<<<<<<< HEAD
 
 #define FIVE_DMVERITY_PROTECTED	0x00040000
 #define FIVE_TRUSTED_FILE	0x00080000
 
+=======
+>>>>>>> v4.14.187
 #define IMA_APPRAISE_SUBMASK	(IMA_FILE_APPRAISE | IMA_MMAP_APPRAISE | \
 				 IMA_BPRM_APPRAISE | IMA_READ_APPRAISE)
 #define IMA_APPRAISED_SUBMASK	(IMA_FILE_APPRAISED | IMA_MMAP_APPRAISED | \
@@ -134,12 +140,15 @@ struct integrity_iint_cache {
 	enum integrity_status ima_read_status:4;
 	enum integrity_status evm_status:4;
 	struct ima_digest_data *ima_hash;
+<<<<<<< HEAD
 #ifdef CONFIG_FIVE
 	unsigned long five_flags;
 	enum five_file_integrity five_status;
 	struct integrity_label *five_label;
 	bool five_signing;
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 /* rbtree tree calls to lookup, insert, delete
@@ -155,8 +164,12 @@ int __init integrity_read_file(const char *path, char **data);
 #define INTEGRITY_KEYRING_EVM		0
 #define INTEGRITY_KEYRING_IMA		1
 #define INTEGRITY_KEYRING_MODULE	2
+<<<<<<< HEAD
 #define INTEGRITY_KEYRING_FIVE		3
 #define INTEGRITY_KEYRING_MAX		4
+=======
+#define INTEGRITY_KEYRING_MAX		3
+>>>>>>> v4.14.187
 
 #ifdef CONFIG_INTEGRITY_SIGNATURE
 
@@ -165,8 +178,11 @@ int integrity_digsig_verify(const unsigned int id, const char *sig, int siglen,
 
 int __init integrity_init_keyring(const unsigned int id);
 int __init integrity_load_x509(const unsigned int id, const char *path);
+<<<<<<< HEAD
 int __init integrity_load_x509_from_mem(const unsigned int id,
 					const char *data, size_t size);
+=======
+>>>>>>> v4.14.187
 #else
 
 static inline int integrity_digsig_verify(const unsigned int id,

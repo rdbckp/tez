@@ -152,8 +152,12 @@ static int sel_ib_pkey_sid_slow(u64 subnet_prefix, u16 pkey_num, u32 *sid)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	ret = security_ib_pkey_sid(&selinux_state, subnet_prefix, pkey_num,
 				   sid);
+=======
+	ret = security_ib_pkey_sid(subnet_prefix, pkey_num, sid);
+>>>>>>> v4.14.187
 	if (ret)
 		goto out;
 

@@ -304,6 +304,7 @@ int kallsyms_lookup_size_offset(unsigned long addr, unsigned long *symbolsize,
 	       !!__bpf_address_lookup(addr, symbolsize, offset, namebuf);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_CFI_CLANG
 /*
  * LLVM appends .cfi to function names when CONFIG_CFI_CLANG is enabled,
@@ -328,6 +329,8 @@ static inline void cleanup_symbol_name(char *s)
 static inline void cleanup_symbol_name(char *s) {}
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Lookup an address
  * - modname is set to NULL if it's in the kernel.
@@ -354,9 +357,13 @@ const char *kallsyms_lookup(unsigned long addr,
 				       namebuf, KSYM_NAME_LEN);
 		if (modname)
 			*modname = NULL;
+<<<<<<< HEAD
 
 		ret = namebuf;
 		goto found;
+=======
+		return namebuf;
+>>>>>>> v4.14.187
 	}
 
 	/* See if it's in a module or a BPF JITed image. */
@@ -365,16 +372,22 @@ const char *kallsyms_lookup(unsigned long addr,
 	if (!ret)
 		ret = bpf_address_lookup(addr, symbolsize,
 					 offset, modname, namebuf);
+<<<<<<< HEAD
 
 found:
 	cleanup_symbol_name(namebuf);
+=======
+>>>>>>> v4.14.187
 	return ret;
 }
 
 int lookup_symbol_name(unsigned long addr, char *symname)
 {
+<<<<<<< HEAD
 	int res;
 
+=======
+>>>>>>> v4.14.187
 	symname[0] = '\0';
 	symname[KSYM_NAME_LEN - 1] = '\0';
 
@@ -385,6 +398,7 @@ int lookup_symbol_name(unsigned long addr, char *symname)
 		/* Grab name */
 		kallsyms_expand_symbol(get_symbol_offset(pos),
 				       symname, KSYM_NAME_LEN);
+<<<<<<< HEAD
 		goto found;
 	}
 	/* See if it's in a module. */
@@ -395,13 +409,22 @@ int lookup_symbol_name(unsigned long addr, char *symname)
 found:
 	cleanup_symbol_name(symname);
 	return 0;
+=======
+		return 0;
+	}
+	/* See if it's in a module. */
+	return lookup_module_symbol_name(addr, symname);
+>>>>>>> v4.14.187
 }
 
 int lookup_symbol_attrs(unsigned long addr, unsigned long *size,
 			unsigned long *offset, char *modname, char *name)
 {
+<<<<<<< HEAD
 	int res;
 
+=======
+>>>>>>> v4.14.187
 	name[0] = '\0';
 	name[KSYM_NAME_LEN - 1] = '\0';
 
@@ -413,6 +436,7 @@ int lookup_symbol_attrs(unsigned long addr, unsigned long *size,
 		kallsyms_expand_symbol(get_symbol_offset(pos),
 				       name, KSYM_NAME_LEN);
 		modname[0] = '\0';
+<<<<<<< HEAD
 		goto found;
 	}
 	/* See if it's in a module. */
@@ -423,6 +447,12 @@ int lookup_symbol_attrs(unsigned long addr, unsigned long *size,
 found:
 	cleanup_symbol_name(name);
 	return 0;
+=======
+		return 0;
+	}
+	/* See if it's in a module. */
+	return lookup_module_symbol_attrs(addr, size, offset, modname, name);
+>>>>>>> v4.14.187
 }
 
 /* Look up a kernel symbol and return it in a text buffer. */

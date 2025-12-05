@@ -42,8 +42,11 @@
 #include <linux/syscore_ops.h>
 #include <linux/version.h>
 #include <linux/ctype.h>
+<<<<<<< HEAD
 #include <linux/mm.h>
 #include <linux/mempolicy.h>
+=======
+>>>>>>> v4.14.187
 
 #include <linux/compat.h>
 #include <linux/syscalls.h>
@@ -72,6 +75,7 @@
 #include <linux/uaccess.h>
 #include <asm/io.h>
 #include <asm/unistd.h>
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 #include <mt-plat/turbo_common.h>
 #endif
@@ -79,6 +83,8 @@
 #ifdef CONFIG_SECURITY_DEFEX
 #include <linux/defex.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 #ifndef SET_UNALIGN_CTL
 # define SET_UNALIGN_CTL(a, b)	(-EINVAL)
@@ -122,12 +128,15 @@
 #ifndef SET_FP_MODE
 # define SET_FP_MODE(a,b)	(-EINVAL)
 #endif
+<<<<<<< HEAD
 #ifndef SET_TAGGED_ADDR_CTRL
 # define SET_TAGGED_ADDR_CTRL(a)	(-EINVAL)
 #endif
 #ifndef GET_TAGGED_ADDR_CTRL
 # define GET_TAGGED_ADDR_CTRL()		(-EINVAL)
 #endif
+=======
+>>>>>>> v4.14.187
 
 /*
  * this is where the system-wide overflow UID and GID are defined, for
@@ -782,11 +791,14 @@ SYSCALL_DEFINE1(setfsuid, uid_t, uid)
 	if (!uid_valid(kuid))
 		return old_fsuid;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SECURITY_DEFEX
 	if (task_defex_enforce(current, NULL, -__NR_setfsuid))
 		return old_fsuid;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	new = prepare_creds();
 	if (!new)
 		return old_fsuid;
@@ -826,11 +838,14 @@ SYSCALL_DEFINE1(setfsgid, gid_t, gid)
 	if (!gid_valid(kgid))
 		return old_fsgid;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SECURITY_DEFEX
 	if (task_defex_enforce(current, NULL, -__NR_setfsgid))
 		return old_fsgid;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	new = prepare_creds();
 	if (!new)
 		return old_fsgid;
@@ -2208,6 +2223,7 @@ static int propagate_has_child_subreaper(struct task_struct *p, void *data)
 	return 1;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMU
 static int prctl_update_vma_anon_name(struct vm_area_struct *vma,
 		struct vm_area_struct **prev,
@@ -2355,6 +2371,8 @@ static int prctl_set_vma(unsigned long opt, unsigned long start,
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 int __weak arch_prctl_spec_ctrl_get(struct task_struct *t, unsigned long which)
 {
 	return -EINVAL;
@@ -2432,9 +2450,12 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
 			return -EFAULT;
 		set_task_comm(me, comm);
 		proc_comm_connector(me);
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 		sys_set_turbo_task(me);
 #endif
+=======
+>>>>>>> v4.14.187
 		break;
 	case PR_GET_NAME:
 		get_task_comm(comm, me);
@@ -2581,6 +2602,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
 			return -EINVAL;
 		error = arch_prctl_spec_ctrl_set(me, arg2, arg3);
 		break;
+<<<<<<< HEAD
 	case PR_SET_VMA:
 		error = prctl_set_vma(arg2, arg3, arg4, arg5);
 		break;
@@ -2594,6 +2616,8 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
 			return -EINVAL;
 		error = GET_TAGGED_ADDR_CTRL();
 		break;
+=======
+>>>>>>> v4.14.187
 	default:
 		error = -EINVAL;
 		break;

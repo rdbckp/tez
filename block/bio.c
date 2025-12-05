@@ -10,11 +10,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public Licens
+ * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-
- *
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 #include <linux/mm.h>
 #include <linux/swap.h>
 #include <linux/bio.h>
@@ -1687,8 +1687,11 @@ struct bio *bio_copy_kern(struct request_queue *q, void *data, unsigned int len,
 		if (!reading)
 			memcpy(page_address(page), p, bytes);
 
-		if (bio_add_pc_page(q, bio, page, bytes, 0) < bytes)
+		if (bio_add_pc_page(q, bio, page, bytes, 0) < bytes) {
+			if (!map_data)
+				__free_page(page);
 			break;
+		}
 
 		len -= bytes;
 		p += bytes;
@@ -1716,7 +1719,7 @@ cleanup:
  * The problem is that we cannot run set_page_dirty() from interrupt context
  * because the required locks are not interrupt-safe.  So what we can do is to
  * mark the pages dirty _before_ performing IO.  And in interrupt context,
- * check that the pages are still dirty.   If so, fine.  If not, redirty them
+ * check that the pages are still dirty.   If so, fine. If not, redirty them
  * in process context.
  *
  * We special-case compound pages here: normally this means reads into hugetlb

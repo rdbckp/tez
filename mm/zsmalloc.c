@@ -54,8 +54,11 @@
 #include <linux/migrate.h>
 #include <linux/wait.h>
 #include <linux/pagemap.h>
+<<<<<<< HEAD
 #include <linux/swap.h>
 #include <linux/jiffies.h>
+=======
+>>>>>>> v4.14.187
 
 #define ZSPAGE_MAGIC	0x58
 
@@ -193,7 +196,10 @@ static struct vfsmount *zsmalloc_mnt;
  * (see: fix_fullness_group())
  */
 static const int fullness_threshold_frac = 4;
+<<<<<<< HEAD
 static size_t huge_class_size;
+=======
+>>>>>>> v4.14.187
 
 struct size_class {
 	spinlock_t lock;
@@ -1434,6 +1440,7 @@ void zs_unmap_object(struct zs_pool *pool, unsigned long handle)
 }
 EXPORT_SYMBOL_GPL(zs_unmap_object);
 
+<<<<<<< HEAD
 /**
  * zs_huge_class_size() - Returns the size (in bytes) of the first huge
  *                        zsmalloc &size_class.
@@ -1453,6 +1460,8 @@ size_t zs_huge_class_size(struct zs_pool *pool)
 }
 EXPORT_SYMBOL_GPL(zs_huge_class_size);
 
+=======
+>>>>>>> v4.14.187
 static unsigned long obj_malloc(struct size_class *class,
 				struct zspage *zspage, unsigned long handle)
 {
@@ -2392,9 +2401,12 @@ static unsigned long zs_shrinker_scan(struct shrinker *shrinker,
 	return pages_freed ? pages_freed : SHRINK_STOP;
 }
 
+<<<<<<< HEAD
 #define ZS_SHRINKER_THRESHOLD	1024
 #define ZS_SHRINKER_INTERVAL	10
 
+=======
+>>>>>>> v4.14.187
 static unsigned long zs_shrinker_count(struct shrinker *shrinker,
 		struct shrink_control *sc)
 {
@@ -2403,10 +2415,13 @@ static unsigned long zs_shrinker_count(struct shrinker *shrinker,
 	unsigned long pages_to_free = 0;
 	struct zs_pool *pool = container_of(shrinker, struct zs_pool,
 			shrinker);
+<<<<<<< HEAD
 	static unsigned long time_stamp;
 
 	if (!current_is_kswapd() || time_is_after_jiffies(time_stamp))
 		return 0;
+=======
+>>>>>>> v4.14.187
 
 	for (i = ZS_SIZE_CLASSES - 1; i >= 0; i--) {
 		class = pool->size_class[i];
@@ -2418,11 +2433,14 @@ static unsigned long zs_shrinker_count(struct shrinker *shrinker,
 		pages_to_free += zs_can_compact(class);
 	}
 
+<<<<<<< HEAD
 	if (pages_to_free > ZS_SHRINKER_THRESHOLD)
 		time_stamp = jiffies + (ZS_SHRINKER_INTERVAL * HZ);
 	else
 		pages_to_free = 0;
 
+=======
+>>>>>>> v4.14.187
 	return pages_to_free;
 }
 
@@ -2495,6 +2513,7 @@ struct zs_pool *zs_create_pool(const char *name)
 		objs_per_zspage = pages_per_zspage * PAGE_SIZE / size;
 
 		/*
+<<<<<<< HEAD
 		 * We iterate from biggest down to smallest classes,
 		 * so huge_class_size holds the size of the first huge
 		 * class. Any object bigger than or equal to that will
@@ -2516,6 +2535,8 @@ struct zs_pool *zs_create_pool(const char *name)
 		}
 
 		/*
+=======
+>>>>>>> v4.14.187
 		 * size_class is used for normal zsmalloc operation such
 		 * as alloc/free for that size. Although it is natural that we
 		 * have one size_class for each size, there is a chance that we

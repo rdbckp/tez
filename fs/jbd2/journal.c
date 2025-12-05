@@ -50,7 +50,10 @@
 
 #include <linux/uaccess.h>
 #include <asm/page.h>
+<<<<<<< HEAD
 #include <mt-plat/mtk_io_boost.h>
+=======
+>>>>>>> v4.14.187
 
 #ifdef CONFIG_JBD2_DEBUG
 ushort jbd2_journal_enable_debug __read_mostly;
@@ -208,9 +211,12 @@ static int kjournald2(void *arg)
 	/* Record that the journal thread is running */
 	journal->j_task = current;
 	wake_up(&journal->j_wait_done_commit);
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_IO_BOOST)
 	mtk_iobst_register_tid(current->pid);
 #endif
+=======
+>>>>>>> v4.14.187
 
 	/*
 	 * Make sure that no allocations from this kernel thread will ever

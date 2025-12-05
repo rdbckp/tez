@@ -78,9 +78,16 @@ alternative_else_nop_endif
 /*
  * Remove the address tag from a virtual address, if present.
  */
+<<<<<<< HEAD
 	.macro	untagged_addr, dst, addr
 	sbfx	\dst, \addr, #0, #56
 	and	\dst, \dst, \addr
+=======
+	.macro	clear_address_tag, dst, addr
+	tst	\addr, #(1 << 55)
+	bic	\dst, \addr, #(0xff << 56)
+	csel	\dst, \dst, \addr, eq
+>>>>>>> v4.14.187
 	.endm
 
 #endif

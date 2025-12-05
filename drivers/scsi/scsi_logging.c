@@ -13,6 +13,7 @@
 #include <scsi/scsi.h>
 #include <scsi/scsi_cmnd.h>
 #include <scsi/scsi_device.h>
+<<<<<<< HEAD
 #include <scsi/scsi_host.h>
 #include <scsi/scsi_eh.h>
 #include <scsi/scsi_dbg.h>
@@ -21,6 +22,10 @@
 #if defined(CONFIG_SEC_ABC)
 #include <linux/sti/abc_common.h>
 #endif
+=======
+#include <scsi/scsi_eh.h>
+#include <scsi/scsi_dbg.h>
+>>>>>>> v4.14.187
 
 static char *scsi_log_reserve_buffer(size_t *len)
 {
@@ -186,7 +191,10 @@ void scsi_print_command(struct scsi_cmnd *cmd)
 	int k;
 	char *logbuf;
 	size_t off, logbuf_len;
+<<<<<<< HEAD
 	struct scsi_sense_hdr sshdr;
+=======
+>>>>>>> v4.14.187
 
 	if (!cmd->cmnd)
 		return;
@@ -245,6 +253,7 @@ void scsi_print_command(struct scsi_cmnd *cmd)
 out_printk:
 	dev_printk(KERN_INFO, &cmd->device->sdev_gendev, "%s", logbuf);
 	scsi_log_release_buffer(logbuf);
+<<<<<<< HEAD
 	/*
 	 * When MEDIUM_ERROR occurs,
 	 * 1. issue_LBA_list[] : record LBAs
@@ -288,6 +297,8 @@ out_printk:
 			cmd->device->host->issue_region_map |= ((u64)1 << region_bit);
 		}
 	}
+=======
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL(scsi_print_command);
 
@@ -392,6 +403,7 @@ scsi_log_print_sense_hdr(const struct scsi_device *sdev, const char *name,
 				      sshdr->asc, sshdr->ascq);
 	dev_printk(KERN_INFO, &sdev->sdev_gendev, "%s", logbuf);
 	scsi_log_release_buffer(logbuf);
+<<<<<<< HEAD
 
 	if (sdev->host->by_ufs) {
 		if (sshdr->sense_key == 0x03) {
@@ -415,6 +427,8 @@ scsi_log_print_sense_hdr(const struct scsi_device *sdev, const char *name,
 #endif
 		}
 	}
+=======
+>>>>>>> v4.14.187
 }
 
 static void

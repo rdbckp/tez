@@ -38,6 +38,7 @@ config VIRTIO_PCI_LEGACY
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD
 config VIRTIO_PMEM
 	tristate "Support for virtio pmem driver"
 	depends on VIRTIO
@@ -49,6 +50,8 @@ config VIRTIO_PMEM
 
 	  If unsure, say Y.
 
+=======
+>>>>>>> v4.14.187
 config VIRTIO_BALLOON
 	tristate "Virtio balloon driver"
 	depends on VIRTIO

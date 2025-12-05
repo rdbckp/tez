@@ -52,8 +52,11 @@
 
 #include "workqueue_internal.h"
 
+<<<<<<< HEAD
 #include <linux/delay.h>
 
+=======
+>>>>>>> v4.14.187
 enum {
 	/*
 	 * worker_pool flags
@@ -914,6 +917,7 @@ struct task_struct *wq_worker_sleeping(struct task_struct *task)
 }
 
 /**
+<<<<<<< HEAD
  * wq_worker_last_func - retrieve worker's last work function
  *
  * Determine the last function a worker executed. This is called from
@@ -934,6 +938,8 @@ work_func_t wq_worker_last_func(struct task_struct *task)
 }
 
 /**
+=======
+>>>>>>> v4.14.187
  * worker_set_flags - set worker flags and adjust nr_running accordingly
  * @worker: self
  * @flags: flags to set
@@ -1298,6 +1304,7 @@ fail:
 	if (work_is_canceling(work))
 		return -ENOENT;
 	cpu_relax();
+<<<<<<< HEAD
 	/*
 	 * if queueing is in progress in another context,
 	 * pool->lock may be in a busy loop,
@@ -1307,6 +1314,8 @@ fail:
 	 * give 1 usec delay to avoid live lock problem.
 	 */
 	udelay(1);
+=======
+>>>>>>> v4.14.187
 	return -EAGAIN;
 }
 
@@ -1543,10 +1552,15 @@ static void __queue_delayed_work(int cpu, struct workqueue_struct *wq,
 	struct work_struct *work = &dwork->work;
 
 	WARN_ON_ONCE(!wq);
+<<<<<<< HEAD
 #ifndef CONFIG_CFI_CLANG
 	WARN_ON_ONCE(timer->function != delayed_work_timer_fn);
 #endif
 	WARN_ON_ONCE(timer->data != (unsigned long)dwork);
+=======
+	WARN_ON_ONCE(timer->function != delayed_work_timer_fn ||
+		     timer->data != (unsigned long)dwork);
+>>>>>>> v4.14.187
 	WARN_ON_ONCE(timer_pending(timer));
 	WARN_ON_ONCE(!list_empty(&work->entry));
 
@@ -2180,9 +2194,12 @@ __acquires(&pool->lock)
 	if (unlikely(cpu_intensive))
 		worker_clr_flags(worker, WORKER_CPU_INTENSIVE);
 
+<<<<<<< HEAD
 	/* tag the worker for identification in schedule() */
 	worker->last_func = worker->current_func;
 
+=======
+>>>>>>> v4.14.187
 	/* we're done with it, release */
 	hash_del(&worker->hentry);
 	worker->current_work = NULL;
@@ -2922,9 +2939,12 @@ bool flush_work(struct work_struct *work)
 	if (WARN_ON(!wq_online))
 		return false;
 
+<<<<<<< HEAD
 	if (WARN_ON(!work->func))
 		return false;
 
+=======
+>>>>>>> v4.14.187
 	lock_map_acquire(&work->lockdep_map);
 	lock_map_release(&work->lockdep_map);
 

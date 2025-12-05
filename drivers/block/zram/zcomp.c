@@ -20,7 +20,10 @@
 
 static const char * const backends[] = {
 	"lzo",
+<<<<<<< HEAD
 	"lzo-rle",
+=======
+>>>>>>> v4.14.187
 #if IS_ENABLED(CONFIG_CRYPTO_LZ4)
 	"lz4",
 #endif
@@ -33,9 +36,12 @@ static const char * const backends[] = {
 #if IS_ENABLED(CONFIG_CRYPTO_842)
 	"842",
 #endif
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_CRYPTO_ZSTD)
 	"zstd",
 #endif
+=======
+>>>>>>> v4.14.187
 	NULL
 };
 

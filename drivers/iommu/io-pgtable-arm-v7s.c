@@ -54,6 +54,7 @@
 #define io_pgtable_ops_to_data(x)					\
 	io_pgtable_to_data(io_pgtable_ops_to_pgtable(x))
 
+<<<<<<< HEAD
 #define MTK_PGTABLE_DEBUG_ENABLED
 
 #if defined(CONFIG_MTK_IOMMU_PGTABLE_EXT) && \
@@ -128,6 +129,32 @@
 #define ARM_V7S_LVL_IDX(addr, lvl)	ARM_V7S_LVL_IDX_32BIT(addr, lvl)
 #endif
 
+=======
+/*
+ * We have 32 bits total; 12 bits resolved at level 1, 8 bits at level 2,
+ * and 12 bits in a page. With some carefully-chosen coefficients we can
+ * hide the ugly inconsistencies behind these macros and at least let the
+ * rest of the code pretend to be somewhat sane.
+ */
+#define ARM_V7S_ADDR_BITS		32
+#define _ARM_V7S_LVL_BITS(lvl)		(16 - (lvl) * 4)
+#define ARM_V7S_LVL_SHIFT(lvl)		(ARM_V7S_ADDR_BITS - (4 + 8 * (lvl)))
+#define ARM_V7S_TABLE_SHIFT		10
+
+#define ARM_V7S_PTES_PER_LVL(lvl)	(1 << _ARM_V7S_LVL_BITS(lvl))
+#define ARM_V7S_TABLE_SIZE(lvl)						\
+	(ARM_V7S_PTES_PER_LVL(lvl) * sizeof(arm_v7s_iopte))
+
+#define ARM_V7S_BLOCK_SIZE(lvl)		(1UL << ARM_V7S_LVL_SHIFT(lvl))
+#define ARM_V7S_LVL_MASK(lvl)		((u32)(~0U << ARM_V7S_LVL_SHIFT(lvl)))
+#define ARM_V7S_TABLE_MASK		((u32)(~0U << ARM_V7S_TABLE_SHIFT))
+#define _ARM_V7S_IDX_MASK(lvl)		(ARM_V7S_PTES_PER_LVL(lvl) - 1)
+#define ARM_V7S_LVL_IDX(addr, lvl)	({				\
+	int _l = lvl;							\
+	((u32)(addr) >> ARM_V7S_LVL_SHIFT(_l)) & _ARM_V7S_IDX_MASK(_l); \
+})
+
+>>>>>>> v4.14.187
 /*
  * Large page/supersection entries are effectively a block of 16 page/section
  * entries, along the lines of the LPAE contiguous hint, but all with the
@@ -163,9 +190,12 @@
  * fields relative to that 8-bit block, plus a total shift relative to the PTE.
  */
 #define ARM_V7S_ATTR_SHIFT(lvl)		(16 - (lvl) * 6)
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_IOMMU_V2
 #define ARM_V7S_ATTR_ACP(lvl)		(22 - lvl * 6)
 #endif
+=======
+>>>>>>> v4.14.187
 
 #define ARM_V7S_ATTR_MASK		0xff
 #define ARM_V7S_ATTR_AP0		BIT(0)
@@ -177,10 +207,14 @@
 #define ARM_V7S_TEX_MASK		0x7
 #define ARM_V7S_ATTR_TEX(val)		(((val) & ARM_V7S_TEX_MASK) << ARM_V7S_TEX_SHIFT)
 
+<<<<<<< HEAD
 /* MTK extend the two bits below for over 4GB mode */
 #define ARM_V7S_ATTR_MTK_PA_BIT32	BIT(9)
 #define ARM_V7S_ATTR_MTK_PA_BIT33	BIT(4)
 #define ARM_V7S_ATTR_MTK_PA_BIT34	BIT(5)
+=======
+#define ARM_V7S_ATTR_MTK_4GB		BIT(9) /* MTK extend it for 4GB mode */
+>>>>>>> v4.14.187
 
 /* *well, except for TEX on level 2 large pages, of course :( */
 #define ARM_V7S_CONT_PAGE_TEX_SHIFT	6
@@ -257,6 +291,7 @@ static void *__arm_v7s_alloc_table(int lvl, gfp_t gfp,
 		table = (void *)__get_dma_pages(__GFP_ZERO, get_order(size));
 	else if (lvl == 2)
 		table = kmem_cache_zalloc(data->l2_tables, gfp | GFP_DMA);
+<<<<<<< HEAD
 
 	phys = virt_to_phys(table);
 	if (phys != (arm_v7s_iopte)phys) {
@@ -273,6 +308,12 @@ static void *__arm_v7s_alloc_table(int lvl, gfp_t gfp,
 		goto out_free;
 #endif
 	}
+=======
+	phys = virt_to_phys(table);
+	if (phys != (arm_v7s_iopte)phys)
+		/* Doesn't fit in PTE */
+		goto out_free;
+>>>>>>> v4.14.187
 	if (table && !(cfg->quirks & IO_PGTABLE_QUIRK_NO_DMA)) {
 		dma = dma_map_single(dev, table, size, DMA_TO_DEVICE);
 		if (dma_mapping_error(dev, dma))
@@ -285,7 +326,12 @@ static void *__arm_v7s_alloc_table(int lvl, gfp_t gfp,
 		if (dma != phys)
 			goto out_unmap;
 	}
+<<<<<<< HEAD
 	kmemleak_ignore(table);
+=======
+	if (lvl == 2)
+		kmemleak_ignore(table);
+>>>>>>> v4.14.187
 	return table;
 
 out_unmap:
@@ -336,6 +382,7 @@ static void __arm_v7s_set_pte(arm_v7s_iopte *ptep, arm_v7s_iopte pte,
 }
 
 static arm_v7s_iopte arm_v7s_prot_to_pte(int prot, int lvl,
+<<<<<<< HEAD
 					 struct io_pgtable_cfg *cfg,
 					 phys_addr_t paddr) /* Only for MTK */
 {
@@ -345,6 +392,12 @@ static arm_v7s_iopte arm_v7s_prot_to_pte(int prot, int lvl,
 #else
 	arm_v7s_iopte pte = ARM_V7S_ATTR_NG | ARM_V7S_ATTR_S;
 #endif
+=======
+					 struct io_pgtable_cfg *cfg)
+{
+	bool ap = !(cfg->quirks & IO_PGTABLE_QUIRK_NO_PERMS);
+	arm_v7s_iopte pte = ARM_V7S_ATTR_NG | ARM_V7S_ATTR_S;
+>>>>>>> v4.14.187
 
 	if (!(prot & IOMMU_MMIO))
 		pte |= ARM_V7S_ATTR_TEX(1);
@@ -364,16 +417,20 @@ static arm_v7s_iopte arm_v7s_prot_to_pte(int prot, int lvl,
 	else if (prot & IOMMU_CACHE)
 		pte |= ARM_V7S_ATTR_B | ARM_V7S_ATTR_C;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_IOMMU_V2
 	if (WARN_ON(pte & 0x400))
 		pr_notice("%s, %d, acp is configured, lvl:%d\n",
 			  __func__, __LINE__, lvl);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	pte |= ARM_V7S_PTE_TYPE_PAGE;
 	if (lvl == 1 && (cfg->quirks & IO_PGTABLE_QUIRK_ARM_NS))
 		pte |= ARM_V7S_ATTR_NS_SECTION;
 
+<<<<<<< HEAD
 	if (cfg->quirks & IO_PGTABLE_QUIRK_ARM_MTK_4GB) {
 		if (ARM_V7S_PHYS_ADDR_BITS > 32 &&
 		    paddr & BIT_ULL(32))
@@ -385,6 +442,10 @@ static arm_v7s_iopte arm_v7s_prot_to_pte(int prot, int lvl,
 		    paddr & BIT_ULL(34))
 			pte |= ARM_V7S_ATTR_MTK_PA_BIT34;
 	}
+=======
+	if (cfg->quirks & IO_PGTABLE_QUIRK_ARM_MTK_4GB)
+		pte |= ARM_V7S_ATTR_MTK_4GB;
+>>>>>>> v4.14.187
 
 	return pte;
 }
@@ -471,17 +532,21 @@ static int arm_v7s_init_pte(struct arm_v7s_io_pgtable *data,
 			size_t sz = ARM_V7S_BLOCK_SIZE(lvl);
 
 			tblp = ptep - ARM_V7S_LVL_IDX(iova, lvl);
+<<<<<<< HEAD
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 			pr_notice("%s, %d, unmap before over writing, iova=0x%lx, new paddr=0x%lx, ptep=0x%lx, size=0x%lx, level=%d\n",
 				__func__, __LINE__,
 				iova + i * sz, paddr,
 				(unsigned long)tblp, sz, lvl);
 #endif
+=======
+>>>>>>> v4.14.187
 			if (WARN_ON(__arm_v7s_unmap(data, iova + i * sz,
 						    sz, lvl, tblp) != sz))
 				return -EINVAL;
 		} else if (ptep[i]) {
 			/* We require an unmap first */
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_IOMMU_PGTABLE_EXT) && \
 	(CONFIG_MTK_IOMMU_PGTABLE_EXT == 34)
 			size_t sz = ARM_V7S_BLOCK_SIZE(lvl);
@@ -496,15 +561,25 @@ static int arm_v7s_init_pte(struct arm_v7s_io_pgtable *data,
 		}
 
 	pte = arm_v7s_prot_to_pte(prot, lvl, cfg, paddr);
+=======
+			WARN_ON(!selftest_running);
+			return -EEXIST;
+		}
+
+	pte = arm_v7s_prot_to_pte(prot, lvl, cfg);
+>>>>>>> v4.14.187
 	if (num_entries > 1)
 		pte = arm_v7s_pte_to_cont(pte, lvl);
 
 	pte |= paddr & ARM_V7S_LVL_MASK(lvl);
 
+<<<<<<< HEAD
 #if 0 //def MTK_PGTABLE_DEBUG_ENABLED
 	pr_notice("%s, %d, iova=0x%lx, paddr=0x%lx, ptep=0x%lx, pte=0x%lx, num=%d, lvl=%d\n",
 		__func__, __LINE__, iova, paddr, ptep, pte, num_entries, lvl);
 #endif
+=======
+>>>>>>> v4.14.187
 	__arm_v7s_set_pte(ptep, pte, num_entries, cfg);
 	return 0;
 }
@@ -540,9 +615,12 @@ static int __arm_v7s_map(struct arm_v7s_io_pgtable *data, unsigned long iova,
 	struct io_pgtable_cfg *cfg = &data->iop.cfg;
 	arm_v7s_iopte pte, *cptep;
 	int num_entries = size >> ARM_V7S_LVL_SHIFT(lvl);
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_PSEUDO_M4U
 	phys_addr_t pte_phys;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	/* Find our entry at the current level */
 	ptep += ARM_V7S_LVL_IDX(iova, lvl);
@@ -560,6 +638,7 @@ static int __arm_v7s_map(struct arm_v7s_io_pgtable *data, unsigned long iova,
 	pte = READ_ONCE(*ptep);
 	if (!pte) {
 		cptep = __arm_v7s_alloc_table(lvl + 1, GFP_ATOMIC, data);
+<<<<<<< HEAD
 		if (!cptep) {
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 			pr_notice("%s, %d, error cptep\n", __func__, __LINE__);
@@ -581,6 +660,11 @@ static int __arm_v7s_map(struct arm_v7s_io_pgtable *data, unsigned long iova,
 				*ptep |= ARM_V7S_ATTR_MTK_PA_BIT34;
 		}
 #endif
+=======
+		if (!cptep)
+			return -ENOMEM;
+
+>>>>>>> v4.14.187
 		pte = arm_v7s_install_table(cptep, ptep, 0, cfg);
 		if (pte)
 			__arm_v7s_free_table(cptep, lvl + 1, data);
@@ -609,6 +693,7 @@ static int arm_v7s_map(struct io_pgtable_ops *ops, unsigned long iova,
 	int ret;
 
 	/* If no access, then nothing to do */
+<<<<<<< HEAD
 	if (!(prot & (IOMMU_READ | IOMMU_WRITE))) {
 		pr_notice("%s, %d, err prot:0x%x\n",
 			  __func__, __LINE__, prot);
@@ -636,6 +721,14 @@ static int arm_v7s_map(struct io_pgtable_ops *ops, unsigned long iova,
 
 	iova = IOVA_ALIGN(iova);
 	paddr = PA_ALIGN(paddr);
+=======
+	if (!(prot & (IOMMU_READ | IOMMU_WRITE)))
+		return 0;
+
+	if (WARN_ON(upper_32_bits(iova) || upper_32_bits(paddr)))
+		return -ERANGE;
+
+>>>>>>> v4.14.187
 	ret = __arm_v7s_map(data, iova, paddr, size, prot, 1, data->pgd);
 	/*
 	 * Synchronise all PTE updates for the new mapping before there's
@@ -711,7 +804,11 @@ static int arm_v7s_split_blk_unmap(struct arm_v7s_io_pgtable *data,
 	num_entries = size >> ARM_V7S_LVL_SHIFT(2);
 	unmap_idx = ARM_V7S_LVL_IDX(iova, 2);
 
+<<<<<<< HEAD
 	pte = arm_v7s_prot_to_pte(arm_v7s_pte_to_prot(blk_pte, 1), 2, cfg, 0);
+=======
+	pte = arm_v7s_prot_to_pte(arm_v7s_pte_to_prot(blk_pte, 1), 2, cfg);
+>>>>>>> v4.14.187
 	if (num_entries > 1)
 		pte = arm_v7s_pte_to_cont(pte, 2);
 
@@ -720,11 +817,14 @@ static int arm_v7s_split_blk_unmap(struct arm_v7s_io_pgtable *data,
 		if (i == unmap_idx)
 			continue;
 
+<<<<<<< HEAD
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 		pr_notice("%s, %d, iova=0x%lx, ptep=0x%lx, pte=0x%lx, num=%d\n",
 			__func__, __LINE__, iova, (unsigned long)&tablep[i],
 			(unsigned long)pte, num_entries);
 #endif
+=======
+>>>>>>> v4.14.187
 		__arm_v7s_set_pte(&tablep[i], pte, num_entries, cfg);
 	}
 
@@ -736,10 +836,13 @@ static int arm_v7s_split_blk_unmap(struct arm_v7s_io_pgtable *data,
 			return 0;
 
 		tablep = iopte_deref(pte, 1);
+<<<<<<< HEAD
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 		pr_notice("%s, %d, unmap when install failed, iova=0x%lx, ptep=0x%lx, size=0x%lx, level=2\n",
 			__func__, __LINE__, iova, (unsigned long)tablep, size);
 #endif
+=======
+>>>>>>> v4.14.187
 		return __arm_v7s_unmap(data, iova, size, 2, tablep);
 	}
 
@@ -753,10 +856,13 @@ static int __arm_v7s_unmap(struct arm_v7s_io_pgtable *data,
 {
 	arm_v7s_iopte pte[ARM_V7S_CONT_PAGES];
 	struct io_pgtable *iop = &data->iop;
+<<<<<<< HEAD
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 	unsigned long iova_temp = iova;
 	size_t blk_size1 = 0;
 #endif
+=======
+>>>>>>> v4.14.187
 	int idx, i = 0, num_entries = size >> ARM_V7S_LVL_SHIFT(lvl);
 
 	/* Something went horribly wrong and we ran out of page table */
@@ -767,6 +873,7 @@ static int __arm_v7s_unmap(struct arm_v7s_io_pgtable *data,
 	ptep += idx;
 	do {
 		pte[i] = READ_ONCE(ptep[i]);
+<<<<<<< HEAD
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 		blk_size1 = ARM_V7S_BLOCK_SIZE(lvl);
 #endif
@@ -784,6 +891,10 @@ static int __arm_v7s_unmap(struct arm_v7s_io_pgtable *data,
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 		iova_temp += blk_size1;
 #endif
+=======
+		if (WARN_ON(!ARM_V7S_PTE_IS_VALID(pte[i])))
+			return 0;
+>>>>>>> v4.14.187
 	} while (++i < num_entries);
 
 	/*
@@ -807,12 +918,15 @@ static int __arm_v7s_unmap(struct arm_v7s_io_pgtable *data,
 	/* If the size matches this level, we're in the right place */
 	if (num_entries) {
 		size_t blk_size = ARM_V7S_BLOCK_SIZE(lvl);
+<<<<<<< HEAD
 #if 0 //def MTK_PGTABLE_DEBUG_ENABLED
 		pr_notice("%s, %d,clear pte, iova=0x%lx, ptep=0x%lx, old pte=0x%lx, num=%d\n",
 			__func__, __LINE__, iova,
 			ptep, READ_ONCE(*ptep), num_entries);
 		iop->ops.iova_to_phys(&iop->ops, iova);
 #endif
+=======
+>>>>>>> v4.14.187
 
 		__arm_v7s_set_pte(ptep, 0, num_entries, &iop->cfg);
 
@@ -848,6 +962,7 @@ static int arm_v7s_unmap(struct io_pgtable_ops *ops, unsigned long iova,
 			 size_t size)
 {
 	struct arm_v7s_io_pgtable *data = io_pgtable_ops_to_data(ops);
+<<<<<<< HEAD
 
 	if (WARN_ON(iova >= (1ULL << data->iop.cfg.ias)))
 		return 0;
@@ -948,29 +1063,51 @@ static int arm_v7s_switch_acp(struct io_pgtable_ops *ops,
 	return 0;
 }
 #endif
+=======
+	size_t unmapped;
+
+	if (WARN_ON(upper_32_bits(iova)))
+		return 0;
+
+	unmapped = __arm_v7s_unmap(data, iova, size, 1, data->pgd);
+	if (unmapped)
+		io_pgtable_tlb_sync(&data->iop);
+
+	return unmapped;
+}
+
+>>>>>>> v4.14.187
 static phys_addr_t arm_v7s_iova_to_phys(struct io_pgtable_ops *ops,
 					unsigned long iova)
 {
 	struct arm_v7s_io_pgtable *data = io_pgtable_ops_to_data(ops);
+<<<<<<< HEAD
 	struct io_pgtable_cfg *cfg = &data->iop.cfg;
 	arm_v7s_iopte *ptep = data->pgd, pte;
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 	arm_v7s_iopte *ptep_curr;
 #endif
 	phys_addr_t paddr;
+=======
+	arm_v7s_iopte *ptep = data->pgd, pte;
+>>>>>>> v4.14.187
 	int lvl = 0;
 	u32 mask;
 
 	do {
 		ptep += ARM_V7S_LVL_IDX(iova, ++lvl);
+<<<<<<< HEAD
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 		if (lvl == 1)
 			ptep_curr = ptep;
 #endif
+=======
+>>>>>>> v4.14.187
 		pte = READ_ONCE(*ptep);
 		ptep = iopte_deref(pte, lvl);
 	} while (ARM_V7S_PTE_IS_TABLE(pte, lvl));
 
+<<<<<<< HEAD
 	if (!ARM_V7S_PTE_IS_VALID(pte)) {
 		return 0;
 	}
@@ -1016,12 +1153,22 @@ static int mtk_pgtable_align(arm_v7s_iopte *ptep)
 		return -1;
 	}
 	return 0;
+=======
+	if (!ARM_V7S_PTE_IS_VALID(pte))
+		return 0;
+
+	mask = ARM_V7S_LVL_MASK(lvl);
+	if (arm_v7s_pte_is_cont(pte, lvl))
+		mask *= ARM_V7S_CONT_PAGES;
+	return (pte & mask) | (iova & ~mask);
+>>>>>>> v4.14.187
 }
 
 static struct io_pgtable *arm_v7s_alloc_pgtable(struct io_pgtable_cfg *cfg,
 						void *cookie)
 {
 	struct arm_v7s_io_pgtable *data;
+<<<<<<< HEAD
 	unsigned long base = 0;
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 	phys_addr_t phys_addr;
@@ -1039,11 +1186,21 @@ static struct io_pgtable *arm_v7s_alloc_pgtable(struct io_pgtable_cfg *cfg,
 		return NULL;
 #endif
 #endif
+=======
+
+#ifdef PHYS_OFFSET
+	if (upper_32_bits(PHYS_OFFSET))
+		return NULL;
+#endif
+	if (cfg->ias > ARM_V7S_ADDR_BITS || cfg->oas > ARM_V7S_ADDR_BITS)
+		return NULL;
+>>>>>>> v4.14.187
 
 	if (cfg->quirks & ~(IO_PGTABLE_QUIRK_ARM_NS |
 			    IO_PGTABLE_QUIRK_NO_PERMS |
 			    IO_PGTABLE_QUIRK_TLBI_ON_MAP |
 			    IO_PGTABLE_QUIRK_ARM_MTK_4GB |
+<<<<<<< HEAD
 			    IO_PGTABLE_QUIRK_NO_DMA)) {
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 		pr_notice("%s, %d, invalid quirks: 0x%lx\n",
@@ -1070,26 +1227,47 @@ static struct io_pgtable *arm_v7s_alloc_pgtable(struct io_pgtable_cfg *cfg,
 #endif
 		return NULL;
 	}
+=======
+			    IO_PGTABLE_QUIRK_NO_DMA))
+		return NULL;
+
+	/* If ARM_MTK_4GB is enabled, the NO_PERMS is also expected. */
+	if (cfg->quirks & IO_PGTABLE_QUIRK_ARM_MTK_4GB &&
+	    !(cfg->quirks & IO_PGTABLE_QUIRK_NO_PERMS))
+			return NULL;
+
+	data = kmalloc(sizeof(*data), GFP_KERNEL);
+	if (!data)
+		return NULL;
+>>>>>>> v4.14.187
 
 	spin_lock_init(&data->split_lock);
 	data->l2_tables = kmem_cache_create("io-pgtable_armv7s_l2",
 					    ARM_V7S_TABLE_SIZE(2),
 					    ARM_V7S_TABLE_SIZE(2),
 					    SLAB_CACHE_DMA, NULL);
+<<<<<<< HEAD
 	if (!data->l2_tables) {
 #ifdef MTK_PGTABLE_DEBUG_ENABLED
 		pr_notice("%s, %d, err l2_tables\n", __func__, __LINE__);
 #endif
 		goto out_free_data;
 	}
+=======
+	if (!data->l2_tables)
+		goto out_free_data;
+>>>>>>> v4.14.187
 
 	data->iop.ops = (struct io_pgtable_ops) {
 		.map		= arm_v7s_map,
 		.unmap		= arm_v7s_unmap,
 		.iova_to_phys	= arm_v7s_iova_to_phys,
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_IOMMU_V2
 		.switch_acp	= arm_v7s_switch_acp,
 #endif
+=======
+>>>>>>> v4.14.187
 	};
 
 	/* We have to do this early for __arm_v7s_alloc_table to work... */
@@ -1119,6 +1297,7 @@ static struct io_pgtable *arm_v7s_alloc_pgtable(struct io_pgtable_cfg *cfg,
 
 	/* Looking good; allocate a pgd */
 	data->pgd = __arm_v7s_alloc_table(1, GFP_KERNEL, data);
+<<<<<<< HEAD
 	if (!data->pgd) {
 		pr_notice("%s, %d, err pgd\n", __func__, __LINE__);
 		goto out_free_data;
@@ -1131,11 +1310,16 @@ static struct io_pgtable *arm_v7s_alloc_pgtable(struct io_pgtable_cfg *cfg,
 	}
 #endif
 	base = (unsigned long)virt_to_phys(data->pgd);
+=======
+	if (!data->pgd)
+		goto out_free_data;
+>>>>>>> v4.14.187
 
 	/* Ensure the empty pgd is visible before any actual TTBR write */
 	wmb();
 
 	/* TTBRs */
+<<<<<<< HEAD
 	cfg->arm_v7s_cfg.ttbr[0] = (unsigned int)base |
 				   ARM_V7S_TTBR_S | ARM_V7S_TTBR_NOS |
 				   ARM_V7S_TTBR_IRGN_ATTR(ARM_V7S_RGN_WBWA) |
@@ -1151,6 +1335,13 @@ static struct io_pgtable *arm_v7s_alloc_pgtable(struct io_pgtable_cfg *cfg,
 		  __func__, __LINE__, (unsigned long)data->pgd,
 		cfg->arm_v7s_cfg.ttbr[0], phys_addr);
 #endif
+=======
+	cfg->arm_v7s_cfg.ttbr[0] = virt_to_phys(data->pgd) |
+				   ARM_V7S_TTBR_S | ARM_V7S_TTBR_NOS |
+				   ARM_V7S_TTBR_IRGN_ATTR(ARM_V7S_RGN_WBWA) |
+				   ARM_V7S_TTBR_ORGN_ATTR(ARM_V7S_RGN_WBWA);
+	cfg->arm_v7s_cfg.ttbr[1] = 0;
+>>>>>>> v4.14.187
 	return &data->iop;
 
 out_free_data:
@@ -1202,6 +1393,7 @@ static int __init arm_v7s_do_selftests(void)
 	struct io_pgtable_ops *ops;
 	struct io_pgtable_cfg cfg = {
 		.tlb = &dummy_tlb_ops,
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_IOMMU_PGTABLE_EXT) && \
 	(CONFIG_MTK_IOMMU_PGTABLE_EXT == 34)
 		.oas = 35,
@@ -1210,6 +1402,10 @@ static int __init arm_v7s_do_selftests(void)
 		.oas = 32,
 		.ias = 32,
 #endif
+=======
+		.oas = 32,
+		.ias = 32,
+>>>>>>> v4.14.187
 		.quirks = IO_PGTABLE_QUIRK_ARM_NS | IO_PGTABLE_QUIRK_NO_DMA,
 		.pgsize_bitmap = SZ_4K | SZ_64K | SZ_1M | SZ_16M,
 	};

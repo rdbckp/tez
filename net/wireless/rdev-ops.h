@@ -1204,6 +1204,7 @@ static inline int rdev_del_pmk(struct cfg80211_registered_device *rdev,
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
 }
+<<<<<<< HEAD
 
 static inline int
 rdev_external_auth(struct cfg80211_registered_device *rdev,
@@ -1219,4 +1220,6 @@ rdev_external_auth(struct cfg80211_registered_device *rdev,
 	return ret;
 }
 
+=======
+>>>>>>> v4.14.187
 #endif /* __CFG80211_RDEV_OPS */

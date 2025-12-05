@@ -28,16 +28,22 @@
 #include <linux/pm_runtime.h>
 #include <linux/regmap.h>
 #include <linux/regulator/consumer.h>
+<<<<<<< HEAD
 #include <linux/debugfs.h>
 #include <linux/uaccess.h>
+=======
+>>>>>>> v4.14.187
 
 #include "xhci.h"
 #include "xhci-mtk.h"
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MACH_MT6853)
 #include "../mtu3/mtu3_hal.h"
 #endif
 
+=======
+>>>>>>> v4.14.187
 /* ip_pw_ctrl0 register */
 #define CTRL0_IP_SW_RST	BIT(0)
 
@@ -88,6 +94,7 @@
 #define UWK_CTL1_0P_LS_P	BIT(7)
 #define UWK_CTL1_IS_P		BIT(6)  /* polarity for ip sleep */
 
+<<<<<<< HEAD
 /* test mode */
 #define HOST_CMD_TEST_J             0x1
 #define HOST_CMD_TEST_K             0x2
@@ -307,6 +314,8 @@ int mtk_xhci_wakelock_unlock(struct xhci_hcd_mtk *mtk)
 }
 EXPORT_SYMBOL_GPL(mtk_xhci_wakelock_unlock);
 
+=======
+>>>>>>> v4.14.187
 enum ssusb_wakeup_src {
 	SSUSB_WK_IP_SLEEP = 1,
 	SSUSB_WK_LINE_STATE = 2,
@@ -739,8 +748,11 @@ static int xhci_mtk_setup(struct usb_hcd *hcd)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	/* set runtime pm available */
 	pm_runtime_put_noidle(mtk->dev);
+=======
+>>>>>>> v4.14.187
 	return ret;
 }
 
@@ -761,6 +773,7 @@ static int xhci_mtk_probe(struct platform_device *pdev)
 	if (usb_disabled())
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (of_device_is_compatible(node, "mediatek,mt67xx-xhci")) {
 		ret = device_rename(dev, node->name);
 		if (ret)
@@ -773,6 +786,8 @@ static int xhci_mtk_probe(struct platform_device *pdev)
 		}
 	}
 
+=======
+>>>>>>> v4.14.187
 	driver = &xhci_mtk_hc_driver;
 	mtk = devm_kzalloc(dev, sizeof(*mtk), GFP_KERNEL);
 	if (!mtk)
@@ -793,10 +808,15 @@ static int xhci_mtk_probe(struct platform_device *pdev)
 
 	mtk->sys_clk = devm_clk_get(dev, "sys_ck");
 	if (IS_ERR(mtk->sys_clk)) {
+<<<<<<< HEAD
 		if (PTR_ERR(mtk->sys_clk) == -EPROBE_DEFER)
 			return -EPROBE_DEFER;
 
 		mtk->sys_clk = NULL;
+=======
+		dev_err(dev, "fail to get sys_ck\n");
+		return PTR_ERR(mtk->sys_clk);
+>>>>>>> v4.14.187
 	}
 
 	/*
@@ -829,7 +849,11 @@ static int xhci_mtk_probe(struct platform_device *pdev)
 		mtk->num_phys = 0;
 	}
 	pm_runtime_enable(dev);
+<<<<<<< HEAD
 	pm_runtime_get_noresume(dev);
+=======
+	pm_runtime_get_sync(dev);
+>>>>>>> v4.14.187
 	device_enable_async_suspend(dev);
 
 	ret = xhci_mtk_ldos_enable(mtk);
@@ -929,6 +953,7 @@ static int xhci_mtk_probe(struct platform_device *pdev)
 	if (ret)
 		goto dealloc_usb2_hcd;
 
+<<<<<<< HEAD
 	xhci_mtk_dbg_init(mtk);
 
 #if IS_ENABLED(CONFIG_USB_XHCI_MTK_SUSPEND)
@@ -936,6 +961,8 @@ static int xhci_mtk_probe(struct platform_device *pdev)
 	device_set_wakeup_enable(&xhci->shared_hcd->self.root_hub->dev, 1);
 #endif
 	mtk_xhci_wakelock_lock(mtk);
+=======
+>>>>>>> v4.14.187
 	return 0;
 
 dealloc_usb2_hcd:
@@ -962,7 +989,11 @@ disable_ldos:
 	xhci_mtk_ldos_disable(mtk);
 
 disable_pm:
+<<<<<<< HEAD
 	pm_runtime_put_noidle(dev);
+=======
+	pm_runtime_put_sync(dev);
+>>>>>>> v4.14.187
 	pm_runtime_disable(dev);
 	return ret;
 }
@@ -977,15 +1008,21 @@ static int xhci_mtk_remove(struct platform_device *dev)
 	pm_runtime_put_noidle(&dev->dev);
 	pm_runtime_disable(&dev->dev);
 
+<<<<<<< HEAD
     cfb8b3ba68c8 (usb: host: xhci-mtk: avoid runtime suspend when removing hcd)
+=======
+>>>>>>> v4.14.187
 	usb_remove_hcd(shared_hcd);
 	xhci->shared_hcd = NULL;
 	xhci_mtk_phy_power_off(mtk);
 	xhci_mtk_phy_exit(mtk);
 	device_init_wakeup(&dev->dev, false);
 
+<<<<<<< HEAD
 	mtk_xhci_wakelock_unlock(mtk);
 	xhci_mtk_dbg_exit(mtk);
+=======
+>>>>>>> v4.14.187
 	usb_remove_hcd(hcd);
 	usb_put_hcd(shared_hcd);
 	usb_put_hcd(hcd);
@@ -996,6 +1033,7 @@ static int xhci_mtk_remove(struct platform_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused xhci_mtk_runtime_suspend(struct device *dev)
 {
 	struct xhci_hcd_mtk *mtk = dev_get_drvdata(dev);
@@ -1027,6 +1065,8 @@ static int __maybe_unused xhci_mtk_runtime_resume(struct device *dev)
 	return 0;
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * if ip sleep fails, and all clocks are disabled, access register will hang
  * AHB bus, so stop polling roothubs to avoid regs access on bus suspend.
@@ -1040,7 +1080,10 @@ static int __maybe_unused xhci_mtk_suspend(struct device *dev)
 	struct usb_hcd *hcd = mtk->hcd;
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
 
+<<<<<<< HEAD
 	xhci_info(xhci, "%s\n", __func__);
+=======
+>>>>>>> v4.14.187
 	xhci_dbg(xhci, "%s: stop port polling\n", __func__);
 	clear_bit(HCD_FLAG_POLL_RH, &hcd->flags);
 	del_timer_sync(&hcd->rh_timer);
@@ -1049,6 +1092,7 @@ static int __maybe_unused xhci_mtk_suspend(struct device *dev)
 
 	xhci_mtk_host_disable(mtk);
 	xhci_mtk_phy_power_off(mtk);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTK_UAC_POWER_SAVING)
 	if (xhci->msram_virt_addr)
 		xhci_mtk_clks_disable(mtk);
@@ -1056,6 +1100,9 @@ static int __maybe_unused xhci_mtk_suspend(struct device *dev)
 	xhci_mtk_clks_disable(mtk);
 #endif
 
+=======
+	xhci_mtk_clks_disable(mtk);
+>>>>>>> v4.14.187
 	usb_wakeup_enable(mtk);
 	return 0;
 }
@@ -1066,6 +1113,7 @@ static int __maybe_unused xhci_mtk_resume(struct device *dev)
 	struct usb_hcd *hcd = mtk->hcd;
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
 
+<<<<<<< HEAD
 	xhci_info(xhci, "%s\n", __func__);
 	usb_wakeup_disable(mtk);
 #if IS_ENABLED(CONFIG_MTK_UAC_POWER_SAVING)
@@ -1074,6 +1122,10 @@ static int __maybe_unused xhci_mtk_resume(struct device *dev)
 #else
 	xhci_mtk_clks_enable(mtk);
 #endif
+=======
+	usb_wakeup_disable(mtk);
+	xhci_mtk_clks_enable(mtk);
+>>>>>>> v4.14.187
 	xhci_mtk_phy_power_on(mtk);
 	xhci_mtk_host_enable(mtk);
 
@@ -1090,6 +1142,7 @@ static const struct dev_pm_ops xhci_mtk_pm_ops = {
 };
 #define DEV_PM_OPS IS_ENABLED(CONFIG_PM) ? &xhci_mtk_pm_ops : NULL
 
+<<<<<<< HEAD
 static const struct dev_pm_ops xhci_mtk_phone_pm_ops = {
 	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(xhci_mtk_suspend, xhci_mtk_resume)
 	SET_RUNTIME_PM_OPS(xhci_mtk_runtime_suspend,
@@ -1098,6 +1151,8 @@ static const struct dev_pm_ops xhci_mtk_phone_pm_ops = {
 #define DEV_PHONE_PM_OPS (IS_ENABLED(CONFIG_PM) ? &xhci_mtk_phone_pm_ops : NULL)
 
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_OF
 static const struct of_device_id mtk_xhci_of_match[] = {
 	{ .compatible = "mediatek,mt8173-xhci"},
@@ -1105,6 +1160,7 @@ static const struct of_device_id mtk_xhci_of_match[] = {
 	{ },
 };
 MODULE_DEVICE_TABLE(of, mtk_xhci_of_match);
+<<<<<<< HEAD
 
 static const struct of_device_id mtk_xhci_phone_of_match[] = {
 	{ .compatible = "mediatek,mt67xx-xhci"},
@@ -1112,6 +1168,8 @@ static const struct of_device_id mtk_xhci_phone_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, mtk_xhci_phone_of_match);
 
+=======
+>>>>>>> v4.14.187
 #endif
 
 static struct platform_driver mtk_xhci_driver = {
@@ -1123,6 +1181,7 @@ static struct platform_driver mtk_xhci_driver = {
 		.of_match_table = of_match_ptr(mtk_xhci_of_match),
 	},
 };
+<<<<<<< HEAD
 
 static struct platform_driver mtk_xhci_phone_driver = {
 	.probe	= xhci_mtk_probe,
@@ -1146,6 +1205,10 @@ void xhci_mtk_unregister_plat(void)
 	platform_driver_unregister(&mtk_xhci_phone_driver);
 }
 
+=======
+MODULE_ALIAS("platform:xhci-mtk");
+
+>>>>>>> v4.14.187
 static int __init xhci_mtk_init(void)
 {
 	xhci_init_driver(&xhci_mtk_hc_driver, &xhci_mtk_overrides);

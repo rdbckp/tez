@@ -33,6 +33,7 @@ int _atomic_dec_and_lock(atomic_t *atomic, spinlock_t *lock)
 }
 
 EXPORT_SYMBOL(_atomic_dec_and_lock);
+<<<<<<< HEAD
 
 /* It's the lock irq safe version of _atomic_dec_and_lock */
 int _atomic_dec_and_lock_irqsafe(atomic_t *atomic, spinlock_t *lock,
@@ -66,3 +67,5 @@ int _atomic_dec_and_lock_irqsave(atomic_t *atomic, spinlock_t *lock,
 	return 0;
 }
 EXPORT_SYMBOL(_atomic_dec_and_lock_irqsave);
+=======
+>>>>>>> v4.14.187

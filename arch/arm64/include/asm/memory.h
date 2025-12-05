@@ -80,12 +80,21 @@
 #define KERNEL_END        _end
 
 /*
+<<<<<<< HEAD
  * Generic and tag-based KASAN require 1/8th and 1/16th of the kernel virtual
  * address space for the shadow region respectively. They can bloat the stack
  * significantly, so double the (minimum) stack size when they are in use.
  */
 #ifdef CONFIG_KASAN
 #define KASAN_SHADOW_SIZE	(UL(1) << (VA_BITS - KASAN_SHADOW_SCALE_SHIFT))
+=======
+ * KASAN requires 1/8th of the kernel virtual address space for the shadow
+ * region. KASAN can bloat the stack significantly, so double the (minimum)
+ * stack size when KASAN is in use.
+ */
+#ifdef CONFIG_KASAN
+#define KASAN_SHADOW_SIZE	(UL(1) << (VA_BITS - 3))
+>>>>>>> v4.14.187
 #define KASAN_THREAD_SHIFT	1
 #else
 #define KASAN_SHADOW_SIZE	(0)
@@ -211,6 +220,7 @@ static inline unsigned long kaslr_offset(void)
 #define PHYS_PFN_OFFSET	(PHYS_OFFSET >> PAGE_SHIFT)
 
 /*
+<<<<<<< HEAD
  * When dealing with data aborts, watchpoints, or instruction traps we may end
  * up with a tagged userland pointer. Clear the tag to get a sane pointer to
  * pass on to access_ok(), for instance.
@@ -241,6 +251,8 @@ static inline const void *__tag_set(const void *addr, u8 tag)
 }
 
 /*
+=======
+>>>>>>> v4.14.187
  * Physical vs virtual RAM address space conversion.  These are
  * private definitions which should NOT be used outside memory.h
  * files.  Use virt_to_phys/phys_to_virt/__pa/__va instead.
@@ -311,6 +323,7 @@ static inline void *phys_to_virt(phys_addr_t x)
 #define sym_to_pfn(x)	    __phys_to_pfn(__pa_symbol(x))
 
 /*
+<<<<<<< HEAD
  * With non-canonical CFI jump tables, the compiler replaces function
  * address references with the address of the function's CFI jump
  * table entry. This results in __pa_symbol(function) returning the
@@ -327,18 +340,25 @@ static inline void *phys_to_virt(phys_addr_t x)
 })
 
 /*
+=======
+>>>>>>> v4.14.187
  *  virt_to_page(k)	convert a _valid_ virtual address to struct page *
  *  virt_addr_valid(k)	indicates whether a virtual address is valid
  */
 #define ARCH_PFN_OFFSET		((unsigned long)PHYS_PFN_OFFSET)
 
+<<<<<<< HEAD
 #if !defined(CONFIG_SPARSEMEM_VMEMMAP) || defined(CONFIG_DEBUG_VIRTUAL)
+=======
+#ifndef CONFIG_SPARSEMEM_VMEMMAP
+>>>>>>> v4.14.187
 #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
 #define _virt_addr_valid(kaddr)	pfn_valid(__pa(kaddr) >> PAGE_SHIFT)
 #else
 #define __virt_to_pgoff(kaddr)	(((u64)(kaddr) & ~PAGE_OFFSET) / PAGE_SIZE * sizeof(struct page))
 #define __page_to_voff(kaddr)	(((u64)(kaddr) & ~VMEMMAP_START) * PAGE_SIZE / sizeof(struct page))
 
+<<<<<<< HEAD
 #define page_to_virt(page)	({					\
 	unsigned long __addr =						\
 		((__page_to_voff(page)) | PAGE_OFFSET);			\
@@ -347,6 +367,9 @@ static inline void *phys_to_virt(phys_addr_t x)
 	((void *)__addr_tag);						\
 })
 
+=======
+#define page_to_virt(page)	((void *)((__page_to_voff(page)) | PAGE_OFFSET))
+>>>>>>> v4.14.187
 #define virt_to_page(vaddr)	((struct page *)((__virt_to_pgoff(vaddr)) | VMEMMAP_START))
 
 #define _virt_addr_valid(kaddr)	pfn_valid((((u64)(kaddr) & ~PAGE_OFFSET) \
@@ -354,10 +377,16 @@ static inline void *phys_to_virt(phys_addr_t x)
 #endif
 #endif
 
+<<<<<<< HEAD
 #define _virt_addr_is_linear(kaddr)	\
 	(__tag_reset((u64)(kaddr)) >= PAGE_OFFSET)
 #define virt_addr_valid(kaddr)		\
 	(_virt_addr_is_linear(kaddr) && _virt_addr_valid(kaddr))
+=======
+#define _virt_addr_is_linear(kaddr)	(((u64)(kaddr)) >= PAGE_OFFSET)
+#define virt_addr_valid(kaddr)		(_virt_addr_is_linear(kaddr) && \
+					 _virt_addr_valid(kaddr))
+>>>>>>> v4.14.187
 
 #include <asm-generic/memory_model.h>
 

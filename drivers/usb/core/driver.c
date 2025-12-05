@@ -866,6 +866,7 @@ static int usb_uevent(struct device *dev, struct kobj_uevent_env *env)
 			   usb_dev->descriptor.bDeviceSubClass,
 			   usb_dev->descriptor.bDeviceProtocol))
 		return -ENOMEM;
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_USB_DEBUG_DETAILED_LOG)
 	pr_info("usb_host : %s: PRODUCT=%x/%x/%x TYPE=%d/%d/%d\n", __func__,
 			   le16_to_cpu(usb_dev->descriptor.idVendor),
@@ -875,6 +876,9 @@ static int usb_uevent(struct device *dev, struct kobj_uevent_env *env)
 			   usb_dev->descriptor.bDeviceSubClass,
 			   usb_dev->descriptor.bDeviceProtocol);
 #endif
+=======
+
+>>>>>>> v4.14.187
 	return 0;
 }
 

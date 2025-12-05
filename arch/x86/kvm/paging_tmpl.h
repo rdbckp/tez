@@ -202,7 +202,11 @@ static inline unsigned FNAME(gpte_access)(struct kvm_vcpu *vcpu, u64 gpte)
 static int FNAME(update_accessed_dirty_bits)(struct kvm_vcpu *vcpu,
 					     struct kvm_mmu *mmu,
 					     struct guest_walker *walker,
+<<<<<<< HEAD
 					     int write_fault)
+=======
+					     gpa_t addr, int write_fault)
+>>>>>>> v4.14.187
 {
 	unsigned level, index;
 	pt_element_t pte, orig_pte;
@@ -227,7 +231,11 @@ static int FNAME(update_accessed_dirty_bits)(struct kvm_vcpu *vcpu,
 				!(pte & PT_GUEST_DIRTY_MASK)) {
 			trace_kvm_mmu_set_dirty_bit(table_gfn, index, sizeof(pte));
 #if PTTYPE == PTTYPE_EPT
+<<<<<<< HEAD
 			if (kvm_arch_write_log_dirty(vcpu))
+=======
+			if (kvm_arch_write_log_dirty(vcpu, addr))
+>>>>>>> v4.14.187
 				return -EINVAL;
 #endif
 			pte |= PT_GUEST_DIRTY_MASK;
@@ -424,7 +432,12 @@ retry_walk:
 			(PT_GUEST_DIRTY_SHIFT - PT_GUEST_ACCESSED_SHIFT);
 
 	if (unlikely(!accessed_dirty)) {
+<<<<<<< HEAD
 		ret = FNAME(update_accessed_dirty_bits)(vcpu, mmu, walker, write_fault);
+=======
+		ret = FNAME(update_accessed_dirty_bits)(vcpu, mmu, walker,
+							addr, write_fault);
+>>>>>>> v4.14.187
 		if (unlikely(ret < 0))
 			goto error;
 		else if (ret)

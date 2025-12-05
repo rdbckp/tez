@@ -2324,6 +2324,7 @@ TRACE_EVENT(rdev_del_pmk,
 		  WIPHY_PR_ARG, NETDEV_PR_ARG, MAC_PR_ARG(aa))
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(rdev_external_auth,
 	    TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
 		     struct cfg80211_external_auth_params *params),
@@ -2347,6 +2348,8 @@ TRACE_EVENT(rdev_external_auth,
 		      __entry->bssid, __entry->ssid, __entry->status)
 );
 
+=======
+>>>>>>> v4.14.187
 /*************************************************************
  *	     cfg80211 exported functions traces		     *
  *************************************************************/

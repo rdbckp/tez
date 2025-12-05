@@ -285,6 +285,7 @@ Description:
 		Writing a "1" to this file enables the debug messages and
 		writing a "0" (default) to it disables them.  Reads from
 		this file return the current value.
+<<<<<<< HEAD
 
 What:		/sys/power/resume_offset
 Date:		April 2018
@@ -405,3 +406,5 @@ Contact:	Kalesh Singh <kaleshsingh96@gmail.com>
 Description:
 		The /sys/power/suspend_stats/last_failed_step file contains
 		the last failed step in the suspend/resume path.
+=======
+>>>>>>> v4.14.187

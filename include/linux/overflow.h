@@ -202,6 +202,7 @@
 
 #endif /* COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW */
 
+<<<<<<< HEAD
 /**
  * array_size() - Calculate size of 2-dimensional array.
  *
@@ -275,6 +276,8 @@ static inline __must_check size_t __ab_c_size(size_t n, size_t size, size_t c)
 		    sizeof(*(p)->member) + __must_be_array((p)->member),\
 		    sizeof(*(p)))
 
+=======
+>>>>>>> v4.14.187
 /** check_shl_overflow() - Calculate a left-shifted value and check overflow
  *
  * @a: Value to be shifted

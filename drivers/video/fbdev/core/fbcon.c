@@ -2591,8 +2591,12 @@ static int fbcon_copy_font(struct vc_data *vc, int con)
  *  is ever implemented.
  */
 
+<<<<<<< HEAD
 static int fbcon_set_font(struct vc_data *vc, struct console_font *font,
 			  unsigned int flags)
+=======
+static int fbcon_set_font(struct vc_data *vc, struct console_font *font, unsigned flags)
+>>>>>>> v4.14.187
 {
 	struct fb_info *info = registered_fb[con2fb_map[vc->vc_num]];
 	unsigned charcount = font->charcount;

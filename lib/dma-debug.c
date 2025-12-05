@@ -1492,26 +1492,36 @@ void debug_dma_alloc_coherent(struct device *dev, size_t size,
 	if (unlikely(virt == NULL))
 		return;
 
+<<<<<<< HEAD
 	/* handle vmalloc and linear addresses */
 	if (!is_vmalloc_addr(virt) && !virt_addr_valid(virt))
 		return;
 
+=======
+>>>>>>> v4.14.187
 	entry = dma_entry_alloc();
 	if (!entry)
 		return;
 
 	entry->type      = dma_debug_coherent;
 	entry->dev       = dev;
+<<<<<<< HEAD
+=======
+	entry->pfn	 = page_to_pfn(virt_to_page(virt));
+>>>>>>> v4.14.187
 	entry->offset	 = offset_in_page(virt);
 	entry->size      = size;
 	entry->dev_addr  = dma_addr;
 	entry->direction = DMA_BIDIRECTIONAL;
 
+<<<<<<< HEAD
 	if (is_vmalloc_addr(virt))
 		entry->pfn = vmalloc_to_pfn(virt);
 	else
 		entry->pfn = page_to_pfn(virt_to_page(virt));
 
+=======
+>>>>>>> v4.14.187
 	add_dma_entry(entry);
 }
 EXPORT_SYMBOL(debug_dma_alloc_coherent);
@@ -1522,12 +1532,17 @@ void debug_dma_free_coherent(struct device *dev, size_t size,
 	struct dma_debug_entry ref = {
 		.type           = dma_debug_coherent,
 		.dev            = dev,
+<<<<<<< HEAD
+=======
+		.pfn		= page_to_pfn(virt_to_page(virt)),
+>>>>>>> v4.14.187
 		.offset		= offset_in_page(virt),
 		.dev_addr       = addr,
 		.size           = size,
 		.direction      = DMA_BIDIRECTIONAL,
 	};
 
+<<<<<<< HEAD
 	/* handle vmalloc and linear addresses */
 	if (!is_vmalloc_addr(virt) && !virt_addr_valid(virt))
 		return;
@@ -1537,6 +1552,8 @@ void debug_dma_free_coherent(struct device *dev, size_t size,
 	else
 		ref.pfn = page_to_pfn(virt_to_page(virt));
 
+=======
+>>>>>>> v4.14.187
 	if (unlikely(dma_debug_disabled()))
 		return;
 

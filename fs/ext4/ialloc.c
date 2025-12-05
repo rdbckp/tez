@@ -350,7 +350,10 @@ out:
 		if (!fatal)
 			fatal = err;
 	} else {
+<<<<<<< HEAD
 		print_bh(sb, bitmap_bh, 0, EXT4_BLOCK_SIZE(sb));
+=======
+>>>>>>> v4.14.187
 		ext4_error(sb, "bit already cleared for inode %lu", ino);
 		if (gdp && !EXT4_MB_GRP_IBITMAP_CORRUPT(grp)) {
 			int count;
@@ -465,12 +468,18 @@ static int find_group_orlov(struct super_block *sb, struct inode *parent,
 		int ret = -1;
 
 		if (qstr) {
+<<<<<<< HEAD
 			if (ext4_hash_in_dirent(parent))
 				hinfo.hash_version = DX_HASH_SIPHASH;
 			else
 				hinfo.hash_version = DX_HASH_HALF_MD4;
 			hinfo.seed = sbi->s_hash_seed;
 			ext4fs_dirhash(parent, qstr->name, qstr->len, &hinfo);
+=======
+			hinfo.hash_version = DX_HASH_HALF_MD4;
+			hinfo.seed = sbi->s_hash_seed;
+			ext4fs_dirhash(qstr->name, qstr->len, &hinfo);
+>>>>>>> v4.14.187
 			grp = hinfo.hash;
 		} else
 			grp = prandom_u32();
@@ -745,6 +754,7 @@ next:
 }
 
 /*
+<<<<<<< HEAD
  * ext4_has_free_inodes()
  * @sbi: in-core super block structure.
  *
@@ -767,6 +777,8 @@ static inline int ext4_has_free_inodes(struct ext4_sb_info *sbi)
 }
 
 /*
+=======
+>>>>>>> v4.14.187
  * There are two policies for allocating an inode.  If the new inode is
  * a directory, then a forward search is made for a block group with both
  * free space and a low directory-to-inode ratio; if that fails, then of
@@ -808,7 +820,11 @@ struct inode *__ext4_new_inode(handle_t *handle, struct inode *dir,
 	if (unlikely(ext4_forced_shutdown(sbi)))
 		return ERR_PTR(-EIO);
 
+<<<<<<< HEAD
 	if ((IS_ENCRYPTED(dir) || DUMMY_ENCRYPTION_ENABLED(sbi)) &&
+=======
+	if ((ext4_encrypted_inode(dir) || DUMMY_ENCRYPTION_ENABLED(sbi)) &&
+>>>>>>> v4.14.187
 	    (S_ISREG(mode) || S_ISDIR(mode) || S_ISLNK(mode)) &&
 	    !(i_flags & EXT4_EA_INODE_FL)) {
 		err = fscrypt_get_encryption_info(dir);
@@ -894,11 +910,14 @@ struct inode *__ext4_new_inode(handle_t *handle, struct inode *dir,
 	if (err)
 		goto out;
 
+<<<<<<< HEAD
 	if (!ext4_has_free_inodes(sbi)) {
 		err = -ENOSPC;
 		goto out;
 	}
 
+=======
+>>>>>>> v4.14.187
 	if (!goal)
 		goal = sbi->s_inode_goal;
 
@@ -1234,11 +1253,14 @@ fail_drop:
 	clear_nlink(inode);
 	unlock_new_inode(inode);
 out:
+<<<<<<< HEAD
 	if (err == -ENOSPC) {
 		printk_ratelimited(KERN_INFO "Return ENOSPC: ifree=%d, inodes=%u\n",
 			(int) percpu_counter_read_positive(&sbi->s_freeinodes_counter),
 			le32_to_cpu(sbi->s_es->s_inodes_count));
 	}
+=======
+>>>>>>> v4.14.187
 	dquot_drop(inode);
 	inode->i_flags |= S_NOQUOTA;
 	iput(inode);

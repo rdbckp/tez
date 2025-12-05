@@ -26,7 +26,10 @@
 #include <linux/genalloc.h>
 #include <linux/dma-mapping.h>
 #include <linux/dma-contiguous.h>
+<<<<<<< HEAD
 #include <linux/iova.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/vmalloc.h>
 #include <linux/swiotlb.h>
 #include <linux/pci.h>
@@ -167,7 +170,11 @@ static void *__dma_alloc(struct device *dev, size_t size,
 	/* create a coherent mapping */
 	page = virt_to_page(ptr);
 	coherent_ptr = dma_common_contiguous_remap(page, size, VM_USERMAP,
+<<<<<<< HEAD
 						   prot, __builtin_return_address(0));
+=======
+						   prot, NULL);
+>>>>>>> v4.14.187
 	if (!coherent_ptr)
 		goto no_map;
 
@@ -924,6 +931,7 @@ void arch_teardown_dma_ops(struct device *dev)
 	dev->dma_ops = NULL;
 }
 
+<<<<<<< HEAD
 /*
  * let user pass the parameters including
  * 1. iommu device
@@ -978,6 +986,8 @@ void dma_free_coherent_fix_iova(struct device *dev, void *cpu_addr,
 }
 EXPORT_SYMBOL(dma_free_coherent_fix_iova);
 
+=======
+>>>>>>> v4.14.187
 #else
 
 static void __iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,

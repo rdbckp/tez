@@ -16,9 +16,15 @@
  *  size immediately following the kernel, we could build this into
  *  a binary blob, and concatenate the zImage using the cat command.
  */
+<<<<<<< HEAD
 		.section .start, "ax"
  		.type	_start, #function
  		.globl	_start
+=======
+		.section .start,#alloc,#execinstr
+		.type	_start, #function
+		.globl	_start
+>>>>>>> v4.14.187
 
 _start:		add	lr, pc, #-0x8		@ lr = current load addr
 		adr	r13, data

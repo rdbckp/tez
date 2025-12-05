@@ -142,7 +142,12 @@ static int is_stack(struct vm_area_struct *vma)
 /*
  * display a single VMA to a sequenced file
  */
+<<<<<<< HEAD
 static int nommu_vma_show(struct seq_file *m, struct vm_area_struct *vma)
+=======
+static int nommu_vma_show(struct seq_file *m, struct vm_area_struct *vma,
+			  int is_pid)
+>>>>>>> v4.14.187
 {
 	struct mm_struct *mm = vma->vm_mm;
 	unsigned long ino = 0;
@@ -188,11 +193,30 @@ static int nommu_vma_show(struct seq_file *m, struct vm_area_struct *vma)
 /*
  * display mapping lines for a particular process's /proc/pid/maps
  */
+<<<<<<< HEAD
 static int show_map(struct seq_file *m, void *_p)
 {
 	struct rb_node *p = _p;
 
 	return nommu_vma_show(m, rb_entry(p, struct vm_area_struct, vm_rb));
+=======
+static int show_map(struct seq_file *m, void *_p, int is_pid)
+{
+	struct rb_node *p = _p;
+
+	return nommu_vma_show(m, rb_entry(p, struct vm_area_struct, vm_rb),
+			      is_pid);
+}
+
+static int show_pid_map(struct seq_file *m, void *_p)
+{
+	return show_map(m, _p, 1);
+}
+
+static int show_tid_map(struct seq_file *m, void *_p)
+{
+	return show_map(m, _p, 0);
+>>>>>>> v4.14.187
 }
 
 static void *m_start(struct seq_file *m, loff_t *pos)
@@ -248,7 +272,18 @@ static const struct seq_operations proc_pid_maps_ops = {
 	.start	= m_start,
 	.next	= m_next,
 	.stop	= m_stop,
+<<<<<<< HEAD
 	.show	= show_map
+=======
+	.show	= show_pid_map
+};
+
+static const struct seq_operations proc_tid_maps_ops = {
+	.start	= m_start,
+	.next	= m_next,
+	.stop	= m_stop,
+	.show	= show_tid_map
+>>>>>>> v4.14.187
 };
 
 static int maps_open(struct inode *inode, struct file *file,
@@ -289,6 +324,14 @@ static int pid_maps_open(struct inode *inode, struct file *file)
 	return maps_open(inode, file, &proc_pid_maps_ops);
 }
 
+<<<<<<< HEAD
+=======
+static int tid_maps_open(struct inode *inode, struct file *file)
+{
+	return maps_open(inode, file, &proc_tid_maps_ops);
+}
+
+>>>>>>> v4.14.187
 const struct file_operations proc_pid_maps_operations = {
 	.open		= pid_maps_open,
 	.read		= seq_read,
@@ -296,3 +339,13 @@ const struct file_operations proc_pid_maps_operations = {
 	.release	= map_release,
 };
 
+<<<<<<< HEAD
+=======
+const struct file_operations proc_tid_maps_operations = {
+	.open		= tid_maps_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= map_release,
+};
+
+>>>>>>> v4.14.187

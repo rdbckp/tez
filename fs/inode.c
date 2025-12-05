@@ -11,7 +11,10 @@
 #include <linux/security.h>
 #include <linux/cdev.h>
 #include <linux/bootmem.h>
+<<<<<<< HEAD
 #include <linux/fscrypt.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/fsnotify.h>
 #include <linux/mount.h>
 #include <linux/posix_acl.h>
@@ -1803,7 +1806,11 @@ int dentry_needs_remove_privs(struct dentry *dentry)
 	return mask;
 }
 
+<<<<<<< HEAD
 static int __remove_privs(struct vfsmount *mnt, struct dentry *dentry, int kill)
+=======
+static int __remove_privs(struct dentry *dentry, int kill)
+>>>>>>> v4.14.187
 {
 	struct iattr newattrs;
 
@@ -1812,7 +1819,11 @@ static int __remove_privs(struct vfsmount *mnt, struct dentry *dentry, int kill)
 	 * Note we call this on write, so notify_change will not
 	 * encounter any conflicting delegations:
 	 */
+<<<<<<< HEAD
 	return notify_change2(mnt, dentry, &newattrs, NULL);
+=======
+	return notify_change(dentry, &newattrs, NULL);
+>>>>>>> v4.14.187
 }
 
 /*
@@ -1839,7 +1850,11 @@ int file_remove_privs(struct file *file)
 	if (kill < 0)
 		return kill;
 	if (kill)
+<<<<<<< HEAD
 		error = __remove_privs(file->f_path.mnt, dentry, kill);
+=======
+		error = __remove_privs(dentry, kill);
+>>>>>>> v4.14.187
 	if (!error)
 		inode_has_no_xattr(inode);
 
@@ -2146,6 +2161,7 @@ struct timespec current_time(struct inode *inode)
 	return timespec_trunc(now, inode->i_sb->s_time_gran);
 }
 EXPORT_SYMBOL(current_time);
+<<<<<<< HEAD
 
 /*
  * Generic function to check FS_IOC_SETFLAGS values and reject any invalid
@@ -2232,3 +2248,5 @@ int vfs_ioc_fssetxattr_check(struct inode *inode, const struct fsxattr *old_fa,
 	return 0;
 }
 EXPORT_SYMBOL(vfs_ioc_fssetxattr_check);
+=======
+>>>>>>> v4.14.187

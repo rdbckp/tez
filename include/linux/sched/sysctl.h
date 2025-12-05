@@ -21,6 +21,7 @@ enum { sysctl_hung_task_timeout_secs = 0 };
 
 extern unsigned int sysctl_sched_latency;
 extern unsigned int sysctl_sched_min_granularity;
+<<<<<<< HEAD
 extern unsigned int sysctl_sched_sync_hint_enable;
 extern unsigned int sysctl_sched_cstate_aware;
 extern unsigned int sysctl_sched_wakeup_granularity;
@@ -36,6 +37,10 @@ extern unsigned int sysctl_sched_isolation_hint_enable;
 #endif
 
 extern unsigned int sysctl_sched_rotation_enable;
+=======
+extern unsigned int sysctl_sched_wakeup_granularity;
+extern unsigned int sysctl_sched_child_runs_first;
+>>>>>>> v4.14.187
 
 enum sched_tunable_scaling {
 	SCHED_TUNABLESCALING_NONE,
@@ -69,15 +74,19 @@ int sched_proc_update_handler(struct ctl_table *table, int write,
 extern unsigned int sysctl_sched_rt_period;
 extern int sysctl_sched_rt_runtime;
 
+<<<<<<< HEAD
 #ifdef CONFIG_UCLAMP_TASK
 extern unsigned int sysctl_sched_uclamp_util_min;
 extern unsigned int sysctl_sched_uclamp_util_max;
 #endif
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_CFS_BANDWIDTH
 extern unsigned int sysctl_sched_cfs_bandwidth_slice;
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_TUNE
 extern int stune_task_threshold;
 extern int sched_stune_task_threshold_handler(struct ctl_table *table,
@@ -85,6 +94,8 @@ extern int sched_stune_task_threshold_handler(struct ctl_table *table,
 					size_t *length, loff_t *ppos);
 #endif
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_SCHED_AUTOGROUP
 extern unsigned int sysctl_sched_autogroup_enabled;
 #endif
@@ -100,12 +111,15 @@ extern int sched_rt_handler(struct ctl_table *table, int write,
 		void __user *buffer, size_t *lenp,
 		loff_t *ppos);
 
+<<<<<<< HEAD
 #ifdef CONFIG_UCLAMP_TASK
 extern int sched_uclamp_handler(struct ctl_table *table, int write,
 				void __user *buffer, size_t *lenp,
 				loff_t *ppos);
 #endif
 
+=======
+>>>>>>> v4.14.187
 extern int sysctl_numa_balancing(struct ctl_table *table, int write,
 				 void __user *buffer, size_t *lenp,
 				 loff_t *ppos);

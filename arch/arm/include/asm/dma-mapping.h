@@ -9,15 +9,21 @@
 #include <linux/dma-debug.h>
 
 #include <asm/memory.h>
+<<<<<<< HEAD
 #include <asm/dma-iommu.h>
+=======
+>>>>>>> v4.14.187
 
 #include <xen/xen.h>
 #include <asm/xen/hypervisor.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_BOUNCING_CHECK
 #include "../../../../drivers/misc/mediatek/include/mt-plat/aee.h"
 #endif
 
+=======
+>>>>>>> v4.14.187
 extern const struct dma_map_ops arm_dma_ops;
 extern const struct dma_map_ops arm_coherent_dma_ops;
 
@@ -130,16 +136,22 @@ static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
 {
 	u64 limit, mask;
 
+<<<<<<< HEAD
 	if (!dev->dma_mask) {
 #ifdef CONFIG_MTK_BOUNCING_CHECK
 		aee_kernel_warning("Bounce Buffering", "NULL dma_mask");
 #endif
 		return 0;
 	}
+=======
+	if (!dev->dma_mask)
+		return 0;
+>>>>>>> v4.14.187
 
 	mask = *dev->dma_mask;
 
 	limit = (mask + 1) & ~mask;
+<<<<<<< HEAD
 	if (limit && size > limit) {
 #ifdef CONFIG_MTK_BOUNCING_CHECK
 		aee_kernel_warning("Bounce Buffering",
@@ -157,6 +169,13 @@ static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
 #endif
 		return 0;
 	}
+=======
+	if (limit && size > limit)
+		return 0;
+
+	if ((addr | (addr + size - 1)) & ~mask)
+		return 0;
+>>>>>>> v4.14.187
 
 	return 1;
 }
@@ -274,6 +293,7 @@ extern int arm_dma_get_sgtable(struct device *dev, struct sg_table *sgt,
 		void *cpu_addr, dma_addr_t dma_addr, size_t size,
 		unsigned long attrs);
 
+<<<<<<< HEAD
 /*
  * For reserve iova regions
  */
@@ -295,5 +315,7 @@ extern void dma_free_coherent_fix_iova(struct device *dev, void *cpu_addr,
 				dma_addr_t dma_addr, size_t size);
 
 
+=======
+>>>>>>> v4.14.187
 #endif /* __KERNEL__ */
 #endif

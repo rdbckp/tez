@@ -395,9 +395,12 @@ struct regulator_config {
 	struct device_node *of_node;
 	struct regmap *regmap;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_PM
 	bool skip_gpio_request;
 #endif
+=======
+>>>>>>> v4.14.187
 	bool ena_gpio_initialized;
 	int ena_gpio;
 	unsigned int ena_gpio_invert:1;

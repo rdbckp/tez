@@ -1,8 +1,13 @@
 /*
  * Copyright (c) 2016 MediaTek Inc.
  * Author: Daniel Hsiao <daniel.hsiao@mediatek.com>
+<<<<<<< HEAD
  *      Jungchang Tsao <jungchang.tsao@mediatek.com>
  *      Tiffany Lin <tiffany.lin@mediatek.com>
+=======
+ *	Jungchang Tsao <jungchang.tsao@mediatek.com>
+ *	Tiffany Lin <tiffany.lin@mediatek.com>
+>>>>>>> v4.14.187
  *
  * This program is free software; you can redistribute it and/or
  * modify
@@ -25,7 +30,11 @@
 struct venc_common_if {
 	/**
 	 * (*init)() - initialize driver
+<<<<<<< HEAD
 	 * @ctx:        [in] mtk v4l2 context
+=======
+	 * @ctx:	[in] mtk v4l2 context
+>>>>>>> v4.14.187
 	 * @handle: [out] driver handle
 	 */
 	int (*init)(struct mtk_vcodec_ctx *ctx, unsigned long *handle);
@@ -39,6 +48,7 @@ struct venc_common_if {
 	 * @result: [out] encode result
 	 */
 	int (*encode)(unsigned long handle, enum venc_start_opt opt,
+<<<<<<< HEAD
 				  struct venc_frm_buf *frm_buf,
 				  struct mtk_vcodec_mem *bs_buf,
 				  struct venc_done_result *result);
@@ -51,6 +61,11 @@ struct venc_common_if {
 	 */
 	int (*get_param)(unsigned long handle, enum venc_get_param_type type,
 					 void *out);
+=======
+		      struct venc_frm_buf *frm_buf,
+		      struct mtk_vcodec_mem *bs_buf,
+		      struct venc_done_result *result);
+>>>>>>> v4.14.187
 
 	/**
 	 * (*set_param)() - set driver's parameter
@@ -59,7 +74,11 @@ struct venc_common_if {
 	 * @in: [in] buffer to store the parameter
 	 */
 	int (*set_param)(unsigned long handle, enum venc_set_param_type type,
+<<<<<<< HEAD
 					 struct venc_enc_param *in);
+=======
+			 struct venc_enc_param *in);
+>>>>>>> v4.14.187
 
 	/**
 	 * (*deinit)() - deinitialize driver.

@@ -18,12 +18,16 @@
 
 #include <linux/platform_device.h>
 #include <linux/videodev2.h>
+<<<<<<< HEAD
 #include <linux/semaphore.h>
+=======
+>>>>>>> v4.14.187
 #include <media/v4l2-ctrls.h>
 #include <media/v4l2-device.h>
 #include <media/v4l2-ioctl.h>
 #include <media/videobuf2-core.h>
 #include "mtk_vcodec_util.h"
+<<<<<<< HEAD
 #include "vcodec_ipi_msg.h"
 #include "mtk_vcodec_pm.h"
 
@@ -45,13 +49,53 @@
 #define WAIT_INTR_TIMEOUT_MS    500
 #define SUSPEND_TIMEOUT_CNT     5000
 #define MTK_MAX_CTRLS_HINT      64
+=======
+
+#define MTK_VCODEC_DRV_NAME	"mtk_vcodec_drv"
+#define MTK_VCODEC_DEC_NAME	"mtk-vcodec-dec"
+#define MTK_VCODEC_ENC_NAME	"mtk-vcodec-enc"
+#define MTK_PLATFORM_STR	"platform:mt8173"
+
+#define MTK_VCODEC_MAX_PLANES	3
+#define MTK_V4L2_BENCHMARK	0
+#define WAIT_INTR_TIMEOUT_MS	1000
+
+/**
+ * enum mtk_hw_reg_idx - MTK hw register base index
+ */
+enum mtk_hw_reg_idx {
+	VDEC_SYS,
+	VDEC_MISC,
+	VDEC_LD,
+	VDEC_TOP,
+	VDEC_CM,
+	VDEC_AD,
+	VDEC_AV,
+	VDEC_PP,
+	VDEC_HWD,
+	VDEC_HWQ,
+	VDEC_HWB,
+	VDEC_HWG,
+	NUM_MAX_VDEC_REG_BASE,
+	/* h264 encoder */
+	VENC_SYS = NUM_MAX_VDEC_REG_BASE,
+	/* vp8 encoder */
+	VENC_LT_SYS,
+	NUM_MAX_VCODEC_REG_BASE
+};
+>>>>>>> v4.14.187
 
 /**
  * enum mtk_instance_type - The type of an MTK Vcodec instance.
  */
 enum mtk_instance_type {
+<<<<<<< HEAD
 	MTK_INST_DECODER                = 0,
 	MTK_INST_ENCODER                = 1,
+=======
+	MTK_INST_DECODER		= 0,
+	MTK_INST_ENCODER		= 1,
+>>>>>>> v4.14.187
 };
 
 /**
@@ -59,7 +103,11 @@ enum mtk_instance_type {
  * @MTK_STATE_FREE - default state when instance is created
  * @MTK_STATE_INIT - vcodec instance is initialized
  * @MTK_STATE_HEADER - vdec had sps/pps header parsed or venc
+<<<<<<< HEAD
  *                      had sps/pps header encoded
+=======
+ *			had sps/pps header encoded
+>>>>>>> v4.14.187
  * @MTK_STATE_FLUSH - vdec is flushing. Only used by decoder
  * @MTK_STATE_ABORT - vcodec should be aborted
  */
@@ -81,6 +129,7 @@ enum mtk_encode_param {
 	MTK_ENCODE_PARAM_INTRA_PERIOD = (1 << 2),
 	MTK_ENCODE_PARAM_FORCE_INTRA = (1 << 3),
 	MTK_ENCODE_PARAM_GOP_SIZE = (1 << 4),
+<<<<<<< HEAD
 	MTK_ENCODE_PARAM_SCENARIO = (1 << 5),
 	MTK_ENCODE_PARAM_NONREFP = (1 << 6),
 	MTK_ENCODE_PARAM_DETECTED_FRAMERATE = (1 << 7),
@@ -127,6 +176,32 @@ enum venc_yuv_fmt {
 	VENC_YUV_FORMAT_P010 = 26,
 	VENC_YUV_FORMAT_NV12_AFBC = 27,
 	VENC_YUV_FORMAT_NV12_10B_AFBC = 28,
+=======
+};
+
+enum mtk_fmt_type {
+	MTK_FMT_DEC = 0,
+	MTK_FMT_ENC = 1,
+	MTK_FMT_FRAME = 2,
+};
+
+/**
+ * struct mtk_video_fmt - Structure used to store information about pixelformats
+ */
+struct mtk_video_fmt {
+	u32	fourcc;
+	enum mtk_fmt_type	type;
+	u32	num_planes;
+};
+
+/**
+ * struct mtk_codec_framesizes - Structure used to store information about
+ *							framesizes
+ */
+struct mtk_codec_framesizes {
+	u32	fourcc;
+	struct	v4l2_frmsize_stepwise	stepwise;
+>>>>>>> v4.14.187
 };
 
 /**
@@ -141,6 +216,7 @@ enum mtk_q_type {
  * struct mtk_q_data - Structure used to store information about queue
  */
 struct mtk_q_data {
+<<<<<<< HEAD
 	unsigned int    visible_width;
 	unsigned int    visible_height;
 	unsigned int    coded_width;
@@ -187,6 +263,16 @@ struct mtk_dec_params {
 	u64	timestamp;
 	unsigned int	total_frame_bufq_count;
 	unsigned int	queued_frame_buf_count;
+=======
+	unsigned int	visible_width;
+	unsigned int	visible_height;
+	unsigned int	coded_width;
+	unsigned int	coded_height;
+	enum v4l2_field	field;
+	unsigned int	bytesperline[MTK_VCODEC_MAX_PLANES];
+	unsigned int	sizeimage[MTK_VCODEC_MAX_PLANES];
+	struct mtk_video_fmt	*fmt;
+>>>>>>> v4.14.187
 };
 
 /**
@@ -196,6 +282,7 @@ struct mtk_dec_params {
  * @rc_frame: frame based rate control
  * @rc_mb: macroblock based rate control
  * @seq_hdr_mode: H.264 sequence header is encoded separately or joined
+<<<<<<< HEAD
  *                with the first frame
  * @intra_period: I frame period
  * @gop_size: group of picture size, it's used as the intra frame period
@@ -203,12 +290,22 @@ struct mtk_dec_params {
  *                 framerate_denom=1 menas FPS is 30
  * @framerate_denom: frame rate denominator. ex: framerate_num=30 and
  *                   framerate_denom=1 menas FPS is 30
+=======
+ *		  with the first frame
+ * @intra_period: I frame period
+ * @gop_size: group of picture size, it's used as the intra frame period
+ * @framerate_num: frame rate numerator. ex: framerate_num=30 and
+ *		   framerate_denom=1 menas FPS is 30
+ * @framerate_denom: frame rate denominator. ex: framerate_num=30 and
+ *		     framerate_denom=1 menas FPS is 30
+>>>>>>> v4.14.187
  * @h264_max_qp: Max value for H.264 quantization parameter
  * @h264_profile: V4L2 defined H.264 profile
  * @h264_level: V4L2 defined H.264 level
  * @force_intra: force/insert intra frame
  */
 struct mtk_enc_params {
+<<<<<<< HEAD
 	unsigned int    bitrate;
 	unsigned int    num_b_frame;
 	unsigned int    rc_frame;
@@ -310,6 +407,70 @@ struct venc_frm_buf {
 	bool has_meta;
 	struct dma_buf *meta_dma;
 	dma_addr_t meta_addr;
+=======
+	unsigned int	bitrate;
+	unsigned int	num_b_frame;
+	unsigned int	rc_frame;
+	unsigned int	rc_mb;
+	unsigned int	seq_hdr_mode;
+	unsigned int	intra_period;
+	unsigned int	gop_size;
+	unsigned int	framerate_num;
+	unsigned int	framerate_denom;
+	unsigned int	h264_max_qp;
+	unsigned int	h264_profile;
+	unsigned int	h264_level;
+	unsigned int	force_intra;
+};
+
+/**
+ * struct mtk_vcodec_pm - Power management data structure
+ */
+struct mtk_vcodec_pm {
+	struct clk	*vdec_bus_clk_src;
+	struct clk	*vencpll;
+
+	struct clk	*vcodecpll;
+	struct clk	*univpll_d2;
+	struct clk	*clk_cci400_sel;
+	struct clk	*vdecpll;
+	struct clk	*vdec_sel;
+	struct clk	*vencpll_d2;
+	struct clk	*venc_sel;
+	struct clk	*univpll1_d2;
+	struct clk	*venc_lt_sel;
+	struct device	*larbvdec;
+	struct device	*larbvenc;
+	struct device	*larbvenclt;
+	struct device	*dev;
+	struct mtk_vcodec_dev	*mtkdev;
+};
+
+/**
+ * struct vdec_pic_info  - picture size information
+ * @pic_w: picture width
+ * @pic_h: picture height
+ * @buf_w: picture buffer width (64 aligned up from pic_w)
+ * @buf_h: picture buffer heiht (64 aligned up from pic_h)
+ * @y_bs_sz: Y bitstream size
+ * @c_bs_sz: CbCr bitstream size
+ * @y_len_sz: additional size required to store decompress information for y
+ *		plane
+ * @c_len_sz: additional size required to store decompress information for cbcr
+ *		plane
+ * E.g. suppose picture size is 176x144,
+ *      buffer size will be aligned to 176x160.
+ */
+struct vdec_pic_info {
+	unsigned int pic_w;
+	unsigned int pic_h;
+	unsigned int buf_w;
+	unsigned int buf_h;
+	unsigned int y_bs_sz;
+	unsigned int c_bs_sz;
+	unsigned int y_len_sz;
+	unsigned int c_len_sz;
+>>>>>>> v4.14.187
 };
 
 /**
@@ -321,11 +482,17 @@ struct venc_frm_buf {
  * @fh: struct v4l2_fh
  * @m2m_ctx: pointer to the v4l2_m2m_ctx of the context
  * @q_data: store information of input and output queue
+<<<<<<< HEAD
  *          of the context
  * @id: index of the context that this structure describes
  * @state: state of the context
  * @dec_param_change: indicate decode parameter type
  * @dec_params: decoding parameters
+=======
+ *	    of the context
+ * @id: index of the context that this structure describes
+ * @state: state of the context
+>>>>>>> v4.14.187
  * @param_change: indicate encode parameter type
  * @enc_params: encoding parameters
  * @dec_if: hooked decoder driver interface
@@ -337,24 +504,36 @@ struct venc_frm_buf {
  * @int_cond: variable used by the waitqueue
  * @int_type: type of the last interrupt
  * @queue: waitqueue that can be used to wait for this context to
+<<<<<<< HEAD
  *         finish
+=======
+ *	   finish
+>>>>>>> v4.14.187
  * @irq_status: irq status
  *
  * @ctrl_hdl: handler for v4l2 framework
  * @decode_work: worker for the decoding
  * @encode_work: worker for the encoding
  * @last_decoded_picinfo: pic information get from latest decode
+<<<<<<< HEAD
  * @dec_flush_buf: a fake size-1 output buffer that indicates flush
  * @enc_flush_buf: a fake size-1 output buffer that indicates flush
  * @oal_vcodec: 1: oal encoder, 0:non-oal encoder
  * @pend_src_buf: pending source buffer
+=======
+ * @empty_flush_buf: a fake size-0 capture buffer that indicates flush
+>>>>>>> v4.14.187
  *
  * @colorspace: enum v4l2_colorspace; supplemental to pixelformat
  * @ycbcr_enc: enum v4l2_ycbcr_encoding, Y'CbCr encoding
  * @quantization: enum v4l2_quantization, colorspace quantization
  * @xfer_func: enum v4l2_xfer_func, colorspace transfer function
  * @lock: protect variables accessed by V4L2 threads and worker thread such as
+<<<<<<< HEAD
  *        mtk_video_dec_buf.
+=======
+ *	  mtk_video_dec_buf.
+>>>>>>> v4.14.187
  */
 struct mtk_vcodec_ctx {
 	enum mtk_instance_type type;
@@ -366,8 +545,11 @@ struct mtk_vcodec_ctx {
 	struct mtk_q_data q_data[2];
 	int id;
 	enum mtk_instance_state state;
+<<<<<<< HEAD
 	enum mtk_dec_param dec_param_change;
 	struct mtk_dec_params dec_params;
+=======
+>>>>>>> v4.14.187
 	enum mtk_encode_param param_change;
 	struct mtk_enc_params enc_params;
 
@@ -377,6 +559,7 @@ struct mtk_vcodec_ctx {
 
 	struct vdec_pic_info picinfo;
 	int dpb_size;
+<<<<<<< HEAD
 	int last_dpb_size;
 	int is_hdr;
 	int last_is_hdr;
@@ -386,12 +569,19 @@ struct mtk_vcodec_ctx {
 	int int_cond[MTK_VDEC_HW_NUM];
 	int int_type;
 	wait_queue_head_t queue[MTK_VDEC_HW_NUM];
+=======
+
+	int int_cond;
+	int int_type;
+	wait_queue_head_t queue;
+>>>>>>> v4.14.187
 	unsigned int irq_status;
 
 	struct v4l2_ctrl_handler ctrl_hdl;
 	struct work_struct decode_work;
 	struct work_struct encode_work;
 	struct vdec_pic_info last_decoded_picinfo;
+<<<<<<< HEAD
 	struct mtk_video_dec_buf *dec_flush_buf;
 	struct mtk_video_enc_buf *enc_flush_buf;
 	struct vb2_buffer *pend_src_buf;
@@ -403,6 +593,9 @@ struct mtk_vcodec_ctx {
 	int lock_abort;
 	int async_mode;
 	int oal_vcodec;
+=======
+	struct mtk_video_dec_buf *empty_flush_buf;
+>>>>>>> v4.14.187
 
 	enum v4l2_colorspace colorspace;
 	enum v4l2_ycbcr_encoding ycbcr_enc;
@@ -410,10 +603,15 @@ struct mtk_vcodec_ctx {
 	enum v4l2_xfer_func xfer_func;
 
 	int decoded_frame_cnt;
+<<<<<<< HEAD
 	struct mutex buf_lock;
 	struct mutex worker_lock;
 	struct slbc_data sram_data;
 	int use_slbc;
+=======
+	struct mutex lock;
+
+>>>>>>> v4.14.187
 };
 
 /**
@@ -425,7 +623,11 @@ struct mtk_vcodec_ctx {
  * @m2m_dev_dec: m2m device for decoder
  * @m2m_dev_enc: m2m device for encoder.
  * @plat_dev: platform device
+<<<<<<< HEAD
  * @vcu_plat_dev: mtk vcu platform device
+=======
+ * @vpu_plat_dev: mtk vpu platform device
+>>>>>>> v4.14.187
  * @ctx_list: list of struct mtk_vcodec_ctx
  * @irqlock: protect data access by irq handler and work thread
  * @curr_ctx: The context that is waiting for codec hardware
@@ -445,8 +647,13 @@ struct mtk_vcodec_ctx {
  * @enc_irq: h264 encoder irq resource
  * @enc_lt_irq: vp8 encoder irq resource
  *
+<<<<<<< HEAD
  * @dec_sem: decoder hw lock. Use sem for gce different thread lock unlock
  * @enc_sem: encoder hw lock. Use sem for gce different thread lock unlock
+=======
+ * @dec_mutex: decoder hardware lock
+ * @enc_mutex: encoder hardware lock.
+>>>>>>> v4.14.187
  *
  * @pm: power management control
  * @dec_capability: used to identify decode capability, ex: 4k
@@ -456,11 +663,15 @@ struct mtk_vcodec_dev {
 	struct v4l2_device v4l2_dev;
 	struct video_device *vfd_dec;
 	struct video_device *vfd_enc;
+<<<<<<< HEAD
 	struct iommu_domain *io_domain;
+=======
+>>>>>>> v4.14.187
 
 	struct v4l2_m2m_dev *m2m_dev_dec;
 	struct v4l2_m2m_dev *m2m_dev_enc;
 	struct platform_device *plat_dev;
+<<<<<<< HEAD
 	struct platform_device *vcu_plat_dev;
 	struct list_head ctx_list;
 	spinlock_t irqlock;
@@ -468,6 +679,13 @@ struct mtk_vcodec_dev {
 	struct mtk_vcodec_ctx *curr_enc_ctx[MTK_VENC_HW_NUM];
 	void __iomem *dec_reg_base[NUM_MAX_VDEC_REG_BASE];
 	void __iomem *enc_reg_base[NUM_MAX_VENC_REG_BASE];
+=======
+	struct platform_device *vpu_plat_dev;
+	struct list_head ctx_list;
+	spinlock_t irqlock;
+	struct mtk_vcodec_ctx *curr_ctx;
+	void __iomem *reg_base[NUM_MAX_VCODEC_REG_BASE];
+>>>>>>> v4.14.187
 
 	unsigned long id_counter;
 
@@ -478,6 +696,7 @@ struct mtk_vcodec_dev {
 	struct mutex dev_mutex;
 	wait_queue_head_t queue;
 
+<<<<<<< HEAD
 	int dec_irq[MTK_VDEC_HW_NUM];
 	int enc_irq;
 	int enc_lt_irq;
@@ -487,10 +706,19 @@ struct mtk_vcodec_dev {
 
 	struct mutex dec_dvfs_mutex;
 	struct mutex enc_dvfs_mutex;
+=======
+	int dec_irq;
+	int enc_irq;
+	int enc_lt_irq;
+
+	struct mutex dec_mutex;
+	struct mutex enc_mutex;
+>>>>>>> v4.14.187
 
 	struct mtk_vcodec_pm pm;
 	unsigned int dec_capability;
 	unsigned int enc_capability;
+<<<<<<< HEAD
 
 	struct notifier_block pm_notifier;
 	bool is_codec_suspending;
@@ -498,6 +726,8 @@ struct mtk_vcodec_dev {
 	int dec_cnt;
 	int enc_cnt;
 	enum venc_lock enc_hw_locked[MTK_VENC_HW_NUM];
+=======
+>>>>>>> v4.14.187
 };
 
 static inline struct mtk_vcodec_ctx *fh_to_ctx(struct v4l2_fh *fh)

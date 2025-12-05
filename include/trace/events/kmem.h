@@ -318,6 +318,7 @@ TRACE_EVENT(mm_page_alloc_extfrag,
 		__entry->change_ownership)
 );
 
+<<<<<<< HEAD
 DECLARE_EVENT_CLASS(ion_rbin,
 
 	TP_PROTO(const char *heap_name,
@@ -442,6 +443,8 @@ TRACE_EVENT(rss_stat,
 		__entry->member,
 		__entry->size)
 	);
+=======
+>>>>>>> v4.14.187
 #endif /* _TRACE_KMEM_H */
 
 /* This part must be outside protection */

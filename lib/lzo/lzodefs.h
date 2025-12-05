@@ -13,6 +13,7 @@
  */
 
 
+<<<<<<< HEAD
 /* Version
  * 0: original lzo version
  * 1: lzo with support for RLE
@@ -22,6 +23,11 @@
 #define COPY4(dst, src)	\
 		put_unaligned(get_unaligned((const u32 *)(src)), (u32 *)(dst))
 #if defined(CONFIG_X86_64) || defined(CONFIG_ARM64)
+=======
+#define COPY4(dst, src)	\
+		put_unaligned(get_unaligned((const u32 *)(src)), (u32 *)(dst))
+#if defined(__x86_64__)
+>>>>>>> v4.14.187
 #define COPY8(dst, src)	\
 		put_unaligned(get_unaligned((const u64 *)(src)), (u64 *)(dst))
 #else
@@ -31,6 +37,7 @@
 
 #if defined(__BIG_ENDIAN) && defined(__LITTLE_ENDIAN)
 #error "conflicting endian definitions"
+<<<<<<< HEAD
 #elif defined(CONFIG_X86_64) || defined(CONFIG_ARM64)
 #define LZO_USE_CTZ64	1
 #define LZO_USE_CTZ32	1
@@ -38,14 +45,26 @@
 #elif defined(CONFIG_X86) || defined(CONFIG_PPC)
 #define LZO_USE_CTZ32	1
 #elif defined(CONFIG_ARM) && (__LINUX_ARM_ARCH__ >= 5)
+=======
+#elif defined(__x86_64__)
+#define LZO_USE_CTZ64	1
+#define LZO_USE_CTZ32	1
+#elif defined(__i386__) || defined(__powerpc__)
+#define LZO_USE_CTZ32	1
+#elif defined(__arm__) && (__LINUX_ARM_ARCH__ >= 5)
+>>>>>>> v4.14.187
 #define LZO_USE_CTZ32	1
 #endif
 
 #define M1_MAX_OFFSET	0x0400
 #define M2_MAX_OFFSET	0x0800
 #define M3_MAX_OFFSET	0x4000
+<<<<<<< HEAD
 #define M4_MAX_OFFSET_V0	0xbfff
 #define M4_MAX_OFFSET_V1	0xbffe
+=======
+#define M4_MAX_OFFSET	0xbfff
+>>>>>>> v4.14.187
 
 #define M1_MIN_LEN	2
 #define M1_MAX_LEN	2
@@ -61,9 +80,12 @@
 #define M3_MARKER	32
 #define M4_MARKER	16
 
+<<<<<<< HEAD
 #define MIN_ZERO_RUN_LENGTH	4
 #define MAX_ZERO_RUN_LENGTH	(2047 + MIN_ZERO_RUN_LENGTH)
 
+=======
+>>>>>>> v4.14.187
 #define lzo_dict_t      unsigned short
 #define D_BITS		13
 #define D_SIZE		(1u << D_BITS)

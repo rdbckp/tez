@@ -46,6 +46,7 @@ extern "C" {
 #define DRM_VIRTGPU_TRANSFER_TO_HOST 0x07
 #define DRM_VIRTGPU_WAIT     0x08
 #define DRM_VIRTGPU_GET_CAPS  0x09
+<<<<<<< HEAD
 #define DRM_VIRTGPU_RESOURCE_CREATE_BLOB 0x0a
 
 #define VIRTGPU_EXECBUF_FENCE_FD_IN	0x01
@@ -54,6 +55,8 @@ extern "C" {
 		VIRTGPU_EXECBUF_FENCE_FD_IN |\
 		VIRTGPU_EXECBUF_FENCE_FD_OUT |\
 		0)
+=======
+>>>>>>> v4.14.187
 
 struct drm_virtgpu_map {
 	__u64 offset; /* use for mmap system call */
@@ -62,11 +65,16 @@ struct drm_virtgpu_map {
 };
 
 struct drm_virtgpu_execbuffer {
+<<<<<<< HEAD
 	__u32 flags;
+=======
+	__u32		flags;		/* for future use */
+>>>>>>> v4.14.187
 	__u32 size;
 	__u64 command; /* void* */
 	__u64 bo_handles;
 	__u32 num_bo_handles;
+<<<<<<< HEAD
 	__s32 fence_fd; /* in/out fence fd (see VIRTGPU_EXECBUF_FENCE_FD_IN/OUT) */
 };
 
@@ -75,6 +83,13 @@ struct drm_virtgpu_execbuffer {
 #define VIRTGPU_PARAM_CAPSET_QUERY_FIX 2 /* do we have the capset fix */
 #define VIRTGPU_PARAM_RESOURCE_BLOB 3 /* DRM_VIRTGPU_RESOURCE_CREATE_BLOB */
 #define VIRTGPU_PARAM_HOST_VISIBLE 4
+=======
+	__u32 pad;
+};
+
+#define VIRTGPU_PARAM_3D_FEATURES 1 /* do we have 3D features in the hw */
+#define VIRTGPU_PARAM_CAPSET_QUERY_FIX 2 /* do we have the capset fix */
+>>>>>>> v4.14.187
 
 struct drm_virtgpu_getparam {
 	__u64 param;
@@ -104,6 +119,7 @@ struct drm_virtgpu_resource_info {
 	__u32 bo_handle;
 	__u32 res_handle;
 	__u32 size;
+<<<<<<< HEAD
 	union {
 		__u32 stride;
 		__u32 strides[4]; /* strides[0] is accessible with stride. */
@@ -111,6 +127,9 @@ struct drm_virtgpu_resource_info {
 	__u32 num_planes;
 	__u32 offsets[4];
 	__u64 format_modifier;
+=======
+	__u32 stride;
+>>>>>>> v4.14.187
 };
 
 struct drm_virtgpu_3d_box {
@@ -150,6 +169,7 @@ struct drm_virtgpu_get_caps {
 	__u32 pad;
 };
 
+<<<<<<< HEAD
 struct drm_virtgpu_resource_create_blob {
 #define VIRTGPU_BLOB_MEM_GUEST              0x0001
 #define VIRTGPU_BLOB_MEM_HOST               0x0002
@@ -175,11 +195,17 @@ struct drm_virtgpu_resource_create_blob {
 	__u64 blob_id;
 };
 
+=======
+>>>>>>> v4.14.187
 #define DRM_IOCTL_VIRTGPU_MAP \
 	DRM_IOWR(DRM_COMMAND_BASE + DRM_VIRTGPU_MAP, struct drm_virtgpu_map)
 
 #define DRM_IOCTL_VIRTGPU_EXECBUFFER \
+<<<<<<< HEAD
 	DRM_IOWR(DRM_COMMAND_BASE + DRM_VIRTGPU_EXECBUFFER,\
+=======
+	DRM_IOW(DRM_COMMAND_BASE + DRM_VIRTGPU_EXECBUFFER,\
+>>>>>>> v4.14.187
 		struct drm_virtgpu_execbuffer)
 
 #define DRM_IOCTL_VIRTGPU_GETPARAM \
@@ -210,10 +236,13 @@ struct drm_virtgpu_resource_create_blob {
 	DRM_IOWR(DRM_COMMAND_BASE + DRM_VIRTGPU_GET_CAPS, \
 	struct drm_virtgpu_get_caps)
 
+<<<<<<< HEAD
 #define DRM_IOCTL_VIRTGPU_RESOURCE_CREATE_BLOB				\
 	DRM_IOWR(DRM_COMMAND_BASE + DRM_VIRTGPU_RESOURCE_CREATE_BLOB,	\
 		struct drm_virtgpu_resource_create_blob)
 
+=======
+>>>>>>> v4.14.187
 #if defined(__cplusplus)
 }
 #endif

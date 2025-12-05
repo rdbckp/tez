@@ -212,7 +212,11 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
 	}
 
 	/* Take note of the planned idle state. */
+<<<<<<< HEAD
 	sched_idle_set_state(target_state, index);
+=======
+	sched_idle_set_state(target_state);
+>>>>>>> v4.14.187
 
 	trace_cpu_idle_rcuidle(index, dev->cpu);
 	time_start = ns_to_ktime(local_clock());
@@ -226,7 +230,11 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
 	trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, dev->cpu);
 
 	/* The cpu is no longer idle or about to enter idle. */
+<<<<<<< HEAD
 	sched_idle_set_state(NULL, -1);
+=======
+	sched_idle_set_state(NULL);
+>>>>>>> v4.14.187
 
 	if (broadcast) {
 		if (WARN_ON_ONCE(!irqs_disabled()))
@@ -263,6 +271,7 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
  *
  * @drv: the cpuidle driver
  * @dev: the cpuidle device
+<<<<<<< HEAD
  * @stop_tick: indication on whether or not to stop the tick
  *
  * Returns the index of the idle state.  The return value must not be negative.
@@ -275,6 +284,14 @@ int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 		   bool *stop_tick)
 {
 	return cpuidle_curr_governor->select(drv, dev, stop_tick);
+=======
+ *
+ * Returns the index of the idle state.  The return value must not be negative.
+ */
+int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev)
+{
+	return cpuidle_curr_governor->select(drv, dev);
+>>>>>>> v4.14.187
 }
 
 /**

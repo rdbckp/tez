@@ -40,6 +40,7 @@ static int virtio_gpu_modeset = -1;
 MODULE_PARM_DESC(modeset, "Disable/Enable modesetting");
 module_param_named(modeset, virtio_gpu_modeset, int, 0400);
 
+<<<<<<< HEAD
 static void virtio_pci_kick_out_firmware_fb(struct pci_dev *pci_dev)
 {
 	struct apertures_struct *ap;
@@ -114,12 +115,17 @@ static int virtio_gpu_probe(struct virtio_device *vdev)
 	struct drm_device *dev;
 	int ret;
 
+=======
+static int virtio_gpu_probe(struct virtio_device *vdev)
+{
+>>>>>>> v4.14.187
 	if (vgacon_text_force() && virtio_gpu_modeset == -1)
 		return -EINVAL;
 
 	if (virtio_gpu_modeset == 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev = drm_dev_alloc(&driver, &vdev->dev);
 	if (IS_ERR(dev))
 		return PTR_ERR(dev);
@@ -144,14 +150,20 @@ static int virtio_gpu_probe(struct virtio_device *vdev)
 err_free:
 	drm_dev_unref(dev);
 	return ret;
+=======
+	return drm_virtio_init(&driver, vdev);
+>>>>>>> v4.14.187
 }
 
 static void virtio_gpu_remove(struct virtio_device *vdev)
 {
 	struct drm_device *dev = vdev->priv;
+<<<<<<< HEAD
 
 	drm_dev_unregister(dev);
 	virtio_gpu_deinit(dev);
+=======
+>>>>>>> v4.14.187
 	drm_put_dev(dev);
 }
 
@@ -177,9 +189,12 @@ static unsigned int features[] = {
 	 */
 	VIRTIO_GPU_F_VIRGL,
 #endif
+<<<<<<< HEAD
 	VIRTIO_GPU_F_EDID,
 	VIRTIO_GPU_F_RESOURCE_BLOB,
 	VIRTIO_GPU_F_HOST_VISIBLE,
+=======
+>>>>>>> v4.14.187
 };
 static struct virtio_driver virtio_gpu_driver = {
 	.feature_table = features,
@@ -213,8 +228,16 @@ static const struct file_operations virtio_gpu_driver_fops = {
 	.llseek = noop_llseek,
 };
 
+<<<<<<< HEAD
 static struct drm_driver driver = {
 	.driver_features = DRIVER_MODESET | DRIVER_GEM | DRIVER_PRIME | DRIVER_RENDER | DRIVER_ATOMIC,
+=======
+
+static struct drm_driver driver = {
+	.driver_features = DRIVER_MODESET | DRIVER_GEM | DRIVER_PRIME | DRIVER_RENDER | DRIVER_ATOMIC,
+	.load = virtio_gpu_driver_load,
+	.unload = virtio_gpu_driver_unload,
+>>>>>>> v4.14.187
 	.open = virtio_gpu_driver_open,
 	.postclose = virtio_gpu_driver_postclose,
 
@@ -228,6 +251,11 @@ static struct drm_driver driver = {
 	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
 	.gem_prime_export = drm_gem_prime_export,
 	.gem_prime_import = drm_gem_prime_import,
+<<<<<<< HEAD
+=======
+	.gem_prime_pin = virtgpu_gem_prime_pin,
+	.gem_prime_unpin = virtgpu_gem_prime_unpin,
+>>>>>>> v4.14.187
 	.gem_prime_get_sg_table = virtgpu_gem_prime_get_sg_table,
 	.gem_prime_import_sg_table = virtgpu_gem_prime_import_sg_table,
 	.gem_prime_vmap = virtgpu_gem_prime_vmap,

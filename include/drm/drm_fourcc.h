@@ -25,6 +25,7 @@
 #include <linux/types.h>
 #include <uapi/drm/drm_fourcc.h>
 
+<<<<<<< HEAD
 /*
  * DRM formats are little endian.  Define host endian variants for the
  * most common formats here, to reduce the #ifdefs needed in drivers.
@@ -47,6 +48,8 @@
 # define DRM_FORMAT_HOST_ARGB8888     DRM_FORMAT_ARGB8888
 #endif
 
+=======
+>>>>>>> v4.14.187
 struct drm_device;
 struct drm_mode_fb_cmd2;
 

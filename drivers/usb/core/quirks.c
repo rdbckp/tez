@@ -308,6 +308,7 @@ static const struct usb_device_id usb_quirk_list[] = {
 	/* novation SoundControl XL */
 	{ USB_DEVICE(0x1235, 0x0061), .driver_info = USB_QUIRK_RESET_RESUME },
 
+<<<<<<< HEAD
 	/* VIA 3.0 HUB (MPA HUB) */
 	{ USB_DEVICE(0x2109, 0x0817), .driver_info = USB_QUIRK_NO_LPM },
 
@@ -321,6 +322,8 @@ static const struct usb_device_id usb_quirk_list[] = {
 	{ USB_DEVICE(0x04e8, 0xa04f), .driver_info = USB_QUIRK_RESET },
 	{ USB_DEVICE(0x04e8, 0xa057), .driver_info = USB_QUIRK_RESET },
 
+=======
+>>>>>>> v4.14.187
 	{ }  /* terminating entry must be last */
 };
 
@@ -446,6 +449,7 @@ void usb_detect_interface_quirks(struct usb_device *udev)
 		quirks);
 	udev->quirks |= quirks;
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_USB_INTERFACE_LPM_LIST
 static const struct usb_device_id usb_interface_list_lpm[] = {
@@ -474,3 +478,5 @@ int usb_detect_interface_lpm(struct usb_device *udev)
 	return l1_enable;
 }
 #endif
+=======
+>>>>>>> v4.14.187

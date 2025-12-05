@@ -9,19 +9,27 @@
 #include <linux/slab.h>
 #include <linux/export.h>
 #include <linux/namei.h>
+<<<<<<< HEAD
 #include <linux/sched/xacct.h>
+=======
+#include <linux/sched.h>
+>>>>>>> v4.14.187
 #include <linux/writeback.h>
 #include <linux/syscalls.h>
 #include <linux/linkage.h>
 #include <linux/pagemap.h>
 #include <linux/quotaops.h>
 #include <linux/backing-dev.h>
+<<<<<<< HEAD
 #include <linux/version.h>
+=======
+>>>>>>> v4.14.187
 #include "internal.h"
 
 #define VALID_FLAGS (SYNC_FILE_RANGE_WAIT_BEFORE|SYNC_FILE_RANGE_WRITE| \
 			SYNC_FILE_RANGE_WAIT_AFTER)
 
+<<<<<<< HEAD
 /* Interruptible sync for Samsung Mobile Device */
 /* @fs.sec -- 30cbf83784121f91517b701d9706bccd -- */
 
@@ -283,6 +291,8 @@ int intr_sync(int *sync_ret)
 }
 #endif /* CONFIG_INTERRUPTIBLE_SYNC */
 
+=======
+>>>>>>> v4.14.187
 /*
  * Do the filesystem syncing work. For simple filesystems
  * writeback_inodes_sb(sb) just dirties buffers with inodes so we have to
@@ -481,7 +491,10 @@ static int do_fsync(unsigned int fd, int datasync)
 	if (f.file) {
 		ret = vfs_fsync(f.file, datasync);
 		fdput(f);
+<<<<<<< HEAD
 		inc_syscfs(current);
+=======
+>>>>>>> v4.14.187
 	}
 	return ret;
 }

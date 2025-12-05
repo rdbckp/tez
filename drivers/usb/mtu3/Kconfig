@@ -3,7 +3,11 @@
 config USB_MTU3
 	tristate "MediaTek USB3 Dual Role controller"
 	depends on EXTCON && (USB || USB_GADGET) && HAS_DMA
+<<<<<<< HEAD
 	depends on ARCH_MEDIATEK || COMPILE_TEST || MEDIATEK_SOLUTION
+=======
+	depends on ARCH_MEDIATEK || COMPILE_TEST
+>>>>>>> v4.14.187
 	depends on EXTCON || !EXTCON
 	select USB_XHCI_MTK if USB_SUPPORT && USB_XHCI_HCD
 	help
@@ -47,6 +51,7 @@ config USB_MTU3_DUAL_ROLE
 
 endchoice
 
+<<<<<<< HEAD
 config USB_MTU3_PLAT_PHONE
 	bool "MTU3 Phone mode"
 	depends on ((USB=y || USB=USB_MTU3) && (USB_GADGET=y || USB_GADGET=USB_MTU3))
@@ -56,6 +61,8 @@ config USB_MTU3_PLAT_PHONE
 	  This support on phone project.
 	  If yes , please choose y.
 
+=======
+>>>>>>> v4.14.187
 config USB_MTU3_DEBUG
 	bool "Enable Debugging Messages"
 	help

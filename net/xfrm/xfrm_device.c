@@ -80,8 +80,12 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
 		}
 
 		dst = __xfrm_dst_lookup(net, 0, 0, saddr, daddr,
+<<<<<<< HEAD
 					x->props.family,
 					xfrm_smark_get(0, x));
+=======
+					x->props.family, x->props.output_mark);
+>>>>>>> v4.14.187
 		if (IS_ERR(dst))
 			return 0;
 

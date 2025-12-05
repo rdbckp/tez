@@ -13,6 +13,7 @@
 #include <linux/dcache.h>
 #include <linux/magic.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <linux/refcount.h>
 #include <linux/workqueue.h>
 #include "flask.h"
@@ -22,6 +23,10 @@
 #include <linux/kdp.h>
 #endif
 
+=======
+#include "flask.h"
+
+>>>>>>> v4.14.187
 #define SECSID_NULL			0x00000000 /* unspecified SID */
 #define SECSID_WILD			0xffffffff /* wildcard SID */
 #define SECCLASS_NULL			0x0000 /* no class */
@@ -86,7 +91,18 @@ enum {
 };
 #define POLICYDB_CAPABILITY_MAX (__POLICYDB_CAPABILITY_MAX - 1)
 
+<<<<<<< HEAD
 extern const char *selinux_policycap_names[__POLICYDB_CAPABILITY_MAX];
+=======
+extern char *selinux_policycap_names[__POLICYDB_CAPABILITY_MAX];
+
+extern int selinux_policycap_netpeer;
+extern int selinux_policycap_openperm;
+extern int selinux_policycap_extsockclass;
+extern int selinux_policycap_alwaysnetwork;
+extern int selinux_policycap_cgroupseclabel;
+extern int selinux_policycap_nnp_nosuid_transition;
+>>>>>>> v4.14.187
 
 /*
  * type_datum properties
@@ -98,6 +114,7 @@ extern const char *selinux_policycap_names[__POLICYDB_CAPABILITY_MAX];
 /* limitation of boundary depth  */
 #define POLICYDB_BOUNDS_MAXDEPTH	4
 
+<<<<<<< HEAD
 struct selinux_avc;
 struct selinux_ss;
 
@@ -211,6 +228,15 @@ size_t security_policydb_len(struct selinux_state *state);
 
 int security_policycap_supported(struct selinux_state *state,
 				 unsigned int req_cap);
+=======
+int security_mls_enabled(void);
+
+int security_load_policy(void *data, size_t len);
+int security_read_policy(void **data, size_t *len);
+size_t security_policydb_len(void);
+
+int security_policycap_supported(unsigned int req_cap);
+>>>>>>> v4.14.187
 
 #define SEL_VEC_MAX 32
 struct av_decision {
@@ -245,6 +271,7 @@ struct extended_perms {
 };
 
 /* definitions of av_decision.flags */
+<<<<<<< HEAD
 // [ SEC_SELINUX_PORTING_COMMON
 #ifdef CONFIG_ALWAYS_ENFORCE
 #define AVD_FLAGS_PERMISSIVE	0x0000
@@ -347,6 +374,80 @@ int security_get_permissions(struct selinux_state *state,
 			     char *class, char ***perms, int *nperms);
 int security_get_reject_unknown(struct selinux_state *state);
 int security_get_allow_unknown(struct selinux_state *state);
+=======
+#define AVD_FLAGS_PERMISSIVE	0x0001
+
+void security_compute_av(u32 ssid, u32 tsid,
+			 u16 tclass, struct av_decision *avd,
+			 struct extended_perms *xperms);
+
+void security_compute_xperms_decision(u32 ssid, u32 tsid, u16 tclass,
+			 u8 driver, struct extended_perms_decision *xpermd);
+
+void security_compute_av_user(u32 ssid, u32 tsid,
+			     u16 tclass, struct av_decision *avd);
+
+int security_transition_sid(u32 ssid, u32 tsid, u16 tclass,
+			    const struct qstr *qstr, u32 *out_sid);
+
+int security_transition_sid_user(u32 ssid, u32 tsid, u16 tclass,
+				 const char *objname, u32 *out_sid);
+
+int security_member_sid(u32 ssid, u32 tsid,
+	u16 tclass, u32 *out_sid);
+
+int security_change_sid(u32 ssid, u32 tsid,
+	u16 tclass, u32 *out_sid);
+
+int security_sid_to_context(u32 sid, char **scontext,
+	u32 *scontext_len);
+
+int security_sid_to_context_force(u32 sid, char **scontext, u32 *scontext_len);
+
+int security_context_to_sid(const char *scontext, u32 scontext_len,
+			    u32 *out_sid, gfp_t gfp);
+
+int security_context_str_to_sid(const char *scontext, u32 *out_sid, gfp_t gfp);
+
+int security_context_to_sid_default(const char *scontext, u32 scontext_len,
+				    u32 *out_sid, u32 def_sid, gfp_t gfp_flags);
+
+int security_context_to_sid_force(const char *scontext, u32 scontext_len,
+				  u32 *sid);
+
+int security_get_user_sids(u32 callsid, char *username,
+			   u32 **sids, u32 *nel);
+
+int security_port_sid(u8 protocol, u16 port, u32 *out_sid);
+
+int security_ib_pkey_sid(u64 subnet_prefix, u16 pkey_num, u32 *out_sid);
+
+int security_ib_endport_sid(const char *dev_name, u8 port_num, u32 *out_sid);
+
+int security_netif_sid(char *name, u32 *if_sid);
+
+int security_node_sid(u16 domain, void *addr, u32 addrlen,
+	u32 *out_sid);
+
+int security_validate_transition(u32 oldsid, u32 newsid, u32 tasksid,
+				 u16 tclass);
+
+int security_validate_transition_user(u32 oldsid, u32 newsid, u32 tasksid,
+				      u16 tclass);
+
+int security_bounded_transition(u32 oldsid, u32 newsid);
+
+int security_sid_mls_copy(u32 sid, u32 mls_sid, u32 *new_sid);
+
+int security_net_peersid_resolve(u32 nlbl_sid, u32 nlbl_type,
+				 u32 xfrm_sid,
+				 u32 *peer_sid);
+
+int security_get_classes(char ***classes, int *nclasses);
+int security_get_permissions(char *class, char ***perms, int *nperms);
+int security_get_reject_unknown(void);
+int security_get_allow_unknown(void);
+>>>>>>> v4.14.187
 
 #define SECURITY_FS_USE_XATTR		1 /* use xattr */
 #define SECURITY_FS_USE_TRANS		2 /* use transition SIDs, e.g. devpts/tmpfs */
@@ -357,6 +458,7 @@ int security_get_allow_unknown(struct selinux_state *state);
 #define SECURITY_FS_USE_NATIVE		7 /* use native label support */
 #define SECURITY_FS_USE_MAX		7 /* Highest SECURITY_FS_USE_XXX */
 
+<<<<<<< HEAD
 int security_fs_use(struct selinux_state *state, struct super_block *sb);
 
 int security_genfs_sid(struct selinux_state *state,
@@ -373,15 +475,35 @@ int security_netlbl_sid_to_secattr(struct selinux_state *state,
 				   struct netlbl_lsm_secattr *secattr);
 #else
 static inline int security_netlbl_secattr_to_sid(struct selinux_state *state,
+=======
+int security_fs_use(struct super_block *sb);
+
+int security_genfs_sid(const char *fstype, char *name, u16 sclass,
+	u32 *sid);
+
+#ifdef CONFIG_NETLABEL
+int security_netlbl_secattr_to_sid(struct netlbl_lsm_secattr *secattr,
+				   u32 *sid);
+
+int security_netlbl_sid_to_secattr(u32 sid,
+				   struct netlbl_lsm_secattr *secattr);
+#else
+static inline int security_netlbl_secattr_to_sid(
+>>>>>>> v4.14.187
 					    struct netlbl_lsm_secattr *secattr,
 					    u32 *sid)
 {
 	return -EIDRM;
 }
 
+<<<<<<< HEAD
 static inline int security_netlbl_sid_to_secattr(struct selinux_state *state,
 					 u32 sid,
 					 struct netlbl_lsm_secattr *secattr)
+=======
+static inline int security_netlbl_sid_to_secattr(u32 sid,
+					   struct netlbl_lsm_secattr *secattr)
+>>>>>>> v4.14.187
 {
 	return -ENOENT;
 }
@@ -392,7 +514,11 @@ const char *security_get_initial_sid_context(u32 sid);
 /*
  * status notifier using mmap interface
  */
+<<<<<<< HEAD
 extern struct page *selinux_kernel_status_page(struct selinux_state *state);
+=======
+extern struct page *selinux_kernel_status_page(void);
+>>>>>>> v4.14.187
 
 #define SELINUX_KERNEL_STATUS_VERSION	1
 struct selinux_kernel_status {
@@ -406,12 +532,19 @@ struct selinux_kernel_status {
 	 */
 } __packed;
 
+<<<<<<< HEAD
 extern void selinux_status_update_setenforce(struct selinux_state *state,
 					     int enforcing);
 extern void selinux_status_update_policyload(struct selinux_state *state,
 					     int seqno);
 extern void selinux_complete_init(void);
 extern int selinux_disable(struct selinux_state *state);
+=======
+extern void selinux_status_update_setenforce(int enforcing);
+extern void selinux_status_update_policyload(int seqno);
+extern void selinux_complete_init(void);
+extern int selinux_disable(void);
+>>>>>>> v4.14.187
 extern void exit_sel_fs(void);
 extern struct path selinux_null;
 extern struct vfsmount *selinuxfs_mount;
@@ -419,6 +552,7 @@ extern void selnl_notify_setenforce(int val);
 extern void selnl_notify_policyload(u32 seqno);
 extern int selinux_nlmsg_lookup(u16 sclass, u16 nlmsg_type, u32 *perm);
 
+<<<<<<< HEAD
 extern void avtab_cache_init(void);
 extern void ebitmap_cache_init(void);
 extern void hashtab_cache_init(void);
@@ -426,3 +560,7 @@ extern void selinux_nlmsg_init(void);
 extern int security_sidtab_hash_stats(struct selinux_state *state, char *page);
 
 #endif /* _SELINUX_SECURITY_H_ */
+=======
+#endif /* _SELINUX_SECURITY_H_ */
+
+>>>>>>> v4.14.187

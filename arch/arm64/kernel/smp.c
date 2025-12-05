@@ -39,9 +39,12 @@
 #include <linux/completion.h>
 #include <linux/of.h>
 #include <linux/irq_work.h>
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 #include <linux/sec_debug.h>
 #endif
+=======
+>>>>>>> v4.14.187
 #include <linux/kexec.h>
 
 #include <asm/alternative.h>
@@ -55,7 +58,10 @@
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
 #include <asm/processor.h>
+<<<<<<< HEAD
 #include <asm/scs.h>
+=======
+>>>>>>> v4.14.187
 #include <asm/smp_plat.h>
 #include <asm/sections.h>
 #include <asm/tlbflush.h>
@@ -285,6 +291,7 @@ int __cpu_disable(void)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_GIC_TARGET_ALL
 	{
 		unsigned long flags;
@@ -296,6 +303,8 @@ int __cpu_disable(void)
 		local_irq_save(flags);
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Take this CPU offline.  Once we clear this, we can't return,
 	 * and we must not schedule until we're ready to give up the cpu.
@@ -361,9 +370,12 @@ void cpu_die(void)
 {
 	unsigned int cpu = smp_processor_id();
 
+<<<<<<< HEAD
 	/* Save the shadow stack pointer before exiting the idle task */
 	scs_save(current);
 
+=======
+>>>>>>> v4.14.187
 	idle_task_exit();
 
 	local_irq_disable();
@@ -429,6 +441,14 @@ void __init smp_cpus_done(unsigned int max_cpus)
 void __init smp_prepare_boot_cpu(void)
 {
 	set_my_cpu_offset(per_cpu_offset(smp_processor_id()));
+<<<<<<< HEAD
+=======
+	/*
+	 * Initialise the static keys early as they may be enabled by the
+	 * cpufeature code.
+	 */
+	jump_label_init();
+>>>>>>> v4.14.187
 	cpuinfo_store_boot_cpu();
 }
 
@@ -751,7 +771,11 @@ static const char *ipi_types[NR_IPI] __tracepoint_string = {
 
 static void smp_cross_call(const struct cpumask *target, unsigned int ipinr)
 {
+<<<<<<< HEAD
 	trace_ipi_raise_rcuidle(target, ipi_types[ipinr]);
+=======
+	trace_ipi_raise(target, ipi_types[ipinr]);
+>>>>>>> v4.14.187
 	__smp_cross_call(target, ipinr);
 }
 
@@ -808,19 +832,26 @@ void arch_irq_work_raise(void)
 /*
  * ipi_cpu_stop - handle IPI from smp_send_stop()
  */
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 static void ipi_cpu_stop(unsigned int cpu, struct pt_regs *regs)
 #else
 static void ipi_cpu_stop(unsigned int cpu)
 #endif
+=======
+static void ipi_cpu_stop(unsigned int cpu)
+>>>>>>> v4.14.187
 {
 	set_cpu_online(cpu, false);
 
 	local_irq_disable();
+<<<<<<< HEAD
 	
 #ifdef CONFIG_SEC_DEBUG
 	sec_save_context(_THIS_CPU, regs);
 #endif	
+=======
+>>>>>>> v4.14.187
 
 	while (1)
 		cpu_relax();
@@ -856,11 +887,16 @@ void handle_IPI(int ipinr, struct pt_regs *regs)
 {
 	unsigned int cpu = smp_processor_id();
 	struct pt_regs *old_regs = set_irq_regs(regs);
+<<<<<<< HEAD
 	unsigned long long ts = 0;
 	int count = 0;
 
 	if ((unsigned)ipinr < NR_IPI) {
 		check_start_time_preempt(ipi_note, count, ts, ipinr);
+=======
+
+	if ((unsigned)ipinr < NR_IPI) {
+>>>>>>> v4.14.187
 		trace_ipi_entry_rcuidle(ipi_types[ipinr]);
 		__inc_irq_stat(cpu, ipi_irqs[ipinr]);
 	}
@@ -878,11 +914,15 @@ void handle_IPI(int ipinr, struct pt_regs *regs)
 
 	case IPI_CPU_STOP:
 		irq_enter();
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG
 		ipi_cpu_stop(cpu, regs);
 #else
 		ipi_cpu_stop(cpu);
 #endif
+=======
+		ipi_cpu_stop(cpu);
+>>>>>>> v4.14.187
 		irq_exit();
 		break;
 
@@ -924,11 +964,16 @@ void handle_IPI(int ipinr, struct pt_regs *regs)
 		break;
 	}
 
+<<<<<<< HEAD
 	if ((unsigned int)ipinr < NR_IPI) {
 		trace_ipi_exit_rcuidle(ipi_types[ipinr]);
 		check_process_time_preempt(ipi_note, count, "ipi %d %s", ts,
 					   ipinr, ipi_types[ipinr]);
 	}
+=======
+	if ((unsigned)ipinr < NR_IPI)
+		trace_ipi_exit_rcuidle(ipi_types[ipinr]);
+>>>>>>> v4.14.187
 	set_irq_regs(old_regs);
 }
 

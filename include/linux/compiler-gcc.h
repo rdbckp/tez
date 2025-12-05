@@ -326,6 +326,7 @@
 #define KASAN_ABI_VERSION 3
 #endif
 
+<<<<<<< HEAD
 /*
  * Older GCCs (< 5) don't support __has_attribute, so instead of checking
  * __has_attribute(__no_sanitize_address__) do a GCC version check.
@@ -339,6 +340,15 @@
 #define __no_sanitize_address __attribute__((no_sanitize_address))
 #else
 #define __no_sanitize_address
+=======
+#if GCC_VERSION >= 40902
+/*
+ * Tell the compiler that address safety instrumentation (KASAN)
+ * should not be applied to that function.
+ * Conflicts with inlining: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67368
+ */
+#define __no_sanitize_address __attribute__((no_sanitize_address))
+>>>>>>> v4.14.187
 #endif
 
 #if GCC_VERSION >= 50100

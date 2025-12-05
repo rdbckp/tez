@@ -63,6 +63,7 @@ struct evdev_client {
 	struct input_event buffer[];
 };
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SEC_INPUT_BOOSTER)
 #include <linux/notifier.h>
 #include <linux/input/input_booster.h>
@@ -93,6 +94,8 @@ int ib_notifier_call_chain(unsigned long val, void *v)
 EXPORT_SYMBOL_GPL(ib_notifier_call_chain);
 #endif
 
+=======
+>>>>>>> v4.14.187
 static size_t evdev_get_mask_cnt(unsigned int type)
 {
 	static const size_t counts[EV_CNT] = {
@@ -326,6 +329,7 @@ static void evdev_pass_values(struct evdev_client *client,
 		wake_up_interruptible(&evdev->wait);
 }
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SEC_INPUT_BOOSTER)
 static void evdev_ib_trigger(struct work_struct *work)
 {
@@ -338,6 +342,8 @@ static void evdev_ib_trigger(struct work_struct *work)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Pass incoming events to all connected clients.
  */
@@ -346,6 +352,7 @@ static void evdev_events(struct input_handle *handle,
 {
 	struct evdev *evdev = handle->private;
 	struct evdev_client *client;
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SEC_INPUT_BOOSTER)
 	int cur_ib_idx;
 #endif
@@ -367,6 +374,10 @@ static void evdev_events(struct input_handle *handle,
 	spin_unlock(&ib_idx_lock);
 #endif
 
+=======
+	ktime_t ev_time[EV_CLK_MAX];
+
+>>>>>>> v4.14.187
 	ev_time[EV_CLK_MONO] = ktime_get();
 	ev_time[EV_CLK_REAL] = ktime_mono_to_real(ev_time[EV_CLK_MONO]);
 	ev_time[EV_CLK_BOOT] = ktime_mono_to_any(ev_time[EV_CLK_MONO],
@@ -1512,6 +1523,7 @@ static struct input_handler evdev_handler = {
 
 static int __init evdev_init(void)
 {
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SEC_INPUT_BOOSTER)
 	int i;
 	ib_evt_work = kmalloc(sizeof(struct ib_event_work) * MAX_IB_COUNT, GFP_KERNEL);
@@ -1524,6 +1536,8 @@ static int __init evdev_init(void)
 	ib_unbound_highwq =
 		alloc_ordered_workqueue("ib_unbound_highwq", WQ_HIGHPRI);
 #endif
+=======
+>>>>>>> v4.14.187
 	return input_register_handler(&evdev_handler);
 }
 

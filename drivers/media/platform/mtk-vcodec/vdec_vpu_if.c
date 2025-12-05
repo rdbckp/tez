@@ -20,16 +20,27 @@
 static void handle_init_ack_msg(struct vdec_vpu_ipi_init_ack *msg)
 {
 	struct vdec_vpu_inst *vpu = (struct vdec_vpu_inst *)
+<<<<<<< HEAD
 		(unsigned long)msg->ap_inst_addr;
+=======
+					(unsigned long)msg->ap_inst_addr;
+>>>>>>> v4.14.187
 
 	mtk_vcodec_debug(vpu, "+ ap_inst_addr = 0x%llx", msg->ap_inst_addr);
 
 	/* mapping VPU address to kernel virtual address */
 	/* the content in vsi is initialized to 0 in VPU */
+<<<<<<< HEAD
 	vpu->vsi = vpu_mapping_dm_addr(vpu->dev, msg->vcu_inst_addr);
 	vpu->inst_addr = msg->vcu_inst_addr;
 
 	mtk_vcodec_debug(vpu, "- vcu_inst_addr = 0x%x", vpu->inst_addr);
+=======
+	vpu->vsi = vpu_mapping_dm_addr(vpu->dev, msg->vpu_inst_addr);
+	vpu->inst_addr = msg->vpu_inst_addr;
+
+	mtk_vcodec_debug(vpu, "- vpu_inst_addr = 0x%x", vpu->inst_addr);
+>>>>>>> v4.14.187
 }
 
 /*
@@ -40,6 +51,7 @@ void vpu_dec_ipi_handler(void *data, unsigned int len, void *priv)
 {
 	struct vdec_vpu_ipi_ack *msg = data;
 	struct vdec_vpu_inst *vpu = (struct vdec_vpu_inst *)
+<<<<<<< HEAD
 		(unsigned long)msg->ap_inst_addr;
 
 	if (!vpu) {
@@ -48,11 +60,15 @@ void vpu_dec_ipi_handler(void *data, unsigned int len, void *priv)
 			   __func__, msg->msg_id, msg->status, len);
 		return;
 	}
+=======
+					(unsigned long)msg->ap_inst_addr;
+>>>>>>> v4.14.187
 
 	mtk_vcodec_debug(vpu, "+ id=%X", msg->msg_id);
 
 	if (msg->status == 0) {
 		switch (msg->msg_id) {
+<<<<<<< HEAD
 		case VCU_IPIMSG_DEC_INIT_ACK:
 			handle_init_ack_msg(data);
 			break;
@@ -61,6 +77,16 @@ void vpu_dec_ipi_handler(void *data, unsigned int len, void *priv)
 		case VCU_IPIMSG_DEC_END_ACK:
 		case VCU_IPIMSG_DEC_DEINIT_ACK:
 		case VCU_IPIMSG_DEC_RESET_ACK:
+=======
+		case VPU_IPIMSG_DEC_INIT_ACK:
+			handle_init_ack_msg(data);
+			break;
+
+		case VPU_IPIMSG_DEC_START_ACK:
+		case VPU_IPIMSG_DEC_END_ACK:
+		case VPU_IPIMSG_DEC_DEINIT_ACK:
+		case VPU_IPIMSG_DEC_RESET_ACK:
+>>>>>>> v4.14.187
 			break;
 
 		default:
@@ -86,7 +112,11 @@ static int vcodec_vpu_send_msg(struct vdec_vpu_inst *vpu, void *msg, int len)
 	err = vpu_ipi_send(vpu->dev, vpu->id, msg, len);
 	if (err) {
 		mtk_vcodec_err(vpu, "send fail vpu_id=%d msg_id=%X status=%d",
+<<<<<<< HEAD
 					   vpu->id, *(uint32_t *)msg, err);
+=======
+			       vpu->id, *(uint32_t *)msg, err);
+>>>>>>> v4.14.187
 		return err;
 	}
 
@@ -102,7 +132,11 @@ static int vcodec_send_ap_ipi(struct vdec_vpu_inst *vpu, unsigned int msg_id)
 
 	memset(&msg, 0, sizeof(msg));
 	msg.msg_id = msg_id;
+<<<<<<< HEAD
 	msg.vcu_inst_addr = vpu->inst_addr;
+=======
+	msg.vpu_inst_addr = vpu->inst_addr;
+>>>>>>> v4.14.187
 
 	err = vcodec_vpu_send_msg(vpu, &msg, sizeof(msg));
 	mtk_vcodec_debug(vpu, "- id=%X ret=%d", msg_id, err);
@@ -150,7 +184,11 @@ int vpu_dec_start(struct vdec_vpu_inst *vpu, uint32_t *data, unsigned int len)
 
 	memset(&msg, 0, sizeof(msg));
 	msg.msg_id = AP_IPIMSG_DEC_START;
+<<<<<<< HEAD
 	msg.vcu_inst_addr = vpu->inst_addr;
+=======
+	msg.vpu_inst_addr = vpu->inst_addr;
+>>>>>>> v4.14.187
 
 	for (i = 0; i < len; i++)
 		msg.data[i] = data[i];

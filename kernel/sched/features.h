@@ -78,13 +78,18 @@ SCHED_FEAT(WARN_DOUBLE_CLOCK, false)
 SCHED_FEAT(RT_PUSH_IPI, true)
 #endif
 
+<<<<<<< HEAD
 SCHED_FEAT(RT_RUNTIME_SHARE, false)
+=======
+SCHED_FEAT(RT_RUNTIME_SHARE, true)
+>>>>>>> v4.14.187
 SCHED_FEAT(LB_MIN, false)
 SCHED_FEAT(ATTACH_AGE_LOAD, true)
 
 SCHED_FEAT(WA_IDLE, true)
 SCHED_FEAT(WA_WEIGHT, true)
 SCHED_FEAT(WA_BIAS, true)
+<<<<<<< HEAD
 
 /*
  * UtilEstimation. Use estimated CPU utilization.
@@ -146,3 +151,5 @@ SCHED_FEAT(SCHEDTUNE_BOOST_HOLD_ALL, false)
  * Utilization clamping lazy update.
  */
 SCHED_FEAT(UCLAMP_LAZY_UPDATE, false)
+=======
+>>>>>>> v4.14.187

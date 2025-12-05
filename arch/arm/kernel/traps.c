@@ -40,12 +40,15 @@
 #include <asm/tls.h>
 #include <asm/system_misc.h>
 #include <asm/opcodes.h>
+<<<<<<< HEAD
 #include <mt-plat/aee.h>
 
 #ifdef CONFIG_SEC_DEBUG
 #include <linux/sec_debug.h>
 #include <asm/stacktrace.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 
 static const char *handler[]= {
@@ -83,6 +86,7 @@ void dump_backtrace_entry(unsigned long where, unsigned long from, unsigned long
 		dump_mem("", "Exception stack", frame + 4, frame + 4 + sizeof(struct pt_regs));
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 void dump_backtrace_entry_auto_comment(unsigned long where, unsigned long from, unsigned long frame)
 {
@@ -97,6 +101,8 @@ void dump_backtrace_entry_auto_comment(unsigned long where, unsigned long from, 
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 void dump_backtrace_stm(u32 *stack, u32 instruction)
 {
 	char str[80], *p;
@@ -222,12 +228,20 @@ static void dump_instr(const char *lvl, struct pt_regs *regs)
 }
 
 #ifdef CONFIG_ARM_UNWIND
+<<<<<<< HEAD
 void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
+=======
+static inline void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
+>>>>>>> v4.14.187
 {
 	unwind_backtrace(regs, tsk);
 }
 #else
+<<<<<<< HEAD
 void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
+=======
+static void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
+>>>>>>> v4.14.187
 {
 	unsigned int fp, mode;
 	int ok = 1;
@@ -263,6 +277,7 @@ void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 void dump_backtrace_auto_comment(struct pt_regs *regs, struct task_struct *tsk)
 {
@@ -309,12 +324,15 @@ void dump_backtrace_auto_comment(struct pt_regs *regs, struct task_struct *tsk)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 void show_stack(struct task_struct *tsk, unsigned long *sp)
 {
 	dump_backtrace(NULL, tsk);
 	barrier();
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 void show_stack_auto_comment(struct task_struct *tsk, unsigned long *sp)
 {
@@ -323,6 +341,8 @@ void show_stack_auto_comment(struct task_struct *tsk, unsigned long *sp)
 }
 #endif /* CONFIG_SEC_DEBUG_AUTO_COMMENT */
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_PREEMPT
 #define S_PREEMPT " PREEMPT"
 #else
@@ -427,11 +447,14 @@ void die(const char *str, struct pt_regs *regs, int err)
 	unsigned long flags = oops_begin();
 	int sig = SIGSEGV;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_EXTRA_INFO
 	if (regs && (!user_mode(regs)))
 		sec_debug_set_extra_info_backtrace(regs);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	if (!user_mode(regs))
 		bug_type = report_bug(regs->ARM_pc, regs);
 	if (bug_type != BUG_TRAP_TYPE_NONE)
@@ -516,11 +539,15 @@ int call_undef_hook(struct pt_regs *regs, unsigned int instr)
 
 asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	struct thread_info *thread = current_thread_info();
+=======
+>>>>>>> v4.14.187
 	unsigned int instr;
 	siginfo_t info;
 	void __user *pc;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_EXTRA_INFO
 	if (!user_mode(regs)) {
 		sec_debug_set_extra_info_fault((unsigned long)regs->ARM_pc, regs);
@@ -541,6 +568,8 @@ asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 #endif
 	}
 
+=======
+>>>>>>> v4.14.187
 	pc = (void __user *)instruction_pointer(regs);
 
 	if (processor_mode(regs) == SVC_MODE) {
@@ -572,11 +601,16 @@ asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 		instr = __mem_to_opcode_arm(instr);
 	}
 
+<<<<<<< HEAD
 	if (call_undef_hook(regs, instr) == 0) {
 		if (!user_mode(regs))
 			thread->cpu_excp--;
 		return;
 	}
+=======
+	if (call_undef_hook(regs, instr) == 0)
+		return;
+>>>>>>> v4.14.187
 
 die_sig:
 #ifdef CONFIG_DEBUG_USER
@@ -632,6 +666,7 @@ asmlinkage void bad_mode(struct pt_regs *regs, int reason)
 {
 	console_verbose();
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 	pr_auto(ASL1, "Bad mode in %s handler detected\n", handler[reason]);
 #else
@@ -643,6 +678,9 @@ asmlinkage void bad_mode(struct pt_regs *regs, int reason)
 		sec_debug_set_extra_info_fault((unsigned long)regs->ARM_pc, regs);
 	}
 #endif
+=======
+	pr_crit("Bad mode in %s handler detected\n", handler[reason]);
+>>>>>>> v4.14.187
 
 	die("Oops - bad mode", regs, 0);
 	local_irq_disable();

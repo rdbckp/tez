@@ -26,7 +26,10 @@
 #include <asm/system_misc.h>
 #include <asm/system_info.h>
 #include <asm/tlbflush.h>
+<<<<<<< HEAD
 #include <mt-plat/aee.h>
+=======
+>>>>>>> v4.14.187
 
 #include "fault.h"
 
@@ -207,6 +210,7 @@ void do_bad_area(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 #define VM_FAULT_BADMAP		0x010000
 #define VM_FAULT_BADACCESS	0x020000
 
+<<<<<<< HEAD
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
 bool __access_error(unsigned long fsr, unsigned long vma_flags)
 {
@@ -221,6 +225,8 @@ bool __access_error(unsigned long fsr, unsigned long vma_flags)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Check that the permissions on the VMA allow for the fault which occurred.
  * If we encountered a write fault, we must have write permission, otherwise
@@ -292,10 +298,17 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 		local_irq_enable();
 
 	/*
+<<<<<<< HEAD
 	 * If we're in an interrupt, or have no irqs, or have no user
 	 * context, we must not take the fault..
 	 */
 	if (faulthandler_disabled() || irqs_disabled() || !mm)
+=======
+	 * If we're in an interrupt or have no user
+	 * context, we must not take the fault..
+	 */
+	if (faulthandler_disabled() || !mm)
+>>>>>>> v4.14.187
 		goto no_context;
 
 	if (user_mode(regs))
@@ -304,6 +317,7 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 		flags |= FAULT_FLAG_WRITE;
 
 	/*
+<<<<<<< HEAD
 	 * let's try a speculative page fault without grabbing the
 	 * mmap_sem.
 	 */
@@ -312,6 +326,8 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 		goto done;
 
 	/*
+=======
+>>>>>>> v4.14.187
 	 * As per x86, we may deadlock here.  However, since the kernel only
 	 * validly references user space from well defined areas of the code,
 	 * we can bug out early if this is from code which shouldn't.
@@ -375,7 +391,10 @@ retry:
 
 	up_read(&mm->mmap_sem);
 
+<<<<<<< HEAD
 done:
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Handle the "normal" case first - VM_FAULT_MAJOR
 	 */
@@ -575,6 +594,7 @@ hook_fault_code(int nr, int (*fn)(unsigned long, unsigned int, struct pt_regs *)
 asmlinkage void __exception
 do_DataAbort(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	struct thread_info *thread = current_thread_info();
 	const struct fsr_info *inf = fsr_info + fsr_fs(fsr);
 	struct siginfo info;
@@ -606,6 +626,13 @@ do_DataAbort(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 			thread->cpu_excp--;
 		return;
 	}
+=======
+	const struct fsr_info *inf = fsr_info + fsr_fs(fsr);
+	struct siginfo info;
+
+	if (!inf->fn(addr, fsr & ~FSR_LNX_PF, regs))
+		return;
+>>>>>>> v4.14.187
 
 	pr_alert("Unhandled fault: %s (0x%03x) at 0x%08lx\n",
 		inf->name, fsr, addr);
@@ -634,6 +661,7 @@ hook_ifault_code(int nr, int (*fn)(unsigned long, unsigned int, struct pt_regs *
 asmlinkage void __exception
 do_PrefetchAbort(unsigned long addr, unsigned int ifsr, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	struct thread_info *thread = current_thread_info();
 	const struct fsr_info *inf = ifsr_info + fsr_fs(ifsr);
 	struct siginfo info;
@@ -661,6 +689,13 @@ do_PrefetchAbort(unsigned long addr, unsigned int ifsr, struct pt_regs *regs)
 			thread->cpu_excp--;
 		return;
 	}
+=======
+	const struct fsr_info *inf = ifsr_info + fsr_fs(ifsr);
+	struct siginfo info;
+
+	if (!inf->fn(addr, ifsr | FSR_LNX_PF, regs))
+		return;
+>>>>>>> v4.14.187
 
 	pr_alert("Unhandled prefetch abort: %s (0x%03x) at 0x%08lx\n",
 		inf->name, ifsr, addr);

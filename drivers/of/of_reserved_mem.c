@@ -25,6 +25,7 @@
 #include <linux/sort.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #define MAX_RESERVED_REGIONS	64
 static struct reserved_mem reserved_mem[MAX_RESERVED_REGIONS];
 static int reserved_mem_count;
@@ -43,6 +44,12 @@ struct reserved_mem *get_reserved_mem(int num)
 	return &reserved_mem[num];
 }
 
+=======
+#define MAX_RESERVED_REGIONS	32
+static struct reserved_mem reserved_mem[MAX_RESERVED_REGIONS];
+static int reserved_mem_count;
+
+>>>>>>> v4.14.187
 #if defined(CONFIG_HAVE_MEMBLOCK)
 #include <linux/memblock.h>
 int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
@@ -55,6 +62,7 @@ int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
 	 * panic()s on allocation failure.
 	 */
 	end = !end ? MEMBLOCK_ALLOC_ANYWHERE : end;
+<<<<<<< HEAD
 	base = memblock_find_in_range(start, end, size, align);
 	if (!base)
 		return -ENOMEM;
@@ -64,13 +72,35 @@ int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
 		return memblock_remove(base, size);
 
 	return memblock_reserve(base, size);
+=======
+	base = __memblock_alloc_base(size, align, end);
+	if (!base)
+		return -ENOMEM;
+
+	/*
+	 * Check if the allocated region fits in to start..end window
+	 */
+	if (base < start) {
+		memblock_free(base, size);
+		return -ENOMEM;
+	}
+
+	*res_base = base;
+	if (nomap)
+		return memblock_remove(base, size);
+	return 0;
+>>>>>>> v4.14.187
 }
 #else
 int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
 	phys_addr_t align, phys_addr_t start, phys_addr_t end, bool nomap,
 	phys_addr_t *res_base)
 {
+<<<<<<< HEAD
 	pr_info("Reserved memory not supported, ignoring region 0x%llx%s\n",
+=======
+	pr_err("Reserved memory not supported, ignoring region 0x%llx%s\n",
+>>>>>>> v4.14.187
 		  size, nomap ? " (nomap)" : "");
 	return -ENOSYS;
 }
@@ -85,8 +115,12 @@ void __init fdt_reserved_mem_save_node(unsigned long node, const char *uname,
 	struct reserved_mem *rmem = &reserved_mem[reserved_mem_count];
 
 	if (reserved_mem_count == ARRAY_SIZE(reserved_mem)) {
+<<<<<<< HEAD
 		pr_info("not enough space all defined regions.\n");
 		BUG();
+=======
+		pr_err("not enough space all defined regions.\n");
+>>>>>>> v4.14.187
 		return;
 	}
 
@@ -119,7 +153,11 @@ static int __init __reserved_mem_alloc_size(unsigned long node,
 		return -EINVAL;
 
 	if (len != dt_root_size_cells * sizeof(__be32)) {
+<<<<<<< HEAD
 		pr_info("invalid size property in '%s' node.\n", uname);
+=======
+		pr_err("invalid size property in '%s' node.\n", uname);
+>>>>>>> v4.14.187
 		return -EINVAL;
 	}
 	size = dt_mem_next_cell(dt_root_size_cells, &prop);
@@ -129,7 +167,11 @@ static int __init __reserved_mem_alloc_size(unsigned long node,
 	prop = of_get_flat_dt_prop(node, "alignment", &len);
 	if (prop) {
 		if (len != dt_root_addr_cells * sizeof(__be32)) {
+<<<<<<< HEAD
 			pr_info("invalid alignment property in '%s' node.\n",
+=======
+			pr_err("invalid alignment property in '%s' node.\n",
+>>>>>>> v4.14.187
 				uname);
 			return -EINVAL;
 		}
@@ -151,7 +193,11 @@ static int __init __reserved_mem_alloc_size(unsigned long node,
 	if (prop) {
 
 		if (len % t_len != 0) {
+<<<<<<< HEAD
 			pr_info("invalid alloc-ranges property in '%s', skipping node.\n",
+=======
+			pr_err("invalid alloc-ranges property in '%s', skipping node.\n",
+>>>>>>> v4.14.187
 			       uname);
 			return -EINVAL;
 		}
@@ -254,7 +300,11 @@ static void __init __rmem_check_for_overlap(void)
 
 			this_end = this->base + this->size;
 			next_end = next->base + next->size;
+<<<<<<< HEAD
 			pr_info("OVERLAP DETECTED!\n%s (%pa--%pa) overlaps with %s (%pa--%pa)\n",
+=======
+			pr_err("OVERLAP DETECTED!\n%s (%pa--%pa) overlaps with %s (%pa--%pa)\n",
+>>>>>>> v4.14.187
 			       this->name, &this->base, &this_end,
 			       next->name, &next->base, &next_end);
 		}
@@ -277,7 +327,10 @@ void __init fdt_init_reserved_mem(void)
 		int len;
 		const __be32 *prop;
 		int err = 0;
+<<<<<<< HEAD
 		bool nomap;
+=======
+>>>>>>> v4.14.187
 
 		prop = of_get_flat_dt_prop(node, "phandle", &len);
 		if (!prop)
@@ -288,6 +341,7 @@ void __init fdt_init_reserved_mem(void)
 		if (rmem->size == 0)
 			err = __reserved_mem_alloc_size(node, rmem->name,
 						 &rmem->base, &rmem->size);
+<<<<<<< HEAD
 		if (err == 0) {
 			__reserved_mem_init_node(rmem);
 			nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
@@ -299,6 +353,10 @@ void __init fdt_init_reserved_mem(void)
 						rmem->size, nomap,
 						rmem->reusable);
 		}
+=======
+		if (err == 0)
+			__reserved_mem_init_node(rmem);
+>>>>>>> v4.14.187
 	}
 }
 

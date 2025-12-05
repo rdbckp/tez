@@ -34,6 +34,7 @@
 #include <drm/drmP.h>
 
 #include "drm_internal.h"
+<<<<<<< HEAD
 #include "mtk_drm_mmp.h"
 //#include "mtk_log.h"
 
@@ -42,6 +43,8 @@ unsigned long long prime_time_end;
 long long prime_time_period;
 unsigned int prime_time_once;
 const char *prime_locker;
+=======
+>>>>>>> v4.14.187
 
 /*
  * DMA-BUF/GEM Object references and lifetime overview:
@@ -107,7 +110,10 @@ static int drm_prime_add_buf_handle(struct drm_prime_file_private *prime_fpriv,
 		return -ENOMEM;
 
 	get_dma_buf(dma_buf);
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_get, __LINE__, (unsigned long)dma_buf);
+=======
+>>>>>>> v4.14.187
 	member->dma_buf = dma_buf;
 	member->handle = handle;
 
@@ -251,7 +257,10 @@ void drm_prime_remove_buf_handle_locked(struct drm_prime_file_private *prime_fpr
 			rb_erase(&member->handle_rb, &prime_fpriv->handles);
 			rb_erase(&member->dmabuf_rb, &prime_fpriv->dmabufs);
 
+<<<<<<< HEAD
 			DRM_MMP_MARK(dma_put, __LINE__, (unsigned long)dma_buf);
+=======
+>>>>>>> v4.14.187
 			dma_buf_put(dma_buf);
 			kfree(member);
 			return;
@@ -500,7 +509,10 @@ static struct dma_buf *export_and_register_object(struct drm_device *dev,
 	 */
 	obj->dma_buf = dmabuf;
 	get_dma_buf(obj->dma_buf);
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_get, __LINE__, (unsigned long)dmabuf);
+=======
+>>>>>>> v4.14.187
 
 	return dmabuf;
 }
@@ -537,7 +549,10 @@ int drm_gem_prime_handle_to_fd(struct drm_device *dev,
 	dmabuf = drm_prime_lookup_buf_by_handle(&file_priv->prime, handle);
 	if (dmabuf) {
 		get_dma_buf(dmabuf);
+<<<<<<< HEAD
 		DRM_MMP_MARK(dma_get, __LINE__, (unsigned long)dmabuf);
+=======
+>>>>>>> v4.14.187
 		goto out_have_handle;
 	}
 
@@ -546,13 +561,19 @@ int drm_gem_prime_handle_to_fd(struct drm_device *dev,
 	if (obj->import_attach) {
 		dmabuf = obj->import_attach->dmabuf;
 		get_dma_buf(dmabuf);
+<<<<<<< HEAD
 		DRM_MMP_MARK(dma_get, __LINE__, (unsigned long)dmabuf);
+=======
+>>>>>>> v4.14.187
 		goto out_have_obj;
 	}
 
 	if (obj->dma_buf) {
 		get_dma_buf(obj->dma_buf);
+<<<<<<< HEAD
 		DRM_MMP_MARK(dma_get, __LINE__, (unsigned long)dmabuf);
+=======
+>>>>>>> v4.14.187
 		dmabuf = obj->dma_buf;
 		goto out_have_obj;
 	}
@@ -598,7 +619,10 @@ out_have_handle:
 	goto out;
 
 fail_put_dmabuf:
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_put, __LINE__, (unsigned long)dmabuf);
+=======
+>>>>>>> v4.14.187
 	dma_buf_put(dmabuf);
 out:
 	drm_gem_object_put_unlocked(obj);
@@ -610,6 +634,7 @@ out_unlock:
 EXPORT_SYMBOL(drm_gem_prime_handle_to_fd);
 
 /**
+<<<<<<< HEAD
  * drm_gem_prime_mmap - PRIME mmap function for GEM drivers
  * @obj: GEM object
  * @vma: Virtual address range
@@ -647,6 +672,8 @@ int drm_gem_prime_mmap(struct drm_gem_object *obj, struct vm_area_struct *vma)
 EXPORT_SYMBOL(drm_gem_prime_mmap);
 
 /**
+=======
+>>>>>>> v4.14.187
  * drm_gem_prime_import_dev - core implementation of the import callback
  * @dev: drm_device to import into
  * @dma_buf: dma-buf object to import
@@ -685,7 +712,10 @@ struct drm_gem_object *drm_gem_prime_import_dev(struct drm_device *dev,
 		return ERR_CAST(attach);
 
 	get_dma_buf(dma_buf);
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_get, __LINE__, (unsigned long)dma_buf);
+=======
+>>>>>>> v4.14.187
 
 	sgt = dma_buf_map_attachment(attach, DMA_BIDIRECTIONAL);
 	if (IS_ERR(sgt)) {
@@ -707,7 +737,10 @@ fail_unmap:
 	dma_buf_unmap_attachment(attach, sgt, DMA_BIDIRECTIONAL);
 fail_detach:
 	dma_buf_detach(dma_buf, attach);
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_put, __LINE__, (unsigned long)dma_buf);
+=======
+>>>>>>> v4.14.187
 	dma_buf_put(dma_buf);
 
 	return ERR_PTR(ret);
@@ -752,10 +785,15 @@ int drm_gem_prime_fd_to_handle(struct drm_device *dev,
 	dma_buf = dma_buf_get(prime_fd);
 	if (IS_ERR(dma_buf))
 		return PTR_ERR(dma_buf);
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_get, __LINE__, (unsigned long)dma_buf);
 
 	mutex_lock(&file_priv->prime.lock);
 	prime_time_start = sched_clock();
+=======
+
+	mutex_lock(&file_priv->prime.lock);
+>>>>>>> v4.14.187
 
 	ret = drm_prime_lookup_buf_handle(&file_priv->prime,
 			dma_buf, handle);
@@ -775,7 +813,10 @@ int drm_gem_prime_fd_to_handle(struct drm_device *dev,
 	} else {
 		obj->dma_buf = dma_buf;
 		get_dma_buf(dma_buf);
+<<<<<<< HEAD
 		DRM_MMP_MARK(dma_get, __LINE__, (unsigned long)dma_buf);
+=======
+>>>>>>> v4.14.187
 	}
 
 	/* _handle_create_tail unconditionally unlocks dev->object_name_lock. */
@@ -786,6 +827,7 @@ int drm_gem_prime_fd_to_handle(struct drm_device *dev,
 
 	ret = drm_prime_add_buf_handle(&file_priv->prime,
 			dma_buf, *handle);
+<<<<<<< HEAD
 	prime_locker = NULL;
 	prime_time_end = sched_clock();
 	prime_time_period = prime_time_end - prime_time_start;
@@ -796,11 +838,16 @@ int drm_gem_prime_fd_to_handle(struct drm_device *dev,
 #endif
 		prime_time_once = 1;
 	}
+=======
+>>>>>>> v4.14.187
 	mutex_unlock(&file_priv->prime.lock);
 	if (ret)
 		goto fail;
 
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_put, __LINE__, (unsigned long)dma_buf);
+=======
+>>>>>>> v4.14.187
 	dma_buf_put(dma_buf);
 
 	return 0;
@@ -810,18 +857,26 @@ fail:
 	 * to detach.. which seems ok..
 	 */
 	drm_gem_handle_delete(file_priv, *handle);
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_put, __LINE__, (unsigned long)dma_buf);
 	dma_buf_put(dma_buf);
 
+=======
+	dma_buf_put(dma_buf);
+>>>>>>> v4.14.187
 	return ret;
 
 out_unlock:
 	mutex_unlock(&dev->object_name_lock);
 out_put:
 	mutex_unlock(&file_priv->prime.lock);
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_put, __LINE__, (unsigned long)dma_buf);
 	dma_buf_put(dma_buf);
 
+=======
+	dma_buf_put(dma_buf);
+>>>>>>> v4.14.187
 	return ret;
 }
 EXPORT_SYMBOL(drm_gem_prime_fd_to_handle);
@@ -953,7 +1008,10 @@ void drm_prime_gem_destroy(struct drm_gem_object *obj, struct sg_table *sg)
 	dma_buf = attach->dmabuf;
 	dma_buf_detach(attach->dmabuf, attach);
 	/* remove the reference */
+<<<<<<< HEAD
 	DRM_MMP_MARK(dma_put, __LINE__, (unsigned long)dma_buf);
+=======
+>>>>>>> v4.14.187
 	dma_buf_put(dma_buf);
 }
 EXPORT_SYMBOL(drm_prime_gem_destroy);

@@ -1128,8 +1128,11 @@ struct snd_soc_card {
 	struct mutex mutex;
 	struct mutex dapm_mutex;
 
+<<<<<<< HEAD
 	spinlock_t dpcm_lock;
 
+=======
+>>>>>>> v4.14.187
 	bool instantiated;
 
 	int (*probe)(struct snd_soc_card *card);

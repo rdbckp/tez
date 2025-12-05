@@ -23,7 +23,10 @@
 #ifndef __LINUX_RCU_H
 #define __LINUX_RCU_H
 
+<<<<<<< HEAD
 #include <linux/interrupt.h>
+=======
+>>>>>>> v4.14.187
 #include <trace/events/rcu.h>
 #ifdef CONFIG_RCU_TRACE
 #define RCU_TRACE(stmt) stmt
@@ -184,21 +187,32 @@ void kfree(const void *);
 static inline bool __rcu_reclaim(const char *rn, struct rcu_head *head)
 {
 	unsigned long offset = (unsigned long)head->func;
+<<<<<<< HEAD
 	unsigned long long ts = 0;
+=======
+>>>>>>> v4.14.187
 
 	rcu_lock_acquire(&rcu_callback_map);
 	if (__is_kfree_rcu_offset(offset)) {
 		RCU_TRACE(trace_rcu_invoke_kfree_callback(rn, head, offset);)
+<<<<<<< HEAD
 		check_start_time(ts);
 		kfree((void *)head - offset);
 		check_process_time("rcu_reclaim free memory", ts);
+=======
+		kfree((void *)head - offset);
+>>>>>>> v4.14.187
 		rcu_lock_release(&rcu_callback_map);
 		return true;
 	} else {
 		RCU_TRACE(trace_rcu_invoke_callback(rn, head);)
+<<<<<<< HEAD
 		check_start_time(ts);
 		head->func(head);
 		check_process_time("rcu_reclaim %ps", ts, (void *)offset);
+=======
+		head->func(head);
+>>>>>>> v4.14.187
 		rcu_lock_release(&rcu_callback_map);
 		return false;
 	}

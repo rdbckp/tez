@@ -305,6 +305,7 @@ config STM32_EXTI
 	bool
 	select IRQ_DOMAIN
 
+<<<<<<< HEAD
 config MTK_GIC_TARGET_ALL
 	bool
 	help
@@ -314,6 +315,8 @@ config MTK_GIC_TARGET_ALL
 	  than cpu0 to achieve better load balance of interrupt
 	  handling.
 
+=======
+>>>>>>> v4.14.187
 config QCOM_IRQ_COMBINER
 	bool "QCOM IRQ combiner support"
 	depends on ARCH_QCOM && ACPI
@@ -330,6 +333,7 @@ config IRQ_UNIPHIER_AIDET
 	select IRQ_DOMAIN_HIERARCHY
 	help
 	  Support for the UniPhier AIDET (ARM Interrupt Detector).
+<<<<<<< HEAD
 
 config MTK_SYSIRQ
 	bool
@@ -339,3 +343,5 @@ config MTK_SYSIRQ
 	  so this driver is designed for polarity configuration in order
 	  to make GIC driver support various trigger type including
 	  IRQ_TYPE_LEVEL_LOW and IRQ_TYPE_EDGE_FALLING.
+=======
+>>>>>>> v4.14.187

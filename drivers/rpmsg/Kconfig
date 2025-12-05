@@ -13,6 +13,7 @@ config RPMSG_CHAR
 	  in /dev. They make it possible for user-space programs to send and
 	  receive rpmsg packets.
 
+<<<<<<< HEAD
 config RPMSG_MTK
 	tristate "MediaTek TinySys RPM driver"
 	depends on MTK_MBOX
@@ -23,6 +24,8 @@ config RPMSG_MTK
 	  communicate with remote processors base on rpmsg framework. It
 	  provide channels, endpoints creation and send operations.
 
+=======
+>>>>>>> v4.14.187
 config RPMSG_QCOM_GLINK_NATIVE
 	tristate
 	select RPMSG

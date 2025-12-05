@@ -161,7 +161,11 @@ static int sel_netport_sid_slow(u8 protocol, u16 pnum, u32 *sid)
 	new = kzalloc(sizeof(*new), GFP_ATOMIC);
 	if (new == NULL)
 		goto out;
+<<<<<<< HEAD
 	ret = security_port_sid(&selinux_state, protocol, pnum, sid);
+=======
+	ret = security_port_sid(protocol, pnum, sid);
+>>>>>>> v4.14.187
 	if (ret != 0)
 		goto out;
 
@@ -238,12 +242,15 @@ static __init int sel_netport_init(void)
 {
 	int iter;
 
+<<<<<<< HEAD
 // [ SEC_SELINUX_PORTING_COMMON
 #ifdef CONFIG_ALWAYS_ENFORCE
 	selinux_enabled = 1;
 #endif
 // ] SEC_SELINUX_PORTING_COMMON
 
+=======
+>>>>>>> v4.14.187
 	if (!selinux_enabled)
 		return 0;
 

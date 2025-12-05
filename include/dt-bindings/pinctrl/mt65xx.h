@@ -23,10 +23,13 @@
 #define MTK_PUPD_SET_R1R0_01 101
 #define MTK_PUPD_SET_R1R0_10 102
 #define MTK_PUPD_SET_R1R0_11 103
+<<<<<<< HEAD
 #define MTK_RSEL_SET_R1R0_00 104
 #define MTK_RSEL_SET_R1R0_01 105
 #define MTK_RSEL_SET_R1R0_10 106
 #define MTK_RSEL_SET_R1R0_11 107
+=======
+>>>>>>> v4.14.187
 
 #define MTK_DRIVE_2mA  2
 #define MTK_DRIVE_4mA  4

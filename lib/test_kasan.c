@@ -94,6 +94,7 @@ static noinline void __init kmalloc_pagealloc_oob_right(void)
 	ptr[size] = 0;
 	kfree(ptr);
 }
+<<<<<<< HEAD
 
 static noinline void __init kmalloc_pagealloc_uaf(void)
 {
@@ -125,6 +126,8 @@ static noinline void __init kmalloc_pagealloc_invalid_free(void)
 
 	kfree(ptr + 1);
 }
+=======
+>>>>>>> v4.14.187
 #endif
 
 static noinline void __init kmalloc_large_oob_right(void)
@@ -482,6 +485,7 @@ static noinline void __init copy_user_test(void)
 	kfree(kmem);
 }
 
+<<<<<<< HEAD
 static noinline void __init kasan_alloca_oob_left(void)
 {
 	volatile int i = 10;
@@ -623,6 +627,29 @@ static noinline void __init kasan_strings(void)
 
 	pr_info("use-after-free in strnlen\n");
 	strnlen(ptr, 1);
+=======
+static noinline void __init use_after_scope_test(void)
+{
+	volatile char *volatile p;
+
+	pr_info("use-after-scope on int\n");
+	{
+		int local = 0;
+
+		p = (char *)&local;
+	}
+	p[0] = 1;
+	p[3] = 1;
+
+	pr_info("use-after-scope on array\n");
+	{
+		char local[1024] = {0};
+
+		p = local;
+	}
+	p[0] = 1;
+	p[1023] = 1;
+>>>>>>> v4.14.187
 }
 
 static int __init kmalloc_tests_init(void)
@@ -638,8 +665,11 @@ static int __init kmalloc_tests_init(void)
 	kmalloc_node_oob_right();
 #ifdef CONFIG_SLUB
 	kmalloc_pagealloc_oob_right();
+<<<<<<< HEAD
 	kmalloc_pagealloc_uaf();
 	kmalloc_pagealloc_invalid_free();
+=======
+>>>>>>> v4.14.187
 #endif
 	kmalloc_large_oob_right();
 	kmalloc_oob_krealloc_more();
@@ -657,6 +687,7 @@ static int __init kmalloc_tests_init(void)
 	memcg_accounted_kmem_cache();
 	kasan_stack_oob();
 	kasan_global_oob();
+<<<<<<< HEAD
 	kasan_alloca_oob_left();
 	kasan_alloca_oob_right();
 	ksize_unpoisons_memory();
@@ -666,6 +697,11 @@ static int __init kmalloc_tests_init(void)
 	kasan_memchr();
 	kasan_memcmp();
 	kasan_strings();
+=======
+	ksize_unpoisons_memory();
+	copy_user_test();
+	use_after_scope_test();
+>>>>>>> v4.14.187
 
 	kasan_restore_multi_shot(multishot);
 

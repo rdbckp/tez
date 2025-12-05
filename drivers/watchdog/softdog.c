@@ -29,7 +29,10 @@
 #include <linux/reboot.h>
 #include <linux/types.h>
 #include <linux/watchdog.h>
+<<<<<<< HEAD
 #include <linux/sec_debug.h>
+=======
+>>>>>>> v4.14.187
 
 #define TIMER_MARGIN	60		/* Default is 60 seconds */
 static unsigned int soft_margin = TIMER_MARGIN;	/* in seconds */
@@ -57,8 +60,11 @@ MODULE_PARM_DESC(soft_panic,
 static struct hrtimer softdog_ticktock;
 static struct hrtimer softdog_preticktock;
 
+<<<<<<< HEAD
 static struct watchdog_device softdog_dev;
 
+=======
+>>>>>>> v4.14.187
 static enum hrtimer_restart softdog_fire(struct hrtimer *timer)
 {
 	module_put(THIS_MODULE);
@@ -66,6 +72,7 @@ static enum hrtimer_restart softdog_fire(struct hrtimer *timer)
 		pr_crit("Triggered - Reboot ignored\n");
 	} else if (soft_panic) {
 		pr_crit("Initiating panic\n");
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_SOFTDOG
 		secdbg_softdog_show_info();
 #endif
@@ -74,6 +81,9 @@ static enum hrtimer_restart softdog_fire(struct hrtimer *timer)
 #else
 		panic("Software Watchdog Timer expired");
 #endif
+=======
+		panic("Software Watchdog Timer expired");
+>>>>>>> v4.14.187
 	} else {
 		pr_crit("Initiating system reboot\n");
 		emergency_restart();
@@ -83,6 +93,11 @@ static enum hrtimer_restart softdog_fire(struct hrtimer *timer)
 	return HRTIMER_NORESTART;
 }
 
+<<<<<<< HEAD
+=======
+static struct watchdog_device softdog_dev;
+
+>>>>>>> v4.14.187
 static enum hrtimer_restart softdog_pretimeout(struct hrtimer *timer)
 {
 	watchdog_notify_pretimeout(&softdog_dev);
@@ -97,8 +112,11 @@ static int softdog_ping(struct watchdog_device *w)
 	hrtimer_start(&softdog_ticktock, ktime_set(w->timeout, 0),
 		      HRTIMER_MODE_REL);
 
+<<<<<<< HEAD
 	pr_info_ratelimited("%s: %u\n", __func__, w->timeout);
 
+=======
+>>>>>>> v4.14.187
 	if (IS_ENABLED(CONFIG_SOFT_WATCHDOG_PRETIMEOUT)) {
 		if (w->pretimeout)
 			hrtimer_start(&softdog_preticktock,
@@ -116,8 +134,11 @@ static int softdog_stop(struct watchdog_device *w)
 	if (hrtimer_cancel(&softdog_ticktock))
 		module_put(THIS_MODULE);
 
+<<<<<<< HEAD
 	pr_info_ratelimited("%s: %u\n", __func__, w->timeout);
 
+=======
+>>>>>>> v4.14.187
 	if (IS_ENABLED(CONFIG_SOFT_WATCHDOG_PRETIMEOUT))
 		hrtimer_cancel(&softdog_preticktock);
 

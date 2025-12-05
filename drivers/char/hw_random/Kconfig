@@ -435,6 +435,7 @@ config HW_RANDOM_MTK
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD
 config HW_RANDOM_MT67XX
 	tristate "Mediatek MT67XX Random Number Generator support"
 	depends on HW_RANDOM
@@ -449,6 +450,8 @@ config HW_RANDOM_MT67XX
 
 	  If unsure, say Y.
 
+=======
+>>>>>>> v4.14.187
 config HW_RANDOM_S390
 	tristate "S390 True Random Number Generator support"
 	depends on S390

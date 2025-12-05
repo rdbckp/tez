@@ -34,13 +34,17 @@
  * @dev:	the device entity associated with this component
  * @atclk:	optional clock for the core parts of the replicator.
  * @csdev:	component vitals needed by the framework
+<<<<<<< HEAD
  * @spinlock:	serialize enable/disable operations.
+=======
+>>>>>>> v4.14.187
  */
 struct replicator_state {
 	void __iomem		*base;
 	struct device		*dev;
 	struct clk		*atclk;
 	struct coresight_device	*csdev;
+<<<<<<< HEAD
 	spinlock_t		spinlock;
 };
 
@@ -131,10 +135,45 @@ static void dynamic_replicator_disable(struct replicator_state *drvdata,
 		WARN_ON(1);
 		return;
 	}
+=======
+};
+
+static int replicator_enable(struct coresight_device *csdev, int inport,
+			      int outport)
+{
+	struct replicator_state *drvdata = dev_get_drvdata(csdev->dev.parent);
+
+	CS_UNLOCK(drvdata->base);
+
+	/*
+	 * Ensure that the other port is disabled
+	 * 0x00 - passing through the replicator unimpeded
+	 * 0xff - disable (or impede) the flow of ATB data
+	 */
+	if (outport == 0) {
+		writel_relaxed(0x00, drvdata->base + REPLICATOR_IDFILTER0);
+		writel_relaxed(0xff, drvdata->base + REPLICATOR_IDFILTER1);
+	} else {
+		writel_relaxed(0x00, drvdata->base + REPLICATOR_IDFILTER1);
+		writel_relaxed(0xff, drvdata->base + REPLICATOR_IDFILTER0);
+	}
+
+	CS_LOCK(drvdata->base);
+
+	dev_info(drvdata->dev, "REPLICATOR enabled\n");
+	return 0;
+}
+
+static void replicator_disable(struct coresight_device *csdev, int inport,
+				int outport)
+{
+	struct replicator_state *drvdata = dev_get_drvdata(csdev->dev.parent);
+>>>>>>> v4.14.187
 
 	CS_UNLOCK(drvdata->base);
 
 	/* disable the flow of ATB data through port */
+<<<<<<< HEAD
 	writel_relaxed(0xff, drvdata->base + reg);
 
 	if ((readl_relaxed(drvdata->base + REPLICATOR_IDFILTER0) == 0xff) &&
@@ -159,6 +198,16 @@ static void replicator_disable(struct coresight_device *csdev, int inport,
 
 	if (last_disable)
 		dev_dbg(drvdata->dev, "REPLICATOR disabled\n");
+=======
+	if (outport == 0)
+		writel_relaxed(0xff, drvdata->base + REPLICATOR_IDFILTER0);
+	else
+		writel_relaxed(0xff, drvdata->base + REPLICATOR_IDFILTER1);
+
+	CS_LOCK(drvdata->base);
+
+	dev_info(drvdata->dev, "REPLICATOR disabled\n");
+>>>>>>> v4.14.187
 }
 
 static const struct coresight_ops_link replicator_link_ops = {
@@ -231,7 +280,10 @@ static int replicator_probe(struct amba_device *adev, const struct amba_id *id)
 	dev_set_drvdata(dev, drvdata);
 	pm_runtime_put(&adev->dev);
 
+<<<<<<< HEAD
 	spin_lock_init(&drvdata->spinlock);
+=======
+>>>>>>> v4.14.187
 	desc.type = CORESIGHT_DEV_TYPE_LINK;
 	desc.subtype.link_subtype = CORESIGHT_DEV_SUBTYPE_LINK_SPLIT;
 	desc.ops = &replicator_cs_ops;
@@ -239,12 +291,19 @@ static int replicator_probe(struct amba_device *adev, const struct amba_id *id)
 	desc.dev = &adev->dev;
 	desc.groups = replicator_groups;
 	drvdata->csdev = coresight_register(&desc);
+<<<<<<< HEAD
 
 	if (!IS_ERR(drvdata->csdev)) {
 		replicator_reset(drvdata);
 		return 0;
 	}
 	return PTR_ERR(drvdata->csdev);
+=======
+	if (IS_ERR(drvdata->csdev))
+		return PTR_ERR(drvdata->csdev);
+
+	return 0;
+>>>>>>> v4.14.187
 }
 
 #ifdef CONFIG_PM

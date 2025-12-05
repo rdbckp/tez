@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> v4.14.187
 /*
  *  Copyright (C) 1991, 1992  Linus Torvalds
  */
@@ -103,8 +106,13 @@ static void __proc_set_tty(struct tty_struct *tty)
 	put_pid(tty->session);
 	put_pid(tty->pgrp);
 	tty->pgrp = get_pid(task_pgrp(current));
+<<<<<<< HEAD
 	tty->session = get_pid(task_session(current));
 	spin_unlock_irqrestore(&tty->ctrl_lock, flags);
+=======
+	spin_unlock_irqrestore(&tty->ctrl_lock, flags);
+	tty->session = get_pid(task_session(current));
+>>>>>>> v4.14.187
 	if (current->signal->tty) {
 		tty_debug(tty, "current tty %s not NULL!!\n",
 			  current->signal->tty->name);
@@ -293,6 +301,7 @@ void disassociate_ctty(int on_exit)
 	spin_lock_irq(&current->sighand->siglock);
 	put_pid(current->signal->tty_old_pgrp);
 	current->signal->tty_old_pgrp = NULL;
+<<<<<<< HEAD
 	tty = tty_kref_get(current->signal->tty);
 	spin_unlock_irq(&current->sighand->siglock);
 
@@ -300,16 +309,29 @@ void disassociate_ctty(int on_exit)
 		unsigned long flags;
 
 		tty_lock(tty);
+=======
+
+	tty = tty_kref_get(current->signal->tty);
+	if (tty) {
+		unsigned long flags;
+>>>>>>> v4.14.187
 		spin_lock_irqsave(&tty->ctrl_lock, flags);
 		put_pid(tty->session);
 		put_pid(tty->pgrp);
 		tty->session = NULL;
 		tty->pgrp = NULL;
 		spin_unlock_irqrestore(&tty->ctrl_lock, flags);
+<<<<<<< HEAD
 		tty_unlock(tty);
 		tty_kref_put(tty);
 	}
 
+=======
+		tty_kref_put(tty);
+	}
+
+	spin_unlock_irq(&current->sighand->siglock);
+>>>>>>> v4.14.187
 	/* Now clear signal->tty under the lock */
 	read_lock(&tasklist_lock);
 	session_clear_tty(task_session(current));
@@ -480,11 +502,19 @@ static int tiocspgrp(struct tty_struct *tty, struct tty_struct *real_tty, pid_t 
 		return -ENOTTY;
 	if (retval)
 		return retval;
+<<<<<<< HEAD
 
+=======
+	if (!current->signal->tty ||
+	    (current->signal->tty != real_tty) ||
+	    (real_tty->session != task_session(current)))
+		return -ENOTTY;
+>>>>>>> v4.14.187
 	if (get_user(pgrp_nr, p))
 		return -EFAULT;
 	if (pgrp_nr < 0)
 		return -EINVAL;
+<<<<<<< HEAD
 
 	spin_lock_irq(&real_tty->ctrl_lock);
 	if (!current->signal->tty ||
@@ -493,6 +523,8 @@ static int tiocspgrp(struct tty_struct *tty, struct tty_struct *real_tty, pid_t 
 		retval = -ENOTTY;
 		goto out_unlock_ctrl;
 	}
+=======
+>>>>>>> v4.14.187
 	rcu_read_lock();
 	pgrp = find_vpid(pgrp_nr);
 	retval = -ESRCH;
@@ -502,12 +534,21 @@ static int tiocspgrp(struct tty_struct *tty, struct tty_struct *real_tty, pid_t 
 	if (session_of_pgrp(pgrp) != task_session(current))
 		goto out_unlock;
 	retval = 0;
+<<<<<<< HEAD
 	put_pid(real_tty->pgrp);
 	real_tty->pgrp = get_pid(pgrp);
 out_unlock:
 	rcu_read_unlock();
 out_unlock_ctrl:
 	spin_unlock_irq(&real_tty->ctrl_lock);
+=======
+	spin_lock_irq(&tty->ctrl_lock);
+	put_pid(real_tty->pgrp);
+	real_tty->pgrp = get_pid(pgrp);
+	spin_unlock_irq(&tty->ctrl_lock);
+out_unlock:
+	rcu_read_unlock();
+>>>>>>> v4.14.187
 	return retval;
 }
 
@@ -519,18 +560,27 @@ out_unlock_ctrl:
  *
  *	Obtain the session id of the tty. If there is no session
  *	return an error.
+<<<<<<< HEAD
  */
 static int tiocgsid(struct tty_struct *tty, struct tty_struct *real_tty, pid_t __user *p)
 {
 	unsigned long flags;
 	pid_t sid;
 
+=======
+ *
+ *	Locking: none. Reference to current->signal->tty is safe.
+ */
+static int tiocgsid(struct tty_struct *tty, struct tty_struct *real_tty, pid_t __user *p)
+{
+>>>>>>> v4.14.187
 	/*
 	 * (tty == real_tty) is a cheap way of
 	 * testing if the tty is NOT a master pty.
 	*/
 	if (tty == real_tty && current->signal->tty != real_tty)
 		return -ENOTTY;
+<<<<<<< HEAD
 
 	spin_lock_irqsave(&real_tty->ctrl_lock, flags);
 	if (!real_tty->session)
@@ -543,6 +593,11 @@ static int tiocgsid(struct tty_struct *tty, struct tty_struct *real_tty, pid_t _
 err:
 	spin_unlock_irqrestore(&real_tty->ctrl_lock, flags);
 	return -ENOTTY;
+=======
+	if (!real_tty->session)
+		return -ENOTTY;
+	return put_user(pid_vnr(real_tty->session), p);
+>>>>>>> v4.14.187
 }
 
 /*

@@ -56,9 +56,17 @@ autogroup_task_group(struct task_struct *p, struct task_group *tg)
 	return tg;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_DEBUG
+>>>>>>> v4.14.187
 static inline int autogroup_path(struct task_group *tg, char *buf, int buflen)
 {
 	return 0;
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> v4.14.187
 
 #endif /* CONFIG_SCHED_AUTOGROUP */

@@ -1982,7 +1982,11 @@ static void write_blk_ctl(struct nfit_blk *nfit_blk, unsigned int bw,
 		offset = to_interleave_offset(offset, mmio);
 
 	writeq(cmd, mmio->addr.base + offset);
+<<<<<<< HEAD
 	nvdimm_flush(nfit_blk->nd_region, NULL);
+=======
+	nvdimm_flush(nfit_blk->nd_region);
+>>>>>>> v4.14.187
 
 	if (nfit_blk->dimm_flags & NFIT_BLK_DCR_LATCH)
 		readq(mmio->addr.base + offset);
@@ -2031,7 +2035,11 @@ static int acpi_nfit_blk_single_io(struct nfit_blk *nfit_blk,
 	}
 
 	if (rw)
+<<<<<<< HEAD
 		nvdimm_flush(nfit_blk->nd_region, NULL);
+=======
+		nvdimm_flush(nfit_blk->nd_region);
+>>>>>>> v4.14.187
 
 	rc = read_blk_stat(nfit_blk, lane) ? -EIO : 0;
 	return rc;

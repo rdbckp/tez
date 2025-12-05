@@ -10,6 +10,12 @@
 #include <linux/seqlock.h>
 #include <linux/time.h>
 
+<<<<<<< HEAD
+=======
+#define LOAD_INT(x) ((x) >> FSHIFT)
+#define LOAD_FRAC(x) LOAD_INT(((x) & (FIXED_1-1)) * 100)
+
+>>>>>>> v4.14.187
 static int loadavg_proc_show(struct seq_file *m, void *v)
 {
 	unsigned long avnrun[3];

@@ -20,9 +20,12 @@
 #include <linux/osq_lock.h>
 
 #include "rwsem.h"
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 #include <mt-plat/turbo_common.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 /*
  * Guide to the rw_semaphore's count field for common values.
@@ -93,9 +96,12 @@ void __init_rwsem(struct rw_semaphore *sem, const char *name,
 	sem->owner = NULL;
 	osq_lock_init(&sem->osq);
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 	sem->turbo_owner = NULL;
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 EXPORT_SYMBOL(__init_rwsem);
@@ -264,11 +270,15 @@ __rwsem_down_read_failed_common(struct rw_semaphore *sem, int state)
 	raw_spin_lock_irq(&sem->wait_lock);
 	if (list_empty(&sem->wait_list))
 		adjustment += RWSEM_WAITING_BIAS;
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 	rwsem_list_add(waiter.task, &waiter.list, &sem->wait_list);
 #else
 	list_add_tail(&waiter.list, &sem->wait_list);
 #endif
+=======
+	list_add_tail(&waiter.list, &sem->wait_list);
+>>>>>>> v4.14.187
 
 	/* we're now waiting on the lock, but no longer actively locking */
 	count = atomic_long_add_return(adjustment, &sem->count);
@@ -284,10 +294,13 @@ __rwsem_down_read_failed_common(struct rw_semaphore *sem, int state)
 	     adjustment != -RWSEM_ACTIVE_READ_BIAS))
 		__rwsem_mark_wake(sem, RWSEM_WAKE_ANY, &wake_q);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 	if (waiter.task)
 		rwsem_start_turbo_inherit(sem);
 #endif
+=======
+>>>>>>> v4.14.187
 	raw_spin_unlock_irq(&sem->wait_lock);
 	wake_up_q(&wake_q);
 
@@ -556,11 +569,15 @@ __rwsem_down_write_failed_common(struct rw_semaphore *sem, int state)
 	if (list_empty(&sem->wait_list))
 		waiting = false;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 	rwsem_list_add(waiter.task, &waiter.list, &sem->wait_list);
 #else
 	list_add_tail(&waiter.list, &sem->wait_list);
 #endif
+=======
+	list_add_tail(&waiter.list, &sem->wait_list);
+>>>>>>> v4.14.187
 
 	/* we're now waiting on the lock, but no longer actively locking */
 	if (waiting) {
@@ -591,10 +608,13 @@ __rwsem_down_write_failed_common(struct rw_semaphore *sem, int state)
 	} else
 		count = atomic_long_add_return(RWSEM_WAITING_BIAS, &sem->count);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 	/* inherit if current is turbo */
 	rwsem_start_turbo_inherit(sem);
 #endif
+=======
+>>>>>>> v4.14.187
 	/* wait until we successfully acquire the lock */
 	set_current_state(state);
 	while (true) {

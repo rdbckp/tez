@@ -35,6 +35,11 @@
  * In most cases, application shall confirm the kernel status is not
  * changed without any system call invocations.
  */
+<<<<<<< HEAD
+=======
+static struct page *selinux_status_page;
+static DEFINE_MUTEX(selinux_status_lock);
+>>>>>>> v4.14.187
 
 /*
  * selinux_kernel_status_page
@@ -42,11 +47,16 @@
  * It returns a reference to selinux_status_page. If the status page is
  * not allocated yet, it also tries to allocate it at the first time.
  */
+<<<<<<< HEAD
 struct page *selinux_kernel_status_page(struct selinux_state *state)
+=======
+struct page *selinux_kernel_status_page(void)
+>>>>>>> v4.14.187
 {
 	struct selinux_kernel_status   *status;
 	struct page		       *result = NULL;
 
+<<<<<<< HEAD
 	mutex_lock(&state->ss->status_lock);
 	if (!state->ss->status_page) {
 		state->ss->status_page = alloc_page(GFP_KERNEL|__GFP_ZERO);
@@ -63,6 +73,18 @@ struct page *selinux_kernel_status_page(struct selinux_state *state)
 			status->enforcing = enforcing_enabled(state);
 #endif
 // ] SEC_SELINUX_PORTING_COMMON
+=======
+	mutex_lock(&selinux_status_lock);
+	if (!selinux_status_page) {
+		selinux_status_page = alloc_page(GFP_KERNEL|__GFP_ZERO);
+
+		if (selinux_status_page) {
+			status = page_address(selinux_status_page);
+
+			status->version = SELINUX_KERNEL_STATUS_VERSION;
+			status->sequence = 0;
+			status->enforcing = selinux_enforcing;
+>>>>>>> v4.14.187
 			/*
 			 * NOTE: the next policyload event shall set
 			 * a positive value on the status->policyload,
@@ -70,12 +92,20 @@ struct page *selinux_kernel_status_page(struct selinux_state *state)
 			 * So, application can know it was updated.
 			 */
 			status->policyload = 0;
+<<<<<<< HEAD
 			status->deny_unknown =
 				!security_get_allow_unknown(state);
 		}
 	}
 	result = state->ss->status_page;
 	mutex_unlock(&state->ss->status_lock);
+=======
+			status->deny_unknown = !security_get_allow_unknown();
+		}
+	}
+	result = selinux_status_page;
+	mutex_unlock(&selinux_status_lock);
+>>>>>>> v4.14.187
 
 	return result;
 }
@@ -85,6 +115,7 @@ struct page *selinux_kernel_status_page(struct selinux_state *state)
  *
  * It updates status of the current enforcing/permissive mode.
  */
+<<<<<<< HEAD
 void selinux_status_update_setenforce(struct selinux_state *state,
 				      int enforcing)
 {
@@ -93,6 +124,15 @@ void selinux_status_update_setenforce(struct selinux_state *state,
 	mutex_lock(&state->ss->status_lock);
 	if (state->ss->status_page) {
 		status = page_address(state->ss->status_page);
+=======
+void selinux_status_update_setenforce(int enforcing)
+{
+	struct selinux_kernel_status   *status;
+
+	mutex_lock(&selinux_status_lock);
+	if (selinux_status_page) {
+		status = page_address(selinux_status_page);
+>>>>>>> v4.14.187
 
 		status->sequence++;
 		smp_wmb();
@@ -102,7 +142,11 @@ void selinux_status_update_setenforce(struct selinux_state *state,
 		smp_wmb();
 		status->sequence++;
 	}
+<<<<<<< HEAD
 	mutex_unlock(&state->ss->status_lock);
+=======
+	mutex_unlock(&selinux_status_lock);
+>>>>>>> v4.14.187
 }
 
 /*
@@ -111,6 +155,7 @@ void selinux_status_update_setenforce(struct selinux_state *state,
  * It updates status of the times of policy reloaded, and current
  * setting of deny_unknown.
  */
+<<<<<<< HEAD
 void selinux_status_update_policyload(struct selinux_state *state,
 				      int seqno)
 {
@@ -119,15 +164,32 @@ void selinux_status_update_policyload(struct selinux_state *state,
 	mutex_lock(&state->ss->status_lock);
 	if (state->ss->status_page) {
 		status = page_address(state->ss->status_page);
+=======
+void selinux_status_update_policyload(int seqno)
+{
+	struct selinux_kernel_status   *status;
+
+	mutex_lock(&selinux_status_lock);
+	if (selinux_status_page) {
+		status = page_address(selinux_status_page);
+>>>>>>> v4.14.187
 
 		status->sequence++;
 		smp_wmb();
 
 		status->policyload = seqno;
+<<<<<<< HEAD
 		status->deny_unknown = !security_get_allow_unknown(state);
+=======
+		status->deny_unknown = !security_get_allow_unknown();
+>>>>>>> v4.14.187
 
 		smp_wmb();
 		status->sequence++;
 	}
+<<<<<<< HEAD
 	mutex_unlock(&state->ss->status_lock);
+=======
+	mutex_unlock(&selinux_status_lock);
+>>>>>>> v4.14.187
 }

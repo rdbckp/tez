@@ -74,14 +74,22 @@
  */
 enum pageflags {
 	PG_locked,		/* Page is locked. Don't touch. */
+<<<<<<< HEAD
+=======
+	PG_error,
+>>>>>>> v4.14.187
 	PG_referenced,
 	PG_uptodate,
 	PG_dirty,
 	PG_lru,
 	PG_active,
+<<<<<<< HEAD
 	PG_workingset,
 	PG_waiters,		/* Page has waiters, check its waitqueue. Must be bit #7 and in the same byte as "PG_locked" */
 	PG_error,
+=======
+	PG_waiters,		/* Page has waiters, check its waitqueue. Must be bit #7 and in the same byte as "PG_locked" */
+>>>>>>> v4.14.187
 	PG_slab,
 	PG_owner_priv_1,	/* Owner use. If pagecache, fs may use*/
 	PG_arch_1,
@@ -107,7 +115,10 @@ enum pageflags {
 	PG_young,
 	PG_idle,
 #endif
+<<<<<<< HEAD
 	PG_iommu,
+=======
+>>>>>>> v4.14.187
 	__NR_PAGEFLAGS,
 
 	/* Filesystems */
@@ -275,8 +286,11 @@ PAGEFLAG(Dirty, dirty, PF_HEAD) TESTSCFLAG(Dirty, dirty, PF_HEAD)
 PAGEFLAG(LRU, lru, PF_HEAD) __CLEARPAGEFLAG(LRU, lru, PF_HEAD)
 PAGEFLAG(Active, active, PF_HEAD) __CLEARPAGEFLAG(Active, active, PF_HEAD)
 	TESTCLEARFLAG(Active, active, PF_HEAD)
+<<<<<<< HEAD
 PAGEFLAG(Workingset, workingset, PF_HEAD)
 	TESTCLEARFLAG(Workingset, workingset, PF_HEAD)
+=======
+>>>>>>> v4.14.187
 __PAGEFLAG(Slab, slab, PF_NO_TAIL)
 __PAGEFLAG(SlobFree, slob_free, PF_NO_TAIL)
 PAGEFLAG(Checked, checked, PF_NO_COMPOUND)	   /* Used by some filesystems */
@@ -378,7 +392,10 @@ TESTCLEARFLAG(Young, young, PF_ANY)
 PAGEFLAG(Idle, idle, PF_ANY)
 #endif
 
+<<<<<<< HEAD
 PAGEFLAG(Iommu, iommu, PF_ANY)
+=======
+>>>>>>> v4.14.187
 /*
  * On an anonymous page mapped into a user virtual memory area,
  * page->mapping points to its anon_vma, not to a struct address_space;

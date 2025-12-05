@@ -101,7 +101,11 @@ static int alarmtimer_rtc_add_device(struct device *dev,
 	if (!device_may_wakeup(rtc->dev.parent))
 		return -1;
 
+<<<<<<< HEAD
 	__ws = wakeup_source_register(dev, "alarmtimer");
+=======
+	__ws = wakeup_source_register("alarmtimer");
+>>>>>>> v4.14.187
 
 	spin_lock_irqsave(&rtcdev_lock, flags);
 	if (!rtcdev) {
@@ -164,6 +168,7 @@ static inline void alarmtimer_rtc_timer_init(void) { }
  */
 static void alarmtimer_enqueue(struct alarm_base *base, struct alarm *alarm)
 {
+<<<<<<< HEAD
 	static DEFINE_RATELIMIT_STATE(ratelimit, HZ - 1, 5);
 
 	if (alarm->state & ALARMTIMER_STATE_ENQUEUED)
@@ -174,6 +179,11 @@ static void alarmtimer_enqueue(struct alarm_base *base, struct alarm *alarm)
 		pr_notice("%s, %lld\n", __func__, alarm->node.expires);
 	}
 
+=======
+	if (alarm->state & ALARMTIMER_STATE_ENQUEUED)
+		timerqueue_del(&base->timerqueue, &alarm->node);
+
+>>>>>>> v4.14.187
 	timerqueue_add(&base->timerqueue, &alarm->node);
 	alarm->state |= ALARMTIMER_STATE_ENQUEUED;
 }
@@ -258,10 +268,14 @@ static int alarmtimer_suspend(struct device *dev)
 	int i, ret, type;
 	struct rtc_device *rtc;
 	unsigned long flags;
+<<<<<<< HEAD
 	struct rtc_time tm, time;
 #if IS_ENABLED(CONFIG_SEC_PM)
 	struct alarm *min_alarm;
 #endif
+=======
+	struct rtc_time tm;
+>>>>>>> v4.14.187
 
 	spin_lock_irqsave(&freezer_delta_lock, flags);
 	min = freezer_delta;
@@ -291,18 +305,24 @@ static int alarmtimer_suspend(struct device *dev)
 			expires = next->expires;
 			min = delta;
 			type = i;
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SEC_PM)
 			min_alarm = container_of(next, struct alarm, node);
 #endif
+=======
+>>>>>>> v4.14.187
 		}
 	}
 	if (min == 0)
 		return 0;
 
 	if (ktime_to_ns(min) < 2 * NSEC_PER_SEC) {
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SEC_PM)
 		pr_info("alarmtimer suspending blocked by %ps\n", min_alarm->function);
 #endif
+=======
+>>>>>>> v4.14.187
 		__pm_wakeup_event(ws, 2 * MSEC_PER_SEC);
 		return -EBUSY;
 	}
@@ -315,6 +335,7 @@ static int alarmtimer_suspend(struct device *dev)
 	now = rtc_tm_to_ktime(tm);
 	now = ktime_add(now, min);
 
+<<<<<<< HEAD
 	time = rtc_ktime_to_tm(now);
 	pr_notice_ratelimited("%s convert %lld to %04d/%02d/%02d %02d:%02d:%02d (now = %04d/%02d/%02d %02d:%02d:%02d)\n",
 			__func__, expires,
@@ -323,6 +344,8 @@ static int alarmtimer_suspend(struct device *dev)
 			tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
 			tm.tm_hour, tm.tm_min, tm.tm_sec);
 
+=======
+>>>>>>> v4.14.187
 	/* Set alarm, if in the past reject suspend briefly to handle */
 	ret = rtc_timer_start(rtc, &rtctimer, now, 0);
 	if (ret < 0)

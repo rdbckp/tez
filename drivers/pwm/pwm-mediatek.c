@@ -16,7 +16,10 @@
 #include <linux/module.h>
 #include <linux/clk.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/of_device.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/platform_device.h>
 #include <linux/pwm.h>
 #include <linux/slab.h>
@@ -29,9 +32,13 @@
 #define PWMGDUR			0x0c
 #define PWMWAVENUM		0x28
 #define PWMDWIDTH		0x2c
+<<<<<<< HEAD
 #define PWM45DWIDTH_FIXUP	0x30
 #define PWMTHRES		0x30
 #define PWM45THRES_FIXUP	0x34
+=======
+#define PWMTHRES		0x30
+>>>>>>> v4.14.187
 
 #define PWM_CLK_DIV_MAX		7
 
@@ -43,6 +50,7 @@ enum {
 	MTK_CLK_PWM3,
 	MTK_CLK_PWM4,
 	MTK_CLK_PWM5,
+<<<<<<< HEAD
 	MTK_CLK_PWM6,
 	MTK_CLK_PWM7,
 	MTK_CLK_PWM8,
@@ -58,6 +66,13 @@ struct mtk_pwm_platform_data {
 	unsigned int num_pwms;
 	bool pwm45_fixup;
 	bool has_clks;
+=======
+	MTK_CLK_MAX,
+};
+
+static const char * const mtk_pwm_clk_name[] = {
+	"main", "top", "pwm1", "pwm2", "pwm3", "pwm4", "pwm5"
+>>>>>>> v4.14.187
 };
 
 /**
@@ -70,11 +85,14 @@ struct mtk_pwm_chip {
 	struct pwm_chip chip;
 	void __iomem *regs;
 	struct clk *clks[MTK_CLK_MAX];
+<<<<<<< HEAD
 	const struct mtk_pwm_platform_data *soc;
 };
 
 static const unsigned int mtk_pwm_reg_offset[] = {
 	0x0010, 0x0050, 0x0090, 0x00d0, 0x0110, 0x0150, 0x0190, 0x0220
+=======
+>>>>>>> v4.14.187
 };
 
 static inline struct mtk_pwm_chip *to_mtk_pwm_chip(struct pwm_chip *chip)
@@ -87,9 +105,12 @@ static int mtk_pwm_clk_enable(struct pwm_chip *chip, struct pwm_device *pwm)
 	struct mtk_pwm_chip *pc = to_mtk_pwm_chip(chip);
 	int ret;
 
+<<<<<<< HEAD
 	if (!pc->soc->has_clks)
 		return 0;
 
+=======
+>>>>>>> v4.14.187
 	ret = clk_prepare_enable(pc->clks[MTK_CLK_TOP]);
 	if (ret < 0)
 		return ret;
@@ -116,9 +137,12 @@ static void mtk_pwm_clk_disable(struct pwm_chip *chip, struct pwm_device *pwm)
 {
 	struct mtk_pwm_chip *pc = to_mtk_pwm_chip(chip);
 
+<<<<<<< HEAD
 	if (!pc->soc->has_clks)
 		return;
 
+=======
+>>>>>>> v4.14.187
 	clk_disable_unprepare(pc->clks[MTK_CLK_PWM1 + pwm->hwpwm]);
 	clk_disable_unprepare(pc->clks[MTK_CLK_MAIN]);
 	clk_disable_unprepare(pc->clks[MTK_CLK_TOP]);
@@ -127,14 +151,22 @@ static void mtk_pwm_clk_disable(struct pwm_chip *chip, struct pwm_device *pwm)
 static inline u32 mtk_pwm_readl(struct mtk_pwm_chip *chip, unsigned int num,
 				unsigned int offset)
 {
+<<<<<<< HEAD
 	return readl(chip->regs + mtk_pwm_reg_offset[num] + offset);
+=======
+	return readl(chip->regs + 0x10 + (num * 0x40) + offset);
+>>>>>>> v4.14.187
 }
 
 static inline void mtk_pwm_writel(struct mtk_pwm_chip *chip,
 				  unsigned int num, unsigned int offset,
 				  u32 value)
 {
+<<<<<<< HEAD
 	writel(value, chip->regs + mtk_pwm_reg_offset[num] + offset);
+=======
+	writel(value, chip->regs + 0x10 + (num * 0x40) + offset);
+>>>>>>> v4.14.187
 }
 
 static int mtk_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
@@ -142,15 +174,20 @@ static int mtk_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
 {
 	struct mtk_pwm_chip *pc = to_mtk_pwm_chip(chip);
 	struct clk *clk = pc->clks[MTK_CLK_PWM1 + pwm->hwpwm];
+<<<<<<< HEAD
 	u32 clkdiv = 0, cnt_period, cnt_duty, reg_width = PWMDWIDTH,
 	    reg_thres = PWMTHRES;
 	u64 resolution;
+=======
+	u32 resolution, clkdiv = 0;
+>>>>>>> v4.14.187
 	int ret;
 
 	ret = mtk_pwm_clk_enable(chip, pwm);
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	/* Using resolution in picosecond gets accuracy higher */
 	resolution = (u64)NSEC_PER_SEC * 1000;
 	do_div(resolution, clk_get_rate(clk));
@@ -161,6 +198,13 @@ static int mtk_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
 		clkdiv++;
 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
 						   resolution);
+=======
+	resolution = NSEC_PER_SEC / clk_get_rate(clk);
+
+	while (period_ns / resolution > 8191) {
+		resolution *= 2;
+		clkdiv++;
+>>>>>>> v4.14.187
 	}
 
 	if (clkdiv > PWM_CLK_DIV_MAX) {
@@ -169,6 +213,7 @@ static int mtk_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (pc->soc->pwm45_fixup && pwm->hwpwm > 2) {
 		/*
 		 * PWM[4,5] has distinct offset for PWMDWIDTH and PWMTHRES
@@ -182,6 +227,11 @@ static int mtk_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
 	mtk_pwm_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
 	mtk_pwm_writel(pc, pwm->hwpwm, reg_width, cnt_period);
 	mtk_pwm_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
+=======
+	mtk_pwm_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
+	mtk_pwm_writel(pc, pwm->hwpwm, PWMDWIDTH, period_ns / resolution);
+	mtk_pwm_writel(pc, pwm->hwpwm, PWMTHRES, duty_ns / resolution);
+>>>>>>> v4.14.187
 
 	mtk_pwm_clk_disable(chip, pwm);
 
@@ -226,7 +276,10 @@ static const struct pwm_ops mtk_pwm_ops = {
 
 static int mtk_pwm_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	const struct mtk_pwm_platform_data *data;
+=======
+>>>>>>> v4.14.187
 	struct mtk_pwm_chip *pc;
 	struct resource *res;
 	unsigned int i;
@@ -236,16 +289,20 @@ static int mtk_pwm_probe(struct platform_device *pdev)
 	if (!pc)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	data = of_device_get_match_data(&pdev->dev);
 	if (data == NULL)
 		return -EINVAL;
 	pc->soc = data;
 
+=======
+>>>>>>> v4.14.187
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	pc->regs = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(pc->regs))
 		return PTR_ERR(pc->regs);
 
+<<<<<<< HEAD
 	for (i = 0; i < data->num_pwms + 2 && pc->soc->has_clks; i++) {
 		pc->clks[i] = devm_clk_get(&pdev->dev, mtk_pwm_clk_name[i]);
 		if (IS_ERR(pc->clks[i])) {
@@ -253,6 +310,12 @@ static int mtk_pwm_probe(struct platform_device *pdev)
 				mtk_pwm_clk_name[i], PTR_ERR(pc->clks[i]));
 			return PTR_ERR(pc->clks[i]);
 		}
+=======
+	for (i = 0; i < MTK_CLK_MAX; i++) {
+		pc->clks[i] = devm_clk_get(&pdev->dev, mtk_pwm_clk_name[i]);
+		if (IS_ERR(pc->clks[i]))
+			return PTR_ERR(pc->clks[i]);
+>>>>>>> v4.14.187
 	}
 
 	platform_set_drvdata(pdev, pc);
@@ -260,7 +323,11 @@ static int mtk_pwm_probe(struct platform_device *pdev)
 	pc->chip.dev = &pdev->dev;
 	pc->chip.ops = &mtk_pwm_ops;
 	pc->chip.base = -1;
+<<<<<<< HEAD
 	pc->chip.npwm = data->num_pwms;
+=======
+	pc->chip.npwm = 5;
+>>>>>>> v4.14.187
 
 	ret = pwmchip_add(&pc->chip);
 	if (ret < 0) {
@@ -278,6 +345,7 @@ static int mtk_pwm_remove(struct platform_device *pdev)
 	return pwmchip_remove(&pc->chip);
 }
 
+<<<<<<< HEAD
 static const struct mtk_pwm_platform_data mt2712_pwm_data = {
 	.num_pwms = 8,
 	.pwm45_fixup = false,
@@ -322,6 +390,11 @@ static const struct of_device_id mtk_pwm_of_match[] = {
 	{ .compatible = "mediatek,mt8167-pwm", .data = &mt8167_pwm_data },
 	{ .compatible = "mediatek,mt8168-pwm", .data = &mt8168_pwm_data },
 	{ },
+=======
+static const struct of_device_id mtk_pwm_of_match[] = {
+	{ .compatible = "mediatek,mt7623-pwm" },
+	{ }
+>>>>>>> v4.14.187
 };
 MODULE_DEVICE_TABLE(of, mtk_pwm_of_match);
 
@@ -336,4 +409,8 @@ static struct platform_driver mtk_pwm_driver = {
 module_platform_driver(mtk_pwm_driver);
 
 MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
+<<<<<<< HEAD
+=======
+MODULE_ALIAS("platform:mtk-pwm");
+>>>>>>> v4.14.187
 MODULE_LICENSE("GPL");

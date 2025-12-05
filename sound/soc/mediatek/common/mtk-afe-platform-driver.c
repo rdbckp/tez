@@ -21,6 +21,7 @@
 #include "mtk-afe-platform-driver.h"
 #include "mtk-base-afe.h"
 
+<<<<<<< HEAD
 int mtk_afe_combine_sub_dai(struct mtk_base_afe *afe)
 {
 	struct mtk_base_afe_dai *dai;
@@ -96,6 +97,8 @@ unsigned int word_size_align(unsigned int in_size)
 	return align_size;
 }
 
+=======
+>>>>>>> v4.14.187
 static snd_pcm_uframes_t mtk_afe_pcm_pointer
 			 (struct snd_pcm_substream *substream)
 {
@@ -127,6 +130,7 @@ static snd_pcm_uframes_t mtk_afe_pcm_pointer
 	pcm_ptr_bytes = hw_ptr - hw_base;
 
 POINTER_RETURN_FRAMES:
+<<<<<<< HEAD
 	pcm_ptr_bytes = word_size_align(pcm_ptr_bytes);
 	return bytes_to_frames(substream->runtime, pcm_ptr_bytes);
 }
@@ -236,6 +240,29 @@ int mtk_afe_pcm_new(struct snd_soc_pcm_runtime *rtd)
 }
 
 void mtk_afe_pcm_free(struct snd_pcm *pcm)
+=======
+	return bytes_to_frames(substream->runtime, pcm_ptr_bytes);
+}
+
+static const struct snd_pcm_ops mtk_afe_pcm_ops = {
+	.ioctl = snd_pcm_lib_ioctl,
+	.pointer = mtk_afe_pcm_pointer,
+};
+
+static int mtk_afe_pcm_new(struct snd_soc_pcm_runtime *rtd)
+{
+	size_t size;
+	struct snd_pcm *pcm = rtd->pcm;
+	struct mtk_base_afe *afe = snd_soc_platform_get_drvdata(rtd->platform);
+
+	size = afe->mtk_afe_hardware->buffer_bytes_max;
+	return snd_pcm_lib_preallocate_pages_for_all(pcm, SNDRV_DMA_TYPE_DEV,
+						     rtd->platform->dev,
+						     size, size);
+}
+
+static void mtk_afe_pcm_free(struct snd_pcm *pcm)
+>>>>>>> v4.14.187
 {
 	snd_pcm_lib_preallocate_free_for_all(pcm);
 }

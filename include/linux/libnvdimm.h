@@ -18,7 +18,10 @@
 #include <linux/sizes.h>
 #include <linux/types.h>
 #include <linux/uuid.h>
+<<<<<<< HEAD
 #include <linux/bio.h>
+=======
+>>>>>>> v4.14.187
 
 enum {
 	/* when a dimm supports both PMEM and BLK access a label is required */
@@ -37,9 +40,12 @@ enum {
 	/* region flag indicating to direct-map persistent memory by default */
 	ND_REGION_PAGEMAP = 0,
 
+<<<<<<< HEAD
 	/* Platform provides asynchronous flush mechanism */
 	ND_REGION_ASYNC = 3,
 
+=======
+>>>>>>> v4.14.187
 	/* mark newly adjusted resources as requiring a label update */
 	DPA_RESOURCE_ADJUSTED = 1 << 0,
 };
@@ -57,14 +63,20 @@ typedef int (*ndctl_fn)(struct nvdimm_bus_descriptor *nd_desc,
 		struct nvdimm *nvdimm, unsigned int cmd, void *buf,
 		unsigned int buf_len, int *cmd_rc);
 
+<<<<<<< HEAD
 struct device_node;
+=======
+>>>>>>> v4.14.187
 struct nvdimm_bus_descriptor {
 	const struct attribute_group **attr_groups;
 	unsigned long bus_dsm_mask;
 	unsigned long cmd_mask;
 	struct module *module;
 	char *provider_name;
+<<<<<<< HEAD
 	struct device_node *of_node;
+=======
+>>>>>>> v4.14.187
 	ndctl_fn ndctl;
 	int (*flush_probe)(struct nvdimm_bus_descriptor *nd_desc);
 	int (*clear_to_send)(struct nvdimm_bus_descriptor *nd_desc,
@@ -96,7 +108,10 @@ struct nd_mapping_desc {
 	int position;
 };
 
+<<<<<<< HEAD
 struct nd_region;
+=======
+>>>>>>> v4.14.187
 struct nd_region_desc {
 	struct resource *res;
 	struct nd_mapping_desc *mapping;
@@ -107,8 +122,11 @@ struct nd_region_desc {
 	int num_lanes;
 	int numa_node;
 	unsigned long flags;
+<<<<<<< HEAD
 	struct device_node *of_node;
 	int (*flush)(struct nd_region *nd_region, struct bio *bio);
+=======
+>>>>>>> v4.14.187
 };
 
 struct device;
@@ -180,8 +198,12 @@ unsigned long nd_blk_memremap_flags(struct nd_blk_region *ndbr);
 unsigned int nd_region_acquire_lane(struct nd_region *nd_region);
 void nd_region_release_lane(struct nd_region *nd_region, unsigned int lane);
 u64 nd_fletcher64(void *addr, size_t len, bool le);
+<<<<<<< HEAD
 int nvdimm_flush(struct nd_region *nd_region, struct bio *bio);
 int generic_nvdimm_flush(struct nd_region *nd_region);
+=======
+void nvdimm_flush(struct nd_region *nd_region);
+>>>>>>> v4.14.187
 int nvdimm_has_flush(struct nd_region *nd_region);
 int nvdimm_has_cache(struct nd_region *nd_region);
 

@@ -19,15 +19,21 @@
 #include <linux/slab.h>
 
 #include "slot-gpio.h"
+<<<<<<< HEAD
 #include "mtk_sd.h"
 #include "host.h"
+=======
+>>>>>>> v4.14.187
 
 struct mmc_gpio {
 	struct gpio_desc *ro_gpio;
 	struct gpio_desc *cd_gpio;
 	bool override_ro_active_level;
 	bool override_cd_active_level;
+<<<<<<< HEAD
 	bool status;
+=======
+>>>>>>> v4.14.187
 	irqreturn_t (*cd_gpio_isr)(int irq, void *dev_id);
 	char *ro_label;
 	char cd_label[0];
@@ -37,6 +43,7 @@ static irqreturn_t mmc_gpio_cd_irqt(int irq, void *dev_id)
 {
 	/* Schedule a card detection after a debounce timeout */
 	struct mmc_host *host = dev_id;
+<<<<<<< HEAD
 	struct msdc_host *msdc_host = mmc_priv(host);
 	struct mmc_gpio *ctx = host->slot.handler_priv;
 	bool status;
@@ -56,6 +63,11 @@ static irqreturn_t mmc_gpio_cd_irqt(int irq, void *dev_id)
 
 		mmc_detect_change(host, msecs_to_jiffies(200));
 	}
+=======
+
+	host->trigger_card_event = true;
+	mmc_detect_change(host, msecs_to_jiffies(200));
+>>>>>>> v4.14.187
 
 	return IRQ_HANDLED;
 }
@@ -155,6 +167,7 @@ void mmc_gpiod_request_cd_irq(struct mmc_host *host)
 	if (irq >= 0 && host->caps & MMC_CAP_NEEDS_POLL)
 		irq = -EINVAL;
 
+<<<<<<< HEAD
 	ret = mmc_gpio_get_cd(host);
 	if(ret < 0) {
 		pr_err("%s: getting card detection gpio failed \n", mmc_hostname(host));
@@ -162,6 +175,8 @@ void mmc_gpiod_request_cd_irq(struct mmc_host *host)
 	}
 	ctx->status = ret ? true : false;
 
+=======
+>>>>>>> v4.14.187
 	if (irq >= 0) {
 		if (!ctx->cd_gpio_isr)
 			ctx->cd_gpio_isr = mmc_gpio_cd_irqt;
@@ -171,8 +186,11 @@ void mmc_gpiod_request_cd_irq(struct mmc_host *host)
 			ctx->cd_label, host);
 		if (ret < 0)
 			irq = ret;
+<<<<<<< HEAD
 		else
 			enable_irq_wake(irq);
+=======
+>>>>>>> v4.14.187
 	}
 
 	host->slot.cd_irq = irq;

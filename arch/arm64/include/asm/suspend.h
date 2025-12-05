@@ -2,7 +2,11 @@
 #ifndef __ASM_SUSPEND_H
 #define __ASM_SUSPEND_H
 
+<<<<<<< HEAD
 #define NR_CTX_REGS 13
+=======
+#define NR_CTX_REGS 12
+>>>>>>> v4.14.187
 #define NR_CALLEE_SAVED_REGS 12
 
 /*

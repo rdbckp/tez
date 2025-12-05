@@ -1642,7 +1642,10 @@ void __init paging_init(const struct machine_desc *mdesc)
 {
 	void *zero_page;
 
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_PAGING);
+=======
+>>>>>>> v4.14.187
 	prepare_page_table();
 	map_lowmem();
 	memblock_set_current_limit(arm_lowmem_limit);
@@ -1661,7 +1664,10 @@ void __init paging_init(const struct machine_desc *mdesc)
 
 	empty_zero_page = virt_to_page(zero_page);
 	__flush_dcache_page(NULL, empty_zero_page);
+<<<<<<< HEAD
 	set_memsize_kernel_type(MEMSIZE_KERNEL_OTHERS);
+=======
+>>>>>>> v4.14.187
 
 	/* Compute the virt/idmap offset, mostly for the sake of KVM */
 	kimage_voffset = (unsigned long)&kimage_voffset - virt_to_idmap(&kimage_voffset);

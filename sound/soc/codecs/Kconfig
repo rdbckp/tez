@@ -101,8 +101,11 @@ config SND_SOC_ALL_CODECS
 	select SND_SOC_MAX9877 if I2C
 	select SND_SOC_MC13783 if MFD_MC13XXX
 	select SND_SOC_ML26124 if I2C
+<<<<<<< HEAD
 	select SND_SOC_MT6358
 	select SND_SOC_MT6359
+=======
+>>>>>>> v4.14.187
 	select SND_SOC_NAU8540 if I2C
 	select SND_SOC_NAU8810 if I2C
 	select SND_SOC_NAU8824 if I2C
@@ -135,7 +138,10 @@ config SND_SOC_ALL_CODECS
 	select SND_SOC_SGTL5000 if I2C
 	select SND_SOC_SI476X if MFD_SI476X_CORE
 	select SND_SOC_SIRF_AUDIO_CODEC
+<<<<<<< HEAD
 	select SND_SOC_AW8896 if I2C
+=======
+>>>>>>> v4.14.187
 	select SND_SOC_SN95031 if INTEL_SCU_IPC
 	select SND_SOC_SPDIF
 	select SND_SOC_SSM2518 if I2C
@@ -148,10 +154,15 @@ config SND_SOC_ALL_CODECS
 	select SND_SOC_STAC9766 if SND_SOC_AC97_BUS
 	select SND_SOC_STI_SAS
 	select SND_SOC_TAS2552 if I2C
+<<<<<<< HEAD
 	select SND_SOC_TAS256X if I2C
 	select SND_SOC_TAS5086 if I2C
 	select SND_SOC_TAS571X if I2C
 	select SND_SOC_TAS5782M if I2C
+=======
+	select SND_SOC_TAS5086 if I2C
+	select SND_SOC_TAS571X if I2C
+>>>>>>> v4.14.187
 	select SND_SOC_TAS5720 if I2C
 	select SND_SOC_TFA9879 if I2C
 	select SND_SOC_TLV320AIC23_I2C if I2C
@@ -222,12 +233,15 @@ config SND_SOC_ALL_CODECS
 	select SND_SOC_WM9705 if SND_SOC_AC97_BUS
 	select SND_SOC_WM9712 if SND_SOC_AC97_BUS
 	select SND_SOC_WM9713 if SND_SOC_AC97_BUS
+<<<<<<< HEAD
 	select SND_SOC_RT5509 if I2C
 	select SND_SOC_MT6660 if I2C
 	select SND_SOC_SMA1301 if I2C
 	select SND_SOC_TFA9874 if I2C
 	select SND_SOC_SMA1303 if I2C
 	select SND_SOC_SMA1305 if I2C
+=======
+>>>>>>> v4.14.187
         help
           Normally ASoC codec drivers are only built if a machine driver which
           uses them is also built since they are only usable with a machine
@@ -649,9 +663,12 @@ config SND_SOC_MSM8916_WCD_ANALOG
 config SND_SOC_MSM8916_WCD_DIGITAL
 	tristate "Qualcomm MSM8916 WCD DIGITAL Codec"
 
+<<<<<<< HEAD
 config SND_SOC_MT8167_CODEC
 	tristate
 
+=======
+>>>>>>> v4.14.187
 config SND_SOC_PCM1681
 	tristate "Texas Instruments PCM1681 CODEC"
 	depends on I2C
@@ -878,12 +895,15 @@ config SND_SOC_TAS2552
 	tristate "Texas Instruments TAS2552 Mono Audio amplifier"
 	depends on I2C
 
+<<<<<<< HEAD
 config SND_SOC_TAS256X
 	tristate "Texas Instruments TAS256X SmartAmp(R)"
 	depends on I2C
 	help
 	  Enable the support for TAS driver.
 
+=======
+>>>>>>> v4.14.187
 config SND_SOC_TAS5086
 	tristate "Texas Instruments TAS5086 speaker amplifier"
 	depends on I2C
@@ -899,6 +919,7 @@ config SND_SOC_TAS5720
 	  Enable support for Texas Instruments TAS5720L/M high-efficiency mono
 	  Class-D audio power amplifiers.
 
+<<<<<<< HEAD
 config SND_SOC_TAS5782M
 	tristate "Ti TAS5782M AMP"
 	depends on I2C
@@ -906,6 +927,8 @@ config SND_SOC_TAS5782M
 	  Enable support for Texas Instruments TAS5782m high-efficiency
 	  stereo closed-loop Class-D audio power amplifiers.
 
+=======
+>>>>>>> v4.14.187
 config SND_SOC_TFA9879
 	tristate "NXP Semiconductors TFA9879 amplifier"
 	depends on I2C
@@ -1170,6 +1193,7 @@ config SND_SOC_ZX_AUD96P22
 	select REGMAP_I2C
 
 # Amp
+<<<<<<< HEAD
 config SND_SOC_MT6660
 	tristate "Mediatek MT6660 speaker amplifier"
 	depends on I2C
@@ -1239,6 +1263,8 @@ config SND_SOC_AW87339
 	  PMIC device which has no speaker protection
 	  function.
 
+=======
+>>>>>>> v4.14.187
 config SND_SOC_LM4857
 	tristate
 
@@ -1254,6 +1280,7 @@ config SND_SOC_MC13783
 config SND_SOC_ML26124
 	tristate
 
+<<<<<<< HEAD
 config SND_SOC_MT6358
 	tristate
 
@@ -1263,6 +1290,8 @@ config SND_SOC_MT6359
 config SND_SOC_MT6392_CODEC
 	tristate
 
+=======
+>>>>>>> v4.14.187
 config SND_SOC_NAU8540
        tristate "Nuvoton Technology Corporation NAU85L40 CODEC"
        depends on I2C
@@ -1282,6 +1311,7 @@ config SND_SOC_TPA6130A2
 	tristate "Texas Instruments TPA6130A2 headphone amplifier"
 	depends on I2C
 
+<<<<<<< HEAD
 config SND_SOC_RT5509
 	tristate "Richtek RT5509 Smart AMP"
 	depends on I2C
@@ -1290,4 +1320,6 @@ config SND_SOC_RT5509
 #TAS256X
 source "sound/soc/codecs/tas256x/Kconfig"
 
+=======
+>>>>>>> v4.14.187
 endmenu

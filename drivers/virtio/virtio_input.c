@@ -2,7 +2,10 @@
 #include <linux/virtio.h>
 #include <linux/virtio_config.h>
 #include <linux/input.h>
+<<<<<<< HEAD
 #include <linux/input/mt.h>
+=======
+>>>>>>> v4.14.187
 
 #include <uapi/linux/virtio_ids.h>
 #include <uapi/linux/virtio_input.h>
@@ -164,6 +167,7 @@ static void virtinput_cfg_abs(struct virtio_input *vi, int abs)
 	virtio_cread(vi->vdev, struct virtio_input_config, u.abs.flat, &fl);
 	input_set_abs_params(vi->idev, abs, mi, ma, fu, fl);
 	input_abs_set_res(vi->idev, abs, re);
+<<<<<<< HEAD
 	if (abs == ABS_MT_TRACKING_ID) {
 		unsigned int slot_flags =
 			test_bit(INPUT_PROP_DIRECT, vi->idev->propbit) ?
@@ -173,6 +177,8 @@ static void virtinput_cfg_abs(struct virtio_input *vi, int abs)
 				    ma, /* input max finger */
 				    slot_flags);
 	}
+=======
+>>>>>>> v4.14.187
 }
 
 static int virtinput_init_vqs(struct virtio_input *vi)

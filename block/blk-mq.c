@@ -104,15 +104,19 @@ static void blk_mq_check_inflight(struct blk_mq_hw_ctx *hctx,
 		 */
 		if (rq->part == mi->part)
 			mi->inflight[0]++;
+<<<<<<< HEAD
 		/* XXX We can safely remove this 'if condition-check' due to the
 		 * change in blk_mq_in_flight function. It will be called
 		 * only when * mi->part->partno is not 0.
 		 */
+=======
+>>>>>>> v4.14.187
 		if (mi->part->partno)
 			mi->inflight[1]++;
 	}
 }
 
+<<<<<<< HEAD
 static void blk_mq_check_disk_inflight(struct blk_mq_hw_ctx *hctx,
 		struct request *rq, void *priv,
 		bool reserved)
@@ -128,16 +132,22 @@ static void blk_mq_check_disk_inflight(struct blk_mq_hw_ctx *hctx,
 	mi->inflight[0]++;
 }
 
+=======
+>>>>>>> v4.14.187
 void blk_mq_in_flight(struct request_queue *q, struct hd_struct *part,
 		      unsigned int inflight[2])
 {
 	struct mq_inflight mi = { .part = part, .inflight = inflight, };
 
 	inflight[0] = inflight[1] = 0;
+<<<<<<< HEAD
 	if (mi.part->partno)
 		blk_mq_queue_tag_busy_iter(q, blk_mq_check_inflight, &mi);
 	else
 		blk_mq_queue_tag_busy_iter(q, blk_mq_check_disk_inflight, &mi);
+=======
+	blk_mq_queue_tag_busy_iter(q, blk_mq_check_inflight, &mi);
+>>>>>>> v4.14.187
 }
 
 static void blk_mq_check_inflight_rw(struct blk_mq_hw_ctx *hctx,
@@ -150,6 +160,7 @@ static void blk_mq_check_inflight_rw(struct blk_mq_hw_ctx *hctx,
 		mi->inflight[rq_data_dir(rq)]++;
 }
 
+<<<<<<< HEAD
 static void blk_mq_check_disk_inflight_rw(struct blk_mq_hw_ctx *hctx,
 					  struct request *rq, void *priv,
 					  bool reserved)
@@ -160,16 +171,22 @@ static void blk_mq_check_disk_inflight_rw(struct blk_mq_hw_ctx *hctx,
 	mi->inflight[rq_data_dir(rq)]++;
 }
 
+=======
+>>>>>>> v4.14.187
 void blk_mq_in_flight_rw(struct request_queue *q, struct hd_struct *part,
 			 unsigned int inflight[2])
 {
 	struct mq_inflight mi = { .part = part, .inflight = inflight, };
 
 	inflight[0] = inflight[1] = 0;
+<<<<<<< HEAD
 	if (mi.part->partno)
 		blk_mq_queue_tag_busy_iter(q, blk_mq_check_inflight_rw, &mi);
 	else
 		blk_mq_queue_tag_busy_iter(q, blk_mq_check_disk_inflight_rw, &mi);
+=======
+	blk_mq_queue_tag_busy_iter(q, blk_mq_check_inflight_rw, &mi);
+>>>>>>> v4.14.187
 }
 
 void blk_freeze_queue_start(struct request_queue *q)

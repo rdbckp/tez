@@ -36,14 +36,18 @@
 #include <linux/scatterlist.h>
 #include <linux/slab.h>
 #include <asm/unaligned.h>
+<<<<<<< HEAD
 //ODE
 #include <crypto/rng.h>
 
+=======
+>>>>>>> v4.14.187
 #include "ecryptfs_kernel.h"
 
 #define DECRYPT		0
 #define ENCRYPT		1
 
+<<<<<<< HEAD
 #ifdef CONFIG_CRYPTO_FIPS
 static struct crypto_rng *ecryptfs_crypto_rng;
 
@@ -160,6 +164,8 @@ static void crypto_cc_rng_get_bytes(u8 *data, unsigned int len)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 /**
  * ecryptfs_to_hex
  * @dst: Buffer to take hex character representation of contents of
@@ -208,6 +214,7 @@ static int ecryptfs_hash_digest(struct crypto_shash *tfm,
 }
 
 /**
+<<<<<<< HEAD
  * ecryptfs_calculate_sha256 - calculates the sha256 of @src
  * @dst: Pointer to 32 bytes of allocated memory
  * @crypt_stat: Pointer to crypt_stat struct for the current inode
@@ -236,6 +243,8 @@ static int ecryptfs_calculate_sha256(char *dst,
 }
 
 /**
+=======
+>>>>>>> v4.14.187
  * ecryptfs_calculate_md5 - calculates the md5 of @src
  * @dst: Pointer to 16 bytes of allocated memory
  * @crypt_stat: Pointer to crypt_stat struct for the current inode
@@ -258,6 +267,7 @@ static int ecryptfs_calculate_md5(char *dst,
 		printk(KERN_ERR
 		       "%s: Error computing crypto hash; rc = [%d]\n",
 		       __func__, rc);
+<<<<<<< HEAD
 	}
 
 	return rc;
@@ -274,6 +284,11 @@ static int ecryptfs_calculate_hash(char *dst,
 	else
 		rc = ecryptfs_calculate_md5(dst, crypt_stat, src, len);
 
+=======
+		goto out;
+	}
+out:
+>>>>>>> v4.14.187
 	return rc;
 }
 
@@ -314,8 +329,13 @@ int ecryptfs_derive_iv(char *iv, struct ecryptfs_crypt_stat *crypt_stat,
 		       loff_t offset)
 {
 	int rc = 0;
+<<<<<<< HEAD
 	char src[ECRYPTFS_MAX_IV_BYTES + 16];
 	char *dst = NULL;
+=======
+	char dst[MD5_DIGEST_SIZE];
+	char src[ECRYPTFS_MAX_IV_BYTES + 16];
+>>>>>>> v4.14.187
 
 	if (unlikely(ecryptfs_verbosity > 0)) {
 		ecryptfs_printk(KERN_DEBUG, "root iv:\n");
@@ -332,12 +352,16 @@ int ecryptfs_derive_iv(char *iv, struct ecryptfs_crypt_stat *crypt_stat,
 		ecryptfs_printk(KERN_DEBUG, "source:\n");
 		ecryptfs_dump_hex(src, (crypt_stat->iv_bytes + 16));
 	}
+<<<<<<< HEAD
 
 	dst = kmalloc((crypt_stat->mount_crypt_stat->flags & ECRYPTFS_ENABLE_CC)?SHA256_HASH_SIZE:MD5_DIGEST_SIZE, GFP_KERNEL);
 	if (!dst)
 		goto out;
 
 	rc = ecryptfs_calculate_hash(dst, crypt_stat, src,
+=======
+	rc = ecryptfs_calculate_md5(dst, crypt_stat, src,
+>>>>>>> v4.14.187
 				    (crypt_stat->iv_bytes + 16));
 	if (rc) {
 		ecryptfs_printk(KERN_WARNING, "Error attempting to compute "
@@ -350,7 +374,10 @@ int ecryptfs_derive_iv(char *iv, struct ecryptfs_crypt_stat *crypt_stat,
 		ecryptfs_dump_hex(iv, crypt_stat->iv_bytes);
 	}
 out:
+<<<<<<< HEAD
 	kfree(dst);
+=======
+>>>>>>> v4.14.187
 	return rc;
 }
 
@@ -844,7 +871,11 @@ void ecryptfs_set_default_sizes(struct ecryptfs_crypt_stat *crypt_stat)
 int ecryptfs_compute_root_iv(struct ecryptfs_crypt_stat *crypt_stat)
 {
 	int rc = 0;
+<<<<<<< HEAD
 	char *dst = NULL;
+=======
+	char dst[MD5_DIGEST_SIZE];
+>>>>>>> v4.14.187
 
 	BUG_ON(crypt_stat->iv_bytes > MD5_DIGEST_SIZE);
 	BUG_ON(crypt_stat->iv_bytes <= 0);
@@ -854,12 +885,17 @@ int ecryptfs_compute_root_iv(struct ecryptfs_crypt_stat *crypt_stat)
 				"cannot generate root IV\n");
 		goto out;
 	}
+<<<<<<< HEAD
 	dst = kmalloc((crypt_stat->mount_crypt_stat->flags & ECRYPTFS_ENABLE_CC)?SHA256_HASH_SIZE:MD5_DIGEST_SIZE, GFP_KERNEL);
 	if (!dst)
 		goto out;
 
 	rc = ecryptfs_calculate_hash(dst, crypt_stat, crypt_stat->key,
 			    crypt_stat->key_size);
+=======
+	rc = ecryptfs_calculate_md5(dst, crypt_stat, crypt_stat->key,
+				    crypt_stat->key_size);
+>>>>>>> v4.14.187
 	if (rc) {
 		ecryptfs_printk(KERN_WARNING, "Error attempting to compute "
 				"MD5 while generating root IV\n");
@@ -871,6 +907,7 @@ out:
 		memset(crypt_stat->root_iv, 0, crypt_stat->iv_bytes);
 		crypt_stat->flags |= ECRYPTFS_SECURITY_WARNING;
 	}
+<<<<<<< HEAD
 	if (!dst)
 		kfree(dst);
 	return rc;
@@ -889,6 +926,14 @@ static void ecryptfs_generate_new_key(struct ecryptfs_crypt_stat *crypt_stat)
 {
 	get_random_key(crypt_stat->key, crypt_stat->key_size);
 
+=======
+	return rc;
+}
+
+static void ecryptfs_generate_new_key(struct ecryptfs_crypt_stat *crypt_stat)
+{
+	get_random_bytes(crypt_stat->key, crypt_stat->key_size);
+>>>>>>> v4.14.187
 	crypt_stat->flags |= ECRYPTFS_KEY_VALID;
 	ecryptfs_compute_root_iv(crypt_stat);
 	if (unlikely(ecryptfs_verbosity > 0)) {
@@ -1064,8 +1109,12 @@ static struct ecryptfs_flag_map_elem ecryptfs_flag_map[] = {
 	{0x00000001, ECRYPTFS_ENABLE_HMAC},
 	{0x00000002, ECRYPTFS_ENCRYPTED},
 	{0x00000004, ECRYPTFS_METADATA_IN_XATTR},
+<<<<<<< HEAD
 	{0x00000008, ECRYPTFS_ENCRYPT_FILENAMES},
 	{0x00000010, ECRYPTFS_SUPPORT_HMAC_KEY},
+=======
+	{0x00000008, ECRYPTFS_ENCRYPT_FILENAMES}
+>>>>>>> v4.14.187
 };
 
 /**
@@ -1287,10 +1336,13 @@ static int ecryptfs_write_headers_virt(char *page_virt, size_t max,
 	int rc;
 	size_t written;
 	size_t offset;
+<<<<<<< HEAD
 #ifdef CONFIG_ECRYPTFS_FEK_INTEGRITY
 	crypt_stat->flags |= ECRYPTFS_ENABLE_HMAC;
 	crypt_stat->flags |= ECRYPTFS_SUPPORT_HMAC_KEY;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	offset = ECRYPTFS_FILE_SIZE_BYTES;
 	write_ecryptfs_marker((page_virt + offset), &written);
@@ -1307,9 +1359,12 @@ static int ecryptfs_write_headers_virt(char *page_virt, size_t max,
 	if (rc)
 		ecryptfs_printk(KERN_WARNING, "Error generating key packet "
 				"set; rc = [%d]\n", rc);
+<<<<<<< HEAD
 #ifdef CONFIG_ECRYPTFS_FEK_INTEGRITY
 	memcpy((page_virt + HASH_OFFSET), crypt_stat->hash, FEK_HASH_SIZE);
 #endif
+=======
+>>>>>>> v4.14.187
 	if (size) {
 		offset += written;
 		*size = offset;
@@ -1541,11 +1596,14 @@ static int ecryptfs_read_headers_virt(char *page_virt,
 		offset += bytes_read;
 	} else
 		set_default_header_data(crypt_stat);
+<<<<<<< HEAD
 #ifdef CONFIG_ECRYPTFS_FEK_INTEGRITY
 	if (crypt_stat->flags & ECRYPTFS_ENABLE_HMAC) {
 		memcpy(crypt_stat->hash, (page_virt + HASH_OFFSET), FEK_HASH_SIZE);
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 	rc = ecryptfs_parse_packet_set(crypt_stat, (page_virt + offset),
 				       ecryptfs_dentry);
 out:
@@ -1788,7 +1846,11 @@ out:
  */
 static int
 ecryptfs_process_key_cipher(struct crypto_skcipher **key_tfm,
+<<<<<<< HEAD
 			    char *cipher_name, size_t *key_size, u32 mount_flags)
+=======
+			    char *cipher_name, size_t *key_size)
+>>>>>>> v4.14.187
 {
 	char dummy_key[ECRYPTFS_MAX_KEY_BYTES];
 	char *full_alg_name = NULL;
@@ -1801,9 +1863,14 @@ ecryptfs_process_key_cipher(struct crypto_skcipher **key_tfm,
 		      "allowable is [%d]\n", *key_size, ECRYPTFS_MAX_KEY_BYTES);
 		goto out;
 	}
+<<<<<<< HEAD
 
 	rc = ecryptfs_crypto_api_algify_cipher_name(&full_alg_name, cipher_name,
 						    (mount_flags & ECRYPTFS_ENABLE_CC)?ECRYPTFS_AES_CBC_MODE:ECRYPTFS_AES_ECB_MODE);
+=======
+	rc = ecryptfs_crypto_api_algify_cipher_name(&full_alg_name, cipher_name,
+						    "ecb");
+>>>>>>> v4.14.187
 	if (rc)
 		goto out;
 	*key_tfm = crypto_alloc_skcipher(full_alg_name, 0, CRYPTO_ALG_ASYNC);
@@ -1816,9 +1883,13 @@ ecryptfs_process_key_cipher(struct crypto_skcipher **key_tfm,
 	crypto_skcipher_set_flags(*key_tfm, CRYPTO_TFM_REQ_WEAK_KEY);
 	if (*key_size == 0)
 		*key_size = crypto_skcipher_default_keysize(*key_tfm);
+<<<<<<< HEAD
 
 	get_random_key(dummy_key, *key_size);
 
+=======
+	get_random_bytes(dummy_key, *key_size);
+>>>>>>> v4.14.187
 	rc = crypto_skcipher_setkey(*key_tfm, dummy_key, *key_size);
 	if (rc) {
 		printk(KERN_ERR "Error attempting to set key of size [%zd] for "
@@ -1859,16 +1930,23 @@ int ecryptfs_destroy_crypto(void)
 		crypto_free_skcipher(key_tfm->key_tfm);
 		kmem_cache_free(ecryptfs_key_tfm_cache, key_tfm);
 	}
+<<<<<<< HEAD
 #ifdef CONFIG_CRYPTO_FIPS
 	crypto_rng_destroy();
 #endif
+=======
+>>>>>>> v4.14.187
 	mutex_unlock(&key_tfm_list_mutex);
 	return 0;
 }
 
 int
 ecryptfs_add_new_key_tfm(struct ecryptfs_key_tfm **key_tfm, char *cipher_name,
+<<<<<<< HEAD
 			 size_t key_size, u32 mount_flags)
+=======
+			 size_t key_size)
+>>>>>>> v4.14.187
 {
 	struct ecryptfs_key_tfm *tmp_tfm;
 	int rc = 0;
@@ -1889,6 +1967,7 @@ ecryptfs_add_new_key_tfm(struct ecryptfs_key_tfm **key_tfm, char *cipher_name,
 		ECRYPTFS_MAX_CIPHER_NAME_SIZE);
 	tmp_tfm->cipher_name[ECRYPTFS_MAX_CIPHER_NAME_SIZE] = '\0';
 	tmp_tfm->key_size = key_size;
+<<<<<<< HEAD
 
 	strncpy(tmp_tfm->cipher_mode,
 			(mount_flags & ECRYPTFS_ENABLE_CC)?ECRYPTFS_AES_CBC_MODE:ECRYPTFS_AES_ECB_MODE,
@@ -1899,6 +1978,11 @@ ecryptfs_add_new_key_tfm(struct ecryptfs_key_tfm **key_tfm, char *cipher_name,
 					 &tmp_tfm->key_size,
 					 mount_flags);
 
+=======
+	rc = ecryptfs_process_key_cipher(&tmp_tfm->key_tfm,
+					 tmp_tfm->cipher_name,
+					 &tmp_tfm->key_size);
+>>>>>>> v4.14.187
 	if (rc) {
 		printk(KERN_ERR "Error attempting to initialize key TFM "
 		       "cipher with name = [%s]; rc = [%d]\n",
@@ -1923,15 +2007,23 @@ out:
  * Returns 1 if found, with @key_tfm set
  * Returns 0 if not found, with @key_tfm set to NULL
  */
+<<<<<<< HEAD
 int ecryptfs_tfm_exists(char *cipher_name, char *cipher_mode, struct ecryptfs_key_tfm **key_tfm)
+=======
+int ecryptfs_tfm_exists(char *cipher_name, struct ecryptfs_key_tfm **key_tfm)
+>>>>>>> v4.14.187
 {
 	struct ecryptfs_key_tfm *tmp_key_tfm;
 
 	BUG_ON(!mutex_is_locked(&key_tfm_list_mutex));
 
 	list_for_each_entry(tmp_key_tfm, &key_tfm_list, key_tfm_list) {
+<<<<<<< HEAD
 		if (strcmp(tmp_key_tfm->cipher_name, cipher_name) == 0 &&
 			(strcmp(tmp_key_tfm->cipher_mode, cipher_mode) == 0)) {
+=======
+		if (strcmp(tmp_key_tfm->cipher_name, cipher_name) == 0) {
+>>>>>>> v4.14.187
 			if (key_tfm)
 				(*key_tfm) = tmp_key_tfm;
 			return 1;
@@ -1955,29 +2047,44 @@ int ecryptfs_tfm_exists(char *cipher_name, char *cipher_mode, struct ecryptfs_ke
  */
 int ecryptfs_get_tfm_and_mutex_for_cipher_name(struct crypto_skcipher **tfm,
 					       struct mutex **tfm_mutex,
+<<<<<<< HEAD
 					       char *cipher_name, u32 mount_flags)
 {
 	struct ecryptfs_key_tfm *key_tfm;
 	int rc = 0;
 	char cipher_mode[ECRYPTFS_MAX_CIPHER_MODE_SIZE+1] = {0,};
+=======
+					       char *cipher_name)
+{
+	struct ecryptfs_key_tfm *key_tfm;
+	int rc = 0;
+>>>>>>> v4.14.187
 
 	(*tfm) = NULL;
 	(*tfm_mutex) = NULL;
 
 	mutex_lock(&key_tfm_list_mutex);
+<<<<<<< HEAD
 	strncpy(cipher_mode,
 			(mount_flags & ECRYPTFS_ENABLE_CC)?ECRYPTFS_AES_CBC_MODE:ECRYPTFS_AES_ECB_MODE,
 			ECRYPTFS_MAX_CIPHER_MODE_SIZE + 1);
 
 	if (!ecryptfs_tfm_exists(cipher_name, cipher_mode, &key_tfm)) {
 		rc = ecryptfs_add_new_key_tfm(&key_tfm, cipher_name, 0, mount_flags);
+=======
+	if (!ecryptfs_tfm_exists(cipher_name, &key_tfm)) {
+		rc = ecryptfs_add_new_key_tfm(&key_tfm, cipher_name, 0);
+>>>>>>> v4.14.187
 		if (rc) {
 			printk(KERN_ERR "Error adding new key_tfm to list; "
 					"rc = [%d]\n", rc);
 			goto out;
 		}
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> v4.14.187
 	(*tfm) = key_tfm->key_tfm;
 	(*tfm_mutex) = &key_tfm->key_tfm_mutex;
 out:
@@ -2351,8 +2458,12 @@ int ecryptfs_set_f_namelen(long *namelen, long lower_namelen,
 	}
 
 	rc = ecryptfs_get_tfm_and_mutex_for_cipher_name(&tfm, &tfm_mutex,
+<<<<<<< HEAD
 		mount_crypt_stat->global_default_fn_cipher_name, mount_crypt_stat->flags);
 
+=======
+			mount_crypt_stat->global_default_fn_cipher_name);
+>>>>>>> v4.14.187
 	if (unlikely(rc)) {
 		(*namelen) = 0;
 		return rc;

@@ -173,6 +173,7 @@ void fuse_finish_open(struct inode *inode, struct file *file)
 {
 	struct fuse_file *ff = file->private_data;
 	struct fuse_conn *fc = get_fuse_conn(inode);
+<<<<<<< HEAD
 	struct fuse_inode *fi = get_fuse_inode(inode);
 
 	if (ff->open_flags & FOPEN_DIRECT_IO ||
@@ -181,6 +182,11 @@ void fuse_finish_open(struct inode *inode, struct file *file)
 		file->f_op = &fuse_direct_io_file_operations;
 		set_bit(FUSE_I_ATTR_FORCE_SYNC, &fi->state);
 	}
+=======
+
+	if (ff->open_flags & FOPEN_DIRECT_IO)
+		file->f_op = &fuse_direct_io_file_operations;
+>>>>>>> v4.14.187
 	if (!(ff->open_flags & FOPEN_KEEP_CACHE))
 		invalidate_inode_pages2(inode->i_mapping);
 	if (ff->open_flags & FOPEN_STREAM)
@@ -383,7 +389,11 @@ static int fuse_wait_on_page_writeback(struct inode *inode, pgoff_t index)
 {
 	struct fuse_inode *fi = get_fuse_inode(inode);
 
+<<<<<<< HEAD
 	fuse_wait_event(fi->page_waitq, !fuse_page_is_writeback(inode, index));
+=======
+	wait_event(fi->page_waitq, !fuse_page_is_writeback(inode, index));
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -849,9 +859,15 @@ struct fuse_fill_data {
 	unsigned nr_pages;
 };
 
+<<<<<<< HEAD
 static int fuse_readpages_fill(struct file *_data, struct page *page)
 {
 	struct fuse_fill_data *data = (struct fuse_fill_data *)_data;
+=======
+static int fuse_readpages_fill(void *_data, struct page *page)
+{
+	struct fuse_fill_data *data = _data;
+>>>>>>> v4.14.187
 	struct fuse_req *req = data->req;
 	struct inode *inode = data->inode;
 	struct fuse_conn *fc = get_fuse_conn(inode);

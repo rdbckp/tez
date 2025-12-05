@@ -47,11 +47,25 @@
 #include <net/inet_ecn.h>
 #include <net/dst_metadata.h>
 
+<<<<<<< HEAD
 static void ip6_rcv_finish_core(struct net *net, struct sock *sk,
 				struct sk_buff *skb)
 {
 	void (*edemux)(struct sk_buff *skb);
 
+=======
+int ip6_rcv_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
+{
+	void (*edemux)(struct sk_buff *skb);
+
+	/* if ingress device is enslaved to an L3 master device pass the
+	 * skb to its handler for processing
+	 */
+	skb = l3mdev_ip6_rcv(skb);
+	if (!skb)
+		return NET_RX_SUCCESS;
+
+>>>>>>> v4.14.187
 	if (net->ipv4.sysctl_ip_early_demux && !skb_dst(skb) && skb->sk == NULL) {
 		const struct inet6_protocol *ipprot;
 
@@ -61,6 +75,7 @@ static void ip6_rcv_finish_core(struct net *net, struct sock *sk,
 	}
 	if (!skb_valid_dst(skb))
 		ip6_route_input(skb);
+<<<<<<< HEAD
 }
 
 int ip6_rcv_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
@@ -72,10 +87,13 @@ int ip6_rcv_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
 	if (!skb)
 		return NET_RX_SUCCESS;
 	ip6_rcv_finish_core(net, sk, skb);
+=======
+>>>>>>> v4.14.187
 
 	return dst_input(skb);
 }
 
+<<<<<<< HEAD
 static void ip6_sublist_rcv_finish(struct list_head *head)
 {
 	struct sk_buff *skb, *next;
@@ -120,14 +138,25 @@ static void ip6_list_rcv_finish(struct net *net, struct sock *sk,
 
 static struct sk_buff *ip6_rcv_core(struct sk_buff *skb, struct net_device *dev,
 				    struct net *net)
+=======
+int ipv6_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt, struct net_device *orig_dev)
+>>>>>>> v4.14.187
 {
 	const struct ipv6hdr *hdr;
 	u32 pkt_len;
 	struct inet6_dev *idev;
+<<<<<<< HEAD
 
 	if (skb->pkt_type == PACKET_OTHERHOST) {
 		kfree_skb(skb);
 		return NULL;
+=======
+	struct net *net = dev_net(skb->dev);
+
+	if (skb->pkt_type == PACKET_OTHERHOST) {
+		kfree_skb(skb);
+		return NET_RX_DROP;
+>>>>>>> v4.14.187
 	}
 
 	rcu_read_lock();
@@ -253,7 +282,11 @@ static struct sk_buff *ip6_rcv_core(struct sk_buff *skb, struct net_device *dev,
 		if (ipv6_parse_hopopts(skb) < 0) {
 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
 			rcu_read_unlock();
+<<<<<<< HEAD
 			return NULL;
+=======
+			return NET_RX_DROP;
+>>>>>>> v4.14.187
 		}
 	}
 
@@ -262,12 +295,19 @@ static struct sk_buff *ip6_rcv_core(struct sk_buff *skb, struct net_device *dev,
 	/* Must drop socket now because of tproxy. */
 	skb_orphan(skb);
 
+<<<<<<< HEAD
 	return skb;
+=======
+	return NF_HOOK(NFPROTO_IPV6, NF_INET_PRE_ROUTING,
+		       net, NULL, skb, dev, NULL,
+		       ip6_rcv_finish);
+>>>>>>> v4.14.187
 err:
 	__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
 drop:
 	rcu_read_unlock();
 	kfree_skb(skb);
+<<<<<<< HEAD
 	return NULL;
 }
 
@@ -323,23 +363,39 @@ void ipv6_list_rcv(struct list_head *head, struct packet_type *pt,
 	}
 	/* dispatch final sublist */
 	ip6_sublist_rcv(&sublist, curr_dev, curr_net);
+=======
+	return NET_RX_DROP;
+>>>>>>> v4.14.187
 }
 
 /*
  *	Deliver the packet to the host
  */
+<<<<<<< HEAD
 void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
 			      bool have_final)
+=======
+
+
+static int ip6_input_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
+>>>>>>> v4.14.187
 {
 	const struct inet6_protocol *ipprot;
 	struct inet6_dev *idev;
 	unsigned int nhoff;
+<<<<<<< HEAD
 	bool raw;
+=======
+	int nexthdr;
+	bool raw;
+	bool have_final = false;
+>>>>>>> v4.14.187
 
 	/*
 	 *	Parse extension headers
 	 */
 
+<<<<<<< HEAD
 resubmit:
 	idev = ip6_dst_idev(skb_dst(skb));
 	nhoff = IP6CB(skb)->nhoff;
@@ -348,6 +404,15 @@ resubmit:
 			goto discard;
 		nexthdr = skb_network_header(skb)[nhoff];
 	}
+=======
+	rcu_read_lock();
+resubmit:
+	idev = ip6_dst_idev(skb_dst(skb));
+	if (!pskb_pull(skb, skb_transport_offset(skb)))
+		goto discard;
+	nhoff = IP6CB(skb)->nhoff;
+	nexthdr = skb_network_header(skb)[nhoff];
+>>>>>>> v4.14.187
 
 resubmit_final:
 	raw = raw6_local_deliver(skb, nexthdr);
@@ -418,6 +483,7 @@ resubmit_final:
 			consume_skb(skb);
 		}
 	}
+<<<<<<< HEAD
 	return;
 
 discard:
@@ -432,6 +498,15 @@ static int ip6_input_finish(struct net *net, struct sock *sk,
 	ip6_protocol_deliver_rcu(net, skb, 0, false);
 	rcu_read_unlock();
 
+=======
+	rcu_read_unlock();
+	return 0;
+
+discard:
+	__IP6_INC_STATS(net, idev, IPSTATS_MIB_INDISCARDS);
+	rcu_read_unlock();
+	kfree_skb(skb);
+>>>>>>> v4.14.187
 	return 0;
 }
 

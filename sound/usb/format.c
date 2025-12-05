@@ -183,7 +183,10 @@ static int parse_audio_format_rates_v1(struct snd_usb_audio *chip, struct audiof
 		fp->rate_min = fp->rate_max = 0;
 		for (r = 0, idx = offset + 1; r < nr_rates; r++, idx += 3) {
 			unsigned int rate = combine_triple(&fmt[idx]);
+<<<<<<< HEAD
 			struct usb_device *udev = chip->dev;
+=======
+>>>>>>> v4.14.187
 			if (!rate)
 				continue;
 			/* C-Media CM6501 mislabels its 96 kHz altsetting */
@@ -199,6 +202,7 @@ static int parse_audio_format_rates_v1(struct snd_usb_audio *chip, struct audiof
 			    (chip->usb_id == USB_ID(0x041e, 0x4064) ||
 			     chip->usb_id == USB_ID(0x041e, 0x4068)))
 				rate = 8000;
+<<<<<<< HEAD
 			/* Huawei headset can't support 96kHz fully */
 			if (rate == 96000 &&
 			    chip->usb_id == USB_ID(0x12d1, 0x3a07) &&
@@ -207,6 +211,8 @@ static int parse_audio_format_rates_v1(struct snd_usb_audio *chip, struct audiof
 
 			if (rate > 48000)
 				continue;
+=======
+>>>>>>> v4.14.187
 
 			fp->rate_table[fp->nr_rates] = rate;
 			if (!fp->rate_min || rate < fp->rate_min)
@@ -315,8 +321,12 @@ static int parse_uac2_sample_rate_range(struct snd_usb_audio *chip,
 			if (USB_ID_VENDOR(chip->usb_id) == 0x1235 &&
 			    !focusrite_valid_sample_rate(chip, fp, rate))
 				goto skip_rate;
+<<<<<<< HEAD
 			if (rate > 48000)
 				break;
+=======
+
+>>>>>>> v4.14.187
 			if (fp->rate_table)
 				fp->rate_table[nr_rates] = rate;
 			if (!fp->rate_min || rate < fp->rate_min)
@@ -444,7 +454,11 @@ static int parse_audio_format_i(struct snd_usb_audio *chip,
 		switch (chip->usb_id) {
 
 		case USB_ID(0x0763, 0x2003): /* M-Audio Audiophile USB */
+<<<<<<< HEAD
 			if (chip->setup == 0x00 &&
+=======
+			if (chip->setup == 0x00 && 
+>>>>>>> v4.14.187
 			    fp->altsetting == 6)
 				pcm_format = SNDRV_PCM_FORMAT_S16_BE;
 			else
@@ -581,3 +595,7 @@ int snd_usb_parse_audio_format(struct snd_usb_audio *chip,
 #endif
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> v4.14.187

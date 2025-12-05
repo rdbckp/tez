@@ -40,11 +40,14 @@
 
 #define DM_MSG_PREFIX "crypt"
 
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 #include <mt-plat/mtk_secure_api.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * context holding the current state of a multi-part conversion
  */
@@ -169,11 +172,14 @@ struct crypt_config {
 	char *cipher_string;
 	char *cipher_auth;
 	char *key_string;
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 	int hw_fde;
 	int id;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	const struct crypt_iv_operations *iv_gen_ops;
 	union {
@@ -242,12 +248,15 @@ static void kcryptd_queue_crypt(struct dm_crypt_io *io);
 static struct scatterlist *crypt_get_sg_data(struct crypt_config *cc,
 					     struct scatterlist *sg);
 
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 /* use to check if the key has been changed */
 static unsigned int key_idx;
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Use this to access cipher attributes that are independent of the key.
  */
@@ -1617,6 +1626,7 @@ static void kcryptd_io_read_work(struct work_struct *work)
 	crypt_dec_pending(io);
 }
 
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 
@@ -1674,6 +1684,8 @@ static int crypt_is_hw_fde(const char *path)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static void kcryptd_queue_read(struct dm_crypt_io *io)
 {
 	struct crypt_config *cc = io->cc;
@@ -1972,6 +1984,7 @@ static int crypt_alloc_tfms_skcipher(struct crypt_config *cc, char *ciphermode)
 		}
 	}
 
+<<<<<<< HEAD
 	/*
 	 * dm-crypt performance can vary greatly depending on which crypto
 	 * algorithm implementation is used.  Help people debug performance
@@ -1979,6 +1992,8 @@ static int crypt_alloc_tfms_skcipher(struct crypt_config *cc, char *ciphermode)
 	 */
 	DMINFO("%s using implementation \"%s\"", ciphermode,
 	       crypto_skcipher_alg(any_tfm(cc))->base.cra_driver_name);
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -1997,8 +2012,11 @@ static int crypt_alloc_tfms_aead(struct crypt_config *cc, char *ciphermode)
 		return err;
 	}
 
+<<<<<<< HEAD
 	DMINFO("%s using implementation \"%s\"", ciphermode,
 	       crypto_aead_alg(any_tfm_aead(cc))->base.cra_driver_name);
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -2047,6 +2065,7 @@ static int crypt_setkey(struct crypt_config *cc)
 	unsigned subkey_size;
 	int err = 0, i, r;
 
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 	if (cc->hw_fde == 1) {
@@ -2062,6 +2081,8 @@ static int crypt_setkey(struct crypt_config *cc)
 #endif
 	{
 
+=======
+>>>>>>> v4.14.187
 	/* Ignore extra keys (which are used for IV etc) */
 	subkey_size = crypt_subkey_size(cc);
 
@@ -2092,7 +2113,11 @@ static int crypt_setkey(struct crypt_config *cc)
 
 	if (crypt_integrity_hmac(cc))
 		memzero_explicit(cc->authenc_key, crypt_authenckey_size(cc));
+<<<<<<< HEAD
 	}
+=======
+
+>>>>>>> v4.14.187
 	return err;
 }
 
@@ -2313,11 +2338,14 @@ static void crypt_dtr(struct dm_target *ti)
 	if (!cc)
 		return;
 
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 	if (cc->hw_fde == 0)
 #endif
 	{
+=======
+>>>>>>> v4.14.187
 	if (cc->write_thread)
 		kthread_stop(cc->write_thread);
 
@@ -2325,17 +2353,24 @@ static void crypt_dtr(struct dm_target *ti)
 		destroy_workqueue(cc->io_queue);
 	if (cc->crypt_queue)
 		destroy_workqueue(cc->crypt_queue);
+<<<<<<< HEAD
 	}
+=======
+>>>>>>> v4.14.187
 
 	crypt_free_tfms(cc);
 
 	if (cc->bs)
 		bioset_free(cc->bs);
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 	if (cc->hw_fde == 0)
 #endif
 	{
+=======
+
+>>>>>>> v4.14.187
 	mempool_destroy(cc->page_pool);
 	mempool_destroy(cc->req_pool);
 	mempool_destroy(cc->tag_pool);
@@ -2346,7 +2381,10 @@ static void crypt_dtr(struct dm_target *ti)
 
 	if (cc->iv_gen_ops && cc->iv_gen_ops->dtr)
 		cc->iv_gen_ops->dtr(cc);
+<<<<<<< HEAD
 	}
+=======
+>>>>>>> v4.14.187
 
 	if (cc->dev)
 		dm_put_device(ti, cc->dev);
@@ -2357,20 +2395,29 @@ static void crypt_dtr(struct dm_target *ti)
 	kzfree(cc->cipher_auth);
 	kzfree(cc->authenc_key);
 
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 	if (cc->hw_fde == 0)
 #endif
 	{
+=======
+	/* Must zero key material before freeing */
+	kzfree(cc);
+
+>>>>>>> v4.14.187
 	spin_lock(&dm_crypt_clients_lock);
 	WARN_ON(!dm_crypt_clients_n);
 	dm_crypt_clients_n--;
 	crypt_calculate_pages_per_client();
 	spin_unlock(&dm_crypt_clients_lock);
+<<<<<<< HEAD
 	}
 
 	/* Must zero key material before freeing */
 	kzfree(cc);
+=======
+>>>>>>> v4.14.187
 }
 
 static int crypt_ctr_ivmode(struct dm_target *ti, const char *ivmode)
@@ -2826,6 +2873,7 @@ static int crypt_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	cc->sector_shift = 0;
 
 	ti->private = cc;
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 	cc->hw_fde = (crypt_is_hw_fde(argv[3]) == 1)?1:0;
@@ -2852,6 +2900,8 @@ static int crypt_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	} else
 #endif
 	{
+=======
+>>>>>>> v4.14.187
 
 	spin_lock(&dm_crypt_clients_lock);
 	dm_crypt_clients_n++;
@@ -2911,26 +2961,35 @@ static int crypt_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		ti->error = "Cannot allocate crypt request mempool";
 		goto bad;
 	}
+<<<<<<< HEAD
 	}
+=======
+>>>>>>> v4.14.187
 
 	cc->per_bio_data_size = ti->per_io_data_size =
 		ALIGN(sizeof(struct dm_crypt_io) + cc->dmreq_start + additional_req_size,
 		      ARCH_KMALLOC_MINALIGN);
 
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 	if (cc->hw_fde == 0)
 #endif
 	{
 
+=======
+>>>>>>> v4.14.187
 	cc->page_pool = mempool_create(BIO_MAX_PAGES, crypt_page_alloc, crypt_page_free, cc);
 	if (!cc->page_pool) {
 		ti->error = "Cannot allocate page mempool";
 		goto bad;
 	}
 
+<<<<<<< HEAD
 	}
 
+=======
+>>>>>>> v4.14.187
 	cc->bs = bioset_create(MIN_IOS, 0, (BIOSET_NEED_BVECS |
 					    BIOSET_NEED_RESCUER));
 	if (!cc->bs) {
@@ -2938,12 +2997,15 @@ static int crypt_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto bad;
 	}
 
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 	if (cc->hw_fde == 0)
 #endif
 	{
 
+=======
+>>>>>>> v4.14.187
 	mutex_init(&cc->bio_alloc_lock);
 
 	ret = -EINVAL;
@@ -2954,8 +3016,11 @@ static int crypt_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	}
 	cc->iv_offset = tmpll;
 
+<<<<<<< HEAD
 	}
 
+=======
+>>>>>>> v4.14.187
 	ret = dm_get_device(ti, argv[3], dm_table_get_mode(ti->table), &cc->dev);
 	if (ret) {
 		ti->error = "Device lookup failed";
@@ -2990,6 +3055,7 @@ static int crypt_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	}
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
@@ -2997,6 +3063,8 @@ static int crypt_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 #endif
 	{
 
+=======
+>>>>>>> v4.14.187
 	cc->io_queue = alloc_workqueue("kcryptd_io", WQ_HIGHPRI | WQ_CPU_INTENSIVE | WQ_MEM_RECLAIM, 1);
 	if (!cc->io_queue) {
 		ti->error = "Couldn't create kcryptd io queue";
@@ -3026,8 +3094,11 @@ static int crypt_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	}
 	wake_up_process(cc->write_thread);
 
+<<<<<<< HEAD
 	}
 
+=======
+>>>>>>> v4.14.187
 	ti->num_flush_bios = 1;
 
 	return 0;
@@ -3056,6 +3127,7 @@ static int crypt_map(struct dm_target *ti, struct bio *bio)
 		return DM_MAPIO_REMAPPED;
 	}
 
+<<<<<<< HEAD
 /* MTK PATCH */
 #if defined(CONFIG_MTK_HW_FDE)
 	if (cc->hw_fde == 1) {
@@ -3071,6 +3143,8 @@ static int crypt_map(struct dm_target *ti, struct bio *bio)
 #endif
 	{
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Check if bio is too large, split as needed.
 	 */
@@ -3115,8 +3189,11 @@ static int crypt_map(struct dm_target *ti, struct bio *bio)
 	} else
 		kcryptd_queue_crypt(io);
 
+<<<<<<< HEAD
 	}
 
+=======
+>>>>>>> v4.14.187
 	return DM_MAPIO_SUBMITTED;
 }
 

@@ -234,9 +234,12 @@ source "net/switchdev/Kconfig"
 source "net/l3mdev/Kconfig"
 source "net/qrtr/Kconfig"
 source "net/ncsi/Kconfig"
+<<<<<<< HEAD
 # SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 source "net/ncm/Kconfig"
 # SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
+=======
+>>>>>>> v4.14.187
 
 config RPS
 	bool
@@ -456,8 +459,11 @@ config HAVE_CBPF_JIT
 # Extended BPF JIT (eBPF)
 config HAVE_EBPF_JIT
 	bool
+<<<<<<< HEAD
 
 config MTK_NET_LOGGING
 	bool "Enable MTK Network debug log"
 	---help---
 	  This config helps to enable/disable Network debug log
+=======
+>>>>>>> v4.14.187

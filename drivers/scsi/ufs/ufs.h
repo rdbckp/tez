@@ -73,6 +73,7 @@ enum {
 	UFS_UPIU_RPMB_WLUN		= 0xC4,
 };
 
+<<<<<<< HEAD
 /* WriteBooster buffer mode */
 enum {
 	WB_BUF_MODE_LU_DEDICATED	= 0x0,
@@ -89,6 +90,8 @@ static inline bool ufs_is_valid_unit_desc_lun(u8 lun)
 	return (lun == UFS_UPIU_RPMB_WLUN || (lun < UFS_UPIU_MAX_GENERAL_LUN));
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * UFS Protocol Information Unit related definitions
  */
@@ -130,12 +133,15 @@ enum {
 	UPIU_CMD_FLAGS_READ	= 0x40,
 };
 
+<<<<<<< HEAD
 /* UPIU Command Priority flags */
 enum {
 	UPIU_CMD_PRIO_NONE	= 0x00,
 	UPIU_CMD_PRIO_HIGH	= 0x04,
 };
 
+=======
+>>>>>>> v4.14.187
 /* UPIU Task Attributes */
 enum {
 	UPIU_TASK_ATTR_SIMPLE	= 0x00,
@@ -155,6 +161,7 @@ enum flag_idn {
 	QUERY_FLAG_IDN_FDEVICEINIT      = 0x01,
 	QUERY_FLAG_IDN_PWR_ON_WPE	= 0x03,
 	QUERY_FLAG_IDN_BKOPS_EN         = 0x04,
+<<<<<<< HEAD
 	/* MTK PATCH: flag for fw update feasibility check */
 	QUERY_FLAG_IDN_PERMANENTLY_DISABLE_FW_UPDATE = 0xB,
 	QUERY_FLAG_IDN_TW_EN				= 0x0E,
@@ -163,16 +170,22 @@ enum flag_idn {
 #if defined(CONFIG_SCSI_SKHPB)
 	QUERY_FLAG_IDN_HPB_RESET	= 0x11,  /* JEDEC version */
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 /* Attribute idn for Query requests */
 enum attr_idn {
+<<<<<<< HEAD
 	/* MTK PATCH: attribute for BootLUN configuration */
 	QUERY_ATTR_IDN_BOOT_LUN_EN	= 0x00,
+=======
+>>>>>>> v4.14.187
 	QUERY_ATTR_IDN_ACTIVE_ICC_LVL	= 0x03,
 	QUERY_ATTR_IDN_BKOPS_STATUS	= 0x05,
 	QUERY_ATTR_IDN_EE_CONTROL	= 0x0D,
 	QUERY_ATTR_IDN_EE_STATUS	= 0x0E,
+<<<<<<< HEAD
 	/* MTK PATCH: attribute for FFU status check */
 	QUERY_ATTR_IDN_DEVICE_FFU_STATUS = 0x14,
 #if defined(CONFIG_UFSTW)
@@ -195,6 +208,8 @@ enum ufs_ffu_status {
 	UFS_FFU_STATUS_INTERNAL_ERROR   = 0x3,
 	UFS_FFU_STATUS_VERSION_MISMATCH = 0x4,
 	UFS_FFU_STATUS_GENERAL_ERROR    = 0xFF,
+=======
+>>>>>>> v4.14.187
 };
 
 /* Descriptor idn for Query requests */
@@ -208,7 +223,10 @@ enum desc_idn {
 	QUERY_DESC_IDN_RFU_1		= 0x6,
 	QUERY_DESC_IDN_GEOMETRY		= 0x7,
 	QUERY_DESC_IDN_POWER		= 0x8,
+<<<<<<< HEAD
 	QUERY_DESC_IDN_HEALTH		= 0x9,/* MTK PATCH */
+=======
+>>>>>>> v4.14.187
 	QUERY_DESC_IDN_MAX,
 };
 
@@ -222,6 +240,7 @@ enum ufs_desc_def_size {
 	QUERY_DESC_CONFIGURATION_DEF_SIZE	= 0x90,
 	QUERY_DESC_UNIT_DEF_SIZE		= 0x23,
 	QUERY_DESC_INTERCONNECT_DEF_SIZE	= 0x06,
+<<<<<<< HEAD
 
 	/* MTK PATCH: Geometry Descriptor size shall be 0x48 since UFS 2.1 */
 	QUERY_DESC_GEOMETRY_DEF_SIZE		= 0x48,
@@ -239,6 +258,10 @@ enum geometry_desc_param_offset {
 	GEOMETRY_DESC_LEN		= 0x0,
 	GEOMETRY_DESC_TYPE		= 0x1,
 	GEOMETRY_DESC_RPMB_RW_SIZE	= 0x17,
+=======
+	QUERY_DESC_GEOMETRY_DEF_SIZE		= 0x44,
+	QUERY_DESC_POWER_DEF_SIZE		= 0x62,
+>>>>>>> v4.14.187
 };
 
 /* Unit descriptor parameters offsets in bytes*/
@@ -259,6 +282,7 @@ enum unit_desc_param {
 	UNIT_DESC_PARAM_PHY_MEM_RSRC_CNT	= 0x18,
 	UNIT_DESC_PARAM_CTX_CAPABILITIES	= 0x20,
 	UNIT_DESC_PARAM_LARGE_UNIT_SIZE_M1	= 0x22,
+<<<<<<< HEAD
 #if defined(CONFIG_UFSHPB) || defined(CONFIG_SCSI_SKHPB)
 	UNIT_DESC_HPB_LU_MAX_ACTIVE_REGIONS		= 0x23,
 	UNIT_DESC_HPB_LU_PIN_REGION_START_OFFSET	= 0x25,
@@ -268,6 +292,8 @@ enum unit_desc_param {
 	UNIT_DESC_TW_LU_MAX_BUF_SIZE			= 0x29,
 #endif
 	UNIT_DESC_PARAM_TW_BUF_ALLOC_UNIT		= 0x29,
+=======
+>>>>>>> v4.14.187
 };
 
 /* Device descriptor parameters offsets in bytes*/
@@ -299,6 +325,7 @@ enum device_desc_param {
 	DEVICE_DESC_PARAM_UD_LEN		= 0x1B,
 	DEVICE_DESC_PARAM_RTT_CAP		= 0x1C,
 	DEVICE_DESC_PARAM_FRQ_RTC		= 0x1D,
+<<<<<<< HEAD
 	DEVICE_DESC_PARAM_FEAT_SUP		= 0x1F,
 	/* MTK PATCH: Product Revision Level index in String Descriptor */
 	DEVICE_DESC_PARAM_PRDCT_REV		= 0x2A,
@@ -332,6 +359,8 @@ enum geometry_desc_param {
 	GEOMETRY_DESC_TW_SUPPORT_BUF_TYPE		= 0x56,
 	GEOMETRY_DESC_TW_GROUP_NUM_CAP			= 0x57,
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 /*
@@ -373,6 +402,7 @@ enum power_desc_param_offset {
 
 /* Exception event mask values */
 enum {
+<<<<<<< HEAD
 	/* disable tw event [bit 5] as default */
 	MASK_EE_STATUS		= 0xFFDF,
 	MASK_EE_URGENT_BKOPS	= (1 << 2),
@@ -389,6 +419,12 @@ enum {
 };
 #endif
 
+=======
+	MASK_EE_STATUS		= 0xFFFF,
+	MASK_EE_URGENT_BKOPS	= (1 << 2),
+};
+
+>>>>>>> v4.14.187
 /* Background operation status */
 enum bkops_status {
 	BKOPS_STATUS_NO_OP               = 0x0,
@@ -409,7 +445,10 @@ enum query_opcode {
 	UPIU_QUERY_OPCODE_SET_FLAG	= 0x6,
 	UPIU_QUERY_OPCODE_CLEAR_FLAG	= 0x7,
 	UPIU_QUERY_OPCODE_TOGGLE_FLAG	= 0x8,
+<<<<<<< HEAD
 	UPIU_QUERY_OPCODE_MAX,
+=======
+>>>>>>> v4.14.187
 };
 
 /* Query response result code */
@@ -427,6 +466,7 @@ enum {
 	QUERY_RESULT_GENERAL_FAILURE            = 0xFF,
 };
 
+<<<<<<< HEAD
 enum health_device_desc_param {
 	HEALTH_DEVICE_DESC_PARAM_LEN	= 0x0,
 	HEALTH_DEVICE_DESC_PARAM_IDN	=0x1,
@@ -436,6 +476,8 @@ enum health_device_desc_param {
 	HEALTH_DEVICE_DESC_PARAM_RESERVED	=0x5,
 };
 
+=======
+>>>>>>> v4.14.187
 /* UTP Transfer Request Command Type (CT) */
 enum {
 	UPIU_COMMAND_SET_TYPE_SCSI	= 0x0,
@@ -457,9 +499,12 @@ enum {
 	MASK_RSP_UPIU_DATA_SEG_LEN	= 0xFFFF,
 	MASK_RSP_EXCEPTION_EVENT        = 0x10000,
 	MASK_TM_SERVICE_RESP		= 0xFF,
+<<<<<<< HEAD
 #if defined(CONFIG_UFSHPB) || defined(CONFIG_SCSI_SKHPB)
 	MASK_RSP_UPIU_HPB_UPDATE_ALERT	= 0x20000, /* JEDEC version */
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 /* Task management service response */
@@ -641,6 +686,7 @@ struct ufs_vreg {
 	int max_uA;
 };
 
+<<<<<<< HEAD
 /* MTK PATCH */
 enum ufs_vreg_state {
 	UFS_REG_HBA_INIT,
@@ -651,12 +697,17 @@ enum ufs_vreg_state {
 	UFS_REG_RESUME_SET_HPM,
 };
 
+=======
+>>>>>>> v4.14.187
 struct ufs_vreg_info {
 	struct ufs_vreg *vcc;
 	struct ufs_vreg *vccq;
 	struct ufs_vreg *vccq2;
 	struct ufs_vreg *vdd_hba;
+<<<<<<< HEAD
 	enum ufs_vreg_state state; /* MTK PATCH */
+=======
+>>>>>>> v4.14.187
 };
 
 struct ufs_dev_info {
@@ -666,8 +717,11 @@ struct ufs_dev_info {
 };
 
 #define MAX_MODEL_LEN 16
+<<<<<<< HEAD
 #define MAX_PRL_LEN   5 /* MTK PATCH */
 
+=======
+>>>>>>> v4.14.187
 /**
  * ufs_dev_desc - ufs device details from the device descriptor
  *
@@ -677,8 +731,11 @@ struct ufs_dev_info {
 struct ufs_dev_desc {
 	u16 wmanufacturerid;
 	char model[MAX_MODEL_LEN + 1];
+<<<<<<< HEAD
 	u32 dextfeatsupport;
 	char prl[MAX_PRL_LEN + 1]; /* MTK PATCH */
+=======
+>>>>>>> v4.14.187
 };
 
 #endif /* End of Header */

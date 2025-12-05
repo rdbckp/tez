@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
+=======
+>>>>>>> v4.14.187
 /*
  * fs/f2fs/segment.h
  *
  * Copyright (c) 2012 Samsung Electronics Co., Ltd.
  *             http://www.samsung.com/
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+>>>>>>> v4.14.187
  */
 #include <linux/blkdev.h>
 #include <linux/backing-dev.h>
@@ -82,7 +92,11 @@
 	(GET_SEGOFF_FROM_SEG0(sbi, blk_addr) & ((sbi)->blocks_per_seg - 1))
 
 #define GET_SEGNO(sbi, blk_addr)					\
+<<<<<<< HEAD
 	((!__is_valid_data_blkaddr(blk_addr)) ?			\
+=======
+	((!is_valid_data_blkaddr(sbi, blk_addr)) ?			\
+>>>>>>> v4.14.187
 	NULL_SEGNO : GET_L2R_SEGNO(FREE_I(sbi),			\
 		GET_SEGNO_FROM_SEG0(sbi, blk_addr)))
 #define BLKS_PER_SEC(sbi)					\
@@ -109,7 +123,11 @@
 #define	START_SEGNO(segno)		\
 	(SIT_BLOCK_OFFSET(segno) * SIT_ENTRY_PER_BLOCK)
 #define SIT_BLK_CNT(sbi)			\
+<<<<<<< HEAD
 	DIV_ROUND_UP(MAIN_SEGS(sbi), SIT_ENTRY_PER_BLOCK)
+=======
+	((MAIN_SEGS(sbi) + SIT_ENTRY_PER_BLOCK - 1) / SIT_ENTRY_PER_BLOCK)
+>>>>>>> v4.14.187
 #define f2fs_bitmap_size(nr)			\
 	(BITS_TO_LONGS(nr) * sizeof(unsigned long))
 
@@ -200,7 +218,21 @@ struct segment_allocation {
 	void (*allocate_segment)(struct f2fs_sb_info *, int, bool);
 };
 
+<<<<<<< HEAD
 #define MAX_SKIP_GC_COUNT			16
+=======
+/*
+ * this value is set in page as a private data which indicate that
+ * the page is atomically written, and it is in inmem_pages list.
+ */
+#define ATOMIC_WRITTEN_PAGE		((unsigned long)-1)
+#define DUMMY_WRITTEN_PAGE		((unsigned long)-2)
+
+#define IS_ATOMIC_WRITTEN_PAGE(page)			\
+		(page_private(page) == (unsigned long)ATOMIC_WRITTEN_PAGE)
+#define IS_DUMMY_WRITTEN_PAGE(page)			\
+		(page_private(page) == (unsigned long)DUMMY_WRITTEN_PAGE)
+>>>>>>> v4.14.187
 
 struct inmem_pages {
 	struct list_head list;
@@ -214,6 +246,7 @@ struct sit_info {
 	block_t sit_base_addr;		/* start block address of SIT area */
 	block_t sit_blocks;		/* # of blocks used by SIT area */
 	block_t written_valid_blocks;	/* # of valid blocks in main area */
+<<<<<<< HEAD
 	char *bitmap;			/* all bitmaps pointer */
 	char *sit_bitmap;		/* SIT bitmap pointer */
 #ifdef CONFIG_F2FS_CHECK_FS
@@ -221,6 +254,11 @@ struct sit_info {
 
 	/* bitmap of segments to be ignored by GC in case of errors */
 	unsigned long *invalid_segmap;
+=======
+	char *sit_bitmap;		/* SIT bitmap pointer */
+#ifdef CONFIG_F2FS_CHECK_FS
+	char *sit_bitmap_mir;		/* SIT bitmap mirror */
+>>>>>>> v4.14.187
 #endif
 	unsigned int bitmap_size;	/* SIT bitmap size */
 
@@ -228,7 +266,11 @@ struct sit_info {
 	unsigned long *dirty_sentries_bitmap;	/* bitmap for dirty sentries */
 	unsigned int dirty_sentries;		/* # of dirty sentries */
 	unsigned int sents_per_block;		/* # of SIT entries per block */
+<<<<<<< HEAD
 	struct rw_semaphore sentry_lock;	/* to protect SIT cache */
+=======
+	struct mutex sentry_lock;		/* to protect SIT cache */
+>>>>>>> v4.14.187
 	struct seg_entry *sentries;		/* SIT segment-level cache */
 	struct sec_entry *sec_entries;		/* SIT section-level cache */
 
@@ -269,9 +311,12 @@ struct dirty_seglist_info {
 	struct mutex seglist_lock;		/* lock for segment bitmaps */
 	int nr_dirty[NR_DIRTY_TYPE];		/* # of dirty segments */
 	unsigned long *victim_secmap;		/* background GC victims */
+<<<<<<< HEAD
 
 	/* W/A for FG_GC failure due to Atomic Write File and Pinned File */
 	unsigned long *blacklist_victim_secmap; /* GC Failed Bitmap */
+=======
+>>>>>>> v4.14.187
 };
 
 /* victim selection function for cleaning and SSR */
@@ -304,8 +349,11 @@ struct sit_entry_set {
  */
 static inline struct curseg_info *CURSEG_I(struct f2fs_sb_info *sbi, int type)
 {
+<<<<<<< HEAD
 	if (type == CURSEG_COLD_DATA_PINNED)
 		type = CURSEG_COLD_DATA;
+=======
+>>>>>>> v4.14.187
 	return (struct curseg_info *)(SM_I(sbi)->curseg_array + type);
 }
 
@@ -330,18 +378,25 @@ static inline unsigned int get_valid_blocks(struct f2fs_sb_info *sbi,
 	 * In order to get # of valid blocks in a section instantly from many
 	 * segments, f2fs manages two counting structures separately.
 	 */
+<<<<<<< HEAD
 	if (use_section && __is_large_section(sbi))
+=======
+	if (use_section && sbi->segs_per_sec > 1)
+>>>>>>> v4.14.187
 		return get_sec_entry(sbi, segno)->valid_blocks;
 	else
 		return get_seg_entry(sbi, segno)->valid_blocks;
 }
 
+<<<<<<< HEAD
 static inline unsigned int get_ckpt_valid_blocks(struct f2fs_sb_info *sbi,
 				unsigned int segno)
 {
 	return get_seg_entry(sbi, segno)->ckpt_valid_blocks;
 }
 
+=======
+>>>>>>> v4.14.187
 static inline void seg_info_from_raw_sit(struct seg_entry *se,
 					struct f2fs_sit_entry *rs)
 {
@@ -356,13 +411,18 @@ static inline void seg_info_from_raw_sit(struct seg_entry *se,
 	se->mtime = le64_to_cpu(rs->mtime);
 }
 
+<<<<<<< HEAD
 static inline void __seg_info_to_raw_sit(struct seg_entry *se,
+=======
+static inline void seg_info_to_raw_sit(struct seg_entry *se,
+>>>>>>> v4.14.187
 					struct f2fs_sit_entry *rs)
 {
 	unsigned short raw_vblocks = (se->type << SIT_VBLOCKS_SHIFT) |
 					se->valid_blocks;
 	rs->vblocks = cpu_to_le16(raw_vblocks);
 	memcpy(rs->valid_map, se->cur_valid_map, SIT_VBLOCK_MAP_SIZE);
+<<<<<<< HEAD
 	rs->mtime = cpu_to_le64(se->mtime);
 }
 
@@ -392,6 +452,11 @@ static inline void seg_info_to_raw_sit(struct seg_entry *se,
 
 	memcpy(se->ckpt_valid_map, rs->valid_map, SIT_VBLOCK_MAP_SIZE);
 	se->ckpt_valid_blocks = se->valid_blocks;
+=======
+	memcpy(se->ckpt_valid_map, rs->valid_map, SIT_VBLOCK_MAP_SIZE);
+	se->ckpt_valid_blocks = se->valid_blocks;
+	rs->mtime = cpu_to_le64(se->mtime);
+>>>>>>> v4.14.187
 }
 
 static inline unsigned int find_next_inuse(struct free_segmap_info *free_i,
@@ -534,6 +599,7 @@ static inline int reserved_sections(struct f2fs_sb_info *sbi)
 	return GET_SEC_FROM_SEG(sbi, (unsigned int)reserved_segments(sbi));
 }
 
+<<<<<<< HEAD
 static inline bool has_curseg_enough_space(struct f2fs_sb_info *sbi)
 {
 	unsigned int node_blocks = get_pages(sbi, F2FS_DIRTY_NODES) +
@@ -561,6 +627,8 @@ static inline bool has_curseg_enough_space(struct f2fs_sb_info *sbi)
 	return true;
 }
 
+=======
+>>>>>>> v4.14.187
 static inline bool has_not_enough_free_secs(struct f2fs_sb_info *sbi,
 					int freed, int needed)
 {
@@ -571,14 +639,18 @@ static inline bool has_not_enough_free_secs(struct f2fs_sb_info *sbi,
 	if (unlikely(is_sbi_flag_set(sbi, SBI_POR_DOING)))
 		return false;
 
+<<<<<<< HEAD
 	if (free_sections(sbi) + freed == reserved_sections(sbi) + needed &&
 			has_curseg_enough_space(sbi))
 		return false;
+=======
+>>>>>>> v4.14.187
 	return (free_sections(sbi) + freed) <=
 		(node_secs + 2 * dent_secs + imeta_secs +
 		reserved_sections(sbi) + needed);
 }
 
+<<<<<<< HEAD
 static inline bool f2fs_is_checkpoint_ready(struct f2fs_sb_info *sbi)
 {
 	if (likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
@@ -588,6 +660,8 @@ static inline bool f2fs_is_checkpoint_ready(struct f2fs_sb_info *sbi)
 	return false;
 }
 
+=======
+>>>>>>> v4.14.187
 static inline bool excess_prefree_segs(struct f2fs_sb_info *sbi)
 {
 	return prefree_segments(sbi) > SM_I(sbi)->rec_prefree_segments;
@@ -610,17 +684,25 @@ static inline int utilization(struct f2fs_sb_info *sbi)
  *                     threashold,
  * F2FS_IPU_FSYNC - activated in fsync path only for high performance flash
  *                     storages. IPU will be triggered only if the # of dirty
+<<<<<<< HEAD
  *                     pages over min_fsync_blocks. (=default option)
  * F2FS_IPU_ASYNC - do IPU given by asynchronous write requests.
  * F2FS_IPU_NOCACHE - disable IPU bio cache.
  * F2FS_IPUT_DISABLE - disable IPU. (=default option in LFS mode)
+=======
+ *                     pages over min_fsync_blocks.
+ * F2FS_IPUT_DISABLE - disable IPU. (=default option)
+>>>>>>> v4.14.187
  */
 #define DEF_MIN_IPU_UTIL	70
 #define DEF_MIN_FSYNC_BLOCKS	8
 #define DEF_MIN_HOT_BLOCKS	16
 
+<<<<<<< HEAD
 #define SMALL_VOLUME_SEGMENTS	(32 * 512)	/* 32GB */
 
+=======
+>>>>>>> v4.14.187
 enum {
 	F2FS_IPU_FORCE,
 	F2FS_IPU_SSR,
@@ -628,9 +710,55 @@ enum {
 	F2FS_IPU_SSR_UTIL,
 	F2FS_IPU_FSYNC,
 	F2FS_IPU_ASYNC,
+<<<<<<< HEAD
 	F2FS_IPU_NOCACHE,
 };
 
+=======
+};
+
+static inline bool need_inplace_update_policy(struct inode *inode,
+				struct f2fs_io_info *fio)
+{
+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+	unsigned int policy = SM_I(sbi)->ipu_policy;
+
+	if (test_opt(sbi, LFS))
+		return false;
+
+	/* if this is cold file, we should overwrite to avoid fragmentation */
+	if (file_is_cold(inode))
+		return true;
+
+	if (policy & (0x1 << F2FS_IPU_FORCE))
+		return true;
+	if (policy & (0x1 << F2FS_IPU_SSR) && need_SSR(sbi))
+		return true;
+	if (policy & (0x1 << F2FS_IPU_UTIL) &&
+			utilization(sbi) > SM_I(sbi)->min_ipu_util)
+		return true;
+	if (policy & (0x1 << F2FS_IPU_SSR_UTIL) && need_SSR(sbi) &&
+			utilization(sbi) > SM_I(sbi)->min_ipu_util)
+		return true;
+
+	/*
+	 * IPU for rewrite async pages
+	 */
+	if (policy & (0x1 << F2FS_IPU_ASYNC) &&
+			fio && fio->op == REQ_OP_WRITE &&
+			!(fio->op_flags & REQ_SYNC) &&
+			!f2fs_encrypted_inode(inode))
+		return true;
+
+	/* this is only set during fdatasync */
+	if (policy & (0x1 << F2FS_IPU_FSYNC) &&
+			is_inode_flag_set(inode, FI_NEED_IPU))
+		return true;
+
+	return false;
+}
+
+>>>>>>> v4.14.187
 static inline unsigned int curseg_segno(struct f2fs_sb_info *sbi,
 		int type)
 {
@@ -656,6 +784,7 @@ static inline void check_seg_range(struct f2fs_sb_info *sbi, unsigned int segno)
 	f2fs_bug_on(sbi, segno > TOTAL_SEGS(sbi) - 1);
 }
 
+<<<<<<< HEAD
 static inline void verify_fio_blkaddr(struct f2fs_io_info *fio)
 {
 	struct f2fs_sb_info *sbi = fio->sbi;
@@ -665,6 +794,16 @@ static inline void verify_fio_blkaddr(struct f2fs_io_info *fio)
 					META_GENERIC : DATA_GENERIC);
 	verify_blkaddr(sbi, fio->new_blkaddr, __is_meta_io(fio) ?
 					META_GENERIC : DATA_GENERIC_ENHANCE);
+=======
+static inline void verify_block_addr(struct f2fs_io_info *fio, block_t blk_addr)
+{
+	struct f2fs_sb_info *sbi = fio->sbi;
+
+	if (__is_meta_io(fio))
+		verify_blkaddr(sbi, blk_addr, META_GENERIC);
+	else
+		verify_blkaddr(sbi, blk_addr, DATA_GENERIC);
+>>>>>>> v4.14.187
 }
 
 /*
@@ -693,8 +832,14 @@ static inline int check_block_count(struct f2fs_sb_info *sbi,
 	} while (cur_pos < sbi->blocks_per_seg);
 
 	if (unlikely(GET_SIT_VBLOCKS(raw_sit) != valid_blocks)) {
+<<<<<<< HEAD
 		f2fs_err(sbi, "Mismatch valid blocks %d vs. %d",
 			 GET_SIT_VBLOCKS(raw_sit), valid_blocks);
+=======
+		f2fs_msg(sbi->sb, KERN_ERR,
+				"Mismatch valid blocks %d vs. %d",
+					GET_SIT_VBLOCKS(raw_sit), valid_blocks);
+>>>>>>> v4.14.187
 		set_sbi_flag(sbi, SBI_NEED_FSCK);
 		return -EFSCORRUPTED;
 	}
@@ -702,8 +847,14 @@ static inline int check_block_count(struct f2fs_sb_info *sbi,
 	/* check segment usage, and check boundary of a given segment number */
 	if (unlikely(GET_SIT_VBLOCKS(raw_sit) > sbi->blocks_per_seg
 					|| segno > TOTAL_SEGS(sbi) - 1)) {
+<<<<<<< HEAD
 		f2fs_err(sbi, "Wrong valid blocks %d or segno %u",
 			 GET_SIT_VBLOCKS(raw_sit), segno);
+=======
+		f2fs_msg(sbi->sb, KERN_ERR,
+				"Wrong valid blocks %d or segno %u",
+					GET_SIT_VBLOCKS(raw_sit), segno);
+>>>>>>> v4.14.187
 		set_sbi_flag(sbi, SBI_NEED_FSCK);
 		return -EFSCORRUPTED;
 	}
@@ -755,6 +906,7 @@ static inline void set_to_next_sit(struct sit_info *sit_i, unsigned int start)
 #endif
 }
 
+<<<<<<< HEAD
 static inline time64_t ktime_get_boottime_seconds(void)
 {
 	return ktime_divns(ktime_get_boottime(), NSEC_PER_SEC);
@@ -777,6 +929,14 @@ static inline unsigned long long get_mtime(struct f2fs_sb_info *sbi,
 		return 0;
 	}
 	return sit_i->elapsed_time;
+=======
+static inline unsigned long long get_mtime(struct f2fs_sb_info *sbi)
+{
+	struct sit_info *sit_i = SIT_I(sbi);
+	time64_t now = ktime_get_real_seconds();
+
+	return sit_i->elapsed_time + now - sit_i->mounted_time;
+>>>>>>> v4.14.187
 }
 
 static inline void set_summary(struct f2fs_summary *sum, nid_t nid,
@@ -800,6 +960,18 @@ static inline block_t sum_blk_addr(struct f2fs_sb_info *sbi, int base, int type)
 				- (base + 1) + type;
 }
 
+<<<<<<< HEAD
+=======
+static inline bool no_fggc_candidate(struct f2fs_sb_info *sbi,
+						unsigned int secno)
+{
+	if (get_valid_blocks(sbi, GET_SEG_FROM_SEC(sbi, secno), true) >=
+						sbi->fggc_threshold)
+		return true;
+	return false;
+}
+
+>>>>>>> v4.14.187
 static inline bool sec_usage_check(struct f2fs_sb_info *sbi, unsigned int secno)
 {
 	if (IS_CURSEC(sbi, secno) || (sbi->cur_victim_sec == secno))
@@ -859,16 +1031,25 @@ static inline void wake_up_discard_thread(struct f2fs_sb_info *sbi, bool force)
 		goto wake_up;
 
 	mutex_lock(&dcc->cmd_lock);
+<<<<<<< HEAD
 	for (i = MAX_PLIST_NUM - 1; i >= 0; i--) {
 		if (i + 1 < dcc->discard_granularity)
 			break;
+=======
+	for (i = MAX_PLIST_NUM - 1;
+			i >= 0 && plist_issue(dcc->pend_list_tag[i]); i--) {
+>>>>>>> v4.14.187
 		if (!list_empty(&dcc->pend_list[i])) {
 			wakeup = true;
 			break;
 		}
 	}
 	mutex_unlock(&dcc->cmd_lock);
+<<<<<<< HEAD
 	if (!wakeup || !is_idle(sbi, DISCARD_TIME))
+=======
+	if (!wakeup)
+>>>>>>> v4.14.187
 		return;
 wake_up:
 	dcc->discard_wake = 1;

@@ -741,6 +741,7 @@ struct drm_mode_config {
 	 */
 	struct drm_property *suggested_y_property;
 
+<<<<<<< HEAD
 	/**
 	 * @writeback_fb_id_property: Property for writeback connectors, storing
 	 * the ID of the output framebuffer.
@@ -764,6 +765,8 @@ struct drm_mode_config {
 	 */
 	struct drm_property *writeback_out_fence_ptr_property;
 
+=======
+>>>>>>> v4.14.187
 	/* dumb ioctl parameters */
 	uint32_t preferred_depth, prefer_shadow;
 

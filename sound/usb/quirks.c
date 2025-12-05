@@ -1164,6 +1164,10 @@ bool snd_usb_get_sample_rate_quirk(struct snd_usb_audio *chip)
 static bool is_itf_usb_dsd_2alts_dac(unsigned int id)
 {
 	switch (id) {
+<<<<<<< HEAD
+=======
+	case USB_ID(0x154e, 0x1002): /* Denon DCD-1500RE */
+>>>>>>> v4.14.187
 	case USB_ID(0x154e, 0x1003): /* Denon DA-300USB */
 	case USB_ID(0x154e, 0x3005): /* Marantz HD-DAC1 */
 	case USB_ID(0x154e, 0x3006): /* Marantz SA-14S1 */
@@ -1328,10 +1332,13 @@ void snd_usb_ctl_msg_quirk(struct usb_device *dev, unsigned int pipe,
 	     chip->usb_id == USB_ID(0x0951, 0x16ad)) &&
 	    (requesttype & USB_TYPE_MASK) == USB_TYPE_CLASS)
 		mdelay(1);
+<<<<<<< HEAD
 
 	if (chip->usb_id == USB_ID(0x04e8, 0xa051) &&
 	     (requesttype & USB_TYPE_MASK) == USB_TYPE_CLASS)
 		mdelay(5);
+=======
+>>>>>>> v4.14.187
 }
 
 /*

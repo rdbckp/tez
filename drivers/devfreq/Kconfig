@@ -114,6 +114,7 @@ config ARM_RK3399_DMC_DEVFREQ
           It sets the frequency for the memory controller and reads the usage counts
           from hardware.
 
+<<<<<<< HEAD
 config MTK_QOS_SUPPORT
 	bool "MTK QOS SUPPORT"
 	default y
@@ -137,6 +138,8 @@ config MTK_DVFSRC_MT6893_PRETEST
 	  is ready.
 	  If unsure, say N.
 
+=======
+>>>>>>> v4.14.187
 source "drivers/devfreq/event/Kconfig"
 
 endif # PM_DEVFREQ

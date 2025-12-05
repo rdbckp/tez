@@ -11,6 +11,7 @@ obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E8AA0) += panel-samsung-s6e8aa0.o
 obj-$(CONFIG_DRM_PANEL_SHARP_LQ101R1SX01) += panel-sharp-lq101r1sx01.o
 obj-$(CONFIG_DRM_PANEL_SHARP_LS043T1LE01) += panel-sharp-ls043t1le01.o
 obj-$(CONFIG_DRM_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
+<<<<<<< HEAD
 obj-$(CONFIG_DRM_PANEL_AUO_U40073) += panel-auo-u40073.o
 obj-$(CONFIG_DRM_PANEL_LG_U40073) += panel-lg-u40073.o
 obj-$(CONFIG_DRM_PANEL_LG_0565G40108) += panel-lg-0565g40108.o
@@ -57,3 +58,5 @@ obj-$(CONFIG_DRM_PANEL_SAMSUNG_S68FC01_VDO_AOD) += panel-samsung-s68fc01-vdo-aod
 obj-$(CONFIG_DRM_PANEL_K6853V1_64_TD4150_VDO) += panel-synaptics-td4150-vdo.o
 obj-$(CONFIG_DRM_PANEL_K6853V1_64_ILI9882N_VDO) += panel-ilitek-ili9882n-vdo.o
 obj-$(CONFIG_DRM_PANEL_K6853V1_64_NT36675_VDO_90HZ) += panel-csot-nt36675-vdo-90hz.o
+=======
+>>>>>>> v4.14.187

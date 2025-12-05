@@ -180,9 +180,15 @@ out:
 	return segs;
 }
 
+<<<<<<< HEAD
 struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb)
 {
 	struct sk_buff *pp = NULL;
+=======
+struct sk_buff **tcp_gro_receive(struct sk_buff **head, struct sk_buff *skb)
+{
+	struct sk_buff **pp = NULL;
+>>>>>>> v4.14.187
 	struct sk_buff *p;
 	struct tcphdr *th;
 	struct tcphdr *th2;
@@ -220,7 +226,11 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb)
 	len = skb_gro_len(skb);
 	flags = tcp_flag_word(th);
 
+<<<<<<< HEAD
 	list_for_each_entry(p, head, list) {
+=======
+	for (; (p = *head); head = &p->next) {
+>>>>>>> v4.14.187
 		if (!NAPI_GRO_CB(p)->same_flow)
 			continue;
 
@@ -233,7 +243,11 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb)
 
 		goto found;
 	}
+<<<<<<< HEAD
 	p = NULL;
+=======
+
+>>>>>>> v4.14.187
 	goto out_check_final;
 
 found:
@@ -263,11 +277,20 @@ found:
 	flush |= (len - 1) >= mss;
 	flush |= (ntohl(th2->seq) + skb_gro_len(p)) ^ ntohl(th->seq);
 
+<<<<<<< HEAD
 	if (flush || skb_gro_receive(p, skb)) {
+=======
+	if (flush || skb_gro_receive(head, skb)) {
+>>>>>>> v4.14.187
 		mss = 1;
 		goto out_check_final;
 	}
 
+<<<<<<< HEAD
+=======
+	p = *head;
+	th2 = tcp_hdr(p);
+>>>>>>> v4.14.187
 	tcp_flag_word(th2) |= flags & (TCP_FLAG_FIN | TCP_FLAG_PSH);
 
 out_check_final:
@@ -277,7 +300,11 @@ out_check_final:
 					TCP_FLAG_FIN));
 
 	if (p && (!NAPI_GRO_CB(skb)->same_flow || flush))
+<<<<<<< HEAD
 		pp = p;
+=======
+		pp = head;
+>>>>>>> v4.14.187
 
 out:
 	NAPI_GRO_CB(skb)->flush |= (flush != 0);
@@ -302,8 +329,12 @@ int tcp_gro_complete(struct sk_buff *skb)
 }
 EXPORT_SYMBOL(tcp_gro_complete);
 
+<<<<<<< HEAD
 static struct sk_buff *tcp4_gro_receive(struct list_head *head,
 					struct sk_buff *skb)
+=======
+static struct sk_buff **tcp4_gro_receive(struct sk_buff **head, struct sk_buff *skb)
+>>>>>>> v4.14.187
 {
 	/* Don't bother verifying checksum if we're going to flush anyway. */
 	if (!NAPI_GRO_CB(skb)->flush &&

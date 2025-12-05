@@ -32,8 +32,11 @@
 
 #include "u_serial.h"
 
+<<<<<<< HEAD
 #define USERIAL_LOG(fmt, args...) pr_notice("USB_ACM " fmt, ## args)
 
+=======
+>>>>>>> v4.14.187
 
 /*
  * This component encapsulates the TTY layer glue needed to provide basic
@@ -83,7 +86,10 @@
  */
 #define QUEUE_SIZE		16
 #define WRITE_BUF_SIZE		8192		/* TX only */
+<<<<<<< HEAD
 #define REQ_BUF_SIZE       4096
+=======
+>>>>>>> v4.14.187
 #define GS_CONSOLE_BUF_SIZE	8192
 
 /* circular buffer */
@@ -395,7 +401,11 @@ __acquires(&port->port_lock)
 			break;
 
 		req = list_entry(pool->next, struct usb_request, list);
+<<<<<<< HEAD
 		len = gs_send_packet(port, req->buf, REQ_BUF_SIZE);
+=======
+		len = gs_send_packet(port, req->buf, in->maxpacket);
+>>>>>>> v4.14.187
 		if (len == 0) {
 			wake_up_interruptible(&port->drain_wait);
 			break;
@@ -404,11 +414,16 @@ __acquires(&port->port_lock)
 
 		req->length = len;
 		list_del(&req->list);
+<<<<<<< HEAD
 		req->zero = (len % in->maxpacket == 0);
+=======
+		req->zero = (gs_buf_data_avail(&port->port_write_buf) == 0);
+>>>>>>> v4.14.187
 
 		pr_vdebug("ttyGS%d: tx len=%d, 0x%02x 0x%02x 0x%02x ...\n",
 			  port->port_num, len, *((u8 *)req->buf),
 			  *((u8 *)req->buf+1), *((u8 *)req->buf+2));
+<<<<<<< HEAD
 		{
 			static unsigned int	skip;
 			static DEFINE_RATELIMIT_STATE(ratelimit, 1 * HZ, 10);
@@ -427,6 +442,8 @@ __acquires(&port->port_lock)
 			} else
 				skip += req->actual;
 		}
+=======
+>>>>>>> v4.14.187
 
 		/* Drop lock while we call out of driver; completions
 		 * could be issued while we do so.  Disconnection may
@@ -557,6 +574,7 @@ static void gs_rx_push(unsigned long _port)
 			break;
 		}
 
+<<<<<<< HEAD
 		{
 			static unsigned int	skip;
 			static DEFINE_RATELIMIT_STATE(ratelimit, 1 * HZ, 10);
@@ -579,6 +597,8 @@ static void gs_rx_push(unsigned long _port)
 				skip += req->actual;
 		}
 
+=======
+>>>>>>> v4.14.187
 		/* push data to (open) tty */
 		if (req->actual && tty) {
 			char		*packet = req->buf;
@@ -670,6 +690,7 @@ static void gs_write_complete(struct usb_ep *ep, struct usb_request *req)
 		/* FALL THROUGH */
 	case 0:
 		/* normal completion */
+<<<<<<< HEAD
 		{
 			static unsigned int	skip;
 			static DEFINE_RATELIMIT_STATE(ratelimit, 1 * HZ, 10);
@@ -686,6 +707,8 @@ static void gs_write_complete(struct usb_ep *ep, struct usb_request *req)
 				skip += req->actual;
 		}
 
+=======
+>>>>>>> v4.14.187
 		gs_start_tx(port);
 		break;
 
@@ -725,7 +748,11 @@ static int gs_alloc_requests(struct usb_ep *ep, struct list_head *head,
 	 * be as speedy as we might otherwise be.
 	 */
 	for (i = 0; i < n; i++) {
+<<<<<<< HEAD
 		req = gs_alloc_req(ep, REQ_BUF_SIZE, GFP_ATOMIC);
+=======
+		req = gs_alloc_req(ep, ep->maxpacket, GFP_ATOMIC);
+>>>>>>> v4.14.187
 		if (!req)
 			return list_empty(head) ? -ENOMEM : 0;
 		req->complete = fn;
@@ -778,8 +805,12 @@ static int gs_start_io(struct gs_port *port)
 		gs_start_tx(port);
 		/* Unblock any pending writes into our circular buffer, in case
 		 * we didn't in gs_start_tx() */
+<<<<<<< HEAD
 		if (port->port.tty)
 			tty_wakeup(port->port.tty);
+=======
+		tty_wakeup(port->port.tty);
+>>>>>>> v4.14.187
 	} else {
 		gs_free_requests(ep, head, &port->read_allocated);
 		gs_free_requests(port->port_usb->in, &port->write_pool,
@@ -890,8 +921,11 @@ static int gs_open(struct tty_struct *tty, struct file *file)
 	}
 
 	pr_debug("gs_open: ttyGS%d (%p,%p)\n", port->port_num, tty, file);
+<<<<<<< HEAD
 	USERIAL_LOG("%s: ttyGS%d (%p,%p)\n",
 			__func__, port->port_num, tty, file);
+=======
+>>>>>>> v4.14.187
 
 	status = 0;
 
@@ -928,8 +962,11 @@ static void gs_close(struct tty_struct *tty, struct file *file)
 	}
 
 	pr_debug("gs_close: ttyGS%d (%p,%p) ...\n", port->port_num, tty, file);
+<<<<<<< HEAD
 	USERIAL_LOG("%s: ttyGS%d (%p,%p)\n",
 			__func__, port->port_num, tty, file);
+=======
+>>>>>>> v4.14.187
 
 	/* mark port as closing but in use; we can drop port lock
 	 * and sleep if necessary
@@ -1429,8 +1466,12 @@ int gserial_alloc_line(unsigned char *line_num)
 {
 	struct usb_cdc_line_coding	coding;
 	struct device			*tty_dev;
+<<<<<<< HEAD
 	/* prevent issue fix */
 	int				ret = -EBUSY;
+=======
+	int				ret;
+>>>>>>> v4.14.187
 	int				port_num;
 
 	coding.dwDTERate = cpu_to_le32(9600);
@@ -1438,12 +1479,16 @@ int gserial_alloc_line(unsigned char *line_num)
 	coding.bParityType = USB_CDC_NO_PARITY;
 	coding.bDataBits = USB_CDC_1_STOP_BITS;
 
+<<<<<<< HEAD
 	if (*line_num)
 		port_num =  *line_num;
 	else
 		port_num = 0;
 
 	for (; port_num < MAX_U_SERIAL_PORTS; port_num++) {
+=======
+	for (port_num = 0; port_num < MAX_U_SERIAL_PORTS; port_num++) {
+>>>>>>> v4.14.187
 		ret = gs_port_alloc(port_num, &coding);
 		if (ret == -EBUSY)
 			continue;

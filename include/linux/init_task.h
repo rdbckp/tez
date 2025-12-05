@@ -18,7 +18,10 @@
 #include <linux/sched/rt.h>
 #include <linux/livepatch.h>
 #include <linux/mm_types.h>
+<<<<<<< HEAD
 #include <linux/task_integrity.h>
+=======
+>>>>>>> v4.14.187
 
 #include <asm/thread_info.h>
 
@@ -173,6 +176,7 @@ extern struct cred init_cred;
 # define INIT_VTIME(tsk)
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_FIVE
 # define INIT_TASK_INTEGRITY(integrity) {				\
 	.user_value = INTEGRITY_NONE,					\
@@ -190,6 +194,8 @@ extern struct cred init_cred;
 # define INIT_TASK_INTEGRITY(integrity)
 #endif
 
+=======
+>>>>>>> v4.14.187
 #define INIT_TASK_COMM "swapper"
 
 #ifdef CONFIG_RT_MUTEXES
@@ -317,7 +323,10 @@ extern struct cred init_cred;
 	INIT_KASAN(tsk)							\
 	INIT_LIVEPATCH(tsk)						\
 	INIT_TASK_SECURITY						\
+<<<<<<< HEAD
 	INIT_INTEGRITY(tsk)						\
+=======
+>>>>>>> v4.14.187
 }
 
 

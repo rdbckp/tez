@@ -638,11 +638,14 @@ static inline void pr_cont_cgroup_path(struct cgroup *cgrp)
 	pr_cont_kernfs_path(cgrp->kn);
 }
 
+<<<<<<< HEAD
 static inline struct psi_group *cgroup_psi(struct cgroup *cgrp)
 {
 	return &cgrp->psi;
 }
 
+=======
+>>>>>>> v4.14.187
 static inline void cgroup_init_kthreadd(void)
 {
 	/*
@@ -697,6 +700,7 @@ static inline union kernfs_node_id *cgroup_get_kernfs_id(struct cgroup *cgrp)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static inline struct cgroup *cgroup_parent(struct cgroup *cgrp)
 {
 	return NULL;
@@ -707,6 +711,8 @@ static inline struct psi_group *cgroup_psi(struct cgroup *cgrp)
 	return NULL;
 }
 
+=======
+>>>>>>> v4.14.187
 static inline bool task_under_cgroup_hierarchy(struct task_struct *task,
 					       struct cgroup *ancestor)
 {

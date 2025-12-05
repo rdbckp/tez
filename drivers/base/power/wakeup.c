@@ -14,6 +14,7 @@
 #include <linux/suspend.h>
 #include <linux/seq_file.h>
 #include <linux/debugfs.h>
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_NAD
 #include <linux/proc_fs.h>
 #endif
@@ -21,15 +22,21 @@
 #include <linux/irq.h>
 #include <linux/interrupt.h>
 #include <linux/wakeup_reason.h>
+=======
+#include <linux/pm_wakeirq.h>
+>>>>>>> v4.14.187
 #include <trace/events/power.h>
 
 #include "power.h"
 
+<<<<<<< HEAD
 #ifndef CONFIG_SUSPEND
 suspend_state_t pm_suspend_target_state;
 #define pm_suspend_target_state	(PM_SUSPEND_ON)
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * If set, the suspend/hibernate code will abort transitions to a sleep state
  * if wakeup events are registered during or immediately before the transition.
@@ -78,8 +85,11 @@ static struct wakeup_source deleted_ws = {
 	.lock =  __SPIN_LOCK_UNLOCKED(deleted_ws.lock),
 };
 
+<<<<<<< HEAD
 static DEFINE_IDA(wakeup_ida);
 
+=======
+>>>>>>> v4.14.187
 /**
  * wakeup_source_prepare - Prepare a new wakeup source for initialization.
  * @ws: Wakeup source to prepare.
@@ -103,6 +113,7 @@ EXPORT_SYMBOL_GPL(wakeup_source_prepare);
  */
 struct wakeup_source *wakeup_source_create(const char *name)
 {
+<<<<<<< HEAD
  	struct wakeup_source *ws;
 	const char *ws_name;
 	int id;
@@ -129,6 +140,16 @@ err_name:
 	kfree(ws);
 err_ws:
 	return NULL;
+=======
+	struct wakeup_source *ws;
+
+	ws = kmalloc(sizeof(*ws), GFP_KERNEL);
+	if (!ws)
+		return NULL;
+
+	wakeup_source_prepare(ws, name ? kstrdup_const(name, GFP_KERNEL) : NULL);
+	return ws;
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL_GPL(wakeup_source_create);
 
@@ -176,6 +197,7 @@ static void wakeup_source_record(struct wakeup_source *ws)
 	spin_unlock_irqrestore(&deleted_ws.lock, flags);
 }
 
+<<<<<<< HEAD
 static void wakeup_source_free(struct wakeup_source *ws)
 {
 	ida_simple_remove(&wakeup_ida, ws->id);
@@ -183,6 +205,8 @@ static void wakeup_source_free(struct wakeup_source *ws)
 	kfree(ws);
 }
 
+=======
+>>>>>>> v4.14.187
 /**
  * wakeup_source_destroy - Destroy a struct wakeup_source object.
  * @ws: Wakeup source to destroy.
@@ -196,7 +220,12 @@ void wakeup_source_destroy(struct wakeup_source *ws)
 
 	wakeup_source_drop(ws);
 	wakeup_source_record(ws);
+<<<<<<< HEAD
 	wakeup_source_free(ws);
+=======
+	kfree_const(ws->name);
+	kfree(ws);
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL_GPL(wakeup_source_destroy);
 
@@ -214,6 +243,10 @@ void wakeup_source_add(struct wakeup_source *ws)
 	spin_lock_init(&ws->lock);
 	setup_timer(&ws->timer, pm_wakeup_timer_fn, (unsigned long)ws);
 	ws->active = false;
+<<<<<<< HEAD
+=======
+	ws->last_time = ktime_get();
+>>>>>>> v4.14.187
 
 	spin_lock_irqsave(&events_lock, flags);
 	list_add_rcu(&ws->entry, &wakeup_sources);
@@ -248,6 +281,7 @@ EXPORT_SYMBOL_GPL(wakeup_source_remove);
 
 /**
  * wakeup_source_register - Create wakeup source and add it to the list.
+<<<<<<< HEAD
  * @dev: Device this wakeup source is associated with (or NULL if virtual).
  * @name: Name of the wakeup source to register.
  */
@@ -268,6 +302,18 @@ struct wakeup_source *wakeup_source_register(struct device *dev,
 		}
 		wakeup_source_add(ws);
 	}
+=======
+ * @name: Name of the wakeup source to register.
+ */
+struct wakeup_source *wakeup_source_register(const char *name)
+{
+	struct wakeup_source *ws;
+
+	ws = wakeup_source_create(name);
+	if (ws)
+		wakeup_source_add(ws);
+
+>>>>>>> v4.14.187
 	return ws;
 }
 EXPORT_SYMBOL_GPL(wakeup_source_register);
@@ -280,9 +326,12 @@ void wakeup_source_unregister(struct wakeup_source *ws)
 {
 	if (ws) {
 		wakeup_source_remove(ws);
+<<<<<<< HEAD
 		if (ws->dev)
 			wakeup_source_sysfs_remove(ws);
 
+=======
+>>>>>>> v4.14.187
 		wakeup_source_destroy(ws);
 	}
 }
@@ -323,10 +372,14 @@ int device_wakeup_enable(struct device *dev)
 	if (!dev || !dev->power.can_wakeup)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (pm_suspend_target_state != PM_SUSPEND_ON)
 		dev_dbg(dev, "Suspicious %s() during system transition!\n", __func__);
 
 	ws = wakeup_source_register(dev, dev_name(dev));
+=======
+	ws = wakeup_source_register(dev_name(dev));
+>>>>>>> v4.14.187
 	if (!ws)
 		return -ENOMEM;
 
@@ -863,6 +916,7 @@ void pm_wakeup_dev_event(struct device *dev, unsigned int msec, bool hard)
 }
 EXPORT_SYMBOL_GPL(pm_wakeup_dev_event);
 
+<<<<<<< HEAD
 void pm_get_active_wakeup_sources(char *pending_wakeup_source, size_t max)
 {
 	struct wakeup_source *ws, *last_active_ws = NULL;
@@ -894,6 +948,8 @@ void pm_get_active_wakeup_sources(char *pending_wakeup_source, size_t max)
 }
 EXPORT_SYMBOL_GPL(pm_get_active_wakeup_sources);
 
+=======
+>>>>>>> v4.14.187
 void pm_print_active_wakeup_sources(void)
 {
 	struct wakeup_source *ws;
@@ -903,7 +959,11 @@ void pm_print_active_wakeup_sources(void)
 	srcuidx = srcu_read_lock(&wakeup_srcu);
 	list_for_each_entry_rcu(ws, &wakeup_sources, entry) {
 		if (ws->active) {
+<<<<<<< HEAD
 			pr_info("active wakeup source: %s\n", ws->name);
+=======
+			pr_debug("active wakeup source: %s\n", ws->name);
+>>>>>>> v4.14.187
 			active = 1;
 		} else if (!active &&
 			   (!last_activity_ws ||
@@ -914,7 +974,11 @@ void pm_print_active_wakeup_sources(void)
 	}
 
 	if (!active && last_activity_ws)
+<<<<<<< HEAD
 		pr_info("last active wakeup source: %s\n",
+=======
+		pr_debug("last active wakeup source: %s\n",
+>>>>>>> v4.14.187
 			last_activity_ws->name);
 	srcu_read_unlock(&wakeup_srcu, srcuidx);
 }
@@ -932,7 +996,10 @@ bool pm_wakeup_pending(void)
 {
 	unsigned long flags;
 	bool ret = false;
+<<<<<<< HEAD
 	char suspend_abort[MAX_SUSPEND_ABORT_LEN];
+=======
+>>>>>>> v4.14.187
 
 	spin_lock_irqsave(&events_lock, flags);
 	if (events_check_enabled) {
@@ -945,10 +1012,15 @@ bool pm_wakeup_pending(void)
 	spin_unlock_irqrestore(&events_lock, flags);
 
 	if (ret) {
+<<<<<<< HEAD
 		pm_get_active_wakeup_sources(suspend_abort,
 					     MAX_SUSPEND_ABORT_LEN);
 		log_suspend_abort_reason(suspend_abort);
 		pr_info("PM: %s\n", suspend_abort);
+=======
+		pr_info("PM: Wakeup pending, aborting suspend\n");
+		pm_print_active_wakeup_sources();
+>>>>>>> v4.14.187
 	}
 
 	return ret || atomic_read(&pm_abort_suspend) > 0;
@@ -976,6 +1048,7 @@ void pm_wakeup_clear(bool reset)
 void pm_system_irq_wakeup(unsigned int irq_number)
 {
 	if (pm_wakeup_irq == 0) {
+<<<<<<< HEAD
 		struct irq_desc *desc;
 		const char *name = "null";
 
@@ -988,6 +1061,8 @@ void pm_system_irq_wakeup(unsigned int irq_number)
 		log_irq_wakeup_reason(irq_number);
 		pr_warn("%s: %d triggered %s\n", __func__, irq_number, name);
 
+=======
+>>>>>>> v4.14.187
 		pm_wakeup_irq = irq_number;
 		pm_system_wakeup();
 	}
@@ -1122,7 +1197,11 @@ static int print_wakeup_source_stats(struct seq_file *m,
 		active_time = 0;
 	}
 
+<<<<<<< HEAD
 	seq_printf(m, "%-32s\t%lu\t\t%lu\t\t%lu\t\t%lu\t\t%lld\t\t%lld\t\t%lld\t\t%lld\t\t%lld\n",
+=======
+	seq_printf(m, "%-12s\t%lu\t\t%lu\t\t%lu\t\t%lu\t\t%lld\t\t%lld\t\t%lld\t\t%lld\t\t%lld\n",
+>>>>>>> v4.14.187
 		   ws->name, active_count, ws->event_count,
 		   ws->wakeup_count, ws->expire_count,
 		   ktime_to_ms(active_time), ktime_to_ms(total_time),
@@ -1134,6 +1213,7 @@ static int print_wakeup_source_stats(struct seq_file *m,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_PM
 static void print_wakeup_source_active(
 					struct wakeup_source *ws)
@@ -1186,6 +1266,8 @@ int wakeup_sources_stats_active(void)
 EXPORT_SYMBOL_GPL(wakeup_sources_stats_active);
 #endif
 
+=======
+>>>>>>> v4.14.187
 /**
  * wakeup_sources_stats_show - Print wakeup sources statistics information.
  * @m: seq_file to print the statistics into.
@@ -1195,7 +1277,11 @@ static int wakeup_sources_stats_show(struct seq_file *m, void *unused)
 	struct wakeup_source *ws;
 	int srcuidx;
 
+<<<<<<< HEAD
 	seq_puts(m, "name\t\t\t\t\tactive_count\tevent_count\twakeup_count\t"
+=======
+	seq_puts(m, "name\t\tactive_count\tevent_count\twakeup_count\t"
+>>>>>>> v4.14.187
 		"expire_count\tactive_since\ttotal_time\tmax_time\t"
 		"last_change\tprevent_suspend_time\n");
 
@@ -1226,9 +1312,12 @@ static int __init wakeup_sources_debugfs_init(void)
 {
 	wakeup_sources_stats_dentry = debugfs_create_file("wakeup_sources",
 			S_IRUGO, NULL, NULL, &wakeup_sources_stats_fops);
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_NAD
 	proc_create("wakeup_sources", 0644, NULL, &wakeup_sources_stats_fops);
 #endif
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 

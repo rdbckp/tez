@@ -756,6 +756,7 @@ config KEYBOARD_BCM
 	  To compile this driver as a module, choose M here: the
 	  module will be called bcm-keypad.
 
+<<<<<<< HEAD
 source "drivers/input/keyboard/mediatek/Kconfig"
 
 config KEYBOARD_MTK_PMIC
@@ -765,4 +766,6 @@ config KEYBOARD_MTK_PMIC
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called pmic-keys.
+=======
+>>>>>>> v4.14.187
 endif

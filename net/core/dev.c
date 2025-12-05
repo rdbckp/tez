@@ -87,7 +87,10 @@
 #include <linux/string.h>
 #include <linux/mm.h>
 #include <linux/socket.h>
+<<<<<<< HEAD
 #include <linux/skbuff.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/sockios.h>
 #include <linux/errno.h>
 #include <linux/interrupt.h>
@@ -4115,6 +4118,7 @@ int netif_rx_ni(struct sk_buff *skb)
 }
 EXPORT_SYMBOL(netif_rx_ni);
 
+<<<<<<< HEAD
 static int netif_rx_list_internal(struct list_head *head)
 {
 	int ret = 0;
@@ -4172,6 +4176,8 @@ int netif_rx_list_ni(struct list_head *head)
 }
 EXPORT_SYMBOL(netif_rx_list_ni);
 
+=======
+>>>>>>> v4.14.187
 static __latent_entropy void net_tx_action(struct softirq_action *h)
 {
 	struct softnet_data *sd = this_cpu_ptr(&softnet_data);
@@ -4398,8 +4404,12 @@ static inline int nf_ingress(struct sk_buff *skb, struct packet_type **pt_prev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __netif_receive_skb_core(struct sk_buff *skb, bool pfmemalloc,
 				    struct packet_type **ppt_prev)
+=======
+static int __netif_receive_skb_core(struct sk_buff *skb, bool pfmemalloc)
+>>>>>>> v4.14.187
 {
 	struct packet_type *ptype, *pt_prev;
 	rx_handler_func_t *rx_handler;
@@ -4529,7 +4539,12 @@ skip_classify:
 	if (pt_prev) {
 		if (unlikely(skb_orphan_frags_rx(skb, GFP_ATOMIC)))
 			goto drop;
+<<<<<<< HEAD
 		*ppt_prev = pt_prev;
+=======
+		else
+			ret = pt_prev->func(skb, skb->dev, pt_prev, orig_dev);
+>>>>>>> v4.14.187
 	} else {
 drop:
 		if (!deliver_exact)
@@ -4547,6 +4562,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int __netif_receive_skb_one_core(struct sk_buff *skb, bool pfmemalloc)
 {
 	struct net_device *orig_dev = skb->dev;
@@ -4647,6 +4663,8 @@ static void __netif_receive_skb_list_core(struct list_head *head, bool pfmemallo
 	__netif_receive_skb_list_ptype(&sublist, pt_curr, od_curr);
 }
 
+=======
+>>>>>>> v4.14.187
 static int __netif_receive_skb(struct sk_buff *skb)
 {
 	int ret;
@@ -4664,14 +4682,22 @@ static int __netif_receive_skb(struct sk_buff *skb)
 		 * context down to all allocation sites.
 		 */
 		noreclaim_flag = memalloc_noreclaim_save();
+<<<<<<< HEAD
 		ret = __netif_receive_skb_one_core(skb, true);
 		memalloc_noreclaim_restore(noreclaim_flag);
 	} else
 		ret = __netif_receive_skb_one_core(skb, false);
+=======
+		ret = __netif_receive_skb_core(skb, true);
+		memalloc_noreclaim_restore(noreclaim_flag);
+	} else
+		ret = __netif_receive_skb_core(skb, false);
+>>>>>>> v4.14.187
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static void __netif_receive_skb_list(struct list_head *head)
 {
 	unsigned long noreclaim_flag = 0;
@@ -4702,6 +4728,8 @@ static void __netif_receive_skb_list(struct list_head *head)
 		memalloc_noreclaim_restore(noreclaim_flag);
 }
 
+=======
+>>>>>>> v4.14.187
 static int generic_xdp_install(struct net_device *dev, struct netdev_xdp *xdp)
 {
 	struct bpf_prog *old = rtnl_dereference(dev->xdp_prog);
@@ -4775,6 +4803,7 @@ static int netif_receive_skb_internal(struct sk_buff *skb)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void netif_receive_skb_list_internal(struct list_head *head)
 {
 	struct bpf_prog *xdp_prog = NULL;
@@ -4824,6 +4853,8 @@ static void netif_receive_skb_list_internal(struct list_head *head)
 	rcu_read_unlock();
 }
 
+=======
+>>>>>>> v4.14.187
 /**
  *	netif_receive_skb - process receive buffer from network
  *	@skb: buffer to process
@@ -4847,6 +4878,7 @@ int netif_receive_skb(struct sk_buff *skb)
 }
 EXPORT_SYMBOL(netif_receive_skb);
 
+<<<<<<< HEAD
 /**
  *	netif_receive_skb_list - process many receive buffers from network
  *	@head: list of skbs to process.
@@ -4871,6 +4903,8 @@ void netif_receive_skb_list(struct list_head *head)
 }
 EXPORT_SYMBOL(netif_receive_skb_list);
 
+=======
+>>>>>>> v4.14.187
 DEFINE_PER_CPU(struct work_struct, flush_works);
 
 /* Network device is going away, flush any packets still pending */
@@ -4960,6 +4994,7 @@ out:
  */
 void napi_gro_flush(struct napi_struct *napi, bool flush_old)
 {
+<<<<<<< HEAD
 	struct sk_buff *skb, *p;
 
 	list_for_each_entry_safe_reverse(skb, p, &napi->gro_list, list) {
@@ -4969,16 +5004,46 @@ void napi_gro_flush(struct napi_struct *napi, bool flush_old)
 		napi_gro_complete(skb);
 		napi->gro_count--;
 	}
+=======
+	struct sk_buff *skb, *prev = NULL;
+
+	/* scan list and build reverse chain */
+	for (skb = napi->gro_list; skb != NULL; skb = skb->next) {
+		skb->prev = prev;
+		prev = skb;
+	}
+
+	for (skb = prev; skb; skb = prev) {
+		skb->next = NULL;
+
+		if (flush_old && NAPI_GRO_CB(skb)->age == jiffies)
+			return;
+
+		prev = skb->prev;
+		napi_gro_complete(skb);
+		napi->gro_count--;
+	}
+
+	napi->gro_list = NULL;
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL(napi_gro_flush);
 
 static void gro_list_prepare(struct napi_struct *napi, struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	unsigned int maclen = skb->dev->hard_header_len;
 	u32 hash = skb_get_hash_raw(skb);
 	struct sk_buff *p;
 
 	list_for_each_entry(p, &napi->gro_list, list) {
+=======
+	struct sk_buff *p;
+	unsigned int maclen = skb->dev->hard_header_len;
+	u32 hash = skb_get_hash_raw(skb);
+
+	for (p = napi->gro_list; p; p = p->next) {
+>>>>>>> v4.14.187
 		unsigned long diffs;
 
 		NAPI_GRO_CB(p)->flush = 0;
@@ -5044,12 +5109,21 @@ static void gro_pull_from_frag0(struct sk_buff *skb, int grow)
 
 static enum gro_result dev_gro_receive(struct napi_struct *napi, struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	struct list_head *head = &offload_base;
 	struct packet_offload *ptype;
 	__be16 type = skb->protocol;
 	struct sk_buff *pp = NULL;
 	enum gro_result ret;
 	int same_flow;
+=======
+	struct sk_buff **pp = NULL;
+	struct packet_offload *ptype;
+	__be16 type = skb->protocol;
+	struct list_head *head = &offload_base;
+	int same_flow;
+	enum gro_result ret;
+>>>>>>> v4.14.187
 	int grow;
 
 	if (netif_elide_gro(skb->dev))
@@ -5088,6 +5162,10 @@ static enum gro_result dev_gro_receive(struct napi_struct *napi, struct sk_buff 
 			NAPI_GRO_CB(skb)->csum_cnt = 0;
 			NAPI_GRO_CB(skb)->csum_valid = 0;
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> v4.14.187
 		pp = ptype->callbacks.gro_receive(&napi->gro_list, skb);
 		break;
 	}
@@ -5105,8 +5183,16 @@ static enum gro_result dev_gro_receive(struct napi_struct *napi, struct sk_buff 
 	ret = NAPI_GRO_CB(skb)->free ? GRO_MERGED_FREE : GRO_MERGED;
 
 	if (pp) {
+<<<<<<< HEAD
 		list_del_init(&pp->list);
 		napi_gro_complete(pp);
+=======
+		struct sk_buff *nskb = *pp;
+
+		*pp = nskb->next;
+		nskb->next = NULL;
+		napi_gro_complete(nskb);
+>>>>>>> v4.14.187
 		napi->gro_count--;
 	}
 
@@ -5117,10 +5203,22 @@ static enum gro_result dev_gro_receive(struct napi_struct *napi, struct sk_buff 
 		goto normal;
 
 	if (unlikely(napi->gro_count >= MAX_GRO_SKBS)) {
+<<<<<<< HEAD
 		struct sk_buff *nskb;
 
 		nskb = list_last_entry(&napi->gro_list, struct sk_buff, list);
 		list_del(&nskb->list);
+=======
+		struct sk_buff *nskb = napi->gro_list;
+
+		/* locate the end of the list to select the 'oldest' flow */
+		while (nskb->next) {
+			pp = &nskb->next;
+			nskb = *pp;
+		}
+		*pp = NULL;
+		nskb->next = NULL;
+>>>>>>> v4.14.187
 		napi_gro_complete(nskb);
 	} else {
 		napi->gro_count++;
@@ -5129,7 +5227,12 @@ static enum gro_result dev_gro_receive(struct napi_struct *napi, struct sk_buff 
 	NAPI_GRO_CB(skb)->age = jiffies;
 	NAPI_GRO_CB(skb)->last = skb;
 	skb_shinfo(skb)->gso_size = skb_gro_len(skb);
+<<<<<<< HEAD
 	list_add(&skb->list, &napi->gro_list);
+=======
+	skb->next = napi->gro_list;
+	napi->gro_list = skb;
+>>>>>>> v4.14.187
 	ret = GRO_HELD;
 
 pull:
@@ -5417,10 +5520,13 @@ static int process_backlog(struct napi_struct *napi, int quota)
 	bool again = true;
 	int work = 0;
 
+<<<<<<< HEAD
 #if defined(NET_RX_BATCH_SOLUTION)
 	INIT_LIST_HEAD(&sd->skb_rx_list);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	/* Check if we have pending ipi, its better to send them now,
 	 * not waiting net_rx_action() end.
 	 */
@@ -5433,6 +5539,7 @@ static int process_backlog(struct napi_struct *napi, int quota)
 	while (again) {
 		struct sk_buff *skb;
 
+<<<<<<< HEAD
 #if defined(NET_RX_BATCH_SOLUTION)
 		while ((skb = __skb_dequeue(&sd->process_queue))) {
 			input_queue_head_incr(sd);
@@ -5453,6 +5560,8 @@ static int process_backlog(struct napi_struct *napi, int quota)
 			INIT_LIST_HEAD(&sd->skb_rx_list);
 		}
 #else
+=======
+>>>>>>> v4.14.187
 		while ((skb = __skb_dequeue(&sd->process_queue))) {
 			rcu_read_lock();
 			__netif_receive_skb(skb);
@@ -5462,7 +5571,11 @@ static int process_backlog(struct napi_struct *napi, int quota)
 				return work;
 
 		}
+<<<<<<< HEAD
 #endif
+=======
+
+>>>>>>> v4.14.187
 		local_irq_disable();
 		rps_lock(sd);
 		if (skb_queue_empty(&sd->input_pkt_queue)) {
@@ -5563,7 +5676,11 @@ bool napi_complete_done(struct napi_struct *n, int work_done)
 				 NAPIF_STATE_IN_BUSY_POLL)))
 		return false;
 
+<<<<<<< HEAD
 	if (!list_empty(&n->gro_list) && n->gro_list.next && n->gro_list.prev) {
+=======
+	if (n->gro_list) {
+>>>>>>> v4.14.187
 		unsigned long timeout = 0;
 
 		if (work_done)
@@ -5775,8 +5892,12 @@ static enum hrtimer_restart napi_watchdog(struct hrtimer *timer)
 	/* Note : we use a relaxed variant of napi_schedule_prep() not setting
 	 * NAPI_STATE_MISSED, since we do not react to a device IRQ.
 	 */
+<<<<<<< HEAD
 	if (!list_empty(&napi->gro_list) && napi->gro_list.next &&
 	    napi->gro_list.prev &&  !napi_disable_pending(napi) &&
+=======
+	if (napi->gro_list && !napi_disable_pending(napi) &&
+>>>>>>> v4.14.187
 	    !test_and_set_bit(NAPI_STATE_SCHED, &napi->state))
 		__napi_schedule_irqoff(napi);
 
@@ -5790,7 +5911,11 @@ void netif_napi_add(struct net_device *dev, struct napi_struct *napi,
 	hrtimer_init(&napi->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_PINNED);
 	napi->timer.function = napi_watchdog;
 	napi->gro_count = 0;
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&napi->gro_list);
+=======
+	napi->gro_list = NULL;
+>>>>>>> v4.14.187
 	napi->skb = NULL;
 	napi->poll = poll;
 	if (weight > NAPI_POLL_WEIGHT)
@@ -5823,6 +5948,7 @@ void napi_disable(struct napi_struct *n)
 }
 EXPORT_SYMBOL(napi_disable);
 
+<<<<<<< HEAD
 static void gro_list_free(struct list_head *head)
 {
 	struct sk_buff *skb, *p;
@@ -5831,6 +5957,8 @@ static void gro_list_free(struct list_head *head)
 		kfree_skb(skb);
 }
 
+=======
+>>>>>>> v4.14.187
 /* Must be called in process context */
 void netif_napi_del(struct napi_struct *napi)
 {
@@ -5839,8 +5967,14 @@ void netif_napi_del(struct napi_struct *napi)
 		synchronize_net();
 	list_del_init(&napi->dev_list);
 	napi_free_frags(napi);
+<<<<<<< HEAD
 	gro_list_free(&napi->gro_list);
 	INIT_LIST_HEAD(&napi->gro_list);
+=======
+
+	kfree_skb_list(napi->gro_list);
+	napi->gro_list = NULL;
+>>>>>>> v4.14.187
 	napi->gro_count = 0;
 }
 EXPORT_SYMBOL(netif_napi_del);
@@ -5882,7 +6016,12 @@ static int napi_poll(struct napi_struct *n, struct list_head *repoll)
 		napi_complete(n);
 		goto out_unlock;
 	}
+<<<<<<< HEAD
 	if (!list_empty(&n->gro_list) && n->gro_list.next && n->gro_list.prev) {
+=======
+
+	if (n->gro_list) {
+>>>>>>> v4.14.187
 		/* flush too old packets
 		 * If HZ < 1000, flush all packets.
 		 */

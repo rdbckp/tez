@@ -162,8 +162,12 @@ static int store_utf8(u16 c, char *p)
  *	The entire selection process is managed under the console_lock. It's
  *	 a lot under the lock but its hardly a performance path
  */
+<<<<<<< HEAD
 static int __set_selection(const struct tiocl_selection __user *sel,
 	struct tty_struct *tty)
+=======
+static int __set_selection(const struct tiocl_selection __user *sel, struct tty_struct *tty)
+>>>>>>> v4.14.187
 {
 	struct vc_data *vc = vc_cons[fg_console].d;
 	int sel_mode, new_sel_start, new_sel_end, spc;
@@ -348,6 +352,7 @@ int set_selection(const struct tiocl_selection __user *v, struct tty_struct *tty
 	return ret;
 }
 
+<<<<<<< HEAD
 int set_selection(const struct tiocl_selection __user *v,
 	struct tty_struct *tty)
 {
@@ -360,6 +365,8 @@ int set_selection(const struct tiocl_selection __user *v,
 	return ret;
 }
 
+=======
+>>>>>>> v4.14.187
 /* Insert the contents of the selection buffer into the
  * queue of the tty associated with the current console.
  * Invoked by ioctl().

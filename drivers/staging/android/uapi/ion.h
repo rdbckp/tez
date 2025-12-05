@@ -38,16 +38,22 @@ enum ion_heap_type {
 	ION_HEAP_TYPE_CARVEOUT,
 	ION_HEAP_TYPE_CHUNK,
 	ION_HEAP_TYPE_DMA,
+<<<<<<< HEAD
 	ION_HEAP_TYPE_CUSTOM2,
+=======
+>>>>>>> v4.14.187
 	ION_HEAP_TYPE_CUSTOM, /*
 			       * must be last so device specific heaps always
 			       * are at the end of this enum
 			       */
 };
 
+<<<<<<< HEAD
 /* Samsung specific ION heap types */
 #define ION_HEAP_TYPE_RBIN		ION_HEAP_TYPE_CUSTOM2
 #define ION_HEAP_RBIN_MASK		BIT(ION_HEAP_TYPE_RBIN)
+=======
+>>>>>>> v4.14.187
 #define ION_NUM_HEAP_IDS		(sizeof(unsigned int) * 8)
 
 /**
@@ -61,6 +67,7 @@ enum ion_heap_type {
  */
 #define ION_FLAG_CACHED 1
 
+<<<<<<< HEAD
 /*
  * mappings of this buffer will created at mmap time, if this is set
  * caches must be managed manually
@@ -69,6 +76,8 @@ enum ion_heap_type {
 
 #define ION_FLAG_FREE_WITHOUT_DEFER (4)
 
+=======
+>>>>>>> v4.14.187
 /**
  * DOC: Ion Userspace API
  *
@@ -80,7 +89,10 @@ enum ion_heap_type {
 /**
  * struct ion_allocation_data - metadata passed from userspace for allocations
  * @len:		size of the allocation
+<<<<<<< HEAD
  * @align:		required alignment of the allocation
+=======
+>>>>>>> v4.14.187
  * @heap_id_mask:	mask of heap ids to allocate from
  * @flags:		flags passed to heap
  * @handle:		pointer that will be populated with a cookie to use to
@@ -89,6 +101,7 @@ enum ion_heap_type {
  * Provided by userspace as an argument to the ioctl
  */
 struct ion_allocation_data {
+<<<<<<< HEAD
 	size_t len;
 	size_t align;
 	unsigned int heap_id_mask;
@@ -130,6 +143,13 @@ struct ion_handle_data {
 struct ion_custom_data {
 	unsigned int cmd;
 	unsigned long arg;
+=======
+	__u64 len;
+	__u32 heap_id_mask;
+	__u32 flags;
+	__u32 fd;
+	__u32 unused;
+>>>>>>> v4.14.187
 };
 
 #define MAX_HEAP_NAME			32
@@ -174,6 +194,7 @@ struct ion_heap_query {
 				      struct ion_allocation_data)
 
 /**
+<<<<<<< HEAD
  * DOC: ION_IOC_FREE - free memory
  *
  * Takes an ion_handle_data struct and frees the handle.
@@ -229,6 +250,8 @@ struct ion_heap_query {
 #define ION_IOC_CUSTOM		_IOWR(ION_IOC_MAGIC, 6, struct ion_custom_data)
 
 /**
+=======
+>>>>>>> v4.14.187
  * DOC: ION_IOC_HEAP_QUERY - information about available heaps
  *
  * Takes an ion_heap_query structure and populates information about

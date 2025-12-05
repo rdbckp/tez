@@ -621,6 +621,7 @@ static size_t ipmmu_unmap(struct iommu_domain *io_domain, unsigned long iova,
 	return domain->iop->unmap(domain->iop, iova, size);
 }
 
+<<<<<<< HEAD
 static void ipmmu_iotlb_sync(struct iommu_domain *io_domain)
 {
 	struct ipmmu_vmsa_domain *domain = to_vmsa_domain(io_domain);
@@ -629,6 +630,8 @@ static void ipmmu_iotlb_sync(struct iommu_domain *io_domain)
 		ipmmu_tlb_flush_all(domain);
 }
 
+=======
+>>>>>>> v4.14.187
 static phys_addr_t ipmmu_iova_to_phys(struct iommu_domain *io_domain,
 				      dma_addr_t iova)
 {
@@ -886,8 +889,11 @@ static const struct iommu_ops ipmmu_ops = {
 	.detach_dev = ipmmu_detach_device,
 	.map = ipmmu_map,
 	.unmap = ipmmu_unmap,
+<<<<<<< HEAD
 	.flush_iotlb_all = ipmmu_iotlb_sync,
 	.iotlb_sync = ipmmu_iotlb_sync,
+=======
+>>>>>>> v4.14.187
 	.map_sg = default_iommu_map_sg,
 	.iova_to_phys = ipmmu_iova_to_phys,
 	.add_device = ipmmu_add_device_dma,

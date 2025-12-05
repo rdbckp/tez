@@ -19,7 +19,10 @@
 #include <linux/sched_clock.h>
 #include <linux/seqlock.h>
 #include <linux/bitops.h>
+<<<<<<< HEAD
 #include <mt-plat/mtk_sys_timer.h>
+=======
+>>>>>>> v4.14.187
 
 /**
  * struct clock_read_data - data required to read from sched_clock()
@@ -114,6 +117,7 @@ unsigned long long notrace sched_clock(void)
 }
 
 /*
+<<<<<<< HEAD
  * alternative sched_clock to get arch_timer cycle as well
  */
 unsigned long long notrace sched_clock_get_cyc(unsigned long long *cyc_ret)
@@ -140,6 +144,8 @@ unsigned long long notrace sched_clock_get_cyc(unsigned long long *cyc_ret)
 }
 
 /*
+=======
+>>>>>>> v4.14.187
  * Updating the data required to read the clock.
  *
  * sched_clock() will never observe mis-matched data even if called from
@@ -189,11 +195,14 @@ static enum hrtimer_restart sched_clock_poll(struct hrtimer *hrt)
 	update_sched_clock();
 	hrtimer_forward_now(hrt, cd.wrap_kt);
 
+<<<<<<< HEAD
 	/* snchronize new sched_clock base to co-processors */
 #ifndef CONFIG_FPGA_EARLY_PORTING
 	sys_timer_timesync_sync_base(SYS_TIMER_TIMESYNC_FLAG_ASYNC);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	return HRTIMER_RESTART;
 }
 
@@ -307,7 +316,11 @@ static u64 notrace suspended_sched_clock_read(void)
 	return cd.read_data[seq & 1].epoch_cyc;
 }
 
+<<<<<<< HEAD
 int sched_clock_suspend(void)
+=======
+static int sched_clock_suspend(void)
+>>>>>>> v4.14.187
 {
 	struct clock_read_data *rd = &cd.read_data[0];
 
@@ -315,6 +328,7 @@ int sched_clock_suspend(void)
 	hrtimer_cancel(&sched_clock_timer);
 	rd->read_sched_clock = suspended_sched_clock_read;
 
+<<<<<<< HEAD
 	/* snchronize new sched_clock base to co-processors */
 #ifndef CONFIG_FPGA_EARLY_PORTING
 	sys_timer_timesync_sync_base(SYS_TIMER_TIMESYNC_FLAG_SYNC |
@@ -325,18 +339,27 @@ int sched_clock_suspend(void)
 }
 
 void sched_clock_resume(void)
+=======
+	return 0;
+}
+
+static void sched_clock_resume(void)
+>>>>>>> v4.14.187
 {
 	struct clock_read_data *rd = &cd.read_data[0];
 
 	rd->epoch_cyc = cd.actual_read_sched_clock();
 	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL);
 	rd->read_sched_clock = cd.actual_read_sched_clock;
+<<<<<<< HEAD
 
 	/* snchronize new sched_clock base to co-processors */
 #ifndef CONFIG_FPGA_EARLY_PORTING
 	sys_timer_timesync_sync_base(SYS_TIMER_TIMESYNC_FLAG_SYNC |
 		SYS_TIMER_TIMESYNC_FLAG_UNFREEZE);
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 static struct syscore_ops sched_clock_ops = {

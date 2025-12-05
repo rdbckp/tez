@@ -38,7 +38,10 @@ config SCSI_UFSHCD
 	select PM_DEVFREQ
 	select DEVFREQ_GOV_SIMPLE_ONDEMAND
 	select NLS
+<<<<<<< HEAD
 	select RPMB
+=======
+>>>>>>> v4.14.187
 	---help---
 	This selects the support for UFS devices in Linux, say Y and make
 	  sure that you know the name of your UFS host adapter (the card
@@ -101,6 +104,7 @@ config SCSI_UFS_QCOM
 
 	  Select this if you have UFS controller on QCOM chipset.
 	  If unsure, say N.
+<<<<<<< HEAD
 
 config MTK_UFS_SUPPORT
 	bool "MTK specific hooks to UFS controller platform driver"
@@ -173,3 +177,5 @@ config SCSI_UFS_CRYPTO
 	  Enabling this makes it possible for the kernel to use the crypto
 	  capabilities of the UFS device (if present) to perform crypto
 	  operations on data being transferred to/from the device.
+=======
+>>>>>>> v4.14.187

@@ -230,7 +230,11 @@ int drm_mode_gamma_set_ioctl(struct drm_device *dev,
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	crtc = drm_crtc_find(dev, file_priv, crtc_lut->crtc_id);
+=======
+	crtc = drm_crtc_find(dev, crtc_lut->crtc_id);
+>>>>>>> v4.14.187
 	if (!crtc)
 		return -ENOENT;
 
@@ -308,7 +312,11 @@ int drm_mode_gamma_get_ioctl(struct drm_device *dev,
 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	crtc = drm_crtc_find(dev, file_priv, crtc_lut->crtc_id);
+=======
+	crtc = drm_crtc_find(dev, crtc_lut->crtc_id);
+>>>>>>> v4.14.187
 	if (!crtc)
 		return -ENOENT;
 

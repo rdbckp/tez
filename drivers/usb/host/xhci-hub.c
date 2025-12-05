@@ -27,12 +27,15 @@
 #include "xhci.h"
 #include "xhci-trace.h"
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_USB_XHCI_MTK)
 #include "xhci-mtk.h"
 #endif
 
 #include <linux/iopoll.h>
 
+=======
+>>>>>>> v4.14.187
 #define	PORT_WAKE_BITS	(PORT_WKOC_E | PORT_WKDISC_E | PORT_WKCONN_E)
 #define	PORT_RWC_BITS	(PORT_CSC | PORT_PEC | PORT_WRC | PORT_OCC | \
 			 PORT_RC | PORT_PLC | PORT_PE)
@@ -1124,7 +1127,11 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			}
 			port_li = readl(port_array[wIndex] + PORTLI);
 			status = xhci_get_ext_port_status(temp, port_li);
+<<<<<<< HEAD
 			put_unaligned_le32(cpu_to_le32(status), &buf[4]);
+=======
+			put_unaligned_le32(status, &buf[4]);
+>>>>>>> v4.14.187
 		}
 		break;
 	case SetPortFeature:
@@ -1161,7 +1168,11 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			}
 			/* In spec software should not attempt to suspend
 			 * a port unless the port reports that it is in the
+<<<<<<< HEAD
 			 * enabled (PED = ????PLS < ???? state.
+=======
+			 * enabled (PED = ‘1’,PLS < ‘3’) state.
+>>>>>>> v4.14.187
 			 */
 			temp = readl(port_array[wIndex]);
 			if ((temp & PORT_PE) == 0 || (temp & PORT_RESET)
@@ -1297,6 +1308,7 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 		case USB_PORT_FEAT_RESET:
 			temp = (temp | PORT_RESET);
 			writel(temp, port_array[wIndex]);
+<<<<<<< HEAD
 			temp = readl(port_array[wIndex]);
 			xhci_info(xhci, "port %d reset status = 0x%x\n",
 								wIndex, temp);
@@ -1316,6 +1328,11 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 				xhci_mtk_set_port_mode(hcd, port_array, wIndex);
 				#endif
 			}
+=======
+
+			temp = readl(port_array[wIndex]);
+			xhci_dbg(xhci, "set port reset, actual port %d status  = 0x%x\n", wIndex, temp);
+>>>>>>> v4.14.187
 			break;
 		case USB_PORT_FEAT_REMOTE_WAKE_MASK:
 			xhci_set_remote_wake_mask(xhci, port_array,
@@ -1611,6 +1628,7 @@ int xhci_bus_suspend(struct usb_hcd *hcd)
 	hcd->state = HC_STATE_SUSPENDED;
 	bus_state->next_statechange = jiffies + msecs_to_jiffies(10);
 	spin_unlock_irqrestore(&xhci->lock, flags);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_USB_XHCI_MTK_SUSPEND)
 	if (hcd->self.root_hub->do_remote_wakeup == 1) {
 		struct xhci_hcd_mtk *mtk = hcd_to_mtk(hcd);
@@ -1620,6 +1638,8 @@ int xhci_bus_suspend(struct usb_hcd *hcd)
 		mtk_xhci_wakelock_unlock(mtk);
 	}
 #endif
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -1720,6 +1740,7 @@ int xhci_bus_resume(struct usb_hcd *hcd)
 		portsc &= ~(PORT_RWC_BITS | PORT_CEC | PORT_WAKE_BITS);
 		writel(portsc, port_array[port_index]);
 	}
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_USB_XHCI_MTK_SUSPEND)
 	if (hcd->self.root_hub->do_remote_wakeup == 1) {
 		struct xhci_hcd_mtk *mtk = hcd_to_mtk(hcd);
@@ -1729,6 +1750,9 @@ int xhci_bus_resume(struct usb_hcd *hcd)
 		mtk_xhci_wakelock_lock(mtk);
 	}
 #endif
+=======
+
+>>>>>>> v4.14.187
 	/* USB2 specific resume signaling delay and U0 link state transition */
 	if (hcd->speed < HCD_USB3) {
 		if (bus_state->bus_suspended) {

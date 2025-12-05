@@ -15,9 +15,12 @@
 #include <linux/cgroupstats.h>
 
 #include <trace/events/cgroup.h>
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 #include <mt-plat/turbo_common.h>
 #endif
+=======
+>>>>>>> v4.14.187
 
 /*
  * pidlists linger the following amount before being destroyed.  The goal
@@ -385,7 +388,10 @@ static int pidlist_array_load(struct cgroup *cgrp, enum cgroup_filetype type,
 	while ((tsk = css_task_iter_next(&it))) {
 		if (unlikely(n == length))
 			break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> v4.14.187
 		/* get tgid or pid for procs or tasks file respectively */
 		if (type == CGROUP_FILE_PROCS)
 			pid = task_tgid_vnr(tsk);
@@ -546,18 +552,25 @@ static ssize_t __cgroup1_procs_write(struct kernfs_open_file *of,
 	tcred = get_task_cred(task);
 	if (!uid_eq(cred->euid, GLOBAL_ROOT_UID) &&
 	    !uid_eq(cred->euid, tcred->uid) &&
+<<<<<<< HEAD
 	    !uid_eq(cred->euid, tcred->suid) &&
 	    !ns_capable(tcred->user_ns, CAP_SYS_NICE))
+=======
+	    !uid_eq(cred->euid, tcred->suid))
+>>>>>>> v4.14.187
 		ret = -EACCES;
 	put_cred(tcred);
 	if (ret)
 		goto out_finish;
 
 	ret = cgroup_attach_task(cgrp, task, threadgroup);
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_TASK_TURBO
 	if (!ret)
 		cgroup_set_turbo_task(task);
 #endif
+=======
+>>>>>>> v4.14.187
 
 out_finish:
 	cgroup_procs_write_finish(task);

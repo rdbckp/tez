@@ -272,13 +272,19 @@ struct trace_event_call {
 #ifdef CONFIG_PERF_EVENTS
 	int				perf_refcount;
 	struct hlist_head __percpu	*perf_events;
+<<<<<<< HEAD
 	struct bpf_prog_array __rcu	*prog_array;
+=======
+	struct bpf_prog			*prog;
+	struct perf_event		*bpf_prog_owner;
+>>>>>>> v4.14.187
 
 	int	(*perf_perm)(struct trace_event_call *,
 			     struct perf_event *);
 #endif
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_PERF_EVENTS
 static inline bool bpf_prog_array_valid(struct trace_event_call *call)
 {
@@ -303,6 +309,8 @@ static inline bool bpf_prog_array_valid(struct trace_event_call *call)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static inline const char *
 trace_event_name(struct trace_event_call *call)
 {
@@ -459,6 +467,7 @@ trace_trigger_soft_disabled(struct trace_event_file *file)
 }
 
 #ifdef CONFIG_BPF_EVENTS
+<<<<<<< HEAD
 unsigned int trace_call_bpf(struct trace_event_call *call, void *ctx);
 int perf_event_attach_bpf_prog(struct perf_event *event, struct bpf_prog *prog);
 void perf_event_detach_bpf_prog(struct perf_event *event);
@@ -476,6 +485,14 @@ perf_event_attach_bpf_prog(struct perf_event *event, struct bpf_prog *prog)
 
 static inline void perf_event_detach_bpf_prog(struct perf_event *event) { }
 
+=======
+unsigned int trace_call_bpf(struct bpf_prog *prog, void *ctx);
+#else
+static inline unsigned int trace_call_bpf(struct bpf_prog *prog, void *ctx)
+{
+	return 1;
+}
+>>>>>>> v4.14.187
 #endif
 
 enum {
@@ -510,7 +527,11 @@ do {									\
 	__trace_printk_check_format(fmt, ##args);			\
 	tracing_record_cmdline(current);				\
 	if (__builtin_constant_p(fmt)) {				\
+<<<<<<< HEAD
 		static const char *trace_printk_fmt __used		\
+=======
+		static const char *trace_printk_fmt			\
+>>>>>>> v4.14.187
 		  __attribute__((section("__trace_printk_fmt"))) =	\
 			__builtin_constant_p(fmt) ? fmt : NULL;		\
 									\
@@ -546,7 +567,10 @@ perf_trace_buf_submit(void *raw_data, int size, int rctx, u16 type,
 {
 	perf_tp_event(type, count, raw_data, size, regs, head, rctx, task, event);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> v4.14.187
 #endif
 
 #endif /* _LINUX_TRACE_EVENT_H */

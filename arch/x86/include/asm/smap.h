@@ -58,6 +58,7 @@ static __always_inline void stac(void)
 	alternative("", __stringify(__ASM_STAC), X86_FEATURE_SMAP);
 }
 
+<<<<<<< HEAD
 static __always_inline unsigned long smap_save(void)
 {
 	unsigned long flags;
@@ -75,6 +76,8 @@ static __always_inline void smap_restore(unsigned long flags)
 		      : : "g" (flags) : "memory", "cc");
 }
 
+=======
+>>>>>>> v4.14.187
 /* These macros can be used in asm() statements */
 #define ASM_CLAC \
 	ALTERNATIVE("", __stringify(__ASM_CLAC), X86_FEATURE_SMAP)
@@ -86,9 +89,12 @@ static __always_inline void smap_restore(unsigned long flags)
 static inline void clac(void) { }
 static inline void stac(void) { }
 
+<<<<<<< HEAD
 static inline unsigned long smap_save(void) { return 0; }
 static inline void smap_restore(unsigned long flags) { }
 
+=======
+>>>>>>> v4.14.187
 #define ASM_CLAC
 #define ASM_STAC
 

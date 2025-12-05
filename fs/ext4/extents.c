@@ -446,6 +446,7 @@ static int ext4_valid_extent_entries(struct inode *inode,
 	return 1;
 }
 
+<<<<<<< HEAD
 /* for debugging if ext4_extent is not valid */
 static void
 ext4_ext_show_eh(struct inode *inode, struct ext4_extent_header *eh)
@@ -491,6 +492,11 @@ ext4_ext_show_eh(struct inode *inode, struct ext4_extent_header *eh)
 static int __ext4_ext_check(const char *function, unsigned int line,
 			    struct inode *inode, struct ext4_extent_header *eh,
 			    int depth, ext4_fsblk_t pblk, struct buffer_head *bh)
+=======
+static int __ext4_ext_check(const char *function, unsigned int line,
+			    struct inode *inode, struct ext4_extent_header *eh,
+			    int depth, ext4_fsblk_t pblk)
+>>>>>>> v4.14.187
 {
 	const char *error_msg;
 	int max = 0, err = -EFSCORRUPTED;
@@ -534,6 +540,7 @@ static int __ext4_ext_check(const char *function, unsigned int line,
 	return 0;
 
 corrupted:
+<<<<<<< HEAD
 	if (bh) {
 		printk(KERN_ERR "Print invalid extent bh: %s\n", error_msg);
 		print_bh(inode->i_sb, bh, 0, EXT4_BLOCK_SIZE(inode->i_sb));
@@ -541,6 +548,8 @@ corrupted:
 		printk(KERN_ERR "Print invalid extent entries\n");
 		ext4_ext_show_eh(inode, eh);
 	}
+=======
+>>>>>>> v4.14.187
 	ext4_error_inode(inode, function, line, 0,
 			 "pblk %llu bad header/extent: %s - magic %x, "
 			 "entries %u, max %u(%u), depth %u(%u)",
@@ -552,7 +561,11 @@ corrupted:
 }
 
 #define ext4_ext_check(inode, eh, depth, pblk)			\
+<<<<<<< HEAD
 	__ext4_ext_check(__func__, __LINE__, (inode), (eh), (depth), (pblk), (NULL))
+=======
+	__ext4_ext_check(__func__, __LINE__, (inode), (eh), (depth), (pblk))
+>>>>>>> v4.14.187
 
 int ext4_ext_check_inode(struct inode *inode)
 {
@@ -607,7 +620,11 @@ __read_extent_tree_block(const char *function, unsigned int line,
 	    (inode->i_ino !=
 	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum))) {
 		err = __ext4_ext_check(function, line, inode,
+<<<<<<< HEAD
 				       ext_block_hdr(bh), depth, pblk, bh);
+=======
+				       ext_block_hdr(bh), depth, pblk);
+>>>>>>> v4.14.187
 		if (err)
 			goto errout;
 	}
@@ -3654,7 +3671,11 @@ static int ext4_ext_convert_to_initialized(handle_t *handle,
 		max_zeroout = sbi->s_extent_max_zeroout_kb >>
 			(inode->i_sb->s_blocksize_bits - 10);
 
+<<<<<<< HEAD
 	if (IS_ENCRYPTED(inode))
+=======
+	if (ext4_encrypted_inode(inode))
+>>>>>>> v4.14.187
 		max_zeroout = 0;
 
 	/*
@@ -5000,7 +5021,11 @@ long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
 	 * leave it disabled for encrypted inodes for now.  This is a
 	 * bug we should fix....
 	 */
+<<<<<<< HEAD
 	if (IS_ENCRYPTED(inode) &&
+=======
+	if (ext4_encrypted_inode(inode) &&
+>>>>>>> v4.14.187
 	    (mode & (FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_INSERT_RANGE |
 		     FALLOC_FL_ZERO_RANGE)))
 		return -EOPNOTSUPP;

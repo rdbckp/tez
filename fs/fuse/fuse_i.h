@@ -26,6 +26,7 @@
 #include <linux/xattr.h>
 #include <linux/pid_namespace.h>
 #include <linux/refcount.h>
+<<<<<<< HEAD
 #include <linux/freezer.h>
 
 #ifdef CONFIG_FUSE_SUPPORT_STLOG
@@ -33,6 +34,8 @@
 #else
 #define ST_LOG(fmt, ...)
 #endif
+=======
+>>>>>>> v4.14.187
 
 /** Max number of pages that can be used in a single read request */
 #define FUSE_MAX_PAGES_PER_REQ 32
@@ -124,8 +127,11 @@ enum {
 	FUSE_I_INIT_RDPLUS,
 	/** An operation changing file size is in progress  */
 	FUSE_I_SIZE_UNSTABLE,
+<<<<<<< HEAD
 	/** Can be filled in by open, to use direct I/O on this file. */
 	FUSE_I_ATTR_FORCE_SYNC,
+=======
+>>>>>>> v4.14.187
 };
 
 struct fuse_conn;
@@ -379,9 +385,12 @@ struct fuse_req {
 	/** Inode used in the request or NULL */
 	struct inode *inode;
 
+<<<<<<< HEAD
 	/** Path used for completing d_canonical_path */
 	struct path *canonical_path;
 
+=======
+>>>>>>> v4.14.187
 	/** AIO control block */
 	struct fuse_io_priv *io;
 
@@ -995,6 +1004,7 @@ struct posix_acl;
 struct posix_acl *fuse_get_acl(struct inode *inode, int type);
 int fuse_set_acl(struct inode *inode, struct posix_acl *acl, int type);
 
+<<<<<<< HEAD
 #ifdef CONFIG_FREEZER
 static inline void fuse_freezer_do_not_count(void)
 {
@@ -1039,4 +1049,6 @@ static inline void fuse_freezer_count(void) {}
 	__ret;									\
 })
 
+=======
+>>>>>>> v4.14.187
 #endif /* _FS_FUSE_I_H */

@@ -68,6 +68,7 @@
 
 #include "ufs.h"
 #include "ufshci.h"
+<<<<<<< HEAD
 #include "ufs_quirks.h"
 
 #if defined(CONFIG_UFSFEATURE)
@@ -79,6 +80,8 @@
 
 /* MTK PATCH */
 #include <linux/rpmb.h>
+=======
+>>>>>>> v4.14.187
 
 #define UFSHCD "ufshcd"
 #define UFSHCD_DRIVER_VERSION "0.2"
@@ -110,6 +113,7 @@ struct uic_command {
 	struct completion done;
 };
 
+<<<<<<< HEAD
 enum ufs_tw_state {
 	UFS_TW_OFF_STATE = 0,		/* turbo write disabled state */
 	UFS_TW_ON_STATE	= 1,		/* turbo write enabled state */
@@ -123,6 +127,8 @@ enum ufs_tw_state {
 #define ufshcd_set_tw_on(hba) ((hba)->ufs_tw_state = UFS_TW_ON_STATE)
 #define ufshcd_set_tw_err(hba) ((hba)->ufs_tw_state = UFS_TW_ERR_STATE)
 
+=======
+>>>>>>> v4.14.187
 /* Used to differentiate the power management options */
 enum ufs_pm_op {
 	UFS_RUNTIME_PM,
@@ -190,9 +196,12 @@ struct ufs_pm_lvl_states {
  * @lun: LUN of the command
  * @intr_cmd: Interrupt command (doesn't participate in interrupt aggregation)
  * @issue_time_stamp: time stamp for debug purposes
+<<<<<<< HEAD
  * @crypto_enable: whether or not the request needs inline crypto operations
  * @crypto_key_slot: the key slot to use for inline crypto
  * @data_unit_num: the data unit number for the first block for inline crypto
+=======
+>>>>>>> v4.14.187
  * @req_abort_skip: skip request abort task flag
  */
 struct ufshcd_lrb {
@@ -215,6 +224,7 @@ struct ufshcd_lrb {
 	int task_tag;
 	u8 lun; /* UPIU LUN id field is only 8-bit wide */
 	bool intr_cmd;
+<<<<<<< HEAD
 	bool crypto_enable;
 	u8 crypto_key_slot;
 	u64 data_unit_num;
@@ -231,6 +241,11 @@ struct ufshcd_lrb {
 #if defined(CONFIG_UFSFEATURE) && defined(CONFIG_UFSHPB)
 	int hpb_ctx_id;
 #endif
+=======
+	ktime_t issue_time_stamp;
+
+	bool req_abort_skip;
+>>>>>>> v4.14.187
 };
 
 /**
@@ -267,8 +282,11 @@ struct ufs_desc_size {
 	int interc_desc;
 	int unit_desc;
 	int conf_desc;
+<<<<<<< HEAD
 	int hlth_desc;
 	int str_desc;
+=======
+>>>>>>> v4.14.187
 };
 
 /**
@@ -311,6 +329,7 @@ struct ufs_pwr_mode_info {
 	struct ufs_pa_layer_attr info;
 };
 
+<<<<<<< HEAD
 /* MTK PATCH */
 enum ufs_scsi_dev_cfg {
 	UFS_SCSI_DEV_SLAVE_ALLOC,
@@ -323,6 +342,8 @@ enum ufs_scsi_dev_cfg {
 
 union ufs_crypto_cfg_entry;
 
+=======
+>>>>>>> v4.14.187
 /**
  * struct ufs_hba_variant_ops - variant specific callbacks
  * @name: variant name
@@ -341,8 +362,11 @@ union ufs_crypto_cfg_entry;
  *			to be set.
  * @setup_xfer_req: called before any transfer request is issued
  *                  to set some things
+<<<<<<< HEAD
  * @complete_xfer_req: called after any transfer request is completed
  *                  to release some things
+=======
+>>>>>>> v4.14.187
  * @setup_task_mgmt: called before any task management request is issued
  *                  to set some things
  * @hibern8_notify: called around hibern8 enter/exit
@@ -351,8 +375,11 @@ union ufs_crypto_cfg_entry;
  * @resume: called during host controller PM callback
  * @dbg_register_dump: used to dump controller debug information
  * @phy_initialization: used to initialize phys
+<<<<<<< HEAD
  * @device_reset: called to issue a reset pulse on the UFS device
  * @program_key: program an inline encryption key into a keyslot
+=======
+>>>>>>> v4.14.187
  */
 struct ufs_hba_variant_ops {
 	const char *name;
@@ -381,6 +408,7 @@ struct ufs_hba_variant_ops {
 	int     (*resume)(struct ufs_hba *, enum ufs_pm_op);
 	void	(*dbg_register_dump)(struct ufs_hba *hba);
 	int	(*phy_initialization)(struct ufs_hba *);
+<<<<<<< HEAD
 	void	(*device_reset)(struct ufs_hba *hba);
 
 	/*
@@ -435,6 +463,8 @@ struct ufs_hba_crypto_variant_ops {
 				    struct ufshcd_lrb *lrbp);
 	void *priv;
 	void *crypto_DO_NOT_USE[8];
+=======
+>>>>>>> v4.14.187
 };
 
 /* clock gating state  */
@@ -471,7 +501,10 @@ struct ufs_clk_gating {
 	struct device_attribute enable_attr;
 	bool is_enabled;
 	int active_reqs;
+<<<<<<< HEAD
 	struct workqueue_struct *clk_gating_workq;
+=======
+>>>>>>> v4.14.187
 };
 
 struct ufs_saved_pwr_info {
@@ -521,17 +554,30 @@ struct ufs_init_prefetch {
 	u32 icc_level;
 };
 
+<<<<<<< HEAD
 #define UFS_ERR_REG_HIST_LENGTH 8
 /**
  * struct ufs_err_reg_hist - keeps history of uic errors
+=======
+#define UIC_ERR_REG_HIST_LENGTH 8
+/**
+ * struct ufs_uic_err_reg_hist - keeps history of uic errors
+>>>>>>> v4.14.187
  * @pos: index to indicate cyclic buffer position
  * @reg: cyclic buffer for registers value
  * @tstamp: cyclic buffer for time stamp
  */
+<<<<<<< HEAD
 struct ufs_err_reg_hist {
 	int pos;
 	u32 reg[UFS_ERR_REG_HIST_LENGTH];
 	ktime_t tstamp[UFS_ERR_REG_HIST_LENGTH];
+=======
+struct ufs_uic_err_reg_hist {
+	int pos;
+	u32 reg[UIC_ERR_REG_HIST_LENGTH];
+	ktime_t tstamp[UIC_ERR_REG_HIST_LENGTH];
+>>>>>>> v4.14.187
 };
 
 /**
@@ -545,6 +591,7 @@ struct ufs_err_reg_hist {
  * @nl_err: tracks nl-uic errors
  * @tl_err: tracks tl-uic errors
  * @dme_err: tracks dme errors
+<<<<<<< HEAD
  * @auto_hibern8_err: tracks auto-hibernate errors
  * @fatal_err: tracks fatal errors
  * @linkup_err: tracks link-startup errors
@@ -553,10 +600,13 @@ struct ufs_err_reg_hist {
  * @dev_reset: tracks device reset events
  * @host_reset: tracks host reset events
  * @task_abort: tracks task abort events
+=======
+>>>>>>> v4.14.187
  */
 struct ufs_stats {
 	u32 hibern8_exit_cnt;
 	ktime_t last_hibern8_exit_tstamp;
+<<<<<<< HEAD
 
 	/* uic specific errors */
 	struct ufs_err_reg_hist pa_err;
@@ -708,6 +758,13 @@ enum ufs_crypto_state {
 	UFS_CRYPTO_HW_FDE_ENCRYPTED   = (1 << 1),
 	UFS_CRYPTO_HW_FBE             = (1 << 2),
 	UFS_CRYPTO_HW_FBE_ENCRYPTED   = (1 << 3),
+=======
+	struct ufs_uic_err_reg_hist pa_err;
+	struct ufs_uic_err_reg_hist dl_err;
+	struct ufs_uic_err_reg_hist nl_err;
+	struct ufs_uic_err_reg_hist tl_err;
+	struct ufs_uic_err_reg_hist dme_err;
+>>>>>>> v4.14.187
 };
 
 /**
@@ -721,7 +778,10 @@ enum ufs_crypto_state {
  * @utmrdl_dma_addr: UTMRDL DMA address
  * @host: Scsi_Host instance of the driver
  * @dev: device handle
+<<<<<<< HEAD
  * @sdev_ufs_rpmb: reference to RPMB device W-LU
+=======
+>>>>>>> v4.14.187
  * @lrb: local reference block
  * @lrb_in_use: lrb in use
  * @outstanding_tasks: Bits representing outstanding task requests
@@ -732,7 +792,10 @@ enum ufs_crypto_state {
  * @ufs_version: UFS Version to which controller complies
  * @vops: pointer to variant specific operations
  * @priv: pointer to variant specific private data
+<<<<<<< HEAD
  * @sg_entry_size: size of struct ufshcd_sg_entry (may include variant fields)
+=======
+>>>>>>> v4.14.187
  * @irq: Irq number of the controller
  * @active_uic_cmd: handle of active UIC command
  * @uic_cmd_mutex: mutex for uic command
@@ -766,11 +829,14 @@ enum ufs_crypto_state {
  * @urgent_bkops_lvl: keeps track of urgent bkops level for device
  * @is_urgent_bkops_lvl_checked: keeps track if the urgent bkops level for
  *  device is known or not.
+<<<<<<< HEAD
  * @scsi_block_reqs_cnt: reference counting for scsi block requests
  * @crypto_capabilities: Content of crypto capabilities register (0x100)
  * @crypto_cap_array: Array of crypto capabilities
  * @crypto_cfg_register: Start of the crypto cfg array
  * @ksm: the keyslot manager tied to this hba
+=======
+>>>>>>> v4.14.187
  */
 struct ufs_hba {
 	void __iomem *mmio_base;
@@ -793,6 +859,7 @@ struct ufs_hba {
 	 */
 	struct scsi_device *sdev_ufs_device;
 
+<<<<<<< HEAD
 	/*
 	 * MTK PATCH: RPMB device
 	 */
@@ -802,6 +869,10 @@ struct ufs_hba {
 	enum ufs_dev_pwr_mode curr_dev_pwr_mode;
 	enum uic_link_state uic_link_state;
 	enum ufs_tw_state ufs_tw_state;
+=======
+	enum ufs_dev_pwr_mode curr_dev_pwr_mode;
+	enum uic_link_state uic_link_state;
+>>>>>>> v4.14.187
 	/* Desired UFS power management level during runtime PM */
 	enum ufs_pm_level rpm_lvl;
 	/* Desired UFS power management level during system PM */
@@ -810,9 +881,12 @@ struct ufs_hba {
 	struct device_attribute spm_lvl_attr;
 	int pm_op_in_progress;
 
+<<<<<<< HEAD
 	/* Auto-Hibernate Idle Timer register value */
 	u32 ahit;
 
+=======
+>>>>>>> v4.14.187
 	struct ufshcd_lrb *lrb;
 	unsigned long lrb_in_use;
 
@@ -825,8 +899,11 @@ struct ufs_hba {
 	u32 ufs_version;
 	struct ufs_hba_variant_ops *vops;
 	void *priv;
+<<<<<<< HEAD
 	const struct ufs_hba_crypto_variant_ops *crypto_vops;
 	size_t sg_entry_size;
+=======
+>>>>>>> v4.14.187
 	unsigned int irq;
 	bool is_irq_enabled;
 
@@ -876,6 +953,7 @@ struct ufs_hba {
 	 */
 	#define UFSHCD_QUIRK_PRDT_BYTE_GRAN			UFS_BIT(7)
 
+<<<<<<< HEAD
 	/*
 	 * MTK PATCH
 	 * This quirk needs to be enabled if device requires hw reset
@@ -903,6 +981,8 @@ struct ufs_hba {
 	 */
 	#define UFSHCD_QUIRK_BROKEN_CRYPTO			UFS_BIT(11)
 
+=======
+>>>>>>> v4.14.187
 	unsigned int quirks;	/* Deviations from standard UFSHCI spec. */
 
 	/* Device deviations from standard UFS device spec. */
@@ -921,7 +1001,10 @@ struct ufs_hba {
 	u32 eh_flags;
 	u32 intr_mask;
 	u16 ee_ctrl_mask;
+<<<<<<< HEAD
 	u16 hba_enable_delay_us;
+=======
+>>>>>>> v4.14.187
 	bool is_powered;
 	bool is_init_prefetch;
 	struct ufs_init_prefetch init_prefetch_data;
@@ -929,7 +1012,10 @@ struct ufs_hba {
 	/* Work Queues */
 	struct work_struct eh_work;
 	struct work_struct eeh_work;
+<<<<<<< HEAD
 	struct work_struct rls_work;
+=======
+>>>>>>> v4.14.187
 
 	/* HBA Errors */
 	u32 errors;
@@ -984,11 +1070,14 @@ struct ufs_hba {
 	 * the performance of ongoing read/write operations.
 	 */
 #define UFSHCD_CAP_KEEP_AUTO_BKOPS_ENABLED_EXCEPT_SUSPEND (1 << 5)
+<<<<<<< HEAD
 	/*
 	 * This capability allows the host controller driver to use the
 	 * inline crypto engine, if it is present
 	 */
 #define UFSHCD_CAP_CRYPTO (1 << 7)
+=======
+>>>>>>> v4.14.187
 
 	struct devfreq *devfreq;
 	struct ufs_clk_scaling clk_scaling;
@@ -999,6 +1088,7 @@ struct ufs_hba {
 
 	struct rw_semaphore clk_scaling_lock;
 	struct ufs_desc_size desc_size;
+<<<<<<< HEAD
 
 	/* MTK PATCH */
 	/* record vendor id for vendor-specific configurations */
@@ -1094,6 +1184,10 @@ static inline u8 ufshcd_scsi_to_upiu_lun(unsigned int scsi_lun)
 		return scsi_lun & UFS_UPIU_MAX_UNIT_NUM_ID;
 }
 
+=======
+};
+
+>>>>>>> v4.14.187
 /* Returns true if clocks can be gated. Otherwise false */
 static inline bool ufshcd_is_clkgating_allowed(struct ufs_hba *hba)
 {
@@ -1126,11 +1220,14 @@ return true;
 #endif
 }
 
+<<<<<<< HEAD
 static inline bool ufshcd_is_auto_hibern8_supported(struct ufs_hba *hba)
 {
 	return (hba->capabilities & MASK_AUTO_HIBERN8_SUPPORT);
 }
 
+=======
+>>>>>>> v4.14.187
 #define ufshcd_writel(hba, val, reg)	\
 	writel((val), (hba)->mmio_base + (reg))
 #define ufshcd_readl(hba, reg)	\
@@ -1157,11 +1254,15 @@ int ufshcd_alloc_host(struct device *, struct ufs_hba **);
 void ufshcd_dealloc_host(struct ufs_hba *);
 int ufshcd_init(struct ufs_hba * , void __iomem * , unsigned int);
 void ufshcd_remove(struct ufs_hba *);
+<<<<<<< HEAD
 void ufshcd_delay_us(unsigned long us, unsigned long tolerance);
+=======
+>>>>>>> v4.14.187
 int ufshcd_wait_for_register(struct ufs_hba *hba, u32 reg, u32 mask,
 				u32 val, unsigned long interval_us,
 				unsigned long timeout_ms, bool can_sleep);
 
+<<<<<<< HEAD
 /**
  * MTK PATCH
  * Wrapper function for safely calling variant operations
@@ -1203,6 +1304,8 @@ static inline void ufshcd_vops_abort_handler(struct ufs_hba *hba,
 		hba->vops->abort_handler(hba, tag, file, line);
 }
 
+=======
+>>>>>>> v4.14.187
 static inline void check_upiu_size(void)
 {
 	BUILD_BUG_ON(ALIGNED_UPIU_SIZE <
@@ -1292,6 +1395,7 @@ static inline int ufshcd_dme_peer_get(struct ufs_hba *hba,
 	return ufshcd_dme_get_attr(hba, attr_sel, mib_val, DME_PEER);
 }
 
+<<<<<<< HEAD
 /* MTK PATCH */
 extern struct ufs_pm_lvl_states ufs_pm_lvl_states[];
 extern const int ufs_pm_lvl_states_size;
@@ -1299,6 +1403,8 @@ extern const int ufs_pm_lvl_states_size;
 /* MTK PATCH */
 int ufshcd_read_health_desc(struct ufs_hba *hba, u8 *buf, u32 size);
 
+=======
+>>>>>>> v4.14.187
 static inline bool ufshcd_is_hs_mode(struct ufs_pa_layer_attr *pwr_info)
 {
 	return (pwr_info->pwr_rx == FAST_MODE ||
@@ -1312,6 +1418,7 @@ int ufshcd_query_flag(struct ufs_hba *hba, enum query_opcode opcode,
 	enum flag_idn idn, bool *flag_res);
 int ufshcd_hold(struct ufs_hba *hba, bool async);
 void ufshcd_release(struct ufs_hba *hba);
+<<<<<<< HEAD
 #if defined(CONFIG_UFSFEATURE)
 int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
 			enum dev_cmd_type cmd_type, int timeout);
@@ -1323,11 +1430,15 @@ int ufshcd_map_sg(struct ufs_hba *hba, struct ufshcd_lrb *lrbp);
 int ufshcd_query_flag_retry(struct ufs_hba *hba,
 	enum query_opcode opcode, enum flag_idn idn, bool *flag_res);
 #endif
+=======
+
+>>>>>>> v4.14.187
 int ufshcd_map_desc_id_to_length(struct ufs_hba *hba, enum desc_idn desc_id,
 	int *desc_length);
 
 u32 ufshcd_get_local_unipro_ver(struct ufs_hba *hba);
 
+<<<<<<< HEAD
 /**
  * MTK PATCH:
  *
@@ -1375,6 +1486,8 @@ static inline u16 ufshcd_upiu_wlun_to_scsi_wlun(u8 upiu_wlun_id)
 	return (upiu_wlun_id & ~UFS_UPIU_WLUN_ID) | SCSI_W_LUN_BASE;
 }
 
+=======
+>>>>>>> v4.14.187
 /* Wrapper functions for safely calling variant operations */
 static inline const char *ufshcd_get_var_name(struct ufs_hba *hba)
 {
@@ -1507,6 +1620,7 @@ static inline void ufshcd_vops_dbg_register_dump(struct ufs_hba *hba)
 {
 	if (hba->vops && hba->vops->dbg_register_dump)
 		hba->vops->dbg_register_dump(hba);
+<<<<<<< HEAD
 #if defined(CONFIG_SCSI_UFS_TEST_MODE)
 	/* do not recover system if test mode is enabled */
 	BUG();
@@ -1532,4 +1646,8 @@ static ssize_t ufs_##name##_show (struct device *dev, struct device_attribute *a
 }										\
 static DEVICE_ATTR(name, S_IRUGO, ufs_##name##_show, NULL)
 
+=======
+}
+
+>>>>>>> v4.14.187
 #endif /* End of Header */

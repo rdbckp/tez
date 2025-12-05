@@ -21,6 +21,7 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/sched/topology.h>
+<<<<<<< HEAD
 #include <linux/sched/energy.h>
 #include <linux/cpuset.h>
 
@@ -87,6 +88,16 @@ void arch_set_min_freq_scale(struct cpumask *cpus,
 
 static DEFINE_MUTEX(cpu_scale_mutex);
 DEFINE_PER_CPU(unsigned long, cpu_scale) = SCHED_CAPACITY_SCALE;
+=======
+
+static DEFINE_MUTEX(cpu_scale_mutex);
+static DEFINE_PER_CPU(unsigned long, cpu_scale) = SCHED_CAPACITY_SCALE;
+
+unsigned long topology_get_cpu_scale(struct sched_domain *sd, int cpu)
+{
+	return per_cpu(cpu_scale, cpu);
+}
+>>>>>>> v4.14.187
 
 void topology_set_cpu_scale(unsigned int cpu, unsigned long capacity)
 {
@@ -102,9 +113,12 @@ static ssize_t cpu_capacity_show(struct device *dev,
 	return sprintf(buf, "%lu\n", topology_get_cpu_scale(NULL, cpu->dev.id));
 }
 
+<<<<<<< HEAD
 static void update_topology_flags_workfn(struct work_struct *work);
 static DECLARE_WORK(update_topology_flags_work, update_topology_flags_workfn);
 
+=======
+>>>>>>> v4.14.187
 static ssize_t cpu_capacity_store(struct device *dev,
 				  struct device_attribute *attr,
 				  const char *buf,
@@ -115,7 +129,10 @@ static ssize_t cpu_capacity_store(struct device *dev,
 	int i;
 	unsigned long new_capacity;
 	ssize_t ret;
+<<<<<<< HEAD
 	cpumask_var_t mask;
+=======
+>>>>>>> v4.14.187
 
 	if (!count)
 		return 0;
@@ -127,6 +144,7 @@ static ssize_t cpu_capacity_store(struct device *dev,
 		return -EINVAL;
 
 	mutex_lock(&cpu_scale_mutex);
+<<<<<<< HEAD
 
 	if (new_capacity < SCHED_CAPACITY_SCALE) {
 		int highest_score_cpu = 0;
@@ -162,6 +180,12 @@ static ssize_t cpu_capacity_store(struct device *dev,
 	if (topology_detect_flags())
 		schedule_work(&update_topology_flags_work);
 
+=======
+	for_each_cpu(i, &cpu_topology[this_cpu].core_sibling)
+		topology_set_cpu_scale(i, new_capacity);
+	mutex_unlock(&cpu_scale_mutex);
+
+>>>>>>> v4.14.187
 	return count;
 }
 
@@ -186,6 +210,7 @@ static int register_cpu_capacity_sysctl(void)
 }
 subsys_initcall(register_cpu_capacity_sysctl);
 
+<<<<<<< HEAD
 enum asym_cpucap_type { no_asym, asym_thread, asym_core, asym_die };
 static enum asym_cpucap_type asym_cpucap = no_asym;
 enum share_cap_type { no_share_cap, share_cap_thread, share_cap_core, share_cap_die};
@@ -367,6 +392,8 @@ static void update_topology_flags_workfn(struct work_struct *work)
 	update_topology = 0;
 }
 
+=======
+>>>>>>> v4.14.187
 static u32 capacity_scale;
 static u32 *raw_capacity;
 
@@ -389,12 +416,22 @@ void topology_normalize_cpu_scale(void)
 	pr_debug("cpu_capacity: capacity_scale=%u\n", capacity_scale);
 	mutex_lock(&cpu_scale_mutex);
 	for_each_possible_cpu(cpu) {
+<<<<<<< HEAD
 		capacity = (raw_capacity[cpu] << SCHED_CAPACITY_SHIFT)
 			/ capacity_scale;
 		topology_set_cpu_scale(cpu, capacity);
 		pr_debug("cpu_capacity: CPU%d cpu_capacity=%lu raw_capacity=%u\n",
 			cpu, topology_get_cpu_scale(NULL, cpu),
 			raw_capacity[cpu]);
+=======
+		pr_debug("cpu_capacity: cpu=%d raw_capacity=%u\n",
+			 cpu, raw_capacity[cpu]);
+		capacity = (raw_capacity[cpu] << SCHED_CAPACITY_SHIFT)
+			/ capacity_scale;
+		topology_set_cpu_scale(cpu, capacity);
+		pr_debug("cpu_capacity: CPU%d cpu_capacity=%lu\n",
+			cpu, topology_get_cpu_scale(NULL, cpu));
+>>>>>>> v4.14.187
 	}
 	mutex_unlock(&cpu_scale_mutex);
 }
@@ -471,9 +508,12 @@ init_cpu_capacity_callback(struct notifier_block *nb,
 
 	if (cpumask_empty(cpus_to_visit)) {
 		topology_normalize_cpu_scale();
+<<<<<<< HEAD
 		init_sched_energy_costs();
 		if (topology_detect_flags())
 			schedule_work(&update_topology_flags_work);
+=======
+>>>>>>> v4.14.187
 		free_raw_capacity();
 		pr_debug("cpu_capacity: parsing done\n");
 		schedule_work(&parsing_done_work);
@@ -488,8 +528,11 @@ static struct notifier_block init_cpu_capacity_notifier = {
 
 static int __init register_cpufreq_notifier(void)
 {
+<<<<<<< HEAD
 	int ret;
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * on ACPI-based systems we need to use the default cpu capacity
 	 * until we have the necessary code to parse the cpu capacity, so
@@ -505,6 +548,7 @@ static int __init register_cpufreq_notifier(void)
 
 	cpumask_copy(cpus_to_visit, cpu_possible_mask);
 
+<<<<<<< HEAD
 	ret = cpufreq_register_notifier(&init_cpu_capacity_notifier,
 					CPUFREQ_POLICY_NOTIFIER);
 
@@ -512,6 +556,10 @@ static int __init register_cpufreq_notifier(void)
 		free_cpumask_var(cpus_to_visit);
 
 	return ret;
+=======
+	return cpufreq_register_notifier(&init_cpu_capacity_notifier,
+					 CPUFREQ_POLICY_NOTIFIER);
+>>>>>>> v4.14.187
 }
 core_initcall(register_cpufreq_notifier);
 
@@ -519,7 +567,10 @@ static void parsing_done_workfn(struct work_struct *work)
 {
 	cpufreq_unregister_notifier(&init_cpu_capacity_notifier,
 					 CPUFREQ_POLICY_NOTIFIER);
+<<<<<<< HEAD
 	free_cpumask_var(cpus_to_visit);
+=======
+>>>>>>> v4.14.187
 }
 
 #else

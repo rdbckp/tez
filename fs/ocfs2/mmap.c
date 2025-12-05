@@ -177,9 +177,12 @@ out:
 static const struct vm_operations_struct ocfs2_file_vm_ops = {
 	.fault		= ocfs2_fault,
 	.page_mkwrite	= ocfs2_page_mkwrite,
+<<<<<<< HEAD
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
 	.suitable_for_spf = true,
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 int ocfs2_mmap(struct file *file, struct vm_area_struct *vma)

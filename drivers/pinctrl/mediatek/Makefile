@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 # Core
+<<<<<<< HEAD
 obj-$(CONFIG_PINCTRL_MTK)	+= pinctrl-mtk-common.o
 ifneq ($(CONFIG_ARCH_MEDIATEK), n)
 ccflags-y += -DCONFIG_PINCTRL_MTK_ALTERNATIVE
@@ -9,11 +10,15 @@ obj-$(CONFIG_EINT_MTK)		+= mtk-eint.o
 
 obj-$(CONFIG_PINCTRL_MTK_MOORE) += pinctrl-moore.o pinctrl-mtk-common-v2.o
 obj-$(CONFIG_PINCTRL_MTK_PARIS) += pinctrl-paris.o pinctrl-mtk-common-v2.o pinctrl-mtk-common-v2_debug.o
+=======
+obj-y				+= pinctrl-mtk-common.o
+>>>>>>> v4.14.187
 
 # SoC Drivers
 obj-$(CONFIG_PINCTRL_MT2701)	+= pinctrl-mt2701.o
 obj-$(CONFIG_PINCTRL_MT8135)	+= pinctrl-mt8135.o
 obj-$(CONFIG_PINCTRL_MT8127)	+= pinctrl-mt8127.o
+<<<<<<< HEAD
 obj-$(CONFIG_PINCTRL_MT8167)	+= pinctrl-mt8167.o
 obj-$(CONFIG_PINCTRL_MT8168)	+= pinctrl-mt8168.o
 obj-$(CONFIG_PINCTRL_MT8173)	+= pinctrl-mt8173.o
@@ -27,3 +32,7 @@ obj-$(CONFIG_PINCTRL_MT6785)	+= pinctrl-mt6785.o
 obj-$(CONFIG_PINCTRL_MT6853)	+= pinctrl-mt6853.o
 obj-$(CONFIG_PINCTRL_MT6873)	+= pinctrl-mt6873.o
 obj-$(CONFIG_PINCTRL_MT6885)	+= pinctrl-mt6885.o
+=======
+obj-$(CONFIG_PINCTRL_MT8173)	+= pinctrl-mt8173.o
+obj-$(CONFIG_PINCTRL_MT6397)	+= pinctrl-mt6397.o
+>>>>>>> v4.14.187

@@ -22,6 +22,7 @@
 #include <linux/of_address.h>
 #include <linux/of_irq.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/dma-mapping.h>
 #include <linux/usb_notify.h>
 
@@ -76,6 +77,10 @@ skip:
 	return;
 }
 #endif
+=======
+
+#include "mtu3.h"
+>>>>>>> v4.14.187
 
 static int ep_fifo_alloc(struct mtu3_ep *mep, u32 seg_size)
 {
@@ -146,7 +151,11 @@ static inline void mtu3_hs_softconn_set(struct mtu3 *mtu, bool enable)
 		mtu3_clrbits(mtu->mac_base, U3D_POWER_MANAGEMENT,
 			SOFT_CONN | SUSPENDM_ENABLE);
 	}
+<<<<<<< HEAD
 	dev_info(mtu->dev, "SOFTCONN = %d\n", !!enable);
+=======
+	dev_dbg(mtu->dev, "SOFTCONN = %d\n", !!enable);
+>>>>>>> v4.14.187
 }
 
 /* only port0 of U2/U3 supports device mode */
@@ -236,6 +245,7 @@ static void mtu3_intr_enable(struct mtu3 *mtu)
 
 	if (mtu->is_u3_ip) {
 		/* Enable U3 LTSSM interrupts */
+<<<<<<< HEAD
 #ifdef CONFIG_USB_MTU3_PLAT_PHONE
 		value = MTU3_LTSSM_INTR_EN;
 #else
@@ -245,6 +255,10 @@ static void mtu3_intr_enable(struct mtu3 *mtu)
 		if (mtu->ssusb->force_vbus)
 			value &= ~(VBUS_FALL_INTR | VBUS_RISE_INTR);
 
+=======
+		value = HOT_RST_INTR | WARM_RST_INTR | VBUS_RISE_INTR |
+		    VBUS_FALL_INTR | ENTER_U3_INTR | EXIT_U3_INTR;
+>>>>>>> v4.14.187
 		mtu3_writel(mbase, U3D_LTSSM_INTR_ENABLE, value);
 	}
 
@@ -282,11 +296,17 @@ void mtu3_ep_stall_set(struct mtu3_ep *mep, bool set)
 	}
 
 	if (!set) {
+<<<<<<< HEAD
 		mtu3_qmu_stop(mep);
 		mtu3_setbits(mbase, U3D_EP_RST, EP_RST(mep->is_in, epnum));
 		mtu3_clrbits(mbase, U3D_EP_RST, EP_RST(mep->is_in, epnum));
 		mep->flags &= ~MTU3_EP_STALL;
 		mtu3_qmu_resume(mep);
+=======
+		mtu3_setbits(mbase, U3D_EP_RST, EP_RST(mep->is_in, epnum));
+		mtu3_clrbits(mbase, U3D_EP_RST, EP_RST(mep->is_in, epnum));
+		mep->flags &= ~MTU3_EP_STALL;
+>>>>>>> v4.14.187
 	} else {
 		mep->flags |= MTU3_EP_STALL;
 	}
@@ -297,6 +317,7 @@ void mtu3_ep_stall_set(struct mtu3_ep *mep, bool set)
 
 void mtu3_dev_on_off(struct mtu3 *mtu, int is_on)
 {
+<<<<<<< HEAD
 	if (is_on) {
 		if (mtu->is_u3_ip && (mtu->max_speed == USB_SPEED_SUPER))
 			mtu3_ss_func_set(mtu, true);
@@ -308,11 +329,59 @@ void mtu3_dev_on_off(struct mtu3 *mtu, int is_on)
 		mtu3_ss_func_set(mtu, false);
 		mtu3_hs_softconn_set(mtu, false);
 	}
+=======
+	if (mtu->is_u3_ip && (mtu->max_speed == USB_SPEED_SUPER))
+		mtu3_ss_func_set(mtu, is_on);
+	else
+		mtu3_hs_softconn_set(mtu, is_on);
+>>>>>>> v4.14.187
 
 	dev_info(mtu->dev, "gadget (%s) pullup D%s\n",
 		usb_speed_string(mtu->max_speed), is_on ? "+" : "-");
 }
 
+<<<<<<< HEAD
+=======
+void mtu3_start(struct mtu3 *mtu)
+{
+	void __iomem *mbase = mtu->mac_base;
+
+	dev_dbg(mtu->dev, "%s devctl 0x%x\n", __func__,
+		mtu3_readl(mbase, U3D_DEVICE_CONTROL));
+
+	mtu3_clrbits(mtu->ippc_base, U3D_SSUSB_IP_PW_CTRL2, SSUSB_IP_DEV_PDN);
+
+	/*
+	 * When disable U2 port, USB2_CSR's register will be reset to
+	 * default value after re-enable it again(HS is enabled by default).
+	 * So if force mac to work as FS, disable HS function.
+	 */
+	if (mtu->max_speed == USB_SPEED_FULL)
+		mtu3_clrbits(mbase, U3D_POWER_MANAGEMENT, HS_ENABLE);
+
+	/* Initialize the default interrupts */
+	mtu3_intr_enable(mtu);
+	mtu->is_active = 1;
+
+	if (mtu->softconnect)
+		mtu3_dev_on_off(mtu, 1);
+}
+
+void mtu3_stop(struct mtu3 *mtu)
+{
+	dev_dbg(mtu->dev, "%s\n", __func__);
+
+	mtu3_intr_disable(mtu);
+	mtu3_intr_status_clear(mtu);
+
+	if (mtu->softconnect)
+		mtu3_dev_on_off(mtu, 0);
+
+	mtu->is_active = 0;
+	mtu3_setbits(mtu->ippc_base, U3D_SSUSB_IP_PW_CTRL2, SSUSB_IP_DEV_PDN);
+}
+
+>>>>>>> v4.14.187
 /* for non-ep0 */
 int mtu3_config_ep(struct mtu3 *mtu, struct mtu3_ep *mep,
 			int interval, int burst, int mult)
@@ -590,9 +659,12 @@ static void mtu3_regs_init(struct mtu3 *mtu)
 	mtu3_intr_disable(mtu);
 	mtu3_intr_status_clear(mtu);
 
+<<<<<<< HEAD
 	/* Hardware remote wakeup from L1 automatically based on the FIFO status */
 	mtu3_setbits(mbase, U3D_POWER_MANAGEMENT, LPM_HRWE);
 
+=======
+>>>>>>> v4.14.187
 	if (mtu->is_u3_ip) {
 		/* disable LGO_U1/U2 by default */
 		mtu3_clrbits(mbase, U3D_LINK_POWER_CONTROL,
@@ -615,12 +687,16 @@ static void mtu3_regs_init(struct mtu3 *mtu)
 	/* enable QMU 16B checksum */
 	mtu3_setbits(mbase, U3D_QCR0, QMU_CS16B_EN);
 	/* vbus detected by HW */
+<<<<<<< HEAD
 	if (mtu->ssusb->force_vbus)
 		mtu3_setbits(mbase, U3D_MISC_CTRL, VBUS_FRC_EN | VBUS_ON);
 	else
 		mtu3_clrbits(mbase, U3D_MISC_CTRL, VBUS_FRC_EN | VBUS_ON);
 
 	mtu3_setbits(mbase, U3D_USB2_TEST_MODE, BIT(11));
+=======
+	mtu3_clrbits(mbase, U3D_MISC_CTRL, VBUS_FRC_EN | VBUS_ON);
+>>>>>>> v4.14.187
 }
 
 static irqreturn_t mtu3_link_isr(struct mtu3 *mtu)
@@ -630,12 +706,19 @@ static irqreturn_t mtu3_link_isr(struct mtu3 *mtu)
 	u32 maxpkt = 64;
 	u32 link;
 	u32 speed;
+<<<<<<< HEAD
 	struct mtu3_ep *mep;
+=======
+>>>>>>> v4.14.187
 
 	link = mtu3_readl(mbase, U3D_DEV_LINK_INTR);
 	link &= mtu3_readl(mbase, U3D_DEV_LINK_INTR_ENABLE);
 	mtu3_writel(mbase, U3D_DEV_LINK_INTR, link); /* W1C */
 	dev_dbg(mtu->dev, "=== LINK[%x] ===\n", link);
+<<<<<<< HEAD
+=======
+
+>>>>>>> v4.14.187
 	if (!(link & SSUSB_DEV_SPEED_CHG_INTR))
 		return IRQ_NONE;
 
@@ -666,12 +749,17 @@ static irqreturn_t mtu3_link_isr(struct mtu3 *mtu)
 		udev_speed = USB_SPEED_UNKNOWN;
 		break;
 	}
+<<<<<<< HEAD
 	dev_info(mtu->dev, "%s: %s\n", __func__, usb_speed_string(udev_speed));
+=======
+	dev_dbg(mtu->dev, "%s: %s\n", __func__, usb_speed_string(udev_speed));
+>>>>>>> v4.14.187
 
 	mtu->g.speed = udev_speed;
 	mtu->g.ep0->maxpacket = maxpkt;
 	mtu->ep0_state = MU3D_EP0_STATE_SETUP;
 
+<<<<<<< HEAD
 	if (udev_speed == USB_SPEED_UNKNOWN) {
 		mtu3_gadget_disconnect(mtu);
 		#if !IS_ENABLED(CONFIG_USB_MTU3_PLAT_PHONE)
@@ -691,6 +779,12 @@ static irqreturn_t mtu3_link_isr(struct mtu3 *mtu)
 			INIT_LIST_HEAD(&mep->req_list);
 		}
 	}
+=======
+	if (udev_speed == USB_SPEED_UNKNOWN)
+		mtu3_gadget_disconnect(mtu);
+	else
+		mtu3_ep0_setup(mtu);
+>>>>>>> v4.14.187
 
 	return IRQ_HANDLED;
 }
@@ -705,6 +799,7 @@ static irqreturn_t mtu3_u3_ltssm_isr(struct mtu3 *mtu)
 	mtu3_writel(mbase, U3D_LTSSM_INTR, ltssm); /* W1C */
 	dev_dbg(mtu->dev, "=== LTSSM[%x] ===\n", ltssm);
 
+<<<<<<< HEAD
 	#ifdef CONFIG_USB_MTU3_PLAT_PHONE
 	if (ltssm & SS_DISABLE_INTR) {
 		/* enable U2 link. after host reset,
@@ -719,6 +814,8 @@ static irqreturn_t mtu3_u3_ltssm_isr(struct mtu3 *mtu)
 	}
 	#endif
 
+=======
+>>>>>>> v4.14.187
 	if (ltssm & (HOT_RST_INTR | WARM_RST_INTR))
 		mtu3_gadget_reset(mtu);
 
@@ -734,6 +831,7 @@ static irqreturn_t mtu3_u3_ltssm_isr(struct mtu3 *mtu)
 	if (ltssm & ENTER_U3_INTR)
 		mtu3_gadget_suspend(mtu);
 
+<<<<<<< HEAD
 	#ifdef CONFIG_USB_MTU3_PLAT_PHONE
 	if (ltssm & HOT_RST_INTR) {
 		u32 link_err_cnt;
@@ -798,6 +896,8 @@ static irqreturn_t mtu3_u3_ltssm_isr(struct mtu3 *mtu)
 	}
 	#endif
 
+=======
+>>>>>>> v4.14.187
 	return IRQ_HANDLED;
 }
 
@@ -811,12 +911,17 @@ static irqreturn_t mtu3_u2_common_isr(struct mtu3 *mtu)
 	mtu3_writel(mbase, U3D_COMMON_USB_INTR, u2comm); /* W1C */
 	dev_dbg(mtu->dev, "=== U2COMM[%x] ===\n", u2comm);
 
+<<<<<<< HEAD
 	if (u2comm & SUSPEND_INTR) {
 		mtu3_gadget_suspend(mtu);
 		#ifdef CONFIG_USB_MTU3_PLAT_PHONE
 		disconnect_check(mtu);
 		#endif
 	}
+=======
+	if (u2comm & SUSPEND_INTR)
+		mtu3_gadget_suspend(mtu);
+>>>>>>> v4.14.187
 
 	if (u2comm & RESUME_INTR)
 		mtu3_gadget_resume(mtu);
@@ -839,6 +944,7 @@ static irqreturn_t mtu3_irq(int irq, void *data)
 	level1 = mtu3_readl(mtu->mac_base, U3D_LV1ISR);
 	level1 &= mtu3_readl(mtu->mac_base, U3D_LV1IER);
 
+<<<<<<< HEAD
 	#ifdef CONFIG_USB_MTU3_PLAT_PHONE
 	if (unlikely(!mtu->softconnect) && (level1 & MAC2_INTR)) {
 		u32 u2comm;
@@ -885,6 +991,8 @@ static irqreturn_t mtu3_irq(int irq, void *data)
 	}
 	#endif
 
+=======
+>>>>>>> v4.14.187
 	if (level1 & EP_CTRL_INTR)
 		mtu3_link_isr(mtu);
 
@@ -926,6 +1034,7 @@ static int mtu3_hw_init(struct mtu3 *mtu)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	#ifdef CONFIG_USB_MTU3_PLAT_PHONE
 	cap_dev = mtu3_readl(mtu->mac_base, U3D_MISC_CTRL);
 	mtu->is_36bit = !!CAP_36BIT_SUPPORT(cap_dev);
@@ -936,6 +1045,8 @@ static int mtu3_hw_init(struct mtu3 *mtu)
 		dma_set_mask_and_coherent(mtu->dev, DMA_BIT_MASK(36));
 	#endif
 
+=======
+>>>>>>> v4.14.187
 	ret = mtu3_mem_alloc(mtu);
 	if (ret)
 		return -ENOMEM;
@@ -951,6 +1062,7 @@ static void mtu3_hw_exit(struct mtu3 *mtu)
 	mtu3_mem_free(mtu);
 }
 
+<<<<<<< HEAD
 void mtu3_start(struct mtu3 *mtu)
 {
 	void __iomem *mbase = mtu->mac_base;
@@ -994,6 +1106,8 @@ void mtu3_stop(struct mtu3 *mtu)
 
 }
 
+=======
+>>>>>>> v4.14.187
 /*-------------------------------------------------------------------------*/
 
 int ssusb_gadget_init(struct ssusb_mtk *ssusb)
@@ -1009,9 +1123,15 @@ int ssusb_gadget_init(struct ssusb_mtk *ssusb)
 		return -ENOMEM;
 
 	mtu->irq = platform_get_irq(pdev, 0);
+<<<<<<< HEAD
 	if (mtu->irq <= 0) {
 		dev_err(dev, "fail to get irq number\n");
 		return -ENODEV;
+=======
+	if (mtu->irq < 0) {
+		dev_err(dev, "fail to get irq number\n");
+		return mtu->irq;
+>>>>>>> v4.14.187
 	}
 	dev_info(dev, "irq %d\n", mtu->irq);
 
@@ -1029,6 +1149,7 @@ int ssusb_gadget_init(struct ssusb_mtk *ssusb)
 	ssusb->u3d = mtu;
 	mtu->ssusb = ssusb;
 	mtu->max_speed = usb_get_maximum_speed(dev);
+<<<<<<< HEAD
 	#ifdef CONFIG_USB_MTU3_PLAT_PHONE
 	mtu3_cable_mode = CABLE_MODE_NORMAL;
 
@@ -1038,6 +1159,8 @@ int ssusb_gadget_init(struct ssusb_mtk *ssusb)
 #if defined(CONFIG_BATTERY_SAMSUNG)
 	INIT_WORK(&mtu->set_vbus_current_work, musb_set_vbus_current_work);
 #endif
+=======
+>>>>>>> v4.14.187
 
 	/* check the max_speed parameter */
 	switch (mtu->max_speed) {
@@ -1105,6 +1228,7 @@ void ssusb_gadget_exit(struct ssusb_mtk *ssusb)
 	device_init_wakeup(ssusb->dev, false);
 	mtu3_hw_exit(mtu);
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_USB_MTU3_PLAT_PHONE
 void mtu3_check_ltssm_work(struct work_struct *data)
@@ -1151,3 +1275,5 @@ void disconnect_check(struct mtu3 *mtu)
 	pr_info("speed <%d>\n", mtu->g.speed);
 }
 #endif
+=======
+>>>>>>> v4.14.187

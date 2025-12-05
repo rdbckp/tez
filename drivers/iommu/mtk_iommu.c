@@ -31,6 +31,7 @@
 #include <linux/slab.h>
 #include <linux/spinlock.h>
 #include <asm/barrier.h>
+<<<<<<< HEAD
 #ifndef CONFIG_ARM64
 #include <asm/dma-iommu.h>
 #endif
@@ -43,6 +44,13 @@
 
 #define REG_MMU_PT_BASE_ADDR			0x000
 #define MMU_PT_ADDR_MASK			GENMASK(31, 7)
+=======
+#include <soc/mediatek/smi.h>
+
+#include "mtk_iommu.h"
+
+#define REG_MMU_PT_BASE_ADDR			0x000
+>>>>>>> v4.14.187
 
 #define REG_MMU_INVALIDATE			0x020
 #define F_ALL_INVLD				0x2
@@ -61,7 +69,11 @@
 #define REG_MMU_CTRL_REG			0x110
 #define F_MMU_PREFETCH_RT_REPLACE_MOD		BIT(4)
 #define F_MMU_TF_PROTECT_SEL_SHIFT(data) \
+<<<<<<< HEAD
 	((data)->plat_data->m4u_plat == M4U_MT8173 ? 5 : 4)
+=======
+	((data)->m4u_plat == M4U_MT2712 ? 4 : 5)
+>>>>>>> v4.14.187
 /* It's named by F_MMU_TF_PROT_SEL in mt2712. */
 #define F_MMU_TF_PROTECT_SEL(prot, data) \
 	(((prot) & 0x3) << F_MMU_TF_PROTECT_SEL_SHIFT(data))
@@ -80,6 +92,7 @@
 #define F_MISS_FIFO_ERR_INT_EN			BIT(6)
 #define F_INT_CLR_BIT				BIT(12)
 
+<<<<<<< HEAD
 #define REG_MMU_INT_MAIN_CONTROL		0x124 /* mmu0 | mmu1 */
 #define F_INT_TRANSLATION_FAULT			(BIT(0) | BIT(7))
 #define F_INT_MAIN_MULTI_HIT_FAULT		(BIT(1) | BIT(8))
@@ -88,10 +101,21 @@
 #define F_INT_TLB_MISS_FAULT			(BIT(4) | BIT(11))
 #define F_INT_MISS_TRANSACTION_FIFO_FAULT	(BIT(5) | BIT(12))
 #define F_INT_PRETETCH_TRANSATION_FIFO_FAULT	(BIT(6) | BIT(13))
+=======
+#define REG_MMU_INT_MAIN_CONTROL		0x124
+#define F_INT_TRANSLATION_FAULT			BIT(0)
+#define F_INT_MAIN_MULTI_HIT_FAULT		BIT(1)
+#define F_INT_INVALID_PA_FAULT			BIT(2)
+#define F_INT_ENTRY_REPLACEMENT_FAULT		BIT(3)
+#define F_INT_TLB_MISS_FAULT			BIT(4)
+#define F_INT_MISS_TRANSACTION_FIFO_FAULT	BIT(5)
+#define F_INT_PRETETCH_TRANSATION_FIFO_FAULT	BIT(6)
+>>>>>>> v4.14.187
 
 #define REG_MMU_CPE_DONE			0x12C
 
 #define REG_MMU_FAULT_ST1			0x134
+<<<<<<< HEAD
 #define F_REG_MMU0_FAULT_MASK			GENMASK(6, 0)
 #define F_REG_MMU1_FAULT_MASK			GENMASK(13, 7)
 
@@ -115,6 +139,20 @@
 #define IOVPU_RANGE_START		0x7DA00000
 #define IOVPU_RANGE_LEN			0x04C00000
 
+=======
+
+#define REG_MMU_FAULT_VA			0x13c
+#define F_MMU_FAULT_VA_WRITE_BIT		BIT(1)
+#define F_MMU_FAULT_VA_LAYER_BIT		BIT(0)
+
+#define REG_MMU_INVLD_PA			0x140
+#define REG_MMU_INT_ID				0x150
+#define F_MMU0_INT_ID_LARB_ID(a)		(((a) >> 7) & 0x7)
+#define F_MMU0_INT_ID_PORT_ID(a)		(((a) >> 2) & 0x1f)
+
+#define MTK_PROTECT_PA_ALIGN			128
+
+>>>>>>> v4.14.187
 /*
  * Get the local arbiter ID and the portid within the larb arbiter
  * from mtk_m4u_id which is defined by MTK_M4U_ID.
@@ -129,6 +167,7 @@ struct mtk_iommu_domain {
 	struct io_pgtable_ops		*iop;
 
 	struct iommu_domain		domain;
+<<<<<<< HEAD
 
 #if (defined(CONFIG_MTK_PSEUDO_M4U) && defined(M4U_TEE_SERVICE_ENABLE))
 	unsigned int			sec_iova_size;
@@ -141,6 +180,8 @@ struct mtk_iommu_resv_iova_region {
 	enum iommu_resv_type type;
 	void (*get_resv_data)(unsigned long *base, size_t *size,
 			      struct mtk_iommu_data *data);
+=======
+>>>>>>> v4.14.187
 };
 
 static struct iommu_ops mtk_iommu_ops;
@@ -220,7 +261,12 @@ static void mtk_iommu_tlb_add_flush_nosync(unsigned long iova, size_t size,
 		writel_relaxed(iova, data->base + REG_MMU_INVLD_START_A);
 		writel_relaxed(iova + size - 1,
 			       data->base + REG_MMU_INVLD_END_A);
+<<<<<<< HEAD
 		writel(F_MMU_INV_RANGE, data->base + REG_MMU_INVALIDATE);
+=======
+		writel_relaxed(F_MMU_INV_RANGE,
+			       data->base + REG_MMU_INVALIDATE);
+>>>>>>> v4.14.187
 		data->tlb_flush_active = true;
 	}
 }
@@ -255,6 +301,7 @@ static const struct iommu_gather_ops mtk_iommu_gather_ops = {
 	.tlb_sync = mtk_iommu_tlb_sync,
 };
 
+<<<<<<< HEAD
 static unsigned int mtk_iommu_get_larbid(const unsigned int *larbid_in_common,
 					 const unsigned int fault_larb)
 {
@@ -266,6 +313,8 @@ static unsigned int mtk_iommu_get_larbid(const unsigned int *larbid_in_common,
 	return MTK_LARB_NR_MAX; /* Invalid larb id. */
 }
 
+=======
+>>>>>>> v4.14.187
 static irqreturn_t mtk_iommu_isr(int irq, void *dev_id)
 {
 	struct mtk_iommu_data *data = dev_id;
@@ -276,6 +325,7 @@ static irqreturn_t mtk_iommu_isr(int irq, void *dev_id)
 
 	/* Read error info from registers */
 	int_state = readl_relaxed(data->base + REG_MMU_FAULT_ST1);
+<<<<<<< HEAD
 	if (int_state & F_REG_MMU0_FAULT_MASK) {
 		regval = readl_relaxed(data->base + REG_MMU0_INT_ID);
 		fault_iova = readl_relaxed(data->base + REG_MMU0_FAULT_VA);
@@ -300,10 +350,21 @@ static irqreturn_t mtk_iommu_isr(int irq, void *dev_id)
 		fault_larb = mtk_iommu_get_larbid(
 					data->plat_data->larbid_in_common,
 					fault_larb);
+=======
+	fault_iova = readl_relaxed(data->base + REG_MMU_FAULT_VA);
+	layer = fault_iova & F_MMU_FAULT_VA_LAYER_BIT;
+	write = fault_iova & F_MMU_FAULT_VA_WRITE_BIT;
+	fault_pa = readl_relaxed(data->base + REG_MMU_INVLD_PA);
+	regval = readl_relaxed(data->base + REG_MMU_INT_ID);
+	fault_larb = F_MMU0_INT_ID_LARB_ID(regval);
+	fault_port = F_MMU0_INT_ID_PORT_ID(regval);
+
+>>>>>>> v4.14.187
 	if (report_iommu_fault(&dom->domain, data->dev, fault_iova,
 			       write ? IOMMU_FAULT_WRITE : IOMMU_FAULT_READ)) {
 		dev_err_ratelimited(
 			data->dev,
+<<<<<<< HEAD
 			"fault type=0x%x iova=0x%x pa=0x%x(0x%x) larb=%d port=%d layer=%d %s sec 0x%x\n",
 			int_state, fault_iova, fault_pa,
 			(unsigned int)iommu_iova_to_phys(&(dom->domain),
@@ -317,6 +378,11 @@ static irqreturn_t mtk_iommu_isr(int irq, void *dev_id)
 			0
 			#endif
 			);
+=======
+			"fault type=0x%x iova=0x%x pa=0x%x larb=%d port=%d layer=%d %s\n",
+			int_state, fault_iova, fault_pa, fault_larb, fault_port,
+			layer, write ? "write" : "read");
+>>>>>>> v4.14.187
 	}
 
 	/* Interrupt clear */
@@ -352,6 +418,7 @@ static void mtk_iommu_config(struct mtk_iommu_data *data,
 	}
 }
 
+<<<<<<< HEAD
 static unsigned long mtk_iommu_pgt_base;
 
 unsigned long mtk_get_pgt_base(void)
@@ -359,6 +426,8 @@ unsigned long mtk_get_pgt_base(void)
 	return mtk_iommu_pgt_base;
 }
 EXPORT_SYMBOL(mtk_get_pgt_base);
+=======
+>>>>>>> v4.14.187
 static int mtk_iommu_domain_finalise(struct mtk_iommu_domain *dom)
 {
 	struct mtk_iommu_data *data = mtk_iommu_get_m4u_data();
@@ -371,7 +440,11 @@ static int mtk_iommu_domain_finalise(struct mtk_iommu_domain *dom)
 			IO_PGTABLE_QUIRK_TLBI_ON_MAP,
 		.pgsize_bitmap = mtk_iommu_ops.pgsize_bitmap,
 		.ias = 32,
+<<<<<<< HEAD
 		.oas = 33,
+=======
+		.oas = 32,
+>>>>>>> v4.14.187
 		.tlb = &mtk_iommu_gather_ops,
 		.iommu_dev = data->dev,
 	};
@@ -387,7 +460,10 @@ static int mtk_iommu_domain_finalise(struct mtk_iommu_domain *dom)
 
 	/* Update our support page sizes bitmap */
 	dom->domain.pgsize_bitmap = dom->cfg.pgsize_bitmap;
+<<<<<<< HEAD
 	mtk_iommu_pgt_base = dom->cfg.arm_v7s_cfg.ttbr[0];
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -395,7 +471,11 @@ static struct iommu_domain *mtk_iommu_domain_alloc(unsigned type)
 {
 	struct mtk_iommu_domain *dom;
 
+<<<<<<< HEAD
 	if (type != IOMMU_DOMAIN_DMA && type != IOMMU_DOMAIN_UNMANAGED)
+=======
+	if (type != IOMMU_DOMAIN_DMA)
+>>>>>>> v4.14.187
 		return NULL;
 
 	dom = kzalloc(sizeof(*dom), GFP_KERNEL);
@@ -430,6 +510,7 @@ static void mtk_iommu_domain_free(struct iommu_domain *domain)
 	kfree(to_mtk_domain(domain));
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64
 static void mtk_iommu_get_resv_regions(struct device *dev,
 				      struct list_head *head)
@@ -533,6 +614,8 @@ static int mtk_iommu_reserve_region(struct mtk_iommu_data *data)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static int mtk_iommu_attach_device(struct iommu_domain *domain,
 				   struct device *dev)
 {
@@ -545,6 +628,7 @@ static int mtk_iommu_attach_device(struct iommu_domain *domain,
 	/* Update the pgtable base address register of the M4U HW */
 	if (!data->m4u_dom) {
 		data->m4u_dom = dom;
+<<<<<<< HEAD
 		writel(dom->cfg.arm_v7s_cfg.ttbr[0] & MMU_PT_ADDR_MASK,
 		       data->base + REG_MMU_PT_BASE_ADDR);
 	#ifndef CONFIG_ARM64
@@ -561,6 +645,13 @@ static int mtk_iommu_attach_device(struct iommu_domain *domain,
 	}
 	dma_set_max_seg_size(dev, DMA_BIT_MASK(32));
 
+=======
+		writel(dom->cfg.arm_v7s_cfg.ttbr[0],
+		       data->base + REG_MMU_PT_BASE_ADDR);
+	}
+
+	mtk_iommu_config(data, dev, true);
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -572,10 +663,13 @@ static void mtk_iommu_detach_device(struct iommu_domain *domain,
 	if (!data)
 		return;
 
+<<<<<<< HEAD
 	if (!dev->dma_parms)
 		kfree(dev->dma_parms);
 	dev->dma_parms = NULL;
 
+=======
+>>>>>>> v4.14.187
 	mtk_iommu_config(data, dev, false);
 }
 
@@ -583,6 +677,7 @@ static int mtk_iommu_map(struct iommu_domain *domain, unsigned long iova,
 			 phys_addr_t paddr, size_t size, int prot)
 {
 	struct mtk_iommu_domain *dom = to_mtk_domain(domain);
+<<<<<<< HEAD
 	struct mtk_iommu_data *data = mtk_iommu_get_m4u_data();
 	unsigned long flags;
 	int ret;
@@ -594,6 +689,14 @@ static int mtk_iommu_map(struct iommu_domain *domain, unsigned long iova,
 
 	spin_lock_irqsave(&dom->pgtlock, flags);
 	ret = dom->iop->map(dom->iop, iova, paddr, size, prot);
+=======
+	unsigned long flags;
+	int ret;
+
+	spin_lock_irqsave(&dom->pgtlock, flags);
+	ret = dom->iop->map(dom->iop, iova, paddr & DMA_BIT_MASK(32),
+			    size, prot);
+>>>>>>> v4.14.187
 	spin_unlock_irqrestore(&dom->pgtlock, flags);
 
 	return ret;
@@ -613,11 +716,14 @@ static size_t mtk_iommu_unmap(struct iommu_domain *domain,
 	return unmapsz;
 }
 
+<<<<<<< HEAD
 static void mtk_iommu_iotlb_sync(struct iommu_domain *domain)
 {
 	mtk_iommu_tlb_sync(mtk_iommu_get_m4u_data());
 }
 
+=======
+>>>>>>> v4.14.187
 static phys_addr_t mtk_iommu_iova_to_phys(struct iommu_domain *domain,
 					  dma_addr_t iova)
 {
@@ -630,13 +736,20 @@ static phys_addr_t mtk_iommu_iova_to_phys(struct iommu_domain *domain,
 	pa = dom->iop->iova_to_phys(dom->iop, iova);
 	spin_unlock_irqrestore(&dom->pgtlock, flags);
 
+<<<<<<< HEAD
 	if (data->enable_4GB && pa && pa < MTK_IOMMU_4GB_MODE_REMAP_BASE)
+=======
+	if (data->enable_4GB && pa < MTK_IOMMU_4GB_MODE_REMAP_BASE)
+>>>>>>> v4.14.187
 		pa |= BIT_ULL(32);
 
 	return pa;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64
+=======
+>>>>>>> v4.14.187
 static int mtk_iommu_add_device(struct device *dev)
 {
 	struct mtk_iommu_data *data;
@@ -655,6 +768,7 @@ static int mtk_iommu_add_device(struct device *dev)
 	iommu_group_put(group);
 	return 0;
 }
+<<<<<<< HEAD
 #else
 static int mtk_iommu_init_arm_mapping(struct device *dev)
 {
@@ -716,6 +830,8 @@ static int mtk_iommu_add_device(struct device *dev)
 	return iommu_device_link(&data->iommu, dev);
 }
 #endif
+=======
+>>>>>>> v4.14.187
 
 static void mtk_iommu_remove_device(struct device *dev)
 {
@@ -779,23 +895,32 @@ static struct iommu_ops mtk_iommu_ops = {
 	.map		= mtk_iommu_map,
 	.unmap		= mtk_iommu_unmap,
 	.map_sg		= default_iommu_map_sg,
+<<<<<<< HEAD
 	.flush_iotlb_all = mtk_iommu_iotlb_sync,
 	.iotlb_sync	= mtk_iommu_iotlb_sync,
+=======
+>>>>>>> v4.14.187
 	.iova_to_phys	= mtk_iommu_iova_to_phys,
 	.add_device	= mtk_iommu_add_device,
 	.remove_device	= mtk_iommu_remove_device,
 	.device_group	= mtk_iommu_device_group,
 	.of_xlate	= mtk_iommu_of_xlate,
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64
 	.get_resv_regions = mtk_iommu_get_resv_regions,
 	.put_resv_regions = mtk_iommu_put_resv_regions,
 #endif
+=======
+>>>>>>> v4.14.187
 	.pgsize_bitmap	= SZ_4K | SZ_64K | SZ_1M | SZ_16M,
 };
 
 static int mtk_iommu_hw_init(const struct mtk_iommu_data *data)
 {
+<<<<<<< HEAD
 	enum mtk_iommu_plat m4u_plat = data->plat_data->m4u_plat;
+=======
+>>>>>>> v4.14.187
 	u32 regval;
 	int ret;
 
@@ -806,7 +931,11 @@ static int mtk_iommu_hw_init(const struct mtk_iommu_data *data)
 	}
 
 	regval = F_MMU_TF_PROTECT_SEL(2, data);
+<<<<<<< HEAD
 	if (m4u_plat == M4U_MT8173)
+=======
+	if (data->m4u_plat == M4U_MT8173)
+>>>>>>> v4.14.187
 		regval |= F_MMU_PREFETCH_RT_REPLACE_MOD;
 	writel_relaxed(regval, data->base + REG_MMU_CTRL_REG);
 
@@ -827,14 +956,22 @@ static int mtk_iommu_hw_init(const struct mtk_iommu_data *data)
 		F_INT_PRETETCH_TRANSATION_FIFO_FAULT;
 	writel_relaxed(regval, data->base + REG_MMU_INT_MAIN_CONTROL);
 
+<<<<<<< HEAD
 	if (m4u_plat == M4U_MT8173 || m4u_plat == M4U_MT8167)
+=======
+	if (data->m4u_plat == M4U_MT8173)
+>>>>>>> v4.14.187
 		regval = (data->protect_base >> 1) | (data->enable_4GB << 31);
 	else
 		regval = lower_32_bits(data->protect_base) |
 			 upper_32_bits(data->protect_base);
 	writel_relaxed(regval, data->base + REG_MMU_IVRP_PADDR);
 
+<<<<<<< HEAD
 	if (data->enable_4GB && m4u_plat == M4U_MT2712) {
+=======
+	if (data->enable_4GB && data->m4u_plat != M4U_MT8173) {
+>>>>>>> v4.14.187
 		/*
 		 * If 4GB mode is enabled, the validate PA range is from
 		 * 0x1_0000_0000 to 0x1_ffff_ffff. here record bit[32:30].
@@ -844,12 +981,17 @@ static int mtk_iommu_hw_init(const struct mtk_iommu_data *data)
 	}
 	writel_relaxed(0, data->base + REG_MMU_DCM_DIS);
 
+<<<<<<< HEAD
 	/*
 	 * It's MISC control register whose default value is ok
 	 * except mt8173 and mt8183.
 	 */
 	if (m4u_plat == M4U_MT8167 || m4u_plat == M4U_MT8168 ||
 	    m4u_plat == M4U_MT8173 || m4u_plat == M4U_MT8183)
+=======
+	/* It's MISC control register whose default value is ok except mt8173.*/
+	if (data->m4u_plat == M4U_MT8173)
+>>>>>>> v4.14.187
 		writel_relaxed(0, data->base + REG_MMU_STANDARD_AXI_MODE);
 
 	if (devm_request_irq(data->dev, data->irq, mtk_iommu_isr, 0,
@@ -882,7 +1024,11 @@ static int mtk_iommu_probe(struct platform_device *pdev)
 	if (!data)
 		return -ENOMEM;
 	data->dev = dev;
+<<<<<<< HEAD
 	data->plat_data = of_device_get_match_data(dev);
+=======
+	data->m4u_plat = (enum mtk_iommu_plat)of_device_get_match_data(dev);
+>>>>>>> v4.14.187
 
 	/* Protect memory. HW will access here while translation fault.*/
 	protect = devm_kzalloc(dev, MTK_PROTECT_PA_ALIGN * 2, GFP_KERNEL);
@@ -904,9 +1050,13 @@ static int mtk_iommu_probe(struct platform_device *pdev)
 		return data->irq;
 
 	data->bclk = devm_clk_get(dev, "bclk");
+<<<<<<< HEAD
 	if (PTR_ERR(data->bclk) == -ENOENT)
 		data->bclk = NULL;
 	else if (IS_ERR(data->bclk))
+=======
+	if (IS_ERR(data->bclk))
+>>>>>>> v4.14.187
 		return PTR_ERR(data->bclk);
 
 	larb_nr = of_count_phandle_with_args(dev->of_node,
@@ -982,11 +1132,14 @@ static int mtk_iommu_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void mtk_iommu_shutdown(struct platform_device *pdev)
 {
 	mtk_iommu_remove(pdev);
 }
 
+=======
+>>>>>>> v4.14.187
 static int __maybe_unused mtk_iommu_suspend(struct device *dev)
 {
 	struct mtk_iommu_data *data = dev_get_drvdata(dev);
@@ -1000,7 +1153,10 @@ static int __maybe_unused mtk_iommu_suspend(struct device *dev)
 	reg->int_control0 = readl_relaxed(base + REG_MMU_INT_CONTROL0);
 	reg->int_main_control = readl_relaxed(base + REG_MMU_INT_MAIN_CONTROL);
 	reg->ivrp_paddr = readl_relaxed(base + REG_MMU_IVRP_PADDR);
+<<<<<<< HEAD
 	reg->vld_pa_range = readl_relaxed(base + REG_MMU_VLD_PA_RNG);
+=======
+>>>>>>> v4.14.187
 	clk_disable_unprepare(data->bclk);
 	return 0;
 }
@@ -1009,7 +1165,10 @@ static int __maybe_unused mtk_iommu_resume(struct device *dev)
 {
 	struct mtk_iommu_data *data = dev_get_drvdata(dev);
 	struct mtk_iommu_suspend_reg *reg = &data->reg;
+<<<<<<< HEAD
 	struct mtk_iommu_domain *dom = data->m4u_dom;
+=======
+>>>>>>> v4.14.187
 	void __iomem *base = data->base;
 	int ret;
 
@@ -1025,9 +1184,14 @@ static int __maybe_unused mtk_iommu_resume(struct device *dev)
 	writel_relaxed(reg->int_control0, base + REG_MMU_INT_CONTROL0);
 	writel_relaxed(reg->int_main_control, base + REG_MMU_INT_MAIN_CONTROL);
 	writel_relaxed(reg->ivrp_paddr, base + REG_MMU_IVRP_PADDR);
+<<<<<<< HEAD
 	writel_relaxed(reg->vld_pa_range, base + REG_MMU_VLD_PA_RNG);
 	if (dom)
 		writel(dom->cfg.arm_v7s_cfg.ttbr[0] & MMU_PT_ADDR_MASK,
+=======
+	if (data->m4u_dom)
+		writel(data->m4u_dom->cfg.arm_v7s_cfg.ttbr[0],
+>>>>>>> v4.14.187
 		       base + REG_MMU_PT_BASE_ADDR);
 	return 0;
 }
@@ -1036,6 +1200,7 @@ static const struct dev_pm_ops mtk_iommu_pm_ops = {
 	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(mtk_iommu_suspend, mtk_iommu_resume)
 };
 
+<<<<<<< HEAD
 static const struct mtk_iommu_plat_data mt2712_data = {
 	.m4u_plat = M4U_MT2712,
 	.has_4gb_mode = true,
@@ -1149,13 +1314,21 @@ static const struct of_device_id mtk_iommu_of_ids[] = {
 	{ .compatible = "mediatek,mt8168-m4u", .data = &mt8168_data},
 	{ .compatible = "mediatek,mt8173-m4u", .data = &mt8173_data},
 	{ .compatible = "mediatek,mt8183-m4u", .data = &mt8183_data},
+=======
+static const struct of_device_id mtk_iommu_of_ids[] = {
+	{ .compatible = "mediatek,mt2712-m4u", .data = (void *)M4U_MT2712},
+	{ .compatible = "mediatek,mt8173-m4u", .data = (void *)M4U_MT8173},
+>>>>>>> v4.14.187
 	{}
 };
 
 static struct platform_driver mtk_iommu_driver = {
 	.probe	= mtk_iommu_probe,
 	.remove	= mtk_iommu_remove,
+<<<<<<< HEAD
 	.shutdown = mtk_iommu_shutdown,
+=======
+>>>>>>> v4.14.187
 	.driver	= {
 		.name = "mtk-iommu",
 		.of_match_table = of_match_ptr(mtk_iommu_of_ids),

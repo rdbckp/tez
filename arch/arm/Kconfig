@@ -16,11 +16,17 @@ config ARM
 	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
 	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT if CPU_V7
 	select ARCH_SUPPORTS_ATOMIC_RMW
+<<<<<<< HEAD
 	select ARCH_HAS_PTE_SPECIAL if (ARM_LPAE || CPU_V7 || CPU_V7M || CPU_V6 || CPUV6K)
 	select ARCH_USE_BUILTIN_BSWAP
 	select ARCH_USE_CMPXCHG_LOCKREF
 	select ARCH_WANT_IPC_PARSE_VERSION
 	select ARCH_SUPPORTS_SPECULATIVE_PAGE_FAULT
+=======
+	select ARCH_USE_BUILTIN_BSWAP
+	select ARCH_USE_CMPXCHG_LOCKREF
+	select ARCH_WANT_IPC_PARSE_VERSION
+>>>>>>> v4.14.187
 	select BUILDTIME_EXTABLE_SORT if MMU
 	select CLONE_BACKWARDS
 	select CPU_PM if (SUSPEND || CPU_IDLE)
@@ -1664,6 +1670,7 @@ config HIGHMEM
 
 	  If unsure, say n.
 
+<<<<<<< HEAD
 config LOWMEM_RESERVE_LESS
 	bool "set lowmem_reserve as half(1/64) of original(1/32)"
 	depends on HIGHMEM
@@ -1674,6 +1681,8 @@ config LOWMEM_RESERVE_LESS
 	  When this config is enabled, let default lowmem_reserve_ratio as 64
 	  so that we reserve less pages.
 
+=======
+>>>>>>> v4.14.187
 config HIGHPTE
 	bool "Allocate 2nd-level pagetables from highmem" if EXPERT
 	depends on HIGHMEM
@@ -1834,6 +1843,7 @@ config XEN
 	help
 	  Say Y if you want to run Linux in a Virtual Machine on Xen on ARM.
 
+<<<<<<< HEAD
 config ARM_FLUSH_CONSOLE_ON_RESTART
 	bool "Force flush the console on restart"
 	help
@@ -1843,6 +1853,8 @@ config ARM_FLUSH_CONSOLE_ON_RESTART
 	  released if it failed to be acquired, which will cause all the
 	  pending messages to be flushed.
 
+=======
+>>>>>>> v4.14.187
 endmenu
 
 menu "Boot options"
@@ -1871,6 +1883,7 @@ config DEPRECATED_PARAM_STRUCT
 	  This was deprecated in 2001 and announced to live on for 5 years.
 	  Some old boot loaders still use this way.
 
+<<<<<<< HEAD
 config BUILD_ARM_APPENDED_DTB_IMAGE
 	bool "Build a concatenated zImage/dtb by default"
 	depends on OF
@@ -1902,6 +1915,8 @@ config BUILD_ARM_DTB_OVERLAY_IMAGE_NAMES
 	  Space separated list of names of dtbs to append when
 	  building a concatenated overlay image
 
+=======
+>>>>>>> v4.14.187
 # Compressed boot loader in ROM.  Yes, we really want to ask about
 # TEXT and BSS so we preserve their values in the config files.
 config ZBOOT_ROM_TEXT

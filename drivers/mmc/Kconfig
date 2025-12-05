@@ -12,6 +12,7 @@ menuconfig MMC
 	  If you want MMC/SD/SDIO support, you should say Y here and
 	  also to your specific host controller driver.
 
+<<<<<<< HEAD
 config MMC_SUPPORT_STLOG
         bool "Enable storage log"
         depends on MMC && PROC_STLOG
@@ -32,6 +33,8 @@ config SEC_MSDC_SSC
           This feature support for MSDC SSC.
   	  Select this option if this feature is needed on working.
 
+=======
+>>>>>>> v4.14.187
 if MMC
 
 source "drivers/mmc/core/Kconfig"

@@ -450,6 +450,7 @@ static u64 freezer_parent_freezing_read(struct cgroup_subsys_state *css,
 	return (bool)(freezer->state & CGROUP_FREEZING_PARENT);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SAMSUNG_FREECESS
 /**
  * Check if the task is allowed to be added to the freezer group
@@ -484,6 +485,8 @@ static void freezer_cancel_attach(struct cgroup_taskset *tset)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static struct cftype files[] = {
 	{
 		.name = "state",
@@ -512,8 +515,11 @@ struct cgroup_subsys freezer_cgrp_subsys = {
 	.attach		= freezer_attach,
 	.fork		= freezer_fork,
 	.legacy_cftypes	= files,
+<<<<<<< HEAD
 #ifdef CONFIG_SAMSUNG_FREECESS
 	.can_attach   = freezer_can_attach,
 	.cancel_attach  = freezer_cancel_attach,
 #endif
+=======
+>>>>>>> v4.14.187
 };

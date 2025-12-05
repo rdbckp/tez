@@ -46,7 +46,10 @@ static const char * const sym_regex_kernel[S_NSYMTYPES] = {
 	"^(xen_irq_disable_direct_reloc$|"
 	"xen_save_fl_direct_reloc$|"
 	"VDSO|"
+<<<<<<< HEAD
 	"__typeid__|"
+=======
+>>>>>>> v4.14.187
 	"__crc_)",
 
 /*
@@ -782,12 +785,15 @@ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
 			add_reloc(&relocs32neg, offset);
 		break;
 
+<<<<<<< HEAD
 	case R_X86_64_8:
 		if (!shn_abs || !is_reloc(S_ABS, symname))
 			die("Non-whitelisted %s relocation: %s\n",
 				rel_type(r_type), symname);
 		break;
 
+=======
+>>>>>>> v4.14.187
 	case R_X86_64_32:
 	case R_X86_64_32S:
 	case R_X86_64_64:

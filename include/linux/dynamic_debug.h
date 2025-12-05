@@ -53,6 +53,7 @@ int ddebug_add_module(struct _ddebug *tab, unsigned int n,
 #if defined(CONFIG_DYNAMIC_DEBUG)
 extern int ddebug_remove_module(const char *mod_name);
 extern __printf(2, 3)
+<<<<<<< HEAD
 void __dynamic_pr_emerg(struct _ddebug *descriptor, const char *fmt, ...);
 void __dynamic_pr_alert(struct _ddebug *descriptor, const char *fmt, ...);
 void __dynamic_pr_crit(struct _ddebug *descriptor, const char *fmt, ...);
@@ -60,6 +61,8 @@ void __dynamic_pr_err(struct _ddebug *descriptor, const char *fmt, ...);
 void __dynamic_pr_warn(struct _ddebug *descriptor, const char *fmt, ...);
 void __dynamic_pr_notice(struct _ddebug *descriptor, const char *fmt, ...);
 void __dynamic_pr_info(struct _ddebug *descriptor, const char *fmt, ...);
+=======
+>>>>>>> v4.14.187
 void __dynamic_pr_debug(struct _ddebug *descriptor, const char *fmt, ...);
 
 extern int ddebug_dyndbg_module_param_cb(char *param, char *val,
@@ -127,6 +130,7 @@ void __dynamic_netdev_dbg(struct _ddebug *descriptor,
 
 #endif
 
+<<<<<<< HEAD
 #define dynamic_pr_emerg(fmt, ...)                \
 ({ \
 	static bool __print_once __read_mostly; \
@@ -225,6 +229,8 @@ void __dynamic_netdev_dbg(struct _ddebug *descriptor,
 		printk(KERN_INFO KLOG_MODNAME pr_fmt(fmt), ##__VA_ARGS__); \
 })
 
+=======
+>>>>>>> v4.14.187
 #define dynamic_pr_debug(fmt, ...)				\
 do {								\
 	DEFINE_DYNAMIC_DEBUG_METADATA(descriptor, fmt);		\
@@ -235,7 +241,11 @@ do {								\
 
 #define dynamic_dev_dbg(dev, fmt, ...)				\
 do {								\
+<<<<<<< HEAD
 	DEFINE_DYNAMIC_DEBUG_METADATA(descriptor, fmt);	\
+=======
+	DEFINE_DYNAMIC_DEBUG_METADATA(descriptor, fmt);		\
+>>>>>>> v4.14.187
 	if (DYNAMIC_DEBUG_BRANCH(descriptor))			\
 		__dynamic_dev_dbg(&descriptor, dev, fmt,	\
 				  ##__VA_ARGS__);		\
@@ -282,6 +292,7 @@ static inline int ddebug_dyndbg_module_param_cb(char *param, char *val,
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 #define dynamic_pr_emerg(fmt, ...)                  \
 	do { if (0) printk(KERN_EMERG   pr_fmt(fmt), ##__VA_ARGS__); } while (0)
 #define dynamic_pr_alert(fmt, ...)                  \
@@ -296,6 +307,8 @@ static inline int ddebug_dyndbg_module_param_cb(char *param, char *val,
 	do { if (0) printk(KERN_NOTICE  pr_fmt(fmt), ##__VA_ARGS__); } while (0)
 #define dynamic_pr_info(fmt, ...)                   \
 	do { if (0) printk(KERN_INFO    pr_fmt(fmt), ##__VA_ARGS__); } while (0)
+=======
+>>>>>>> v4.14.187
 #define dynamic_pr_debug(fmt, ...)					\
 	do { if (0) printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__); } while (0)
 #define dynamic_dev_dbg(dev, fmt, ...)					\

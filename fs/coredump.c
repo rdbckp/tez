@@ -481,6 +481,7 @@ static bool dump_interrupted(void)
 	 * but then we need to teach dump_write() to restart and clear
 	 * TIF_SIGPENDING.
 	 */
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_AEE_FEATURE
 	/* avoid coredump truncated */
 	int ret = signal_pending(current);
@@ -494,6 +495,9 @@ static bool dump_interrupted(void)
 #else
 	return signal_pending(current);
 #endif
+=======
+	return signal_pending(current);
+>>>>>>> v4.14.187
 }
 
 static void wait_for_dump_helpers(struct file *file)
@@ -548,6 +552,7 @@ static int umh_pipe_setup(struct subprocess_info *info, struct cred *new)
 	return err;
 }
 
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_AEE_FEATURE) && defined(CONFIG_MTK_ENG_BUILD)
 #include <linux/suspend.h>
 
@@ -595,6 +600,8 @@ late_initcall(init_coredump);
 module_exit(exit_coredump);
 #endif
 
+=======
+>>>>>>> v4.14.187
 void do_coredump(const siginfo_t *siginfo)
 {
 	struct core_state core_state;
@@ -622,12 +629,15 @@ void do_coredump(const siginfo_t *siginfo)
 		.mm_flags = mm->flags,
 	};
 
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_AEE_FEATURE) && defined(CONFIG_MTK_ENG_BUILD)
 	siginfo_t tmp_si;
 
 	atomic_inc(&coredump_request_count);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	audit_core_dumps(siginfo->si_signo);
 
 	binfmt = mm->binfmt;
@@ -709,6 +719,7 @@ void do_coredump(const siginfo_t *siginfo)
 			goto fail_dropcount;
 		}
 
+<<<<<<< HEAD
 	#if defined(CONFIG_MTK_AEE_FEATURE) && defined(CONFIG_MTK_ENG_BUILD)
 		if (likely(current->last_siginfo == NULL)) {
 			tmp_si = *siginfo;
@@ -716,6 +727,8 @@ void do_coredump(const siginfo_t *siginfo)
 		}
 	#endif
 
+=======
+>>>>>>> v4.14.187
 		retval = -ENOMEM;
 		sub_info = call_usermodehelper_setup(helper_argv[0],
 						helper_argv, NULL, GFP_KERNEL,
@@ -819,7 +832,11 @@ void do_coredump(const siginfo_t *siginfo)
 			goto close_fail;
 		if (!(cprm.file->f_mode & FMODE_CAN_WRITE))
 			goto close_fail;
+<<<<<<< HEAD
 		if (do_truncate2(cprm.file->f_path.mnt, cprm.file->f_path.dentry, 0, 0, cprm.file))
+=======
+		if (do_truncate(cprm.file->f_path.dentry, 0, 0, cprm.file))
+>>>>>>> v4.14.187
 			goto close_fail;
 	}
 
@@ -857,9 +874,12 @@ fail_unlock:
 fail_creds:
 	put_cred(cred);
 fail:
+<<<<<<< HEAD
 #if defined(CONFIG_MTK_AEE_FEATURE) && defined(CONFIG_MTK_ENG_BUILD)
 	atomic_dec(&coredump_request_count);
 #endif
+=======
+>>>>>>> v4.14.187
 	return;
 }
 
@@ -876,6 +896,7 @@ int dump_emit(struct coredump_params *cprm, const void *addr, int nr)
 	if (cprm->written + nr > cprm->limit)
 		return 0;
 	while (nr) {
+<<<<<<< HEAD
 		if (dump_interrupted()) {
 			pr_info("%s: interrupted\n", __func__);
 			return 0;
@@ -903,6 +924,13 @@ int dump_emit(struct coredump_params *cprm, const void *addr, int nr)
 			return 0;
 #endif
 		}
+=======
+		if (dump_interrupted())
+			return 0;
+		n = __kernel_write(file, addr, nr, &pos);
+		if (n <= 0)
+			return 0;
+>>>>>>> v4.14.187
 		file->f_pos = pos;
 		cprm->written += n;
 		cprm->pos += n;

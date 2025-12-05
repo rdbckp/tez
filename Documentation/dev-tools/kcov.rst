@@ -12,31 +12,43 @@ To achieve this goal it does not collect coverage in soft/hard interrupts
 and instrumentation of some inherently non-deterministic parts of kernel is
 disabled (e.g. scheduler, locking).
 
+<<<<<<< HEAD
 kcov is also able to collect comparison operands from the instrumented code
 (this feature currently requires that the kernel is compiled with clang).
 
 Prerequisites
 -------------
+=======
+Usage
+-----
+>>>>>>> v4.14.187
 
 Configure the kernel with::
 
         CONFIG_KCOV=y
 
 CONFIG_KCOV requires gcc built on revision 231296 or later.
+<<<<<<< HEAD
 
 If the comparison operands need to be collected, set::
 
 	CONFIG_KCOV_ENABLE_COMPARISONS=y
 
+=======
+>>>>>>> v4.14.187
 Profiling data will only become accessible once debugfs has been mounted::
 
         mount -t debugfs none /sys/kernel/debug
 
+<<<<<<< HEAD
 Coverage collection
 -------------------
 
 The following program demonstrates coverage collection from within a test
 program using kcov:
+=======
+The following program demonstrates kcov usage from within a test program:
+>>>>>>> v4.14.187
 
 .. code-block:: c
 
@@ -56,9 +68,12 @@ program using kcov:
     #define KCOV_DISABLE			_IO('c', 101)
     #define COVER_SIZE			(64<<10)
 
+<<<<<<< HEAD
     #define KCOV_TRACE_PC  0
     #define KCOV_TRACE_CMP 1
 
+=======
+>>>>>>> v4.14.187
     int main(int argc, char **argv)
     {
 	int fd;
@@ -79,7 +94,11 @@ program using kcov:
 	if ((void*)cover == MAP_FAILED)
 		perror("mmap"), exit(1);
 	/* Enable coverage collection on the current thread. */
+<<<<<<< HEAD
 	if (ioctl(fd, KCOV_ENABLE, KCOV_TRACE_PC))
+=======
+	if (ioctl(fd, KCOV_ENABLE, 0))
+>>>>>>> v4.14.187
 		perror("ioctl"), exit(1);
 	/* Reset coverage from the tail of the ioctl() call. */
 	__atomic_store_n(&cover[0], 0, __ATOMIC_RELAXED);
@@ -126,6 +145,7 @@ The interface is fine-grained to allow efficient forking of test processes.
 That is, a parent process opens /sys/kernel/debug/kcov, enables trace mode,
 mmaps coverage buffer and then forks child processes in a loop. Child processes
 only need to enable coverage (disable happens automatically on thread end).
+<<<<<<< HEAD
 
 Comparison operands collection
 ------------------------------
@@ -331,3 +351,5 @@ selectively from different subsystems.
 		perror("close"), exit(1);
 	return 0;
     }
+=======
+>>>>>>> v4.14.187

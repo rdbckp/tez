@@ -20,6 +20,7 @@
 #include <linux/sched.h>
 #include <linux/smp.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/sched/clock.h>
 
 #include "tick-internal.h"
@@ -35,6 +36,11 @@
 #endif
 #endif
 
+=======
+
+#include "tick-internal.h"
+
+>>>>>>> v4.14.187
 /*
  * Broadcast support for broken x86 hardware, where the local apic
  * timer stops in C3 state.
@@ -535,6 +541,7 @@ static cpumask_var_t tick_broadcast_oneshot_mask __cpumask_var_read_mostly;
 static cpumask_var_t tick_broadcast_pending_mask __cpumask_var_read_mostly;
 static cpumask_var_t tick_broadcast_force_mask __cpumask_var_read_mostly;
 
+<<<<<<< HEAD
 #ifdef _MTK_TICK_BROADCAST_AEE_DUMP
 
 struct tick_broadcast_history_struct {
@@ -627,6 +634,8 @@ void tick_broadcast_mtk_aee_dump(void)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * Exposed for debugging: see timer_list.c
  */
@@ -661,9 +670,12 @@ static void tick_broadcast_set_affinity(struct clock_event_device *bc,
 
 	bc->cpumask = cpumask;
 	irq_set_affinity(bc->irq, bc->cpumask);
+<<<<<<< HEAD
 
 	/* MTK PATCH: record new target cpu for dynamic irq affinity */
 	bc->irq_affinity_on = cpumask_first(cpumask);
+=======
+>>>>>>> v4.14.187
 }
 
 static void tick_broadcast_set_event(struct clock_event_device *bc, int cpu,
@@ -713,9 +725,12 @@ static void tick_handle_oneshot_broadcast(struct clock_event_device *dev)
 	bool bc_local;
 
 	raw_spin_lock(&tick_broadcast_lock);
+<<<<<<< HEAD
 #ifdef _MTK_TICK_BROADCAST_AEE_DUMP
 	tick_broadcast_interrupt_count[smp_processor_id()]++;
 #endif
+=======
+>>>>>>> v4.14.187
 	dev->next_event = KTIME_MAX;
 	next_event = KTIME_MAX;
 	cpumask_clear(tmpmask);
@@ -797,6 +812,7 @@ static int broadcast_needs_cpu(struct clock_event_device *bc, int cpu)
 	return bc->bound_on == cpu ? -EBUSY : 0;
 }
 
+<<<<<<< HEAD
 /*
  * MTK PATCH:
  *
@@ -822,6 +838,8 @@ static int broadcast_needs_cpu_soctimer(struct clock_event_device *bc, int cpu)
 	return bc->irq_affinity_on == cpu ? -EBUSY : 0;
 }
 
+=======
+>>>>>>> v4.14.187
 static void broadcast_shutdown_local(struct clock_event_device *bc,
 				     struct clock_event_device *dev)
 {
@@ -844,11 +862,14 @@ int __tick_broadcast_oneshot_control(enum tick_broadcast_state state)
 	struct clock_event_device *bc, *dev;
 	int cpu, ret = 0;
 	ktime_t now;
+<<<<<<< HEAD
 #ifdef _MTK_TICK_BROADCAST_AEE_DUMP
 	uint64_t enter_offset = 0;
 	int i = 0, need_dump = 0, set_event = 0;
 	unsigned long long now_sched_clock = sched_clock();
 #endif
+=======
+>>>>>>> v4.14.187
 
 	/*
 	 * If there is no broadcast device, tell the caller not to go
@@ -905,9 +926,12 @@ int __tick_broadcast_oneshot_control(enum tick_broadcast_state state)
 			if (cpumask_test_cpu(cpu, tick_broadcast_force_mask)) {
 				ret = -EBUSY;
 			} else if (dev->next_event < bc->next_event) {
+<<<<<<< HEAD
 #ifdef _MTK_TICK_BROADCAST_AEE_DUMP
 				set_event = true;
 #endif
+=======
+>>>>>>> v4.14.187
 				tick_broadcast_set_event(bc, cpu, dev->next_event);
 				/*
 				 * In case of hrtimer broadcasts the
@@ -989,6 +1013,7 @@ int __tick_broadcast_oneshot_control(enum tick_broadcast_state state)
 		}
 	}
 out:
+<<<<<<< HEAD
 #ifdef _MTK_TICK_BROADCAST_AEE_DUMP
 	if (state == TICK_BROADCAST_ENTER) {
 		tick_broadcast_history[cpu].time_enter = now_sched_clock;
@@ -1120,6 +1145,9 @@ out:
 		printk_deferred("[name:bc&]%s\n", get_bc_dump_buf(bc_dump_buf));
 	}
 #endif
+=======
+	raw_spin_unlock(&tick_broadcast_lock);
+>>>>>>> v4.14.187
 	return ret;
 }
 
@@ -1216,7 +1244,10 @@ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
 {
 	struct clock_event_device *bc;
 	unsigned long flags;
+<<<<<<< HEAD
 	unsigned int next_cpu;
+=======
+>>>>>>> v4.14.187
 
 	raw_spin_lock_irqsave(&tick_broadcast_lock, flags);
 	bc = tick_broadcast_device.evtdev;
@@ -1225,6 +1256,7 @@ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
 		/* This moves the broadcast assignment to this CPU: */
 		clockevents_program_event(bc, bc->next_event, 1);
 	}
+<<<<<<< HEAD
 
 	/*
 	 * MTK PATCH:
@@ -1255,6 +1287,8 @@ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
 			clockevents_program_event(bc, bc->next_event, 1);
 	}
 
+=======
+>>>>>>> v4.14.187
 	raw_spin_unlock_irqrestore(&tick_broadcast_lock, flags);
 }
 

@@ -367,8 +367,12 @@ EXPORT_SYMBOL(vm_mmap);
  * __GFP_RETRY_MAYFAIL is supported, and it should be used only if kmalloc is
  * preferable to the vmalloc fallback, due to visible performance drawbacks.
  *
+<<<<<<< HEAD
  * Please note that any use of gfp flags outside of GFP_KERNEL is careful to not
  * fall back to vmalloc.
+=======
+ * Any use of gfp flags outside of GFP_KERNEL should be consulted with mm people.
+>>>>>>> v4.14.187
  */
 void *kvmalloc_node(size_t size, gfp_t flags, int node)
 {
@@ -379,8 +383,12 @@ void *kvmalloc_node(size_t size, gfp_t flags, int node)
 	 * vmalloc uses GFP_KERNEL for some internal allocations (e.g page tables)
 	 * so the given set of flags has to be compatible.
 	 */
+<<<<<<< HEAD
 	if ((flags & GFP_KERNEL) != GFP_KERNEL)
 		return kmalloc_node(size, flags, node);
+=======
+	WARN_ON_ONCE((flags & GFP_KERNEL) != GFP_KERNEL);
+>>>>>>> v4.14.187
 
 	/*
 	 * We want to attempt a large physically contiguous block first because
@@ -659,7 +667,12 @@ int __vm_enough_memory(struct mm_struct *mm, long pages, int cap_sys_admin)
 		 * Part of the kernel memory, which can be released
 		 * under memory pressure.
 		 */
+<<<<<<< HEAD
 		free += global_node_page_state(NR_KERNEL_MISC_RECLAIMABLE);
+=======
+		free += global_node_page_state(
+			NR_INDIRECTLY_RECLAIMABLE_BYTES) >> PAGE_SHIFT;
+>>>>>>> v4.14.187
 
 		/*
 		 * Leave reserved pages. The pages are not for anonymous pages.

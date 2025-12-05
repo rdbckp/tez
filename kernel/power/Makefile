@@ -15,5 +15,8 @@ obj-$(CONFIG_PM_AUTOSLEEP)	+= autosleep.o
 obj-$(CONFIG_PM_WAKELOCKS)	+= wakelock.o
 
 obj-$(CONFIG_MAGIC_SYSRQ)	+= poweroff.o
+<<<<<<< HEAD
 
 obj-$(CONFIG_SUSPEND)	+= wakeup_reason.o
+=======
+>>>>>>> v4.14.187

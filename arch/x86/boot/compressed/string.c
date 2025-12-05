@@ -11,7 +11,11 @@
 #include "../string.c"
 
 #ifdef CONFIG_X86_32
+<<<<<<< HEAD
 static void *____memcpy(void *dest, const void *src, size_t n)
+=======
+static void *__memcpy(void *dest, const void *src, size_t n)
+>>>>>>> v4.14.187
 {
 	int d0, d1, d2;
 	asm volatile(
@@ -25,7 +29,11 @@ static void *____memcpy(void *dest, const void *src, size_t n)
 	return dest;
 }
 #else
+<<<<<<< HEAD
 static void *____memcpy(void *dest, const void *src, size_t n)
+=======
+static void *__memcpy(void *dest, const void *src, size_t n)
+>>>>>>> v4.14.187
 {
 	long d0, d1, d2;
 	asm volatile(
@@ -56,7 +64,11 @@ void *memmove(void *dest, const void *src, size_t n)
 	const unsigned char *s = src;
 
 	if (d <= s || d - s >= n)
+<<<<<<< HEAD
 		return ____memcpy(dest, src, n);
+=======
+		return __memcpy(dest, src, n);
+>>>>>>> v4.14.187
 
 	while (n-- > 0)
 		d[n] = s[n];
@@ -71,6 +83,7 @@ void *memcpy(void *dest, const void *src, size_t n)
 		warn("Avoiding potentially unsafe overlapping memcpy()!");
 		return memmove(dest, src, n);
 	}
+<<<<<<< HEAD
 	return ____memcpy(dest, src, n);
 }
 
@@ -79,3 +92,7 @@ extern void *__memset(void *s, int c, size_t n) __alias(memset);
 extern void *__memmove(void *dest, const void *src, size_t n) __alias(memmove);
 extern void *__memcpy(void *dest, const void *src, size_t n) __alias(memcpy);
 #endif
+=======
+	return __memcpy(dest, src, n);
+}
+>>>>>>> v4.14.187

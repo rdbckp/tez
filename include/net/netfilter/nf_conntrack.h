@@ -27,10 +27,13 @@
 
 #include <net/netfilter/nf_conntrack_tuple.h>
 
+<<<<<<< HEAD
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 #define PROCESS_NAME_LEN_NAP	128
 #define DOMAIN_NAME_LEN_NAP	255
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
+=======
+>>>>>>> v4.14.187
 /* per conntrack: protocol private data */
 union nf_conntrack_proto {
 	/* insert conntrack proto private data here */
@@ -102,6 +105,7 @@ struct nf_conn {
 
 	/* Storage reserved for other modules, must be the last member */
 	union nf_conntrack_proto proto;
+<<<<<<< HEAD
 
 	// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 	/* The number of application layer bytes sent by the socket */
@@ -134,6 +138,8 @@ struct nf_conn {
 	/* Atomic variable indicating end of intermediate flow */
 	atomic_t intermediateFlow;
 	// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
+=======
+>>>>>>> v4.14.187
 };
 
 static inline struct nf_conn *
@@ -321,7 +327,11 @@ static inline bool nf_ct_should_gc(const struct nf_conn *ct)
 
 struct kernel_param;
 
+<<<<<<< HEAD
 int nf_conntrack_set_hashsize(const char *val, const struct kernel_param *kp);
+=======
+int nf_conntrack_set_hashsize(const char *val, struct kernel_param *kp);
+>>>>>>> v4.14.187
 int nf_conntrack_hash_resize(unsigned int hashsize);
 
 extern struct hlist_nulls_head *nf_conntrack_hash;

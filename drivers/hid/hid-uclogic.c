@@ -941,9 +941,12 @@ static int uclogic_probe(struct hid_device *hdev,
 	struct usb_device *udev = hid_to_usb_dev(hdev);
 	struct uclogic_drvdata *drvdata;
 
+<<<<<<< HEAD
 	if (!hid_is_usb(hdev))
 		return -EINVAL;
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * libinput requires the pad interface to be on a different node
 	 * than the pen, so use QUIRK_MULTI_INPUT for all tablets.

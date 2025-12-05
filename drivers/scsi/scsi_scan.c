@@ -303,11 +303,14 @@ static struct scsi_device *scsi_alloc_sdev(struct scsi_target *starget,
 		}
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_TURBO_WRITE
 	if (shost->by_ufs)
 		scsi_alloc_tw(sdev);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	return sdev;
 
 out_device_destroy:
@@ -974,6 +977,7 @@ static int scsi_add_lun(struct scsi_device *sdev, unsigned char *inq_result,
 
 	transport_configure_device(&sdev->sdev_gendev);
 
+<<<<<<< HEAD
 	/*
 	 * MTK PATCH:
 	 * The LLD can override auto suspend configuration in ->
@@ -982,6 +986,8 @@ static int scsi_add_lun(struct scsi_device *sdev, unsigned char *inq_result,
 	sdev->use_rpm_auto = 0;
 	sdev->autosuspend_delay = SCSI_DEFAULT_AUTOSUSPEND_DELAY;
 
+=======
+>>>>>>> v4.14.187
 	if (sdev->host->hostt->slave_configure) {
 		ret = sdev->host->hostt->slave_configure(sdev);
 		if (ret) {

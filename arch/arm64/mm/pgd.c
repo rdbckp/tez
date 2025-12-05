@@ -26,6 +26,7 @@
 #include <asm/page.h>
 #include <asm/tlbflush.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_UH
 #include <linux/uh.h>
 #ifdef CONFIG_UH_RKP
@@ -35,10 +36,13 @@
 #endif
 #endif
 
+=======
+>>>>>>> v4.14.187
 static struct kmem_cache *pgd_cache;
 
 pgd_t *pgd_alloc(struct mm_struct *mm)
 {
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	pgd_t *ret = NULL;
 
@@ -64,15 +68,21 @@ pgd_t *pgd_alloc(struct mm_struct *mm)
 
 	return ret;
 #else
+=======
+>>>>>>> v4.14.187
 	if (PGD_SIZE == PAGE_SIZE)
 		return (pgd_t *)__get_free_page(PGALLOC_GFP);
 	else
 		return kmem_cache_alloc(pgd_cache, PGALLOC_GFP);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 void pgd_free(struct mm_struct *mm, pgd_t *pgd)
 {
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	if(rkp_started)
 #ifdef CONFIG_UH_RKP
@@ -96,11 +106,16 @@ void pgd_free(struct mm_struct *mm, pgd_t *pgd)
 			kmem_cache_free(pgd_cache, pgd);
 	}
 #else
+=======
+>>>>>>> v4.14.187
 	if (PGD_SIZE == PAGE_SIZE)
 		free_page((unsigned long)pgd);
 	else
 		kmem_cache_free(pgd_cache, pgd);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 void __init pgd_cache_init(void)

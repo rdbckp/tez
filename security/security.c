@@ -12,7 +12,10 @@
  *	(at your option) any later version.
  */
 
+<<<<<<< HEAD
 #include <linux/bpf.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/capability.h>
 #include <linux/dcache.h>
 #include <linux/module.h>
@@ -28,7 +31,10 @@
 #include <linux/personality.h>
 #include <linux/backing-dev.h>
 #include <linux/string.h>
+<<<<<<< HEAD
 #include <linux/task_integrity.h>
+=======
+>>>>>>> v4.14.187
 #include <net/flow.h>
 
 #define MAX_LSM_EVM_XATTR	2
@@ -200,6 +206,7 @@ EXPORT_SYMBOL(unregister_lsm_notifier);
  *	This is a hook that returns a value.
  */
 
+<<<<<<< HEAD
 /*
  * security_integrity_current() is added,
  * which has a dependency of CONFIG_KDP_CRED.
@@ -207,11 +214,16 @@ EXPORT_SYMBOL(unregister_lsm_notifier);
  * if CONFIG_KDP_CRED is disabled, it will always return 0.
  */
 
+=======
+>>>>>>> v4.14.187
 #define call_void_hook(FUNC, ...)				\
 	do {							\
 		struct security_hook_list *P;			\
 								\
+<<<<<<< HEAD
 		if (security_integrity_current()) break;		\
+=======
+>>>>>>> v4.14.187
 		list_for_each_entry(P, &security_hook_heads.FUNC, list)	\
 			P->hook.FUNC(__VA_ARGS__);		\
 	} while (0)
@@ -221,7 +233,10 @@ EXPORT_SYMBOL(unregister_lsm_notifier);
 	do {							\
 		struct security_hook_list *P;			\
 								\
+<<<<<<< HEAD
 		if (security_integrity_current()) break;		\
+=======
+>>>>>>> v4.14.187
 		list_for_each_entry(P, &security_hook_heads.FUNC, list) { \
 			RC = P->hook.FUNC(__VA_ARGS__);		\
 			if (RC != 0)				\
@@ -233,25 +248,44 @@ EXPORT_SYMBOL(unregister_lsm_notifier);
 
 /* Security operations */
 
+<<<<<<< HEAD
 int security_binder_set_context_mgr(const struct cred *mgr)
+=======
+int security_binder_set_context_mgr(struct task_struct *mgr)
+>>>>>>> v4.14.187
 {
 	return call_int_hook(binder_set_context_mgr, 0, mgr);
 }
 
+<<<<<<< HEAD
 int security_binder_transaction(const struct cred *from,
 				const struct cred *to)
+=======
+int security_binder_transaction(struct task_struct *from,
+				struct task_struct *to)
+>>>>>>> v4.14.187
 {
 	return call_int_hook(binder_transaction, 0, from, to);
 }
 
+<<<<<<< HEAD
 int security_binder_transfer_binder(const struct cred *from,
 				    const struct cred *to)
+=======
+int security_binder_transfer_binder(struct task_struct *from,
+				    struct task_struct *to)
+>>>>>>> v4.14.187
 {
 	return call_int_hook(binder_transfer_binder, 0, from, to);
 }
 
+<<<<<<< HEAD
 int security_binder_transfer_file(const struct cred *from,
 				  const struct cred *to, struct file *file)
+=======
+int security_binder_transfer_file(struct task_struct *from,
+				  struct task_struct *to, struct file *file)
+>>>>>>> v4.14.187
 {
 	return call_int_hook(binder_transfer_file, 0, from, to, file);
 }
@@ -351,9 +385,12 @@ int security_bprm_check(struct linux_binprm *bprm)
 	ret = call_int_hook(bprm_check_security, 0, bprm);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 	ret = five_bprm_check(bprm);
 	if (ret)
 		return ret;
+=======
+>>>>>>> v4.14.187
 	return ima_bprm_check(bprm);
 }
 
@@ -611,7 +648,10 @@ int security_path_chown(const struct path *path, kuid_t uid, kgid_t gid)
 		return 0;
 	return call_int_hook(path_chown, 0, path, uid, gid);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(security_path_chown);
+=======
+>>>>>>> v4.14.187
 
 int security_path_chroot(const struct path *path)
 {
@@ -751,9 +791,12 @@ int security_inode_setxattr(struct dentry *dentry, const char *name,
 		ret = cap_inode_setxattr(dentry, name, value, size, flags);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 	ret = five_inode_setxattr(dentry, name, value, size);
 	if (ret)
 		return ret;
+=======
+>>>>>>> v4.14.187
 	ret = ima_inode_setxattr(dentry, name, value, size);
 	if (ret)
 		return ret;
@@ -798,9 +841,12 @@ int security_inode_removexattr(struct dentry *dentry, const char *name)
 		ret = cap_inode_removexattr(dentry, name);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 	ret = five_inode_removexattr(dentry, name);
 	if (ret)
 		return ret;
+=======
+>>>>>>> v4.14.187
 	ret = ima_inode_removexattr(dentry, name);
 	if (ret)
 		return ret;
@@ -946,9 +992,12 @@ int security_mmap_file(struct file *file, unsigned long prot,
 					mmap_prot(file, prot), flags);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 	ret = five_file_mmap(file, prot);
 	if (ret)
 		return ret;
+=======
+>>>>>>> v4.14.187
 	return ima_file_mmap(file, prot);
 }
 
@@ -997,11 +1046,15 @@ int security_file_open(struct file *file, const struct cred *cred)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = fsnotify_perm(file, MAY_OPEN);
 	if (ret)
 		return ret;
 
 	return five_file_open(file);
+=======
+	return fsnotify_perm(file, MAY_OPEN);
+>>>>>>> v4.14.187
 }
 
 int security_task_alloc(struct task_struct *task, unsigned long clone_flags)
@@ -1012,7 +1065,10 @@ int security_task_alloc(struct task_struct *task, unsigned long clone_flags)
 void security_task_free(struct task_struct *task)
 {
 	call_void_hook(task_free, task);
+<<<<<<< HEAD
 	five_task_free(task);
+=======
+>>>>>>> v4.14.187
 }
 
 int security_cred_alloc_blank(struct cred *cred, gfp_t gfp)
@@ -1741,6 +1797,7 @@ int security_audit_rule_match(u32 secid, u32 field, u32 op, void *lsmrule,
 				actx);
 }
 #endif /* CONFIG_AUDIT */
+<<<<<<< HEAD
 
 #ifdef CONFIG_BPF_SYSCALL
 int security_bpf(int cmd, union bpf_attr *attr, unsigned int size)
@@ -1799,3 +1856,5 @@ int security_perf_event_write(struct perf_event *event)
 	return call_int_hook(perf_event_write, 0, event);
 }
 #endif /* CONFIG_PERF_EVENTS */
+=======
+>>>>>>> v4.14.187

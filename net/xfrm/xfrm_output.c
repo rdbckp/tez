@@ -66,7 +66,12 @@ static int xfrm_output_one(struct sk_buff *skb, int err)
 			goto error_nolock;
 		}
 
+<<<<<<< HEAD
 		skb->mark = xfrm_smark_get(skb->mark, x);
+=======
+		if (x->props.output_mark)
+			skb->mark = x->props.output_mark;
+>>>>>>> v4.14.187
 
 		err = x->outer_mode->output(x, skb);
 		if (err) {

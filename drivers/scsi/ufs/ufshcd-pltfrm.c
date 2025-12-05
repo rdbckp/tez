@@ -107,6 +107,7 @@ static int ufshcd_parse_clock_info(struct ufs_hba *hba)
 		if (ret)
 			goto out;
 
+<<<<<<< HEAD
 		/* skip vendor clk, vendor clk shall be handled by vops */
 		if (strstr(name, "vendor")) {
 			dev_info(dev, "%s: vendor clk %s is found and skipped\n",
@@ -114,6 +115,8 @@ static int ufshcd_parse_clock_info(struct ufs_hba *hba)
 			continue;
 		}
 
+=======
+>>>>>>> v4.14.187
 		clki = devm_kzalloc(dev, sizeof(*clki), GFP_KERNEL);
 		if (!clki) {
 			ret = -ENOMEM;

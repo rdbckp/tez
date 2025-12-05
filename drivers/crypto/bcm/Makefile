@@ -7,6 +7,7 @@
 # CFLAGS_cipher.o := -DDEBUG
 # CFLAGS_spu.o := -DDEBUG
 # CFLAGS_spu2.o := -DDEBUG
+<<<<<<< HEAD
 ifeq ($(cc-name),clang)
 ccflags-y += -Wno-error=enum-conversion
 endif
@@ -16,6 +17,11 @@ obj-$(CONFIG_CRYPTO_DEV_BCM_SPU) := bcm_crypto_spu.o
 ifneq ($(cc-name),clang)
 CFLAGS_spu2.o = -Wno-maybe-uninitialized
 endif
+=======
+
+obj-$(CONFIG_CRYPTO_DEV_BCM_SPU) := bcm_crypto_spu.o
+
+>>>>>>> v4.14.187
 bcm_crypto_spu-objs :=  util.o spu.o spu2.o cipher.o
 
 ccflags-y += -I. -DBCMDRIVER

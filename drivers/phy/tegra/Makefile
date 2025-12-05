@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 ifeq ($(cc-name),clang)
 ccflags-y += -Wno-error=self-assign
 endif
+=======
+>>>>>>> v4.14.187
 obj-$(CONFIG_PHY_TEGRA_XUSB) += phy-tegra-xusb.o
 
 phy-tegra-xusb-y += xusb.o

@@ -1036,6 +1036,10 @@ xdr_buf_subsegment(struct xdr_buf *buf, struct xdr_buf *subbuf,
 		base = 0;
 	} else {
 		base -= buf->head[0].iov_len;
+<<<<<<< HEAD
+=======
+		subbuf->head[0].iov_base = buf->head[0].iov_base;
+>>>>>>> v4.14.187
 		subbuf->head[0].iov_len = 0;
 	}
 
@@ -1048,6 +1052,11 @@ xdr_buf_subsegment(struct xdr_buf *buf, struct xdr_buf *subbuf,
 		base = 0;
 	} else {
 		base -= buf->page_len;
+<<<<<<< HEAD
+=======
+		subbuf->pages = buf->pages;
+		subbuf->page_base = 0;
+>>>>>>> v4.14.187
 		subbuf->page_len = 0;
 	}
 
@@ -1059,6 +1068,10 @@ xdr_buf_subsegment(struct xdr_buf *buf, struct xdr_buf *subbuf,
 		base = 0;
 	} else {
 		base -= buf->tail[0].iov_len;
+<<<<<<< HEAD
+=======
+		subbuf->tail[0].iov_base = buf->tail[0].iov_base;
+>>>>>>> v4.14.187
 		subbuf->tail[0].iov_len = 0;
 	}
 

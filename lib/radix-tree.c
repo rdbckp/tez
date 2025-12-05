@@ -87,11 +87,14 @@ struct radix_tree_preload {
 };
 static DEFINE_PER_CPU(struct radix_tree_preload, radix_tree_preloads) = { 0, };
 
+<<<<<<< HEAD
 static inline void *indirect_to_ptr(void *ptr)
 {
 	return (void *)((unsigned long)ptr & ~RADIX_TREE_INDIRECT_PTR);
 }
 
+=======
+>>>>>>> v4.14.187
 static inline struct radix_tree_node *entry_to_node(void *ptr)
 {
 	return (void *)((unsigned long)ptr & ~RADIX_TREE_INTERNAL_NODE);
@@ -1853,6 +1856,7 @@ radix_tree_gang_lookup(const struct radix_tree_root *root, void **results,
 EXPORT_SYMBOL(radix_tree_gang_lookup);
 
 /**
+<<<<<<< HEAD
  *	radix_tree_gang_lookup_index - perform multiple lookup on a radix tree
  *	@root:		radix tree root
  *	@results:	where the results of the lookup are placed
@@ -1896,6 +1900,8 @@ radix_tree_gang_lookup_index(struct radix_tree_root *root, void **results,
 EXPORT_SYMBOL(radix_tree_gang_lookup_index);
 
 /**
+=======
+>>>>>>> v4.14.187
  *	radix_tree_gang_lookup_slot - perform multiple slot lookup on radix tree
  *	@root:		radix tree root
  *	@results:	where the results of the lookup are placed

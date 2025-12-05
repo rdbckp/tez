@@ -90,7 +90,11 @@ EXPORT_SYMBOL_GPL(hid_register_report);
  * Register a new field for this report.
  */
 
+<<<<<<< HEAD
 static struct hid_field *hid_register_field(struct hid_report *report, unsigned usages)
+=======
+static struct hid_field *hid_register_field(struct hid_report *report, unsigned usages, unsigned values)
+>>>>>>> v4.14.187
 {
 	struct hid_field *field;
 
@@ -101,7 +105,11 @@ static struct hid_field *hid_register_field(struct hid_report *report, unsigned 
 
 	field = kzalloc((sizeof(struct hid_field) +
 			 usages * sizeof(struct hid_usage) +
+<<<<<<< HEAD
 			 usages * sizeof(unsigned)), GFP_KERNEL);
+=======
+			 values * sizeof(unsigned)), GFP_KERNEL);
+>>>>>>> v4.14.187
 	if (!field)
 		return NULL;
 
@@ -280,7 +288,11 @@ static int hid_add_field(struct hid_parser *parser, unsigned report_type, unsign
 	usages = max_t(unsigned, parser->local.usage_index,
 				 parser->global.report_count);
 
+<<<<<<< HEAD
 	field = hid_register_field(report, usages);
+=======
+	field = hid_register_field(report, usages, parser->global.report_count);
+>>>>>>> v4.14.187
 	if (!field)
 		return 0;
 
@@ -489,9 +501,12 @@ static int hid_parser_local(struct hid_parser *parser, struct hid_item *item)
 			return 0;
 		}
 
+<<<<<<< HEAD
 		if (item->size <= 2)
 			data = (parser->global.usage_page << 16) + data;
 
+=======
+>>>>>>> v4.14.187
 		return hid_add_usage(parser, data, item->size);
 
 	case HID_LOCAL_ITEM_TAG_USAGE_MINIMUM:
@@ -501,9 +516,12 @@ static int hid_parser_local(struct hid_parser *parser, struct hid_item *item)
 			return 0;
 		}
 
+<<<<<<< HEAD
 		if (item->size <= 2)
 			data = (parser->global.usage_page << 16) + data;
 
+=======
+>>>>>>> v4.14.187
 		parser->local.usage_minimum = data;
 		return 0;
 
@@ -514,9 +532,12 @@ static int hid_parser_local(struct hid_parser *parser, struct hid_item *item)
 			return 0;
 		}
 
+<<<<<<< HEAD
 		if (item->size <= 2)
 			data = (parser->global.usage_page << 16) + data;
 
+=======
+>>>>>>> v4.14.187
 		count = data - parser->local.usage_minimum;
 		if (count + parser->local.usage_index >= HID_MAX_USAGES) {
 			/*
@@ -1436,6 +1457,7 @@ static void hid_output_field(const struct hid_device *hid,
 }
 
 /*
+<<<<<<< HEAD
  * Compute the size of a report.
  */
 static size_t hid_compute_report_size(struct hid_report *report)
@@ -1447,6 +1469,8 @@ static size_t hid_compute_report_size(struct hid_report *report)
 }
 
 /*
+=======
+>>>>>>> v4.14.187
  * Create a report. 'data' has to be allocated using
  * hid_alloc_report_buf() so that it has proper size.
  */
@@ -1458,7 +1482,11 @@ void hid_output_report(struct hid_report *report, __u8 *data)
 	if (report->id > 0)
 		*data++ = report->id;
 
+<<<<<<< HEAD
 	memset(data, 0, hid_compute_report_size(report));
+=======
+	memset(data, 0, ((report->size - 1) >> 3) + 1);
+>>>>>>> v4.14.187
 	for (n = 0; n < report->maxfield; n++)
 		hid_output_field(report->device, report->field[n], data);
 }
@@ -1585,7 +1613,11 @@ int hid_report_raw_event(struct hid_device *hid, int type, u8 *data, u32 size,
 		csize--;
 	}
 
+<<<<<<< HEAD
 	rsize = hid_compute_report_size(report);
+=======
+	rsize = ((report->size - 1) >> 3) + 1;
+>>>>>>> v4.14.187
 
 	if (report_enum->numbered && rsize >= HID_MAX_BUFFER_SIZE)
 		rsize = HID_MAX_BUFFER_SIZE - 1;
@@ -2281,6 +2313,7 @@ static const struct hid_device_id hid_have_special_driver[] = {
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_NINTENDO, USB_DEVICE_ID_NINTENDO_WIIMOTE) },
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_NINTENDO, USB_DEVICE_ID_NINTENDO_WIIMOTE2) },
 #endif
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_HID_NINTENDO)
 	{ HID_USB_DEVICE(USB_VENDOR_ID_NINTENDO,
 		USB_DEVICE_ID_NINTENDO_PROCON) },
@@ -2291,6 +2324,8 @@ static const struct hid_device_id hid_have_special_driver[] = {
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_NINTENDO,
 		USB_DEVICE_ID_NINTENDO_JOYCONR) },
 #endif
+=======
+>>>>>>> v4.14.187
 #if IS_ENABLED(CONFIG_HID_NTI)
 	{ HID_USB_DEVICE(USB_VENDOR_ID_NTI, USB_DEVICE_ID_USB_SUN) },
 #endif
@@ -2383,12 +2418,15 @@ static const struct hid_device_id hid_have_special_driver[] = {
 #if IS_ENABLED(CONFIG_HID_SAMSUNG)
 	{ HID_USB_DEVICE(USB_VENDOR_ID_SAMSUNG, USB_DEVICE_ID_SAMSUNG_IR_REMOTE) },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_SAMSUNG, USB_DEVICE_ID_SAMSUNG_WIRELESS_KBD_MOUSE) },
+<<<<<<< HEAD
     { HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_SAMSUNG_ELECTRONICS, USB_DEVICE_ID_SAMSUNG_WIRELESS_KBD) },
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_SAMSUNG_ELECTRONICS, USB_DEVICE_ID_SAMSUNG_WIRELESS_GAMEPAD) },
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_SAMSUNG_ELECTRONICS, USB_DEVICE_ID_SAMSUNG_WIRELESS_ACTIONMOUSE) },
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_SAMSUNG_ELECTRONICS, USB_DEVICE_ID_SAMSUNG_WIRELESS_BOOKCOVER) },
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_SAMSUNG_ELECTRONICS, USB_DEVICE_ID_SAMSUNG_WIRELESS_UNIVERSAL_KBD) },
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_SAMSUNG_ELECTRONICS, USB_DEVICE_ID_SAMSUNG_WIRELESS_MULTI_HOGP_KBD) },
+=======
+>>>>>>> v4.14.187
 #endif
 #if IS_ENABLED(CONFIG_HID_SMARTJOYPLUS)
 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLAYDOTCOM, USB_DEVICE_ID_PLAYDOTCOM_EMS_USBII) },
@@ -2474,10 +2512,13 @@ static const struct hid_device_id hid_have_special_driver[] = {
 #if IS_ENABLED(CONFIG_HID_UDRAW_PS3)
 	{ HID_USB_DEVICE(USB_VENDOR_ID_THQ, USB_DEVICE_ID_THQ_PS3_UDRAW) },
 #endif
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_HID_STEAM)
 	{ HID_USB_DEVICE(USB_VENDOR_ID_VALVE, USB_DEVICE_ID_STEAM_CONTROLLER) },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_VALVE, USB_DEVICE_ID_STEAM_CONTROLLER_WIRELESS) },
 #endif
+=======
+>>>>>>> v4.14.187
 #if IS_ENABLED(CONFIG_HID_WALTOP)
 	{ HID_USB_DEVICE(USB_VENDOR_ID_WALTOP, USB_DEVICE_ID_WALTOP_SLIM_TABLET_5_8_INCH) },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_WALTOP, USB_DEVICE_ID_WALTOP_SLIM_TABLET_12_1_INCH) },

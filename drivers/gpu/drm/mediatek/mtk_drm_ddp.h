@@ -15,6 +15,7 @@
 #define MTK_DRM_DDP_H
 
 #include "mtk_drm_ddp_comp.h"
+<<<<<<< HEAD
 #include "mtk_drm_crtc.h"
 #include <linux/soc/mediatek/mtk-cmdq.h>
 
@@ -25,10 +26,13 @@
 #define __DISP_MUTEX_INT_MSK ((1 << (DISP_MUTEX_DDP_COUNT)) - 1)
 #define DISP_MUTEX_INT_MSK                                                     \
 	((__DISP_MUTEX_INT_MSK << DISP_MUTEX_TOTAL) | __DISP_MUTEX_INT_MSK)
+=======
+>>>>>>> v4.14.187
 
 struct regmap;
 struct device;
 struct mtk_disp_mutex;
+<<<<<<< HEAD
 struct mtk_mmsys_reg_data;
 enum mtk_mmsys_id {
 	MMSYS_MT2701,
@@ -63,27 +67,43 @@ void mtk_ddp_remove_comp_from_path_with_cmdq(struct mtk_drm_crtc *mtk_crtc,
 					     enum mtk_ddp_comp_id cur,
 					     enum mtk_ddp_comp_id next,
 					     struct cmdq_pkt *handle);
+=======
+
+void mtk_ddp_add_comp_to_path(void __iomem *config_regs,
+			      enum mtk_ddp_comp_id cur,
+			      enum mtk_ddp_comp_id next);
+void mtk_ddp_remove_comp_from_path(void __iomem *config_regs,
+				   enum mtk_ddp_comp_id cur,
+				   enum mtk_ddp_comp_id next);
+>>>>>>> v4.14.187
 
 struct mtk_disp_mutex *mtk_disp_mutex_get(struct device *dev, unsigned int id);
 int mtk_disp_mutex_prepare(struct mtk_disp_mutex *mutex);
 void mtk_disp_mutex_add_comp(struct mtk_disp_mutex *mutex,
 			     enum mtk_ddp_comp_id id);
+<<<<<<< HEAD
 void mtk_disp_mutex_add_comp_with_cmdq(struct mtk_drm_crtc *mtk_crtc,
 				       enum mtk_ddp_comp_id id, bool is_cmd_mod,
 				       struct cmdq_pkt *handle,
 				       unsigned int mutex_id);
+=======
+>>>>>>> v4.14.187
 void mtk_disp_mutex_enable(struct mtk_disp_mutex *mutex);
 void mtk_disp_mutex_disable(struct mtk_disp_mutex *mutex);
 void mtk_disp_mutex_remove_comp(struct mtk_disp_mutex *mutex,
 				enum mtk_ddp_comp_id id);
+<<<<<<< HEAD
 void mtk_disp_mutex_remove_comp_with_cmdq(struct mtk_drm_crtc *mtk_crtc,
 					  enum mtk_ddp_comp_id id,
 					  struct cmdq_pkt *handle,
 					  unsigned int mutex_id);
+=======
+>>>>>>> v4.14.187
 void mtk_disp_mutex_unprepare(struct mtk_disp_mutex *mutex);
 void mtk_disp_mutex_put(struct mtk_disp_mutex *mutex);
 void mtk_disp_mutex_acquire(struct mtk_disp_mutex *mutex);
 void mtk_disp_mutex_release(struct mtk_disp_mutex *mutex);
+<<<<<<< HEAD
 void mtk_disp_mutex_trigger(struct mtk_disp_mutex *mutex, void *handle);
 
 void mutex_dump_reg(struct mtk_disp_mutex *mutex);
@@ -136,5 +156,7 @@ void mtk_ddp_remove_dsc_prim_MT6853(struct mtk_drm_crtc *mtk_crtc,
 
 void mmsys_config_dump_analysis_mt6833(void __iomem *config_regs);
 void mutex_dump_analysis_mt6833(struct mtk_disp_mutex *mutex);
+=======
+>>>>>>> v4.14.187
 
 #endif /* MTK_DRM_DDP_H */

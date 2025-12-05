@@ -31,8 +31,16 @@
 #include <crypto/sha1_base.h>
 #include <asm/fpu/api.h>
 
+<<<<<<< HEAD
 static int sha1_update(struct shash_desc *desc, const u8 *data,
 			     unsigned int len, sha1_block_fn *sha1_xform)
+=======
+typedef void (sha1_transform_fn)(u32 *digest, const char *data,
+				unsigned int rounds);
+
+static int sha1_update(struct shash_desc *desc, const u8 *data,
+			     unsigned int len, sha1_transform_fn *sha1_xform)
+>>>>>>> v4.14.187
 {
 	struct sha1_state *sctx = shash_desc_ctx(desc);
 
@@ -40,6 +48,7 @@ static int sha1_update(struct shash_desc *desc, const u8 *data,
 	    (sctx->count % SHA1_BLOCK_SIZE) + len < SHA1_BLOCK_SIZE)
 		return crypto_sha1_update(desc, data, len);
 
+<<<<<<< HEAD
 	/*
 	 * Make sure struct sha1_state begins directly with the SHA1
 	 * 160-bit internal state, as this is what the asm functions expect.
@@ -48,39 +57,72 @@ static int sha1_update(struct shash_desc *desc, const u8 *data,
 
 	kernel_fpu_begin();
 	sha1_base_do_update(desc, data, len, sha1_xform);
+=======
+	/* make sure casting to sha1_block_fn() is safe */
+	BUILD_BUG_ON(offsetof(struct sha1_state, state) != 0);
+
+	kernel_fpu_begin();
+	sha1_base_do_update(desc, data, len,
+			    (sha1_block_fn *)sha1_xform);
+>>>>>>> v4.14.187
 	kernel_fpu_end();
 
 	return 0;
 }
 
 static int sha1_finup(struct shash_desc *desc, const u8 *data,
+<<<<<<< HEAD
 		      unsigned int len, u8 *out, sha1_block_fn *sha1_xform)
+=======
+		      unsigned int len, u8 *out, sha1_transform_fn *sha1_xform)
+>>>>>>> v4.14.187
 {
 	if (!irq_fpu_usable())
 		return crypto_sha1_finup(desc, data, len, out);
 
 	kernel_fpu_begin();
 	if (len)
+<<<<<<< HEAD
 		sha1_base_do_update(desc, data, len, sha1_xform);
 	sha1_base_do_finalize(desc, sha1_xform);
+=======
+		sha1_base_do_update(desc, data, len,
+				    (sha1_block_fn *)sha1_xform);
+	sha1_base_do_finalize(desc, (sha1_block_fn *)sha1_xform);
+>>>>>>> v4.14.187
 	kernel_fpu_end();
 
 	return sha1_base_finish(desc, out);
 }
 
+<<<<<<< HEAD
 asmlinkage void sha1_transform_ssse3(struct sha1_state *state,
 				     const u8 *data, int blocks);
+=======
+asmlinkage void sha1_transform_ssse3(u32 *digest, const char *data,
+				     unsigned int rounds);
+>>>>>>> v4.14.187
 
 static int sha1_ssse3_update(struct shash_desc *desc, const u8 *data,
 			     unsigned int len)
 {
+<<<<<<< HEAD
 	return sha1_update(desc, data, len, sha1_transform_ssse3);
+=======
+	return sha1_update(desc, data, len,
+			(sha1_transform_fn *) sha1_transform_ssse3);
+>>>>>>> v4.14.187
 }
 
 static int sha1_ssse3_finup(struct shash_desc *desc, const u8 *data,
 			      unsigned int len, u8 *out)
 {
+<<<<<<< HEAD
 	return sha1_finup(desc, data, len, out, sha1_transform_ssse3);
+=======
+	return sha1_finup(desc, data, len, out,
+			(sha1_transform_fn *) sha1_transform_ssse3);
+>>>>>>> v4.14.187
 }
 
 /* Add padding and return the message digest. */
@@ -120,19 +162,34 @@ static void unregister_sha1_ssse3(void)
 }
 
 #ifdef CONFIG_AS_AVX
+<<<<<<< HEAD
 asmlinkage void sha1_transform_avx(struct sha1_state *state,
 				   const u8 *data, int blocks);
+=======
+asmlinkage void sha1_transform_avx(u32 *digest, const char *data,
+				   unsigned int rounds);
+>>>>>>> v4.14.187
 
 static int sha1_avx_update(struct shash_desc *desc, const u8 *data,
 			     unsigned int len)
 {
+<<<<<<< HEAD
 	return sha1_update(desc, data, len, sha1_transform_avx);
+=======
+	return sha1_update(desc, data, len,
+			(sha1_transform_fn *) sha1_transform_avx);
+>>>>>>> v4.14.187
 }
 
 static int sha1_avx_finup(struct shash_desc *desc, const u8 *data,
 			      unsigned int len, u8 *out)
 {
+<<<<<<< HEAD
 	return sha1_finup(desc, data, len, out, sha1_transform_avx);
+=======
+	return sha1_finup(desc, data, len, out,
+			(sha1_transform_fn *) sha1_transform_avx);
+>>>>>>> v4.14.187
 }
 
 static int sha1_avx_final(struct shash_desc *desc, u8 *out)
@@ -190,8 +247,13 @@ static inline void unregister_sha1_avx(void) { }
 #if defined(CONFIG_AS_AVX2) && (CONFIG_AS_AVX)
 #define SHA1_AVX2_BLOCK_OPTSIZE	4	/* optimal 4*64 bytes of SHA1 blocks */
 
+<<<<<<< HEAD
 asmlinkage void sha1_transform_avx2(struct sha1_state *state,
 				    const u8 *data, int blocks);
+=======
+asmlinkage void sha1_transform_avx2(u32 *digest, const char *data,
+				    unsigned int rounds);
+>>>>>>> v4.14.187
 
 static bool avx2_usable(void)
 {
@@ -203,6 +265,7 @@ static bool avx2_usable(void)
 	return false;
 }
 
+<<<<<<< HEAD
 static void sha1_apply_transform_avx2(struct sha1_state *state,
 				      const u8 *data, int blocks)
 {
@@ -211,18 +274,38 @@ static void sha1_apply_transform_avx2(struct sha1_state *state,
 		sha1_transform_avx2(state, data, blocks);
 	else
 		sha1_transform_avx(state, data, blocks);
+=======
+static void sha1_apply_transform_avx2(u32 *digest, const char *data,
+				unsigned int rounds)
+{
+	/* Select the optimal transform based on data block size */
+	if (rounds >= SHA1_AVX2_BLOCK_OPTSIZE)
+		sha1_transform_avx2(digest, data, rounds);
+	else
+		sha1_transform_avx(digest, data, rounds);
+>>>>>>> v4.14.187
 }
 
 static int sha1_avx2_update(struct shash_desc *desc, const u8 *data,
 			     unsigned int len)
 {
+<<<<<<< HEAD
 	return sha1_update(desc, data, len, sha1_apply_transform_avx2);
+=======
+	return sha1_update(desc, data, len,
+		(sha1_transform_fn *) sha1_apply_transform_avx2);
+>>>>>>> v4.14.187
 }
 
 static int sha1_avx2_finup(struct shash_desc *desc, const u8 *data,
 			      unsigned int len, u8 *out)
 {
+<<<<<<< HEAD
 	return sha1_finup(desc, data, len, out, sha1_apply_transform_avx2);
+=======
+	return sha1_finup(desc, data, len, out,
+		(sha1_transform_fn *) sha1_apply_transform_avx2);
+>>>>>>> v4.14.187
 }
 
 static int sha1_avx2_final(struct shash_desc *desc, u8 *out)
@@ -266,19 +349,34 @@ static inline void unregister_sha1_avx2(void) { }
 #endif
 
 #ifdef CONFIG_AS_SHA1_NI
+<<<<<<< HEAD
 asmlinkage void sha1_ni_transform(struct sha1_state *digest, const u8 *data,
 				  int rounds);
+=======
+asmlinkage void sha1_ni_transform(u32 *digest, const char *data,
+				   unsigned int rounds);
+>>>>>>> v4.14.187
 
 static int sha1_ni_update(struct shash_desc *desc, const u8 *data,
 			     unsigned int len)
 {
+<<<<<<< HEAD
 	return sha1_update(desc, data, len, sha1_ni_transform);
+=======
+	return sha1_update(desc, data, len,
+		(sha1_transform_fn *) sha1_ni_transform);
+>>>>>>> v4.14.187
 }
 
 static int sha1_ni_finup(struct shash_desc *desc, const u8 *data,
 			      unsigned int len, u8 *out)
 {
+<<<<<<< HEAD
 	return sha1_finup(desc, data, len, out, sha1_ni_transform);
+=======
+	return sha1_finup(desc, data, len, out,
+		(sha1_transform_fn *) sha1_ni_transform);
+>>>>>>> v4.14.187
 }
 
 static int sha1_ni_final(struct shash_desc *desc, u8 *out)

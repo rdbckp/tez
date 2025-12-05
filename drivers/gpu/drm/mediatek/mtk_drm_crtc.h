@@ -14,6 +14,7 @@
 #ifndef MTK_DRM_CRTC_H
 #define MTK_DRM_CRTC_H
 
+<<<<<<< HEAD
 #include <linux/types.h>
 #include <linux/workqueue.h>
 #include <linux/wait.h>
@@ -799,5 +800,21 @@ struct golden_setting_context *
 void mtk_crtc_start_for_pm(struct drm_crtc *crtc);
 void mtk_crtc_stop_for_pm(struct mtk_drm_crtc *mtk_crtc, bool need_wait);
 int m4u_sec_init(void);
+=======
+#include <drm/drm_crtc.h>
+#include "mtk_drm_ddp_comp.h"
+#include "mtk_drm_plane.h"
+
+#define OVL_LAYER_NR	4
+#define MTK_LUT_SIZE	512
+#define MTK_MAX_BPC	10
+#define MTK_MIN_BPC	3
+
+void mtk_drm_crtc_commit(struct drm_crtc *crtc);
+void mtk_crtc_ddp_irq(struct drm_crtc *crtc, struct mtk_ddp_comp *ovl);
+int mtk_drm_crtc_create(struct drm_device *drm_dev,
+			const enum mtk_ddp_comp_id *path,
+			unsigned int path_len);
+>>>>>>> v4.14.187
 
 #endif /* MTK_DRM_CRTC_H */

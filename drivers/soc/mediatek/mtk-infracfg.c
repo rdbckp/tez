@@ -17,6 +17,7 @@
 #include <linux/soc/mediatek/infracfg.h>
 #include <asm/processor.h>
 
+<<<<<<< HEAD
 #define MTK_POLL_DELAY_US   10
 #define MTK_POLL_TIMEOUT    (jiffies_to_usecs(HZ))
 
@@ -52,19 +53,27 @@ void mtk_infracfg_clear_axi_si1_way_en(struct regmap *infracfg, u32 mask)
 {
 	regmap_update_bits(infracfg, INFRA_TOPAXI_SI1_CTL, mask, 0);
 }
+=======
+#define INFRA_TOPAXI_PROTECTEN		0x0220
+#define INFRA_TOPAXI_PROTECTSTA1	0x0228
+>>>>>>> v4.14.187
 
 /**
  * mtk_infracfg_set_bus_protection - enable bus protection
  * @regmap: The infracfg regmap
  * @mask: The mask containing the protection bits to be enabled.
+<<<<<<< HEAD
  * @reg_update: The boolean flag determines to set the protection bits
  *              by regmap_update_bits with enable register(PROTECTEN) or
  *              by regmap_write with set register(PROTECTEN_SET).
+=======
+>>>>>>> v4.14.187
  *
  * This function enables the bus protection bits for disabled power
  * domains so that the system does not hang when some unit accesses the
  * bus while in power down.
  */
+<<<<<<< HEAD
 int mtk_infracfg_set_bus_protection(struct regmap *infracfg, u32 mask,
 		bool reg_update)
 {
@@ -82,19 +91,49 @@ int mtk_infracfg_set_bus_protection(struct regmap *infracfg, u32 mask,
 				       MTK_POLL_DELAY_US, MTK_POLL_TIMEOUT);
 
 	return ret;
+=======
+int mtk_infracfg_set_bus_protection(struct regmap *infracfg, u32 mask)
+{
+	unsigned long expired;
+	u32 val;
+	int ret;
+
+	regmap_update_bits(infracfg, INFRA_TOPAXI_PROTECTEN, mask, mask);
+
+	expired = jiffies + HZ;
+
+	while (1) {
+		ret = regmap_read(infracfg, INFRA_TOPAXI_PROTECTSTA1, &val);
+		if (ret)
+			return ret;
+
+		if ((val & mask) == mask)
+			break;
+
+		cpu_relax();
+		if (time_after(jiffies, expired))
+			return -EIO;
+	}
+
+	return 0;
+>>>>>>> v4.14.187
 }
 
 /**
  * mtk_infracfg_clear_bus_protection - disable bus protection
  * @regmap: The infracfg regmap
  * @mask: The mask containing the protection bits to be disabled.
+<<<<<<< HEAD
  * @reg_update: The boolean flag determines to clear the protection bits
  *              by regmap_update_bits with enable register(PROTECTEN) or
  *              by regmap_write with clear register(PROTECTEN_CLR).
+=======
+>>>>>>> v4.14.187
  *
  * This function disables the bus protection bits previously enabled with
  * mtk_infracfg_set_bus_protection.
  */
+<<<<<<< HEAD
 
 int mtk_infracfg_clear_bus_protection(struct regmap *infracfg, u32 mask,
 		bool reg_update)
@@ -112,4 +151,31 @@ int mtk_infracfg_clear_bus_protection(struct regmap *infracfg, u32 mask,
 				       MTK_POLL_DELAY_US, MTK_POLL_TIMEOUT);
 
 	return ret;
+=======
+int mtk_infracfg_clear_bus_protection(struct regmap *infracfg, u32 mask)
+{
+	unsigned long expired;
+	int ret;
+
+	regmap_update_bits(infracfg, INFRA_TOPAXI_PROTECTEN, mask, 0);
+
+	expired = jiffies + HZ;
+
+	while (1) {
+		u32 val;
+
+		ret = regmap_read(infracfg, INFRA_TOPAXI_PROTECTSTA1, &val);
+		if (ret)
+			return ret;
+
+		if (!(val & mask))
+			break;
+
+		cpu_relax();
+		if (time_after(jiffies, expired))
+			return -EIO;
+	}
+
+	return 0;
+>>>>>>> v4.14.187
 }

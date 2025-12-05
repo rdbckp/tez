@@ -143,6 +143,7 @@ config EXTCON_SM5502
 	  Silicon Mitus SM5502. The SM5502 is a USB port accessory
 	  detector and switch.
 
+<<<<<<< HEAD
 config EXTCON_USB_CHG
 	tristate "USB Charger extcon support"
 	depends on GPIOLIB || COMPILE_TEST
@@ -152,6 +153,8 @@ config EXTCON_USB_CHG
 	  would do the Job
 	  Used typically if GPIO is used for USB ID pin detection
 
+=======
+>>>>>>> v4.14.187
 config EXTCON_USB_GPIO
 	tristate "USB GPIO extcon support"
 	depends on GPIOLIB || COMPILE_TEST
@@ -166,6 +169,9 @@ config EXTCON_USBC_CROS_EC
 	  Say Y here to enable USB Type C cable detection extcon support when
 	  using Chrome OS EC based USB Type-C ports.
 
+<<<<<<< HEAD
 source "drivers/extcon/mediatek/Kconfig"
 
+=======
+>>>>>>> v4.14.187
 endif

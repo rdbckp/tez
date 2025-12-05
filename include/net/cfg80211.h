@@ -1897,6 +1897,7 @@ struct cfg80211_auth_request {
  * @ASSOC_REQ_DISABLE_HT:  Disable HT (802.11n)
  * @ASSOC_REQ_DISABLE_VHT:  Disable VHT
  * @ASSOC_REQ_USE_RRM: Declare RRM capability in this association
+<<<<<<< HEAD
  * @CONNECT_REQ_EXTERNAL_AUTH_SUPPORT: User space indicates external
  *	authentication capability. Drivers can offload authentication to
  *	userspace if this flag is set. Only applicable for cfg80211_connect()
@@ -1907,6 +1908,13 @@ enum cfg80211_assoc_req_flags {
 	ASSOC_REQ_DISABLE_VHT			= BIT(1),
 	ASSOC_REQ_USE_RRM			= BIT(2),
 	CONNECT_REQ_EXTERNAL_AUTH_SUPPORT	= BIT(3),
+=======
+ */
+enum cfg80211_assoc_req_flags {
+	ASSOC_REQ_DISABLE_HT		= BIT(0),
+	ASSOC_REQ_DISABLE_VHT		= BIT(1),
+	ASSOC_REQ_USE_RRM		= BIT(2),
+>>>>>>> v4.14.187
 };
 
 /**
@@ -2593,6 +2601,7 @@ struct cfg80211_pmk_conf {
 };
 
 /**
+<<<<<<< HEAD
  * struct cfg80211_external_auth_params - Trigger External authentication.
  *
  * Commonly used across the external auth request and event interfaces.
@@ -2620,6 +2629,8 @@ struct cfg80211_external_auth_params {
 };
 
 /**
+=======
+>>>>>>> v4.14.187
  * struct cfg80211_ops - backend description for wireless configuration
  *
  * This struct is registered by fullmac card drivers and/or wireless stacks
@@ -2945,9 +2956,12 @@ struct cfg80211_external_auth_params {
  *	(invoked with the wireless_dev mutex held)
  * @del_pmk: delete the previously configured PMK for the given authenticator.
  *	(invoked with the wireless_dev mutex held)
+<<<<<<< HEAD
  *
  * @external_auth: indicates result of offloaded authentication processing from
  *     user space
+=======
+>>>>>>> v4.14.187
  */
 struct cfg80211_ops {
 	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
@@ -3243,8 +3257,11 @@ struct cfg80211_ops {
 			   const struct cfg80211_pmk_conf *conf);
 	int	(*del_pmk)(struct wiphy *wiphy, struct net_device *dev,
 			   const u8 *aa);
+<<<<<<< HEAD
 	int     (*external_auth)(struct wiphy *wiphy, struct net_device *dev,
 				 struct cfg80211_external_auth_params *params);
+=======
+>>>>>>> v4.14.187
 };
 
 /*
@@ -6241,6 +6258,7 @@ void cfg80211_nan_func_terminated(struct wireless_dev *wdev,
 /* ethtool helper */
 void cfg80211_get_drvinfo(struct net_device *dev, struct ethtool_drvinfo *info);
 
+<<<<<<< HEAD
 /**
  * cfg80211_external_auth_request - userspace request for authentication
  * @netdev: network device
@@ -6252,6 +6270,8 @@ int cfg80211_external_auth_request(struct net_device *netdev,
 				   struct cfg80211_external_auth_params *params,
 				   gfp_t gfp);
 
+=======
+>>>>>>> v4.14.187
 /* Logging, debugging and troubleshooting/diagnostic helpers. */
 
 /* wiphy_printk helpers, similar to dev_printk */

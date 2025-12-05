@@ -1605,6 +1605,7 @@ put_table:
 	return r;
 }
 
+<<<<<<< HEAD
 /*
  * dev_pm_opp_adjust_voltage() - helper to change the voltage of an OPP
  * @dev:		device for which we do this operation
@@ -1683,6 +1684,8 @@ unlock:
 	return r;
 }
 
+=======
+>>>>>>> v4.14.187
 /**
  * dev_pm_opp_enable() - Enable a specific OPP
  * @dev:	device for which we do this operation

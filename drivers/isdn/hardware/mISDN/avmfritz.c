@@ -156,7 +156,11 @@ _set_debug(struct fritzcard *card)
 }
 
 static int
+<<<<<<< HEAD
 set_debug(const char *val, const struct kernel_param *kp)
+=======
+set_debug(const char *val, struct kernel_param *kp)
+>>>>>>> v4.14.187
 {
 	int ret;
 	struct fritzcard *card;

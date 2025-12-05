@@ -12,7 +12,11 @@
  * GNU General Public License for more details.
  */
 
+<<<<<<< HEAD
 #include <linux/atomic.h>
+=======
+#include <asm/local.h>
+>>>>>>> v4.14.187
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/types.h>
@@ -36,7 +40,10 @@
 #include <asm/local.h>
 
 #include "coresight-priv.h"
+<<<<<<< HEAD
 #include "coresight-etm-perf.h"
+=======
+>>>>>>> v4.14.187
 
 #define ETB_RAM_DEPTH_REG	0x004
 #define ETB_STATUS_REG		0x00c
@@ -80,8 +87,13 @@
  * @miscdev:	specifics to handle "/dev/xyz.etb" entry.
  * @spinlock:	only one at a time pls.
  * @reading:	synchronise user space access to etb buffer.
+<<<<<<< HEAD
  * @buf:	area of memory where ETB buffer content gets sent.
  * @mode:	this ETB is being used.
+=======
+ * @mode:	this ETB is being used.
+ * @buf:	area of memory where ETB buffer content gets sent.
+>>>>>>> v4.14.187
  * @buffer_depth: size of @buf.
  * @trigger_cntr: amount of words to store after a trigger.
  */
@@ -93,15 +105,23 @@ struct etb_drvdata {
 	struct miscdevice	miscdev;
 	spinlock_t		spinlock;
 	local_t			reading;
+<<<<<<< HEAD
 	u8			*buf;
 	u32			mode;
+=======
+	local_t			mode;
+	u8			*buf;
+>>>>>>> v4.14.187
 	u32			buffer_depth;
 	u32			trigger_cntr;
 };
 
+<<<<<<< HEAD
 static int etb_set_buffer(struct coresight_device *csdev,
 			  struct perf_output_handle *handle);
 
+=======
+>>>>>>> v4.14.187
 static unsigned int etb_get_buffer_depth(struct etb_drvdata *drvdata)
 {
 	u32 depth = 0;
@@ -115,7 +135,11 @@ static unsigned int etb_get_buffer_depth(struct etb_drvdata *drvdata)
 	return depth;
 }
 
+<<<<<<< HEAD
 static void __etb_enable_hw(struct etb_drvdata *drvdata)
+=======
+static void etb_enable_hw(struct etb_drvdata *drvdata)
+>>>>>>> v4.14.187
 {
 	int i;
 	u32 depth;
@@ -143,6 +167,7 @@ static void __etb_enable_hw(struct etb_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
+<<<<<<< HEAD
 static int etb_enable_hw(struct etb_drvdata *drvdata)
 {
 	int rc = coresight_claim_device(drvdata->base);
@@ -241,6 +266,42 @@ static int etb_enable(struct coresight_device *csdev, u32 mode, void *data)
 }
 
 static void __etb_disable_hw(struct etb_drvdata *drvdata)
+=======
+static int etb_enable(struct coresight_device *csdev, u32 mode)
+{
+	u32 val;
+	unsigned long flags;
+	struct etb_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+
+	val = local_cmpxchg(&drvdata->mode,
+			    CS_MODE_DISABLED, mode);
+	/*
+	 * When accessing from Perf, a HW buffer can be handled
+	 * by a single trace entity.  In sysFS mode many tracers
+	 * can be logging to the same HW buffer.
+	 */
+	if (val == CS_MODE_PERF)
+		return -EBUSY;
+
+	/* Don't let perf disturb sysFS sessions */
+	if (val == CS_MODE_SYSFS && mode == CS_MODE_PERF)
+		return -EBUSY;
+
+	/* Nothing to do, the tracer is already enabled. */
+	if (val == CS_MODE_SYSFS)
+		goto out;
+
+	spin_lock_irqsave(&drvdata->spinlock, flags);
+	etb_enable_hw(drvdata);
+	spin_unlock_irqrestore(&drvdata->spinlock, flags);
+
+out:
+	dev_info(drvdata->dev, "ETB enabled\n");
+	return 0;
+}
+
+static void etb_disable_hw(struct etb_drvdata *drvdata)
+>>>>>>> v4.14.187
 {
 	u32 ffcr;
 
@@ -275,6 +336,10 @@ static void etb_dump_hw(struct etb_drvdata *drvdata)
 	bool lost = false;
 	int i;
 	u8 *buf_ptr;
+<<<<<<< HEAD
+=======
+	const u32 *barrier;
+>>>>>>> v4.14.187
 	u32 read_data, depth;
 	u32 read_ptr, write_ptr;
 	u32 frame_off, frame_endoff;
@@ -305,16 +370,31 @@ static void etb_dump_hw(struct etb_drvdata *drvdata)
 
 	depth = drvdata->buffer_depth;
 	buf_ptr = drvdata->buf;
+<<<<<<< HEAD
 	for (i = 0; i < depth; i++) {
 		read_data = readl_relaxed(drvdata->base +
 					  ETB_RAM_READ_DATA_REG);
+=======
+	barrier = barrier_pkt;
+	for (i = 0; i < depth; i++) {
+		read_data = readl_relaxed(drvdata->base +
+					  ETB_RAM_READ_DATA_REG);
+		if (lost && *barrier) {
+			read_data = *barrier;
+			barrier++;
+		}
+
+>>>>>>> v4.14.187
 		*(u32 *)buf_ptr = read_data;
 		buf_ptr += 4;
 	}
 
+<<<<<<< HEAD
 	if (lost)
 		coresight_insert_barrier_packet(drvdata->buf);
 
+=======
+>>>>>>> v4.14.187
 	if (frame_off) {
 		buf_ptr -= (frame_endoff * 4);
 		for (i = 0; i < frame_endoff; i++) {
@@ -330,6 +410,7 @@ static void etb_dump_hw(struct etb_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
+<<<<<<< HEAD
 static void etb_disable_hw(struct etb_drvdata *drvdata)
 {
 	__etb_disable_hw(drvdata);
@@ -338,11 +419,15 @@ static void etb_disable_hw(struct etb_drvdata *drvdata)
 }
 
 static int etb_disable(struct coresight_device *csdev)
+=======
+static void etb_disable(struct coresight_device *csdev)
+>>>>>>> v4.14.187
 {
 	struct etb_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 	unsigned long flags;
 
 	spin_lock_irqsave(&drvdata->spinlock, flags);
+<<<<<<< HEAD
 
 	if (atomic_dec_return(csdev->refcnt)) {
 		spin_unlock_irqrestore(&drvdata->spinlock, flags);
@@ -364,6 +449,21 @@ static void *etb_alloc_buffer(struct coresight_device *csdev,
 			      int nr_pages, bool overwrite)
 {
 	int node, cpu = event->cpu;
+=======
+	etb_disable_hw(drvdata);
+	etb_dump_hw(drvdata);
+	spin_unlock_irqrestore(&drvdata->spinlock, flags);
+
+	local_set(&drvdata->mode, CS_MODE_DISABLED);
+
+	dev_info(drvdata->dev, "ETB disabled\n");
+}
+
+static void *etb_alloc_buffer(struct coresight_device *csdev, int cpu,
+			      void **pages, int nr_pages, bool overwrite)
+{
+	int node;
+>>>>>>> v4.14.187
 	struct cs_buffers *buf;
 
 	node = (cpu == -1) ? NUMA_NO_NODE : cpu_to_node(cpu);
@@ -387,6 +487,7 @@ static void etb_free_buffer(void *config)
 }
 
 static int etb_set_buffer(struct coresight_device *csdev,
+<<<<<<< HEAD
 			  struct perf_output_handle *handle)
 {
 	int ret = 0;
@@ -395,6 +496,14 @@ static int etb_set_buffer(struct coresight_device *csdev,
 
 	if (!buf)
 		return -EINVAL;
+=======
+			  struct perf_output_handle *handle,
+			  void *sink_config)
+{
+	int ret = 0;
+	unsigned long head;
+	struct cs_buffers *buf = sink_config;
+>>>>>>> v4.14.187
 
 	/* wrap head around to the amount of space we have */
 	head = handle->head & ((buf->nr_pages << PAGE_SHIFT) - 1);
@@ -410,7 +519,41 @@ static int etb_set_buffer(struct coresight_device *csdev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static unsigned long etb_update_buffer(struct coresight_device *csdev,
+=======
+static unsigned long etb_reset_buffer(struct coresight_device *csdev,
+				      struct perf_output_handle *handle,
+				      void *sink_config)
+{
+	unsigned long size = 0;
+	struct cs_buffers *buf = sink_config;
+
+	if (buf) {
+		/*
+		 * In snapshot mode ->data_size holds the new address of the
+		 * ring buffer's head.  The size itself is the whole address
+		 * range since we want the latest information.
+		 */
+		if (buf->snapshot)
+			handle->head = local_xchg(&buf->data_size,
+						  buf->nr_pages << PAGE_SHIFT);
+
+		/*
+		 * Tell the tracer PMU how much we got in this run and if
+		 * something went wrong along the way.  Nobody else can use
+		 * this cs_buffers instance until we are done.  As such
+		 * resetting parameters here and squaring off with the ring
+		 * buffer API in the tracer PMU is fine.
+		 */
+		size = local_xchg(&buf->data_size, 0);
+	}
+
+	return size;
+}
+
+static void etb_update_buffer(struct coresight_device *csdev,
+>>>>>>> v4.14.187
 			      struct perf_output_handle *handle,
 			      void *sink_config)
 {
@@ -419,18 +562,31 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
 	u8 *buf_ptr;
 	const u32 *barrier;
 	u32 read_ptr, write_ptr, capacity;
+<<<<<<< HEAD
 	u32 status, read_data;
 	unsigned long offset, to_read, flags;
+=======
+	u32 status, read_data, to_read;
+	unsigned long offset;
+>>>>>>> v4.14.187
 	struct cs_buffers *buf = sink_config;
 	struct etb_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
 	if (!buf)
+<<<<<<< HEAD
 		return 0;
 
 	capacity = drvdata->buffer_depth * ETB_FRAME_SIZE_WORDS;
 
 	spin_lock_irqsave(&drvdata->spinlock, flags);
 	__etb_disable_hw(drvdata);
+=======
+		return;
+
+	capacity = drvdata->buffer_depth * ETB_FRAME_SIZE_WORDS;
+
+	etb_disable_hw(drvdata);
+>>>>>>> v4.14.187
 	CS_UNLOCK(drvdata->base);
 
 	/* unit is in words, not bytes */
@@ -495,6 +651,7 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
 		lost = true;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Don't set the TRUNCATED flag in snapshot mode because 1) the
 	 * captured buffer is expected to be truncated and 2) a full buffer
@@ -502,6 +659,9 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
 	 * resulting in stale data being send to user space.
 	 */
 	if (!buf->snapshot && lost)
+=======
+	if (lost)
+>>>>>>> v4.14.187
 		perf_aux_output_flag(handle, PERF_AUX_FLAG_TRUNCATED);
 
 	/* finally tell HW where we want to start reading from */
@@ -515,7 +675,11 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
 		buf_ptr = buf->data_pages[cur] + offset;
 		read_data = readl_relaxed(drvdata->base +
 					  ETB_RAM_READ_DATA_REG);
+<<<<<<< HEAD
 		if (lost && i < CORESIGHT_BARRIER_PKT_SIZE) {
+=======
+		if (lost && *barrier) {
+>>>>>>> v4.14.187
 			read_data = *barrier;
 			barrier++;
 		}
@@ -537,6 +701,7 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
 	writel_relaxed(0x0, drvdata->base + ETB_RAM_WRITE_POINTER);
 
 	/*
+<<<<<<< HEAD
 	 * In snapshot mode we have to update the handle->head to point
 	 * to the new location.
 	 */
@@ -549,6 +714,20 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
 	return to_read;
+=======
+	 * In snapshot mode all we have to do is communicate to
+	 * perf_aux_output_end() the address of the current head.  In full
+	 * trace mode the same function expects a size to move rb->aux_head
+	 * forward.
+	 */
+	if (buf->snapshot)
+		local_set(&buf->data_size, (cur * PAGE_SIZE) + offset);
+	else
+		local_add(to_read, &buf->data_size);
+
+	etb_enable_hw(drvdata);
+	CS_LOCK(drvdata->base);
+>>>>>>> v4.14.187
 }
 
 static const struct coresight_ops_sink etb_sink_ops = {
@@ -556,6 +735,11 @@ static const struct coresight_ops_sink etb_sink_ops = {
 	.disable	= etb_disable,
 	.alloc_buffer	= etb_alloc_buffer,
 	.free_buffer	= etb_free_buffer,
+<<<<<<< HEAD
+=======
+	.set_buffer	= etb_set_buffer,
+	.reset_buffer	= etb_reset_buffer,
+>>>>>>> v4.14.187
 	.update_buffer	= etb_update_buffer,
 };
 
@@ -568,6 +752,7 @@ static void etb_dump(struct etb_drvdata *drvdata)
 	unsigned long flags;
 
 	spin_lock_irqsave(&drvdata->spinlock, flags);
+<<<<<<< HEAD
 	if (drvdata->mode == CS_MODE_SYSFS) {
 		__etb_disable_hw(drvdata);
 		etb_dump_hw(drvdata);
@@ -576,6 +761,16 @@ static void etb_dump(struct etb_drvdata *drvdata)
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
 	dev_dbg(drvdata->dev, "ETB dumped\n");
+=======
+	if (local_read(&drvdata->mode) == CS_MODE_SYSFS) {
+		etb_disable_hw(drvdata);
+		etb_dump_hw(drvdata);
+		etb_enable_hw(drvdata);
+	}
+	spin_unlock_irqrestore(&drvdata->spinlock, flags);
+
+	dev_info(drvdata->dev, "ETB dumped\n");
+>>>>>>> v4.14.187
 }
 
 static int etb_open(struct inode *inode, struct file *file)

@@ -39,7 +39,10 @@
 #include <linux/sched/signal.h>
 #include <linux/mm_inline.h>
 #include <trace/events/writeback.h>
+<<<<<<< HEAD
 #include <mt-plat/mtk_blocktag.h>
+=======
+>>>>>>> v4.14.187
 
 #include "internal.h"
 
@@ -72,21 +75,29 @@ static long ratelimit_pages = 32;
 /*
  * Start background writeback (via writeback threads) at this percentage
  */
+<<<<<<< HEAD
 #ifdef CONFIG_LARGE_DIRTY_BUFFER
 int dirty_background_ratio = 5;
 #else
 int dirty_background_ratio;
 #endif
+=======
+int dirty_background_ratio = 10;
+>>>>>>> v4.14.187
 
 /*
  * dirty_background_bytes starts at 0 (disabled) so that it is a function of
  * dirty_background_ratio * the amount of dirtyable memory
  */
+<<<<<<< HEAD
 #ifdef CONFIG_LARGE_DIRTY_BUFFER
 unsigned long dirty_background_bytes;
 #else
 unsigned long dirty_background_bytes = 25 * 1024 * 1024;
 #endif
+=======
+unsigned long dirty_background_bytes;
+>>>>>>> v4.14.187
 
 /*
  * free highmem will not be subtracted from the total free memory
@@ -97,21 +108,29 @@ int vm_highmem_is_dirtyable;
 /*
  * The generator of dirty data starts writeback at this percentage
  */
+<<<<<<< HEAD
 #ifdef CONFIG_LARGE_DIRTY_BUFFER
 int vm_dirty_ratio = 20;
 #else
 int vm_dirty_ratio;
 #endif
+=======
+int vm_dirty_ratio = 20;
+>>>>>>> v4.14.187
 
 /*
  * vm_dirty_bytes starts at 0 (disabled) so that it is a function of
  * vm_dirty_ratio * the amount of dirtyable memory
  */
+<<<<<<< HEAD
 #ifdef CONFIG_LARGE_DIRTY_BUFFER
 unsigned long vm_dirty_bytes;
 #else
 unsigned long vm_dirty_bytes = 50 * 1024 * 1024;
 #endif
+=======
+unsigned long vm_dirty_bytes;
+>>>>>>> v4.14.187
 
 /*
  * The interval between `kupdate'-style writebacks
@@ -409,7 +428,11 @@ static unsigned long global_dirtyable_memory(void)
  */
 static void domain_dirty_limits(struct dirty_throttle_control *dtc)
 {
+<<<<<<< HEAD
 	unsigned long available_memory = dtc->avail;
+=======
+	const unsigned long available_memory = dtc->avail;
+>>>>>>> v4.14.187
 	struct dirty_throttle_control *gdtc = mdtc_gdtc(dtc);
 	unsigned long bytes = vm_dirty_bytes;
 	unsigned long bg_bytes = dirty_background_bytes;
@@ -445,6 +468,7 @@ static void domain_dirty_limits(struct dirty_throttle_control *dtc)
 	else
 		thresh = (ratio * available_memory) / PAGE_SIZE;
 
+<<<<<<< HEAD
 #if defined(CONFIG_MAX_DIRTY_THRESH_PAGES) && CONFIG_MAX_DIRTY_THRESH_PAGES > 0
 	if (!bytes && thresh > CONFIG_MAX_DIRTY_THRESH_PAGES) {
 		thresh = CONFIG_MAX_DIRTY_THRESH_PAGES;
@@ -453,6 +477,8 @@ static void domain_dirty_limits(struct dirty_throttle_control *dtc)
 	}
 #endif
 
+=======
+>>>>>>> v4.14.187
 	if (bg_bytes)
 		bg_thresh = DIV_ROUND_UP(bg_bytes, PAGE_SIZE);
 	else
@@ -511,11 +537,14 @@ static unsigned long node_dirty_limit(struct pglist_data *pgdat)
 	else
 		dirty = vm_dirty_ratio * node_memory / 100;
 
+<<<<<<< HEAD
 #if defined(CONFIG_MAX_DIRTY_THRESH_PAGES) && CONFIG_MAX_DIRTY_THRESH_PAGES > 0
 	if (!vm_dirty_bytes && dirty > CONFIG_MAX_DIRTY_THRESH_PAGES)
 		dirty = CONFIG_MAX_DIRTY_THRESH_PAGES;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	if (tsk->flags & PF_LESS_THROTTLE || rt_task(tsk))
 		dirty += dirty / 4;
 
@@ -1582,6 +1611,7 @@ static inline void wb_dirty_limits(struct dirty_throttle_control *dtc)
 	}
 }
 
+<<<<<<< HEAD
 static inline void bdi_fill_sec_debug_bdp(struct backing_dev_info *bdi,
 		unsigned long start_time,
 		struct dirty_throttle_control *dtc) {
@@ -1630,6 +1660,8 @@ static inline void bdi_fill_sec_debug_bdp(struct backing_dev_info *bdi,
 	spin_unlock(&bdp_debug->lock);
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * balance_dirty_pages() must be called by processes which are generating dirty
  * data.  It looks at the number of dirty pages in the machine and will force
@@ -1659,7 +1691,10 @@ static void balance_dirty_pages(struct address_space *mapping,
 	struct backing_dev_info *bdi = wb->bdi;
 	bool strictlimit = bdi->capabilities & BDI_CAP_STRICTLIMIT;
 	unsigned long start_time = jiffies;
+<<<<<<< HEAD
 	unsigned long logtime_stamp = jiffies;
+=======
+>>>>>>> v4.14.187
 
 	for (;;) {
 		unsigned long now = jiffies;
@@ -1742,7 +1777,10 @@ static void balance_dirty_pages(struct address_space *mapping,
 			if (mdtc)
 				m_intv = dirty_poll_interval(m_dirty, m_thresh);
 			current->nr_dirtied_pause = min(intv, m_intv);
+<<<<<<< HEAD
 			bdi_fill_sec_debug_bdp(bdi, start_time, mdtc ? mdtc : gdtc);
+=======
+>>>>>>> v4.14.187
 			break;
 		}
 
@@ -1836,7 +1874,10 @@ static void balance_dirty_pages(struct address_space *mapping,
 				current->nr_dirtied = 0;
 			} else if (current->nr_dirtied_pause <= pages_dirtied)
 				current->nr_dirtied_pause += pages_dirtied;
+<<<<<<< HEAD
 			bdi_fill_sec_debug_bdp(bdi, start_time, sdtc);
+=======
+>>>>>>> v4.14.187
 			break;
 		}
 		if (unlikely(pause > max_pause)) {
@@ -1858,6 +1899,7 @@ pause:
 					  period,
 					  pause,
 					  start_time);
+<<<<<<< HEAD
 
 		/* @fs.sec -- b73d2f65ec1a7a5621f2f682a666bae75da7f61e -- */
 		if (bdi->capabilities & BDI_CAP_SEC_DEBUG && pause == max_pause) {
@@ -1900,6 +1942,8 @@ pause:
 		bdi->last_nr_dirty = dirty;
 		bdi->paused_total += pause;
 
+=======
+>>>>>>> v4.14.187
 		__set_current_state(TASK_KILLABLE);
 		wb->dirty_sleep = now;
 		io_schedule_timeout(pause);
@@ -2318,14 +2362,38 @@ int write_cache_pages(struct address_space *mapping,
 	while (!done && (index <= end)) {
 		int i;
 
+<<<<<<< HEAD
 		nr_pages = pagevec_lookup_range_tag(&pvec, mapping, &index, end,
 				tag);
+=======
+		nr_pages = pagevec_lookup_tag(&pvec, mapping, &index, tag,
+			      min(end - index, (pgoff_t)PAGEVEC_SIZE-1) + 1);
+>>>>>>> v4.14.187
 		if (nr_pages == 0)
 			break;
 
 		for (i = 0; i < nr_pages; i++) {
 			struct page *page = pvec.pages[i];
 
+<<<<<<< HEAD
+=======
+			/*
+			 * At this point, the page may be truncated or
+			 * invalidated (changing page->mapping to NULL), or
+			 * even swizzled back from swapper_space to tmpfs file
+			 * mapping. However, page->index will not change
+			 * because we have a reference on the page.
+			 */
+			if (page->index > end) {
+				/*
+				 * can't be range_cyclic (1st pass) because
+				 * end == -1 in that case.
+				 */
+				done = 1;
+				break;
+			}
+
+>>>>>>> v4.14.187
 			done_index = page->index;
 
 			lock_page(page);
@@ -2551,6 +2619,7 @@ void account_page_dirtied(struct page *page, struct address_space *mapping)
 		task_io_account_write(PAGE_SIZE);
 		current->nr_dirtied++;
 		this_cpu_inc(bdp_ratelimits);
+<<<<<<< HEAD
 
 		/*
 		 * Dirty pages may be written by writeback thread later.
@@ -2558,6 +2627,8 @@ void account_page_dirtied(struct page *page, struct address_space *mapping)
 		 * before writeback takes over.
 		 */
 		mtk_btag_pidlog_set_pid(page);
+=======
+>>>>>>> v4.14.187
 	}
 }
 EXPORT_SYMBOL(account_page_dirtied);

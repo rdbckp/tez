@@ -731,9 +731,12 @@ static void clk_core_disable_unprepare(struct clk_core *core)
 	clk_core_unprepare_lock(core);
 }
 
+<<<<<<< HEAD
 #if (!defined(CONFIG_MACH_MT6771) && !defined(CONFIG_MACH_MT6739) &&	\
 	!defined(CONFIG_MACH_MT6785) && !defined(CONFIG_MACH_MT6768) &&	\
 	!defined(CONFIG_MACH_MT6873))
+=======
+>>>>>>> v4.14.187
 static void clk_unprepare_unused_subtree(struct clk_core *core)
 {
 	struct clk_core *child;
@@ -799,7 +802,10 @@ unlock_out:
 	if (core->flags & CLK_OPS_PARENT_ENABLE)
 		clk_core_disable_unprepare(core->parent);
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v4.14.187
 
 static bool clk_ignore_unused;
 static int __init clk_ignore_unused_setup(char *__unused)
@@ -811,20 +817,27 @@ __setup("clk_ignore_unused", clk_ignore_unused_setup);
 
 static int clk_disable_unused(void)
 {
+<<<<<<< HEAD
 #if (!defined(CONFIG_MACH_MT6771) && !defined(CONFIG_MACH_MT6739) &&	\
 	!defined(CONFIG_MACH_MT6785) && !defined(CONFIG_MACH_MT6768) &&	\
 	!defined(CONFIG_MACH_MT6873))
 	struct clk_core *core;
 #endif
+=======
+	struct clk_core *core;
+>>>>>>> v4.14.187
 
 	if (clk_ignore_unused) {
 		pr_warn("clk: Not disabling unused clocks\n");
 		return 0;
 	}
 
+<<<<<<< HEAD
 #if (!defined(CONFIG_MACH_MT6771) && !defined(CONFIG_MACH_MT6739) &&	\
 	!defined(CONFIG_MACH_MT6785) && !defined(CONFIG_MACH_MT6768) &&	\
 	!defined(CONFIG_MACH_MT6873))
+=======
+>>>>>>> v4.14.187
 	clk_prepare_lock();
 
 	hlist_for_each_entry(core, &clk_root_list, child_node)
@@ -840,7 +853,11 @@ static int clk_disable_unused(void)
 		clk_unprepare_unused_subtree(core);
 
 	clk_prepare_unlock();
+<<<<<<< HEAD
 #endif
+=======
+
+>>>>>>> v4.14.187
 	return 0;
 }
 late_initcall_sync(clk_disable_unused);
@@ -1994,6 +2011,7 @@ bool clk_is_match(const struct clk *p, const struct clk *q)
 }
 EXPORT_SYMBOL_GPL(clk_is_match);
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SEC_PM)
 static struct hlist_head *debug_all_lists[] = {
 	&clk_root_list,
@@ -2045,6 +2063,8 @@ void sec_clock_debug_print_enabled(void)
 EXPORT_SYMBOL(sec_clock_debug_print_enabled);
 #endif
 
+=======
+>>>>>>> v4.14.187
 /***        debugfs support        ***/
 
 #ifdef CONFIG_DEBUG_FS

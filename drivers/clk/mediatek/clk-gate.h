@@ -20,6 +20,7 @@
 
 struct clk;
 
+<<<<<<< HEAD
 /*
  * define pwr status information.
  * including offsets/mask.
@@ -32,6 +33,8 @@ struct pwr_status {
 	u32 val;
 };
 
+=======
+>>>>>>> v4.14.187
 struct mtk_clk_gate {
 	struct clk_hw	hw;
 	struct regmap	*regmap;
@@ -39,8 +42,11 @@ struct mtk_clk_gate {
 	int		clr_ofs;
 	int		sta_ofs;
 	u8		bit;
+<<<<<<< HEAD
 	struct pwr_status	*pwr_stat;
 	struct regmap	*pwr_regmap;
+=======
+>>>>>>> v4.14.187
 };
 
 static inline struct mtk_clk_gate *to_mtk_clk_gate(struct clk_hw *hw)
@@ -61,6 +67,7 @@ struct clk *mtk_clk_register_gate(
 		int clr_ofs,
 		int sta_ofs,
 		u8 bit,
+<<<<<<< HEAD
 		const struct clk_ops *ops,
 		unsigned long flags,
 		struct pwr_status *pwr_stat,
@@ -73,5 +80,8 @@ struct clk *mtk_clk_register_gate(
 		.mask = _mask,				\
 		.val = _val,				\
 }
+=======
+		const struct clk_ops *ops);
+>>>>>>> v4.14.187
 
 #endif /* __DRV_CLK_GATE_H */

@@ -449,9 +449,12 @@ try_again:
 		*addr_len = sizeof(*sin6);
 	}
 
+<<<<<<< HEAD
 	if (udp_sk(sk)->gro_enabled)
 		udp_cmsg_recv(msg, sk, skb);
 
+=======
+>>>>>>> v4.14.187
 	if (np->rxopt.all)
 		ip6_datagram_recv_common_ctl(sk, msg, skb);
 
@@ -586,7 +589,11 @@ void udpv6_encap_enable(void)
 }
 EXPORT_SYMBOL(udpv6_encap_enable);
 
+<<<<<<< HEAD
 static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+=======
+static int udpv6_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
+>>>>>>> v4.14.187
 {
 	struct udp_sock *up = udp_sk(sk);
 	int is_udplite = IS_UDPLITE(sk);
@@ -669,6 +676,7 @@ drop:
 	return -1;
 }
 
+<<<<<<< HEAD
 static int udpv6_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 {
 	struct sk_buff *next, *segs;
@@ -691,6 +699,8 @@ static int udpv6_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 	return 0;
 }
 
+=======
+>>>>>>> v4.14.187
 static bool __udp_v6_is_mcast_sock(struct net *net, struct sock *sk,
 				   __be16 loc_port, const struct in6_addr *loc_addr,
 				   __be16 rmt_port, const struct in6_addr *rmt_addr,
@@ -1066,8 +1076,12 @@ static void udp6_hwcsum_outgoing(struct sock *sk, struct sk_buff *skb,
  *	Sending
  */
 
+<<<<<<< HEAD
 static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
 			   struct inet_cork *cork)
+=======
+static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6)
+>>>>>>> v4.14.187
 {
 	struct sock *sk = skb->sk;
 	struct udphdr *uh;
@@ -1086,6 +1100,7 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
 	uh->len = htons(len);
 	uh->check = 0;
 
+<<<<<<< HEAD
 	if (cork->gso_size) {
 		const int hlen = skb_network_header_len(skb) +
 				 sizeof(struct udphdr);
@@ -1101,6 +1116,8 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
 		skb_shinfo(skb)->gso_type = SKB_GSO_UDP_L4;
 	}
 
+=======
+>>>>>>> v4.14.187
 	if (is_udplite)
 		csum = udplite_csum(skb);
 	else if (udp_sk(sk)->no_check6_tx) {   /* UDP csum disabled */
@@ -1152,7 +1169,11 @@ static int udp_v6_push_pending_frames(struct sock *sk)
 	if (!skb)
 		goto out;
 
+<<<<<<< HEAD
 	err = udp_v6_send_skb(skb, &fl6, &inet_sk(sk)->cork.base);
+=======
+	err = udp_v6_send_skb(skb, &fl6);
+>>>>>>> v4.14.187
 
 out:
 	up->len = 0;
@@ -1186,7 +1207,10 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
 	ipc6.hlimit = -1;
 	ipc6.tclass = -1;
 	ipc6.dontfrag = -1;
+<<<<<<< HEAD
 	ipc6.gso_size = up->gso_size;
+=======
+>>>>>>> v4.14.187
 	sockc.tsflags = sk->sk_tsflags;
 
 	/* destination address check */
@@ -1384,16 +1408,26 @@ back_from_confirm:
 
 	/* Lockless fast path for the non-corking case */
 	if (!corkreq) {
+<<<<<<< HEAD
 		struct inet_cork_full cork;
+=======
+>>>>>>> v4.14.187
 		struct sk_buff *skb;
 
 		skb = ip6_make_skb(sk, getfrag, msg, ulen,
 				   sizeof(struct udphdr), &ipc6,
 				   &fl6, (struct rt6_info *)dst,
+<<<<<<< HEAD
 				   msg->msg_flags, &cork, &sockc);
 		err = PTR_ERR(skb);
 		if (!IS_ERR_OR_NULL(skb))
 			err = udp_v6_send_skb(skb, &fl6, &cork.base);
+=======
+				   msg->msg_flags, &sockc);
+		err = PTR_ERR(skb);
+		if (!IS_ERR_OR_NULL(skb))
+			err = udp_v6_send_skb(skb, &fl6);
+>>>>>>> v4.14.187
 		goto release_dst;
 	}
 

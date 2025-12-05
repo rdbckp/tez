@@ -10,7 +10,10 @@
  */
 
 #include <linux/fs.h>
+<<<<<<< HEAD
 #include <linux/unicode.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/compiler.h>
 #include <linux/bitops.h>
 #include "ext4.h"
@@ -201,8 +204,12 @@ static void str2hashbuf_unsigned(const char *msg, int len, __u32 *buf, int num)
  * represented, and whether or not the returned hash is 32 bits or 64
  * bits.  32 bit hashes will return 0 for the minor hash.
  */
+<<<<<<< HEAD
 static int __ext4fs_dirhash(const struct inode *dir, const char *name, int len,
 			    struct dx_hash_info *hinfo)
+=======
+int ext4fs_dirhash(const char *name, int len, struct dx_hash_info *hinfo)
+>>>>>>> v4.14.187
 {
 	__u32	hash;
 	__u32	minor_hash = 0;
@@ -261,6 +268,7 @@ static int __ext4fs_dirhash(const struct inode *dir, const char *name, int len,
 		hash = buf[0];
 		minor_hash = buf[1];
 		break;
+<<<<<<< HEAD
 	case DX_HASH_SIPHASH:
 	{
 		struct qstr qname = QSTR_INIT(name, len);
@@ -277,6 +285,8 @@ static int __ext4fs_dirhash(const struct inode *dir, const char *name, int len,
 		minor_hash = (__u32)combined_hash;
 		break;
 	}
+=======
+>>>>>>> v4.14.187
 	default:
 		hinfo->hash = 0;
 		return -1;
@@ -288,6 +298,7 @@ static int __ext4fs_dirhash(const struct inode *dir, const char *name, int len,
 	hinfo->minor_hash = minor_hash;
 	return 0;
 }
+<<<<<<< HEAD
 
 int ext4fs_dirhash(const struct inode *dir, const char *name, int len,
 		   struct dx_hash_info *hinfo)
@@ -318,3 +329,5 @@ opaque_seq:
 #endif
 	return __ext4fs_dirhash(dir, name, len, hinfo);
 }
+=======
+>>>>>>> v4.14.187

@@ -1086,6 +1086,7 @@ static void hidg_unbind(struct usb_configuration *c, struct usb_function *f)
 	usb_free_all_descriptors(f);
 }
 
+<<<<<<< HEAD
 /*-------------------------------------------------------------------------*/
 /*                             usb_configuration                           */
 static struct hidg_func_descriptor hid_data = {
@@ -1103,6 +1104,8 @@ static struct hidg_func_descriptor hid_data = {
 /*-------------------------------------------------------------------------*/
 
 
+=======
+>>>>>>> v4.14.187
 static struct usb_function *hidg_alloc(struct usb_function_instance *fi)
 {
 	struct f_hidg *hidg;
@@ -1134,6 +1137,7 @@ static struct usb_function *hidg_alloc(struct usb_function_instance *fi)
 		}
 	}
 
+<<<<<<< HEAD
 	/* HACK, replace content, duplicate code from above */
 	hidg->bInterfaceSubClass = hid_data.subclass;
 	hidg->bInterfaceProtocol = hid_data.protocol;
@@ -1149,6 +1153,8 @@ static struct usb_function *hidg_alloc(struct usb_function_instance *fi)
 	}
 
 
+=======
+>>>>>>> v4.14.187
 	mutex_unlock(&opts->lock);
 
 	hidg->func.name    = "hid";

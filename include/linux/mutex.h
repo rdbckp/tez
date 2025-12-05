@@ -64,9 +64,12 @@ struct mutex {
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 	struct lockdep_map	dep_map;
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_KPERFMON
 	unsigned long		time;
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 static inline struct task_struct *__mutex_owner(struct mutex *lock)

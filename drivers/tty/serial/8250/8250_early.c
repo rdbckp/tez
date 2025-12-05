@@ -118,9 +118,12 @@ static void __init init_port(struct earlycon_device *device)
 	unsigned int divisor;
 	unsigned char c;
 	unsigned int ier;
+<<<<<<< HEAD
 #ifdef CONFIG_FPGA_EARLY_PORTING
 	int sample_count, sample_point, sample_data;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	serial8250_early_out(port, UART_LCR, 0x3);	/* 8n1 */
 	ier = serial8250_early_in(port, UART_IER);
@@ -128,6 +131,7 @@ static void __init init_port(struct earlycon_device *device)
 	serial8250_early_out(port, UART_FCR, 0);	/* no fifo */
 	serial8250_early_out(port, UART_MCR, 0x3);	/* DTR + RTS */
 
+<<<<<<< HEAD
 	divisor = DIV_ROUND_CLOSEST(port->uartclk, 16 * device->baud);
 #ifdef CONFIG_FPGA_EARLY_PORTING
 	sample_data = (port->uartclk + (device->baud / 2)) / device->baud;
@@ -143,6 +147,16 @@ static void __init init_port(struct earlycon_device *device)
 	serial8250_early_out(port, UART_DLL, divisor & 0xff);
 	serial8250_early_out(port, UART_DLM, (divisor >> 8) & 0xff);
 	serial8250_early_out(port, UART_LCR, c & ~UART_LCR_DLAB);
+=======
+	if (port->uartclk && device->baud) {
+		divisor = DIV_ROUND_CLOSEST(port->uartclk, 16 * device->baud);
+		c = serial8250_early_in(port, UART_LCR);
+		serial8250_early_out(port, UART_LCR, c | UART_LCR_DLAB);
+		serial8250_early_out(port, UART_DLL, divisor & 0xff);
+		serial8250_early_out(port, UART_DLM, (divisor >> 8) & 0xff);
+		serial8250_early_out(port, UART_LCR, c & ~UART_LCR_DLAB);
+	}
+>>>>>>> v4.14.187
 }
 
 int __init early_serial8250_setup(struct earlycon_device *device,

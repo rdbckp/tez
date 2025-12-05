@@ -48,6 +48,7 @@ usb_f_hid-y			:= f_hid.o
 obj-$(CONFIG_USB_F_HID)		+= usb_f_hid.o
 usb_f_printer-y			:= f_printer.o
 obj-$(CONFIG_USB_F_PRINTER)	+= usb_f_printer.o
+<<<<<<< HEAD
 usb_f_dm-y			:= f_dm.o
 obj-$(CONFIG_USB_CONFIGFS_F_DM)	+= usb_f_dm.o
 usb_f_adm-y			:= f_adm.o
@@ -75,3 +76,7 @@ obj-$(CONFIG_USB_F_ACC)         += usb_f_accessory.o
 usb_f_conn_gadget-y             := f_conn_gadget.o
 obj-$(CONFIG_USB_F_CONN_GADGET) += usb_f_conn_gadget.o
 obj-$(CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE)	+= multi_config.o
+=======
+usb_f_tcm-y			:= f_tcm.o
+obj-$(CONFIG_USB_F_TCM)		+= usb_f_tcm.o
+>>>>>>> v4.14.187

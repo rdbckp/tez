@@ -182,6 +182,7 @@ static inline void device_pm_init(struct device *dev)
 	device_pm_sleep_init(dev);
 	pm_runtime_init(dev);
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_PM_SLEEP
 
@@ -200,3 +201,5 @@ static inline int pm_wakeup_source_sysfs_add(struct device *parent)
 }
 
 #endif /* CONFIG_PM_SLEEP */
+=======
+>>>>>>> v4.14.187

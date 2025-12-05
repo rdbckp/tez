@@ -18,11 +18,15 @@
 #ifndef _CORESIGHT_TMC_H
 #define _CORESIGHT_TMC_H
 
+<<<<<<< HEAD
 #include <linux/dma-mapping.h>
 #include <linux/idr.h>
 #include <linux/miscdevice.h>
 #include <linux/mutex.h>
 #include <linux/refcount.h>
+=======
+#include <linux/miscdevice.h>
+>>>>>>> v4.14.187
 
 #define TMC_RSZ			0x004
 #define TMC_STS			0x00c
@@ -50,7 +54,10 @@
 #define TMC_ITATBCTR2		0xef0
 #define TMC_ITATBCTR1		0xef4
 #define TMC_ITATBCTR0		0xef8
+<<<<<<< HEAD
 #define TMC_AUTHSTATUS		0xfb8
+=======
+>>>>>>> v4.14.187
 
 /* register description */
 /* TMC_CTL - 0x020 */
@@ -59,7 +66,10 @@
 #define TMC_STS_TMCREADY_BIT	2
 #define TMC_STS_FULL		BIT(0)
 #define TMC_STS_TRIGGERED	BIT(1)
+<<<<<<< HEAD
 #define TMC_STS_MEMERR		BIT(5)
+=======
+>>>>>>> v4.14.187
 /*
  * TMC_AXICTL - 0x110
  *
@@ -102,8 +112,11 @@
 #define TMC_DEVID_AXIAW_SHIFT	17
 #define TMC_DEVID_AXIAW_MASK	0x7f
 
+<<<<<<< HEAD
 #define TMC_AUTH_NSID_MASK	GENMASK(1, 0)
 
+=======
+>>>>>>> v4.14.187
 enum tmc_config_type {
 	TMC_CONFIG_TYPE_ETB,
 	TMC_CONFIG_TYPE_ETR,
@@ -141,6 +154,7 @@ enum tmc_mem_intf_width {
 #define CORESIGHT_SOC_600_ETR_CAPS	\
 	(TMC_ETR_SAVE_RESTORE | TMC_ETR_AXI_ARCACHE)
 
+<<<<<<< HEAD
 enum etr_mode {
 	ETR_MODE_FLAT,		/* Uses contiguous flat buffer */
 	ETR_MODE_ETR_SG,	/* Uses in-built TMC ETR SG mechanism */
@@ -173,6 +187,8 @@ struct etr_buf {
 	void				*private;
 };
 
+=======
+>>>>>>> v4.14.187
 /**
  * struct tmc_drvdata - specifics associated to an TMC component
  * @base:	memory mapped base address for this component.
@@ -180,22 +196,33 @@ struct etr_buf {
  * @csdev:	component vitals needed by the framework.
  * @miscdev:	specifics to handle "/dev/xyz.tmc" entry.
  * @spinlock:	only one at a time pls.
+<<<<<<< HEAD
  * @pid:	Process ID of the process being monitored by the session
  *		that is using this component.
  * @buf:	Snapshot of the trace data for ETF/ETB.
  * @etr_buf:	details of buffer used in TMC-ETR
  * @len:	size of the available trace for ETF/ETB.
  * @size:	trace buffer size for this TMC (common for all modes).
+=======
+ * @buf:	area of memory where trace data get sent.
+ * @paddr:	DMA start location in RAM.
+ * @vaddr:	virtual representation of @paddr.
+ * @size:	trace buffer size.
+ * @len:	size of the available trace.
+>>>>>>> v4.14.187
  * @mode:	how this TMC is being used.
  * @config_type: TMC variant, must be of type @tmc_config_type.
  * @memwidth:	width of the memory interface databus, in bytes.
  * @trigger_cntr: amount of words to store after a trigger.
  * @etr_caps:	Bitmask of capabilities of the TMC ETR, inferred from the
  *		device configuration register (DEVID)
+<<<<<<< HEAD
  * @idr:	Holds etr_bufs allocated for this ETR.
  * @idr_mutex:	Access serialisation for idr.
  * @sysfs_buf:	SYSFS buffer for ETR.
  * @perf_buf:	PERF buffer for ETR.
+=======
+>>>>>>> v4.14.187
  */
 struct tmc_drvdata {
 	void __iomem		*base;
@@ -203,6 +230,7 @@ struct tmc_drvdata {
 	struct coresight_device	*csdev;
 	struct miscdevice	miscdev;
 	spinlock_t		spinlock;
+<<<<<<< HEAD
 	pid_t			pid;
 	bool			reading;
 	union {
@@ -211,11 +239,20 @@ struct tmc_drvdata {
 	};
 	u32			len;
 	u32			size;
+=======
+	bool			reading;
+	char			*buf;
+	dma_addr_t		paddr;
+	void __iomem		*vaddr;
+	u32			size;
+	u32			len;
+>>>>>>> v4.14.187
 	u32			mode;
 	enum tmc_config_type	config_type;
 	enum tmc_mem_intf_width	memwidth;
 	u32			trigger_cntr;
 	u32			etr_caps;
+<<<<<<< HEAD
 	struct idr		idr;
 	struct mutex		idr_mutex;
 	struct etr_buf		*sysfs_buf;
@@ -261,6 +298,8 @@ struct tmc_sg_table {
 	int node;
 	struct tmc_pages table_pages;
 	struct tmc_pages data_pages;
+=======
+>>>>>>> v4.14.187
 };
 
 /* Generic functions */
@@ -268,7 +307,10 @@ void tmc_wait_for_tmcready(struct tmc_drvdata *drvdata);
 void tmc_flush_and_stop(struct tmc_drvdata *drvdata);
 void tmc_enable_hw(struct tmc_drvdata *drvdata);
 void tmc_disable_hw(struct tmc_drvdata *drvdata);
+<<<<<<< HEAD
 u32 tmc_get_memwidth_mask(struct tmc_drvdata *drvdata);
+=======
+>>>>>>> v4.14.187
 
 /* ETB/ETF functions */
 int tmc_read_prepare_etb(struct tmc_drvdata *drvdata);
@@ -276,14 +318,20 @@ int tmc_read_unprepare_etb(struct tmc_drvdata *drvdata);
 extern const struct coresight_ops tmc_etb_cs_ops;
 extern const struct coresight_ops tmc_etf_cs_ops;
 
+<<<<<<< HEAD
 ssize_t tmc_etb_get_sysfs_trace(struct tmc_drvdata *drvdata,
 				loff_t pos, size_t len, char **bufpp);
+=======
+>>>>>>> v4.14.187
 /* ETR functions */
 int tmc_read_prepare_etr(struct tmc_drvdata *drvdata);
 int tmc_read_unprepare_etr(struct tmc_drvdata *drvdata);
 extern const struct coresight_ops tmc_etr_cs_ops;
+<<<<<<< HEAD
 ssize_t tmc_etr_get_sysfs_trace(struct tmc_drvdata *drvdata,
 				loff_t pos, size_t len, char **bufpp);
+=======
+>>>>>>> v4.14.187
 
 
 #define TMC_REG_PAIR(name, lo_off, hi_off)				\
@@ -319,6 +367,7 @@ static inline bool tmc_etr_has_cap(struct tmc_drvdata *drvdata, u32 cap)
 	return !!(drvdata->etr_caps & cap);
 }
 
+<<<<<<< HEAD
 struct tmc_sg_table *tmc_alloc_sg_table(struct device *dev,
 					int node,
 					int nr_tpages,
@@ -338,4 +387,6 @@ tmc_sg_table_buf_size(struct tmc_sg_table *sg_table)
 
 struct coresight_device *tmc_etr_get_catu_device(struct tmc_drvdata *drvdata);
 
+=======
+>>>>>>> v4.14.187
 #endif

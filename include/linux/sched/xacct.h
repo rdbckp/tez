@@ -28,11 +28,14 @@ static inline void inc_syscw(struct task_struct *tsk)
 {
 	tsk->ioac.syscw++;
 }
+<<<<<<< HEAD
 
 static inline void inc_syscfs(struct task_struct *tsk)
 {
 	tsk->ioac.syscfs++;
 }
+=======
+>>>>>>> v4.14.187
 #else
 static inline void add_rchar(struct task_struct *tsk, ssize_t amt)
 {
@@ -49,10 +52,13 @@ static inline void inc_syscr(struct task_struct *tsk)
 static inline void inc_syscw(struct task_struct *tsk)
 {
 }
+<<<<<<< HEAD
 
 static inline void inc_syscfs(struct task_struct *tsk)
 {
 }
+=======
+>>>>>>> v4.14.187
 #endif
 
 #endif /* _LINUX_SCHED_XACCT_H */

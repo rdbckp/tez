@@ -29,6 +29,7 @@
 #include <asm/debug-monitors.h>
 #include <asm/set_memory.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_UH
 #include <linux/uh.h>
 #ifdef CONFIG_UH_RKP
@@ -39,6 +40,8 @@
 #include <linux/rustrkp.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 #include "bpf_jit.h"
 
 #define TMP_REG_1 (MAX_BPF_JIT_REG + 0)
@@ -944,12 +947,16 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
 	prog->bpf_func = (void *)ctx.image;
 	prog->jited = 1;
 	prog->jited_len = image_size;
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 	uh_call(UH_APP_RKP, RKP_BFP_LOAD, (u64)header, (u64)(header->pages * 0x1000), 0, 0);
 #endif
 #ifdef CONFIG_RUSTUH_RKP
 	uh_call(UH_APP_RKP, RKP_BPF_LOAD, (u64)header, (u64)(header->pages * 0x1000), 0, 0);
 #endif
+=======
+
+>>>>>>> v4.14.187
 out_off:
 	kfree(ctx.offset);
 out:
@@ -958,6 +965,7 @@ out:
 					   tmp : orig_prog);
 	return prog;
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_CFI_CLANG
 bool arch_bpf_jit_check_func(const struct bpf_prog *prog)
@@ -980,3 +988,5 @@ bool arch_bpf_jit_check_func(const struct bpf_prog *prog)
 	return (func >= MODULES_VADDR && func < MODULES_END);
 }
 #endif
+=======
+>>>>>>> v4.14.187

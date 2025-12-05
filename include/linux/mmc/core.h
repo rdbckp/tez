@@ -8,7 +8,10 @@
 #ifndef LINUX_MMC_CORE_H
 #define LINUX_MMC_CORE_H
 
+<<<<<<< HEAD
 #include <linux/interrupt.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/completion.h>
 #include <linux/types.h>
 
@@ -164,6 +167,7 @@ struct mmc_request {
 	 */
 	void			(*recovery_notifier)(struct mmc_request *);
 	struct mmc_host		*host;
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_CQ_SUPPORT
 	struct mmc_async_req	*areq;
 	int			flags;
@@ -179,11 +183,14 @@ struct mmc_request {
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 	struct mmc_cmdq_req *cmdq_req;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	/* Allow other commands during this ongoing data transfer or busy wait */
 	bool			cap_cmd_during_tfr;
 
 	int			tag;
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_CRYPTO
 	int crypto_key_slot;
 	u64 data_unit_num;
@@ -203,6 +210,10 @@ static inline bool mmc_request_crypto_enabled(const struct mmc_request *mrq)
 }
 #endif
 
+=======
+};
+
+>>>>>>> v4.14.187
 struct mmc_card;
 
 void mmc_wait_for_req(struct mmc_host *host, struct mmc_request *mrq);
@@ -210,9 +221,12 @@ int mmc_wait_for_cmd(struct mmc_host *host, struct mmc_command *cmd,
 		int retries);
 
 int mmc_hw_reset(struct mmc_host *host);
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 int mmc_cmdq_hw_reset(struct mmc_host *host);
 #endif
+=======
+>>>>>>> v4.14.187
 void mmc_set_data_timeout(struct mmc_data *data, const struct mmc_card *card);
 
 #endif /* LINUX_MMC_CORE_H */

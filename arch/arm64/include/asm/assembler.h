@@ -23,8 +23,11 @@
 #ifndef __ASM_ASSEMBLER_H
 #define __ASM_ASSEMBLER_H
 
+<<<<<<< HEAD
 #include <asm-generic/export.h>
 
+=======
+>>>>>>> v4.14.187
 #include <asm/asm-offsets.h>
 #include <asm/cpufeature.h>
 #include <asm/cputype.h>
@@ -460,6 +463,7 @@ alternative_endif
 #else
 #define NOKPROBE(x)
 #endif
+<<<<<<< HEAD
 
 #ifdef CONFIG_KASAN
 #define EXPORT_SYMBOL_NOKASAN(name)
@@ -467,6 +471,8 @@ alternative_endif
 #define EXPORT_SYMBOL_NOKASAN(name)	EXPORT_SYMBOL(name)
 #endif
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Emit a 64-bit absolute little endian symbol reference in a way that
 	 * ensures that it will be resolved at build time, even when building a

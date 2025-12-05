@@ -65,8 +65,11 @@ struct thread_info {
 #ifdef CONFIG_ARM_THUMBEE
 	unsigned long		thumbee_state;	/* ThumbEE Handler Base register */
 #endif
+<<<<<<< HEAD
 	void			*regs_on_excp;	/* aee */
 	int			cpu_excp;	/* aee */
+=======
+>>>>>>> v4.14.187
 };
 
 #define INIT_THREAD_INFO(tsk)						\
@@ -75,7 +78,10 @@ struct thread_info {
 	.flags		= 0,						\
 	.preempt_count	= INIT_PREEMPT_COUNT,				\
 	.addr_limit	= KERNEL_DS,					\
+<<<<<<< HEAD
 	.cpu_excp = 0	/* aee */					\
+=======
+>>>>>>> v4.14.187
 }
 
 #define init_thread_info	(init_thread_union.thread_info)

@@ -33,14 +33,18 @@ struct mtk_iommu_suspend_reg {
 	u32				int_control0;
 	u32				int_main_control;
 	u32				ivrp_paddr;
+<<<<<<< HEAD
 	u32				vld_pa_range;
 	u32				pt_base;
 	u32				wr_ctrl;
+=======
+>>>>>>> v4.14.187
 };
 
 enum mtk_iommu_plat {
 	M4U_MT2701,
 	M4U_MT2712,
+<<<<<<< HEAD
 	M4U_MT8167,
 	M4U_MT8168,
 	M4U_MT8173,
@@ -61,10 +65,14 @@ struct mtk_iommu_plat_data {
 	const char spec_device_comp[32];
 	const unsigned int spec_cnt;
 	const struct mtk_iommu_resv_iova_region *spec_region;
+=======
+	M4U_MT8173,
+>>>>>>> v4.14.187
 };
 
 struct mtk_iommu_domain;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_IOMMU_V2
 struct mtk_iommu_pgtable {
 	spinlock_t			pgtlock; /* lock for page table */
@@ -129,6 +137,25 @@ struct mtk_iommu_data {
 
 	struct list_head list;
 	unsigned int m4uid;
+=======
+struct mtk_iommu_data {
+	void __iomem			*base;
+	int				irq;
+	struct device			*dev;
+	struct clk			*bclk;
+	phys_addr_t			protect_base; /* protect memory base */
+	struct mtk_iommu_suspend_reg	reg;
+	struct mtk_iommu_domain		*m4u_dom;
+	struct iommu_group		*m4u_group;
+	struct mtk_smi_iommu		smi_imu;      /* SMI larb iommu info */
+	bool                            enable_4GB;
+	bool				tlb_flush_active;
+
+	struct iommu_device		iommu;
+	enum mtk_iommu_plat		m4u_plat;
+
+	struct list_head		list;
+>>>>>>> v4.14.187
 };
 
 static inline int compare_of(struct device *dev, void *data)

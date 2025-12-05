@@ -51,9 +51,12 @@ static char *icache_policy_str[] = {
 
 unsigned long __icache_flags;
 
+<<<<<<< HEAD
 /* machine descriptor for arm64 device */
 static const char *machine_desc_str;
 
+=======
+>>>>>>> v4.14.187
 static const char *const hwcap_str[] = {
 	"fp",
 	"asimd",
@@ -124,12 +127,15 @@ static const char *const compat_hwcap2_str[] = {
 };
 #endif /* CONFIG_COMPAT */
 
+<<<<<<< HEAD
 /* setup machine descriptor */
 void machine_desc_set(const char *str)
 {
 	machine_desc_str = str;
 }
 
+=======
+>>>>>>> v4.14.187
 static int c_show(struct seq_file *m, void *v)
 {
 	int i, j;
@@ -185,8 +191,11 @@ static int c_show(struct seq_file *m, void *v)
 		seq_printf(m, "CPU revision\t: %d\n\n", MIDR_REVISION(midr));
 	}
 
+<<<<<<< HEAD
 	/* backward-compatibility for third-party applications */
 	seq_printf(m, "Hardware\t: %s\n", machine_desc_str);
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 

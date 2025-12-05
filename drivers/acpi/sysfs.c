@@ -230,8 +230,12 @@ module_param_cb(trace_method_name, &param_ops_trace_method, &trace_method_name, 
 module_param_cb(trace_debug_layer, &param_ops_trace_attrib, &acpi_gbl_trace_dbg_layer, 0644);
 module_param_cb(trace_debug_level, &param_ops_trace_attrib, &acpi_gbl_trace_dbg_level, 0644);
 
+<<<<<<< HEAD
 static int param_set_trace_state(const char *val,
 				 const struct kernel_param *kp)
+=======
+static int param_set_trace_state(const char *val, struct kernel_param *kp)
+>>>>>>> v4.14.187
 {
 	acpi_status status;
 	const char *method = trace_method_name;
@@ -267,7 +271,11 @@ static int param_set_trace_state(const char *val,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int param_get_trace_state(char *buffer, const struct kernel_param *kp)
+=======
+static int param_get_trace_state(char *buffer, struct kernel_param *kp)
+>>>>>>> v4.14.187
 {
 	if (!(acpi_gbl_trace_flags & ACPI_TRACE_ENABLED))
 		return sprintf(buffer, "disable");
@@ -296,8 +304,12 @@ MODULE_PARM_DESC(aml_debug_output,
 		 "To enable/disable the ACPI Debug Object output.");
 
 /* /sys/module/acpi/parameters/acpica_version */
+<<<<<<< HEAD
 static int param_get_acpica_version(char *buffer,
 				    const struct kernel_param *kp)
+=======
+static int param_get_acpica_version(char *buffer, struct kernel_param *kp)
+>>>>>>> v4.14.187
 {
 	int result;
 
@@ -944,13 +956,21 @@ static void __exit interrupt_stats_exit(void)
 }
 
 static ssize_t
+<<<<<<< HEAD
 acpi_show_profile(struct device *dev, struct device_attribute *attr,
+=======
+acpi_show_profile(struct kobject *kobj, struct kobj_attribute *attr,
+>>>>>>> v4.14.187
 		  char *buf)
 {
 	return sprintf(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
 }
 
+<<<<<<< HEAD
 static const struct device_attribute pm_profile_attr =
+=======
+static const struct kobj_attribute pm_profile_attr =
+>>>>>>> v4.14.187
 	__ATTR(pm_profile, S_IRUGO, acpi_show_profile, NULL);
 
 static ssize_t hotplug_enabled_show(struct kobject *kobj,

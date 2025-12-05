@@ -14,6 +14,13 @@ else
   export HOST_EXTRACXXFLAGS
 endif
 
+<<<<<<< HEAD
+=======
+ifneq ($(CFLAGS_KCOV), $(SANCOV_PLUGIN))
+  GCC_PLUGIN := $(filter-out $(SANCOV_PLUGIN), $(GCC_PLUGIN))
+endif
+
+>>>>>>> v4.14.187
 export HOSTLIBS
 
 $(obj)/randomize_layout_plugin.o: $(objtree)/$(obj)/randomize_layout_seed.h

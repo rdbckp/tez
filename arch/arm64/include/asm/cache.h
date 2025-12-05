@@ -34,7 +34,11 @@
 #define ICACHE_POLICY_VIPT	2
 #define ICACHE_POLICY_PIPT	3
 
+<<<<<<< HEAD
 #define L1_CACHE_SHIFT		6
+=======
+#define L1_CACHE_SHIFT		7
+>>>>>>> v4.14.187
 #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
 
 /*
@@ -46,10 +50,13 @@
  */
 #define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
 
+<<<<<<< HEAD
 #ifdef CONFIG_KASAN_SW_TAGS
 #define ARCH_SLAB_MINALIGN	(1ULL << KASAN_SHADOW_SCALE_SHIFT)
 #endif
 
+=======
+>>>>>>> v4.14.187
 #ifndef __ASSEMBLY__
 
 #include <linux/bitops.h>

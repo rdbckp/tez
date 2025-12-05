@@ -249,8 +249,11 @@ SYSCALL_DEFINE3(mincore, unsigned long, start, size_t, len,
 	unsigned long pages;
 	unsigned char *tmp;
 
+<<<<<<< HEAD
 	start = untagged_addr(start);
 
+=======
+>>>>>>> v4.14.187
 	/* Check the start address: needs to be page-aligned.. */
 	if (start & ~PAGE_MASK)
 		return -EINVAL;

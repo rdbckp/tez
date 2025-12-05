@@ -97,7 +97,10 @@ static inline void task_chr_io_accounting_add(struct task_io_accounting *dst,
 	dst->wchar += src->wchar;
 	dst->syscr += src->syscr;
 	dst->syscw += src->syscw;
+<<<<<<< HEAD
 	dst->syscfs += src->syscfs;
+=======
+>>>>>>> v4.14.187
 }
 #else
 static inline void task_chr_io_accounting_add(struct task_io_accounting *dst,

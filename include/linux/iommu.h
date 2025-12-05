@@ -26,10 +26,13 @@
 #include <linux/err.h>
 #include <linux/of.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_IOMMU_V2
 #define IOMMU_DEBUG_ENABLED
 #endif
 
+=======
+>>>>>>> v4.14.187
 #define IOMMU_READ	(1 << 0)
 #define IOMMU_WRITE	(1 << 1)
 #define IOMMU_CACHE	(1 << 2) /* DMA cache coherency */

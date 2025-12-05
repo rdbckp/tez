@@ -15,7 +15,10 @@ void show_mem(unsigned int filter, nodemask_t *nodemask)
 	unsigned long total = 0, reserved = 0, highmem = 0;
 
 	printk("Mem-Info:\n");
+<<<<<<< HEAD
 	show_mem_extra_call_notifiers();
+=======
+>>>>>>> v4.14.187
 	show_free_areas(filter, nodemask);
 
 	for_each_online_pgdat(pgdat) {

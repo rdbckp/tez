@@ -495,7 +495,11 @@ static int fanotify_find_path(int dfd, const char __user *filename,
 	}
 
 	/* you can only watch an inode if you have read permissions on it */
+<<<<<<< HEAD
 	ret = inode_permission2(path->mnt, path->dentry->d_inode, MAY_READ);
+=======
+	ret = inode_permission(path->dentry->d_inode, MAY_READ);
+>>>>>>> v4.14.187
 	if (ret)
 		path_put(path);
 out:

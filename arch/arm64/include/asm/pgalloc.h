@@ -24,12 +24,15 @@
 #include <asm/cacheflush.h>
 #include <asm/tlbflush.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 #include <linux/rkp.h>
 #elif defined(CONFIG_RUSTUH_RKP)
 #include <linux/rustrkp.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 #define check_pgt_cache()		do { } while (0)
 
 #define PGALLOC_GFP	(GFP_KERNEL | __GFP_ZERO)
@@ -39,6 +42,7 @@
 
 static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long addr)
 {
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	/* FIXME not zeroing the page */
 	pmd_t *rkp_ropage = NULL;
@@ -47,12 +51,15 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long addr)
 		return rkp_ropage;
 	else
 #endif
+=======
+>>>>>>> v4.14.187
 	return (pmd_t *)__get_free_page(PGALLOC_GFP);
 }
 
 static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
 {
 	BUG_ON((unsigned long)pmd & (PAGE_SIZE-1));
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 	if (is_rkp_ro_page((u64)pmd))
 		rkp_ro_free((void *)pmd);
@@ -62,6 +69,8 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
 		rkp_ro_free((void *)pmd);
 	else
 #endif
+=======
+>>>>>>> v4.14.187
 	free_page((unsigned long)pmd);
 }
 
@@ -85,6 +94,7 @@ static inline void __pud_populate(pud_t *pud, phys_addr_t pmd, pudval_t prot)
 
 static inline pud_t *pud_alloc_one(struct mm_struct *mm, unsigned long addr)
 {
+<<<<<<< HEAD
 #if defined(CONFIG_UH_RKP) || defined(CONFIG_RUSTUH_RKP)
 	pmd_t *rkp_ropage = NULL;
 
@@ -93,12 +103,15 @@ static inline pud_t *pud_alloc_one(struct mm_struct *mm, unsigned long addr)
 		return rkp_ropage;
 	else
 #endif
+=======
+>>>>>>> v4.14.187
 	return (pud_t *)__get_free_page(PGALLOC_GFP);
 }
 
 static inline void pud_free(struct mm_struct *mm, pud_t *pud)
 {
 	BUG_ON((unsigned long)pud & (PAGE_SIZE-1));
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 	if (is_rkp_ro_page((u64)pud))
 		rkp_ro_free((void *)pud);
@@ -108,6 +121,8 @@ static inline void pud_free(struct mm_struct *mm, pud_t *pud)
 		rkp_ro_free((void *)pud);
 	else
 #endif
+=======
+>>>>>>> v4.14.187
 	free_page((unsigned long)pud);
 }
 
@@ -133,11 +148,14 @@ extern void pgd_free(struct mm_struct *mm, pgd_t *pgd);
 static inline pte_t *
 pte_alloc_one_kernel(struct mm_struct *mm, unsigned long addr)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 	if (addr_rkp_ro(addr))
 		return (pte_t *)rkp_ro_alloc();
 	else
 #endif
+=======
+>>>>>>> v4.14.187
 	return (pte_t *)__get_free_page(PGALLOC_GFP);
 }
 

@@ -274,6 +274,7 @@ static struct sync_file *sync_file_merge(const char *name, struct sync_file *a,
 	for (; i_b < b_num_fences; i_b++)
 		add_fence(fences, &i, b_fences[i_b]);
 
+<<<<<<< HEAD
 	/* If all the sync pts were signaled, then adding the sync_pt who
 	 * was the last signaled to the fence.
 	 */
@@ -297,6 +298,10 @@ static struct sync_file *sync_file_merge(const char *name, struct sync_file *a,
 
 		fences[i++] = dma_fence_get(last_signaled_sync_pt);
 	}
+=======
+	if (i == 0)
+		fences[i++] = dma_fence_get(a_fences[0]);
+>>>>>>> v4.14.187
 
 	if (num_fences > i) {
 		nfences = krealloc(fences, i * sizeof(*fences),

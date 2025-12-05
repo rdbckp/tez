@@ -17,7 +17,11 @@
 
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #define COMMAND_LINE_SIZE 3072
+=======
+#define COMMAND_LINE_SIZE 1024
+>>>>>>> v4.14.187
 
 /* The list ends with an ATAG_NONE node. */
 #define ATAG_NONE	0x00000000
@@ -174,6 +178,7 @@ struct tagtable {
 	int (*parse)(const struct tag *);
 };
 
+<<<<<<< HEAD
 /* general memory descriptor */
 struct mem_desc {
 	u64 start;
@@ -185,6 +190,8 @@ struct dram_info {
 	struct mem_desc rank_info[4];
 };
 
+=======
+>>>>>>> v4.14.187
 #define tag_member_present(tag,member)				\
 	((unsigned long)(&((struct tag *)0L)->member + 1)	\
 		<= (tag)->hdr.size * 4)

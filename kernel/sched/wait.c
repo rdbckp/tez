@@ -11,7 +11,10 @@
 #include <linux/wait.h>
 #include <linux/hash.h>
 #include <linux/kthread.h>
+<<<<<<< HEAD
 #include <linux/poll.h>
+=======
+>>>>>>> v4.14.187
 
 void __init_waitqueue_head(struct wait_queue_head *wq_head, const char *name, struct lock_class_key *key)
 {
@@ -214,6 +217,7 @@ void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode, int nr_e
 }
 EXPORT_SYMBOL_GPL(__wake_up_sync);	/* For internal use only */
 
+<<<<<<< HEAD
 void __wake_up_pollfree(struct wait_queue_head *wq_head)
 {
 	__wake_up(wq_head, TASK_NORMAL, 0, (void *)(POLLHUP | POLLFREE));
@@ -221,6 +225,8 @@ void __wake_up_pollfree(struct wait_queue_head *wq_head)
 	WARN_ON_ONCE(waitqueue_active(wq_head));
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * Note: we use "set_current_state()" _after_ the wait-queue add,
  * because we need a memory barrier there on SMP, so that any

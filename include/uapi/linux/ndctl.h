@@ -256,6 +256,13 @@ enum nd_driver_flags {
 	ND_DRIVER_DAX_PMEM	  = 1 << ND_DEVICE_DAX_PMEM,
 };
 
+<<<<<<< HEAD
+=======
+enum {
+	ND_MIN_NAMESPACE_SIZE = 0x00400000,
+};
+
+>>>>>>> v4.14.187
 enum ars_masks {
 	ARS_STATUS_MASK = 0x0000FFFF,
 	ARS_EXT_STATUS_SHIFT = 16,

@@ -22,7 +22,10 @@
 #include <linux/kthread.h>
 #include <linux/freezer.h>
 #include <linux/page_owner.h>
+<<<<<<< HEAD
 #include <linux/psi.h>
+=======
+>>>>>>> v4.14.187
 #include "internal.h"
 
 #ifdef CONFIG_COMPACTION
@@ -2030,15 +2033,22 @@ static int kcompactd(void *p)
 	pgdat->kcompactd_classzone_idx = pgdat->nr_zones - 1;
 
 	while (!kthread_should_stop()) {
+<<<<<<< HEAD
 		unsigned long pflags;
 
+=======
+>>>>>>> v4.14.187
 		trace_mm_compaction_kcompactd_sleep(pgdat->node_id);
 		wait_event_freezable(pgdat->kcompactd_wait,
 				kcompactd_work_requested(pgdat));
 
+<<<<<<< HEAD
 		psi_memstall_enter(&pflags);
 		kcompactd_do_work(pgdat);
 		psi_memstall_leave(&pflags);
+=======
+		kcompactd_do_work(pgdat);
+>>>>>>> v4.14.187
 	}
 
 	return 0;

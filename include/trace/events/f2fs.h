@@ -49,8 +49,11 @@ TRACE_DEFINE_ENUM(CP_SYNC);
 TRACE_DEFINE_ENUM(CP_RECOVERY);
 TRACE_DEFINE_ENUM(CP_DISCARD);
 TRACE_DEFINE_ENUM(CP_TRIMMED);
+<<<<<<< HEAD
 TRACE_DEFINE_ENUM(CP_PAUSE);
 TRACE_DEFINE_ENUM(CP_RESIZE);
+=======
+>>>>>>> v4.14.187
 
 #define show_block_type(type)						\
 	__print_symbolic(type,						\
@@ -136,6 +139,7 @@ TRACE_DEFINE_ENUM(CP_RESIZE);
 		{ CP_SYNC,	"Sync" },				\
 		{ CP_RECOVERY,	"Recovery" },				\
 		{ CP_DISCARD,	"Discard" },				\
+<<<<<<< HEAD
 		{ CP_PAUSE,	"Pause" },				\
 		{ CP_TRIMMED,	"Trimmed" },				\
 		{ CP_RESIZE,	"Resize" })
@@ -171,6 +175,11 @@ TRACE_DEFINE_ENUM(CP_RESIZE);
 struct f2fs_sb_info;
 struct f2fs_io_info;
 struct extent_info;
+=======
+		{ CP_UMOUNT,	"Umount" },				\
+		{ CP_TRIMMED,	"Trimmed" })
+
+>>>>>>> v4.14.187
 struct victim_sel_policy;
 struct f2fs_map_blocks;
 
@@ -245,14 +254,24 @@ DEFINE_EVENT(f2fs__inode, f2fs_sync_file_enter,
 
 TRACE_EVENT(f2fs_sync_file_exit,
 
+<<<<<<< HEAD
 	TP_PROTO(struct inode *inode, int cp_reason, int datasync, int ret),
 
 	TP_ARGS(inode, cp_reason, datasync, ret),
+=======
+	TP_PROTO(struct inode *inode, int need_cp, int datasync, int ret),
+
+	TP_ARGS(inode, need_cp, datasync, ret),
+>>>>>>> v4.14.187
 
 	TP_STRUCT__entry(
 		__field(dev_t,	dev)
 		__field(ino_t,	ino)
+<<<<<<< HEAD
 		__field(int,	cp_reason)
+=======
+		__field(int,	need_cp)
+>>>>>>> v4.14.187
 		__field(int,	datasync)
 		__field(int,	ret)
 	),
@@ -260,15 +279,26 @@ TRACE_EVENT(f2fs_sync_file_exit,
 	TP_fast_assign(
 		__entry->dev		= inode->i_sb->s_dev;
 		__entry->ino		= inode->i_ino;
+<<<<<<< HEAD
 		__entry->cp_reason	= cp_reason;
+=======
+		__entry->need_cp	= need_cp;
+>>>>>>> v4.14.187
 		__entry->datasync	= datasync;
 		__entry->ret		= ret;
 	),
 
+<<<<<<< HEAD
 	TP_printk("dev = (%d,%d), ino = %lu, cp_reason: %s, "
 		"datasync = %d, ret = %d",
 		show_dev_ino(__entry),
 		show_fsync_cpreason(__entry->cp_reason),
+=======
+	TP_printk("dev = (%d,%d), ino = %lu, checkpoint is %s, "
+		"datasync = %d, ret = %d",
+		show_dev_ino(__entry),
+		__entry->need_cp ? "needed" : "not needed",
+>>>>>>> v4.14.187
 		__entry->datasync,
 		__entry->ret)
 );
@@ -544,6 +574,7 @@ TRACE_EVENT(f2fs_truncate_partial_nodes,
 		__entry->err)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(f2fs_file_write_iter,
 
 	TP_PROTO(struct inode *inode, unsigned long offset,
@@ -575,6 +606,8 @@ TRACE_EVENT(f2fs_file_write_iter,
 		__entry->ret)
 );
 
+=======
+>>>>>>> v4.14.187
 TRACE_EVENT(f2fs_map_blocks,
 	TP_PROTO(struct inode *inode, struct f2fs_map_blocks *map, int ret),
 
@@ -586,9 +619,12 @@ TRACE_EVENT(f2fs_map_blocks,
 		__field(block_t,	m_lblk)
 		__field(block_t,	m_pblk)
 		__field(unsigned int,	m_len)
+<<<<<<< HEAD
 		__field(unsigned int,	m_flags)
 		__field(int,	m_seg_type)
 		__field(bool,	m_may_create)
+=======
+>>>>>>> v4.14.187
 		__field(int,	ret)
 	),
 
@@ -598,22 +634,32 @@ TRACE_EVENT(f2fs_map_blocks,
 		__entry->m_lblk		= map->m_lblk;
 		__entry->m_pblk		= map->m_pblk;
 		__entry->m_len		= map->m_len;
+<<<<<<< HEAD
 		__entry->m_flags	= map->m_flags;
 		__entry->m_seg_type	= map->m_seg_type;
 		__entry->m_may_create	= map->m_may_create;
+=======
+>>>>>>> v4.14.187
 		__entry->ret		= ret;
 	),
 
 	TP_printk("dev = (%d,%d), ino = %lu, file offset = %llu, "
+<<<<<<< HEAD
 		"start blkaddr = 0x%llx, len = 0x%llx, flags = %u,"
 		"seg_type = %d, may_create = %d, err = %d",
+=======
+		"start blkaddr = 0x%llx, len = 0x%llx, err = %d",
+>>>>>>> v4.14.187
 		show_dev_ino(__entry),
 		(unsigned long long)__entry->m_lblk,
 		(unsigned long long)__entry->m_pblk,
 		(unsigned long long)__entry->m_len,
+<<<<<<< HEAD
 		__entry->m_flags,
 		__entry->m_seg_type,
 		__entry->m_may_create,
+=======
+>>>>>>> v4.14.187
 		__entry->ret)
 );
 
@@ -804,6 +850,7 @@ TRACE_EVENT(f2fs_get_victim,
 		__entry->free)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(f2fs_lookup_start,
 
 	TP_PROTO(struct inode *dir, struct dentry *dentry, unsigned int flags),
@@ -889,6 +936,8 @@ TRACE_EVENT(f2fs_readdir,
 		__entry->err)
 );
 
+=======
+>>>>>>> v4.14.187
 TRACE_EVENT(f2fs_fallocate,
 
 	TP_PROTO(struct inode *inode, int mode,
@@ -1039,8 +1088,13 @@ DECLARE_EVENT_CLASS(f2fs__submit_page_bio,
 	),
 
 	TP_fast_assign(
+<<<<<<< HEAD
 		__entry->dev		= page_file_mapping(page)->host->i_sb->s_dev;
 		__entry->ino		= page_file_mapping(page)->host->i_ino;
+=======
+		__entry->dev		= page->mapping->host->i_sb->s_dev;
+		__entry->ino		= page->mapping->host->i_ino;
+>>>>>>> v4.14.187
 		__entry->index		= page->index;
 		__entry->old_blkaddr	= fio->old_blkaddr;
 		__entry->new_blkaddr	= fio->new_blkaddr;
@@ -1227,11 +1281,18 @@ DECLARE_EVENT_CLASS(f2fs__page,
 	),
 
 	TP_fast_assign(
+<<<<<<< HEAD
 		__entry->dev	= page_file_mapping(page)->host->i_sb->s_dev;
 		__entry->ino	= page_file_mapping(page)->host->i_ino;
 		__entry->type	= type;
 		__entry->dir	=
 			S_ISDIR(page_file_mapping(page)->host->i_mode);
+=======
+		__entry->dev	= page->mapping->host->i_sb->s_dev;
+		__entry->ino	= page->mapping->host->i_ino;
+		__entry->type	= type;
+		__entry->dir	= S_ISDIR(page->mapping->host->i_mode);
+>>>>>>> v4.14.187
 		__entry->index	= page->index;
 		__entry->dirty	= PageDirty(page);
 		__entry->uptodate = PageUptodate(page);
@@ -1296,6 +1357,7 @@ DEFINE_EVENT(f2fs__page, f2fs_commit_inmem_page,
 	TP_ARGS(page, type)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(f2fs_filemap_fault,
 
 	TP_PROTO(struct inode *inode, pgoff_t index, unsigned long ret),
@@ -1322,6 +1384,8 @@ TRACE_EVENT(f2fs_filemap_fault,
 		__entry->ret)
 );
 
+=======
+>>>>>>> v4.14.187
 TRACE_EVENT(f2fs_writepages,
 
 	TP_PROTO(struct inode *inode, struct writeback_control *wbc, int type),
@@ -1474,6 +1538,7 @@ DEFINE_EVENT(f2fs_discard, f2fs_issue_discard,
 	TP_ARGS(dev, blkstart, blklen)
 );
 
+<<<<<<< HEAD
 DEFINE_EVENT(f2fs_discard, f2fs_remove_discard,
 
 	TP_PROTO(struct block_device *dev, block_t blkstart, block_t blklen),
@@ -1481,6 +1546,8 @@ DEFINE_EVENT(f2fs_discard, f2fs_remove_discard,
 	TP_ARGS(dev, blkstart, blklen)
 );
 
+=======
+>>>>>>> v4.14.187
 TRACE_EVENT(f2fs_issue_reset_zone,
 
 	TP_PROTO(struct block_device *dev, block_t blkstart),
@@ -1706,6 +1773,7 @@ DEFINE_EVENT(f2fs_sync_dirty_inodes, f2fs_sync_dirty_inodes_exit,
 	TP_ARGS(sb, type, count)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(f2fs_shutdown,
 
 	TP_PROTO(struct f2fs_sb_info *sbi, unsigned int mode, int ret),
@@ -1900,6 +1968,8 @@ TRACE_EVENT(f2fs_iostat,
 		__entry->fs_cdrio, __entry->fs_nrio, __entry->fs_mrio)
 );
 
+=======
+>>>>>>> v4.14.187
 #endif /* _TRACE_F2FS_H */
 
  /* This part must be outside protection */

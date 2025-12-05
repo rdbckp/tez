@@ -129,7 +129,11 @@ config JZ4780_NEMC
 
 config MTK_SMI
 	bool
+<<<<<<< HEAD
 	#depends on ARCH_MEDIATEK || COMPILE_TEST
+=======
+	depends on ARCH_MEDIATEK || COMPILE_TEST
+>>>>>>> v4.14.187
 	help
 	  This driver is for the Memory Controller module in MediaTek SoCs,
 	  mainly help enable/disable iommu and control the power domain and
@@ -145,6 +149,9 @@ config DA8XX_DDRCTL
 
 source "drivers/memory/samsung/Kconfig"
 source "drivers/memory/tegra/Kconfig"
+<<<<<<< HEAD
 source "drivers/memory/mediatek/Kconfig"
+=======
+>>>>>>> v4.14.187
 
 endif

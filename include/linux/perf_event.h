@@ -54,7 +54,10 @@ struct perf_guest_info_callbacks {
 #include <linux/perf_regs.h>
 #include <linux/workqueue.h>
 #include <linux/cgroup.h>
+<<<<<<< HEAD
 #include <linux/security.h>
+=======
+>>>>>>> v4.14.187
 #include <asm/local.h>
 
 struct perf_callchain_entry {
@@ -409,7 +412,11 @@ struct pmu {
 	/*
 	 * Set up pmu-private data structures for an AUX area
 	 */
+<<<<<<< HEAD
 	void *(*setup_aux)		(struct perf_event *event, void **pages,
+=======
+	void *(*setup_aux)		(int cpu, void **pages,
+>>>>>>> v4.14.187
 					 int nr_pages, bool overwrite);
 					/* optional */
 
@@ -467,7 +474,11 @@ struct pmu {
  */
 struct perf_addr_filter {
 	struct list_head	entry;
+<<<<<<< HEAD
 	struct path		path;
+=======
+	struct inode		*inode;
+>>>>>>> v4.14.187
 	unsigned long		offset;
 	unsigned long		size;
 	unsigned int		range	: 1,
@@ -490,11 +501,14 @@ struct perf_addr_filters_head {
 	unsigned int		nr_file_filters;
 };
 
+<<<<<<< HEAD
 struct perf_addr_filter_range {
 	unsigned long		start;
 	unsigned long		size;
 };
 
+=======
+>>>>>>> v4.14.187
 /**
  * enum perf_event_active_state - the states of a event
  */
@@ -683,7 +697,11 @@ struct perf_event {
 	/* address range filters */
 	struct perf_addr_filters_head	addr_filters;
 	/* vma address array for file-based filders */
+<<<<<<< HEAD
 	struct perf_addr_filter_range	*addr_filter_ranges;
+=======
+	unsigned long			*addr_filters_offs;
+>>>>>>> v4.14.187
 	unsigned long			addr_filters_gen;
 
 	void (*destroy)(struct perf_event *);
@@ -713,9 +731,12 @@ struct perf_event {
 	int				cgrp_defer_enabled;
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SECURITY
 	void *security;
 #endif
+=======
+>>>>>>> v4.14.187
 	struct list_head		sb_list;
 #endif /* CONFIG_PERF_EVENTS */
 };
@@ -1179,6 +1200,7 @@ extern int perf_cpu_time_max_percent_handler(struct ctl_table *table, int write,
 int perf_event_max_stack_handler(struct ctl_table *table, int write,
 				 void __user *buffer, size_t *lenp, loff_t *ppos);
 
+<<<<<<< HEAD
 /* Access to perf_event_open(2) syscall. */
 #define PERF_SECURITY_OPEN		0
 
@@ -1188,10 +1210,14 @@ int perf_event_max_stack_handler(struct ctl_table *table, int write,
 #define PERF_SECURITY_TRACEPOINT	3
 
 static inline int perf_is_paranoid(void)
+=======
+static inline bool perf_paranoid_tracepoint_raw(void)
+>>>>>>> v4.14.187
 {
 	return sysctl_perf_event_paranoid > -1;
 }
 
+<<<<<<< HEAD
 static inline int perf_allow_kernel(struct perf_event_attr *attr)
 {
 	if (sysctl_perf_event_paranoid > 1 && !capable(CAP_SYS_ADMIN))
@@ -1214,6 +1240,16 @@ static inline int perf_allow_tracepoint(struct perf_event_attr *attr)
 		return -EPERM;
 
 	return security_perf_event_open(attr, PERF_SECURITY_TRACEPOINT);
+=======
+static inline bool perf_paranoid_cpu(void)
+{
+	return sysctl_perf_event_paranoid > 0;
+}
+
+static inline bool perf_paranoid_kernel(void)
+{
+	return sysctl_perf_event_paranoid > 1;
+>>>>>>> v4.14.187
 }
 
 extern void perf_event_init(void);

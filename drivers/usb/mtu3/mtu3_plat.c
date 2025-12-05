@@ -26,6 +26,7 @@
 
 #include "mtu3.h"
 #include "mtu3_dr.h"
+<<<<<<< HEAD
 #include <mtk_sloa_fs.h>
 
 #ifdef CONFIG_MTK_USB2JTAG_SUPPORT
@@ -47,6 +48,8 @@
 #define XDEV_TEST_MODE  (0xb << 5)
 #define XDEV_RESUME     (0xf << 5)
 
+=======
+>>>>>>> v4.14.187
 
 /* u2-port0 should be powered on and enabled; */
 int ssusb_check_clocks(struct ssusb_mtk *ssusb, u32 ex_clks)
@@ -104,7 +107,11 @@ static int ssusb_phy_exit(struct ssusb_mtk *ssusb)
 	return 0;
 }
 
+<<<<<<< HEAD
 int ssusb_phy_power_on(struct ssusb_mtk *ssusb)
+=======
+static int ssusb_phy_power_on(struct ssusb_mtk *ssusb)
+>>>>>>> v4.14.187
 {
 	int i;
 	int ret;
@@ -123,7 +130,11 @@ power_off_phy:
 	return ret;
 }
 
+<<<<<<< HEAD
 void ssusb_phy_power_off(struct ssusb_mtk *ssusb)
+=======
+static void ssusb_phy_power_off(struct ssusb_mtk *ssusb)
+>>>>>>> v4.14.187
 {
 	unsigned int i;
 
@@ -131,6 +142,7 @@ void ssusb_phy_power_off(struct ssusb_mtk *ssusb)
 		phy_power_off(ssusb->phys[i]);
 }
 
+<<<<<<< HEAD
 int ssusb_clks_enable(struct ssusb_mtk *ssusb)
 {
 	int ret;
@@ -188,6 +200,8 @@ void ssusb_clks_disable(struct ssusb_mtk *ssusb)
 	clk_disable_unprepare(ssusb->sys_clk);
 }
 
+=======
+>>>>>>> v4.14.187
 static int ssusb_rscs_init(struct ssusb_mtk *ssusb)
 {
 	int ret = 0;
@@ -198,9 +212,23 @@ static int ssusb_rscs_init(struct ssusb_mtk *ssusb)
 		goto vusb33_err;
 	}
 
+<<<<<<< HEAD
 	ret = ssusb_clks_enable(ssusb);
 	if (ret)
 		goto clks_err;
+=======
+	ret = clk_prepare_enable(ssusb->sys_clk);
+	if (ret) {
+		dev_err(ssusb->dev, "failed to enable sys_clk\n");
+		goto sys_clk_err;
+	}
+
+	ret = clk_prepare_enable(ssusb->ref_clk);
+	if (ret) {
+		dev_err(ssusb->dev, "failed to enable ref_clk\n");
+		goto ref_clk_err;
+	}
+>>>>>>> v4.14.187
 
 	ret = ssusb_phy_init(ssusb);
 	if (ret) {
@@ -219,22 +247,41 @@ static int ssusb_rscs_init(struct ssusb_mtk *ssusb)
 phy_err:
 	ssusb_phy_exit(ssusb);
 phy_init_err:
+<<<<<<< HEAD
 	ssusb_clks_disable(ssusb);
 clks_err:
 	regulator_disable(ssusb->vusb33);
 vusb33_err:
+=======
+	clk_disable_unprepare(ssusb->ref_clk);
+ref_clk_err:
+	clk_disable_unprepare(ssusb->sys_clk);
+sys_clk_err:
+	regulator_disable(ssusb->vusb33);
+vusb33_err:
+
+>>>>>>> v4.14.187
 	return ret;
 }
 
 static void ssusb_rscs_exit(struct ssusb_mtk *ssusb)
 {
+<<<<<<< HEAD
 	ssusb_clks_disable(ssusb);
+=======
+	clk_disable_unprepare(ssusb->sys_clk);
+	clk_disable_unprepare(ssusb->ref_clk);
+>>>>>>> v4.14.187
 	regulator_disable(ssusb->vusb33);
 	ssusb_phy_power_off(ssusb);
 	ssusb_phy_exit(ssusb);
 }
 
+<<<<<<< HEAD
 void ssusb_ip_sw_reset(struct ssusb_mtk *ssusb)
+=======
+static void ssusb_ip_sw_reset(struct ssusb_mtk *ssusb)
+>>>>>>> v4.14.187
 {
 	/* reset whole ip (xhci & u3d) */
 	mtu3_setbits(ssusb->ippc_base, U3D_SSUSB_IP_PW_CTRL0, SSUSB_IP_SW_RST);
@@ -242,6 +289,7 @@ void ssusb_ip_sw_reset(struct ssusb_mtk *ssusb)
 	mtu3_clrbits(ssusb->ippc_base, U3D_SSUSB_IP_PW_CTRL0, SSUSB_IP_SW_RST);
 }
 
+<<<<<<< HEAD
 /* ignore the error if the clock does not exist */
 static struct clk *get_optional_clk(struct device *dev, const char *id)
 {
@@ -255,6 +303,8 @@ static struct clk *get_optional_clk(struct device *dev, const char *id)
 	return opt_clk;
 }
 
+=======
+>>>>>>> v4.14.187
 static int get_iddig_pinctrl(struct ssusb_mtk *ssusb)
 {
 	struct otg_switch_mtk *otg_sx = &ssusb->otg_switch;
@@ -304,6 +354,7 @@ static int get_ssusb_rscs(struct platform_device *pdev, struct ssusb_mtk *ssusb)
 		return PTR_ERR(ssusb->sys_clk);
 	}
 
+<<<<<<< HEAD
 	ssusb->ref_clk = get_optional_clk(dev, "ref_ck");
 	if (IS_ERR(ssusb->ref_clk))
 		return PTR_ERR(ssusb->ref_clk);
@@ -319,12 +370,30 @@ static int get_ssusb_rscs(struct platform_device *pdev, struct ssusb_mtk *ssusb)
 	ssusb->xhci_clk = get_optional_clk(dev, "xhci_ck");
 	if (IS_ERR(ssusb->xhci_clk))
 		return PTR_ERR(ssusb->xhci_clk);
+=======
+	/*
+	 * reference clock is usually a "fixed-clock", make it optional
+	 * for backward compatibility and ignore the error if it does
+	 * not exist.
+	 */
+	ssusb->ref_clk = devm_clk_get(dev, "ref_ck");
+	if (IS_ERR(ssusb->ref_clk)) {
+		if (PTR_ERR(ssusb->ref_clk) == -EPROBE_DEFER)
+			return -EPROBE_DEFER;
+
+		ssusb->ref_clk = NULL;
+	}
+>>>>>>> v4.14.187
 
 	ssusb->num_phys = of_count_phandle_with_args(node,
 			"phys", "#phy-cells");
 	if (ssusb->num_phys > 0) {
 		ssusb->phys = devm_kcalloc(dev, ssusb->num_phys,
+<<<<<<< HEAD
 				sizeof(*ssusb->phys), GFP_KERNEL);
+=======
+					sizeof(*ssusb->phys), GFP_KERNEL);
+>>>>>>> v4.14.187
 		if (!ssusb->phys)
 			return -ENOMEM;
 	} else {
@@ -339,19 +408,25 @@ static int get_ssusb_rscs(struct platform_device *pdev, struct ssusb_mtk *ssusb)
 		}
 	}
 
+<<<<<<< HEAD
 	if (ssusb->num_phys > 1)
 		ssusb->keep_ao = true;
 
+=======
+>>>>>>> v4.14.187
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ippc");
 	ssusb->ippc_base = devm_ioremap_resource(dev, res);
 	if (IS_ERR(ssusb->ippc_base))
 		return PTR_ERR(ssusb->ippc_base);
 
+<<<<<<< HEAD
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "xhci");
 	ssusb->xhci_base = devm_ioremap(dev, res->start, resource_size(res));
 	if (IS_ERR(ssusb->xhci_base))
 		return PTR_ERR(ssusb->xhci_base);
 
+=======
+>>>>>>> v4.14.187
 	ssusb->dr_mode = usb_get_dr_mode(dev);
 	if (ssusb->dr_mode == USB_DR_MODE_UNKNOWN) {
 		dev_err(dev, "dr_mode is error\n");
@@ -366,9 +441,12 @@ static int get_ssusb_rscs(struct platform_device *pdev, struct ssusb_mtk *ssusb)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ssusb->u3ports_disable =
 		of_property_read_bool(node, "mediatek,u3ports-disable");
 
+=======
+>>>>>>> v4.14.187
 	if (ssusb->dr_mode != USB_DR_MODE_OTG)
 		return 0;
 
@@ -397,12 +475,18 @@ static int get_ssusb_rscs(struct platform_device *pdev, struct ssusb_mtk *ssusb)
 		}
 	}
 
+<<<<<<< HEAD
 	dev_info(dev, "dr_mode: %d, is_u3_dr: %d keep-ao: %d\n",
 		ssusb->dr_mode, otg_sx->is_u3_drd, ssusb->keep_ao);
+=======
+	dev_info(dev, "dr_mode: %d, is_u3_dr: %d\n",
+		ssusb->dr_mode, otg_sx->is_u3_drd);
+>>>>>>> v4.14.187
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void otg_detect_work_func(struct work_struct *work)
 {
 	struct delayed_work *dwork = to_delayed_work(work);
@@ -412,6 +496,8 @@ static void otg_detect_work_func(struct work_struct *work)
 	ssusb_otg_detect(ssusb);
 }
 
+=======
+>>>>>>> v4.14.187
 static int mtu3_probe(struct platform_device *pdev)
 {
 	struct device_node *node = pdev->dev.of_node;
@@ -419,11 +505,14 @@ static int mtu3_probe(struct platform_device *pdev)
 	struct ssusb_mtk *ssusb;
 	int ret = -ENOMEM;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_USB2JTAG_SUPPORT
 	if (usb2jtag_mode())
 		return 0;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	/* all elements are set to ZERO as default value */
 	ssusb = devm_kzalloc(dev, sizeof(*ssusb), GFP_KERNEL);
 	if (!ssusb)
@@ -458,6 +547,12 @@ static int mtu3_probe(struct platform_device *pdev)
 	else if (IS_ENABLED(CONFIG_USB_MTU3_GADGET))
 		ssusb->dr_mode = USB_DR_MODE_PERIPHERAL;
 
+<<<<<<< HEAD
+=======
+	/* default as host */
+	ssusb->is_host = !(ssusb->dr_mode == USB_DR_MODE_PERIPHERAL);
+
+>>>>>>> v4.14.187
 	switch (ssusb->dr_mode) {
 	case USB_DR_MODE_PERIPHERAL:
 		ret = ssusb_gadget_init(ssusb);
@@ -480,6 +575,7 @@ static int mtu3_probe(struct platform_device *pdev)
 			goto comm_exit;
 		}
 
+<<<<<<< HEAD
 		if (ssusb->keep_ao) {
 			ret = ssusb_host_init(ssusb, node);
 			if (ret) {
@@ -490,6 +586,12 @@ static int mtu3_probe(struct platform_device *pdev)
 		if (!ssusb->keep_ao) {
 			ssusb_clks_disable(ssusb);
 			ssusb_phy_power_off(ssusb);
+=======
+		ret = ssusb_host_init(ssusb, node);
+		if (ret) {
+			dev_err(dev, "failed to initialize host\n");
+			goto gadget_exit;
+>>>>>>> v4.14.187
 		}
 
 		ssusb_otg_switch_init(ssusb);
@@ -500,9 +602,12 @@ static int mtu3_probe(struct platform_device *pdev)
 		goto comm_exit;
 	}
 
+<<<<<<< HEAD
 	sloa_suspend_infra_power(true);
 	INIT_DELAYED_WORK(&ssusb->otg_detect_dwork, otg_detect_work_func);
 
+=======
+>>>>>>> v4.14.187
 	return 0;
 
 gadget_exit:
@@ -520,11 +625,14 @@ static int mtu3_remove(struct platform_device *pdev)
 {
 	struct ssusb_mtk *ssusb = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_USB2JTAG_SUPPORT
 	if (usb2jtag_mode())
 		return 0;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	switch (ssusb->dr_mode) {
 	case USB_DR_MODE_PERIPHERAL:
 		ssusb_gadget_exit(ssusb);
@@ -548,6 +656,7 @@ static int mtu3_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool is_usb_dev_connect(struct ssusb_mtk *ssusb, u32 port_num)
 {
 	u32 portsc;
@@ -565,6 +674,8 @@ static bool is_usb_dev_connect(struct ssusb_mtk *ssusb, u32 port_num)
 	}
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * when support dual-role mode, we reject suspend when
  * it works as device mode;
@@ -573,6 +684,7 @@ static int __maybe_unused mtu3_suspend(struct device *dev)
 {
 	struct platform_device *pdev = to_platform_device(dev);
 	struct ssusb_mtk *ssusb = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	bool port0_dev_exist = false;
 	bool port1_dev_exist = false;
 
@@ -609,6 +721,20 @@ static int __maybe_unused mtu3_suspend(struct device *dev)
 		dev_dbg(dev, "Infra power off\n");
 		sloa_suspend_infra_power(false);
 	}
+=======
+
+	dev_dbg(dev, "%s\n", __func__);
+
+	/* REVISIT: disconnect it for only device mode? */
+	if (!ssusb->is_host)
+		return 0;
+
+	ssusb_host_disable(ssusb, true);
+	ssusb_phy_power_off(ssusb);
+	clk_disable_unprepare(ssusb->sys_clk);
+	clk_disable_unprepare(ssusb->ref_clk);
+	ssusb_wakeup_enable(ssusb);
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -616,6 +742,7 @@ static int __maybe_unused mtu3_suspend(struct device *dev)
 static int __maybe_unused mtu3_resume(struct device *dev)
 {
 	struct platform_device *pdev = to_platform_device(dev);
+<<<<<<< HEAD
 	struct device_node *node = pdev->dev.of_node;
 	struct ssusb_mtk *ssusb = platform_get_drvdata(pdev);
 	void __iomem *ibase;
@@ -667,6 +794,38 @@ err_power_on:
 	ssusb_clks_disable(ssusb);
 clks_err:
 	sloa_suspend_infra_power(false);
+=======
+	struct ssusb_mtk *ssusb = platform_get_drvdata(pdev);
+	int ret;
+
+	dev_dbg(dev, "%s\n", __func__);
+
+	if (!ssusb->is_host)
+		return 0;
+
+	ssusb_wakeup_disable(ssusb);
+	ret = clk_prepare_enable(ssusb->sys_clk);
+	if (ret)
+		goto err_sys_clk;
+
+	ret = clk_prepare_enable(ssusb->ref_clk);
+	if (ret)
+		goto err_ref_clk;
+
+	ret = ssusb_phy_power_on(ssusb);
+	if (ret)
+		goto err_power_on;
+
+	ssusb_host_enable(ssusb);
+
+	return 0;
+
+err_power_on:
+	clk_disable_unprepare(ssusb->ref_clk);
+err_ref_clk:
+	clk_disable_unprepare(ssusb->sys_clk);
+err_sys_clk:
+>>>>>>> v4.14.187
 	return ret;
 }
 

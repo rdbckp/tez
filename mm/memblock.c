@@ -22,8 +22,11 @@
 
 #include <asm/sections.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/proc_fs.h>
 #include <linux/sort.h>
+=======
+>>>>>>> v4.14.187
 
 #include "internal.h"
 
@@ -194,8 +197,12 @@ phys_addr_t __init_memblock memblock_find_in_range_node(phys_addr_t size,
 	phys_addr_t kernel_end, ret;
 
 	/* pump up @end */
+<<<<<<< HEAD
 	if (end == MEMBLOCK_ALLOC_ACCESSIBLE ||
 	    end == MEMBLOCK_ALLOC_KASAN)
+=======
+	if (end == MEMBLOCK_ALLOC_ACCESSIBLE)
+>>>>>>> v4.14.187
 		end = memblock.current_limit;
 
 	/* avoid allocating the first page */
@@ -488,6 +495,7 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
 	type->total_size += size;
 }
 
+<<<<<<< HEAD
 #define NAME_SIZE	14
 struct reserved_mem_reg {
 	phys_addr_t	base;
@@ -832,6 +840,8 @@ void record_memsize_memory_hole(void)
 	}
 }
 
+=======
+>>>>>>> v4.14.187
 /**
  * memblock_add_range - add new memblock region
  * @type: memblock type to add new region into
@@ -857,7 +867,10 @@ int __init_memblock memblock_add_range(struct memblock_type *type,
 	phys_addr_t end = base + memblock_cap_size(base, &size);
 	int idx, nr_new;
 	struct memblock_region *rgn;
+<<<<<<< HEAD
 	unsigned long new_size = 0;
+=======
+>>>>>>> v4.14.187
 
 	if (!size)
 		return 0;
@@ -870,8 +883,12 @@ int __init_memblock memblock_add_range(struct memblock_type *type,
 		type->regions[0].flags = flags;
 		memblock_set_region_node(&type->regions[0], nid);
 		type->total_size = size;
+<<<<<<< HEAD
 		new_size = (unsigned long)size;
 		goto done;
+=======
+		return 0;
+>>>>>>> v4.14.187
 	}
 repeat:
 	/*
@@ -900,12 +917,19 @@ repeat:
 #endif
 			WARN_ON(flags != rgn->flags);
 			nr_new++;
+<<<<<<< HEAD
 			if (insert) {
 				memblock_insert_region(type, idx++, base,
 						       rbase - base, nid,
 						       flags);
 				new_size += (unsigned long)(rbase - base);
 			}
+=======
+			if (insert)
+				memblock_insert_region(type, idx++, base,
+						       rbase - base, nid,
+						       flags);
+>>>>>>> v4.14.187
 		}
 		/* area below @rend is dealt with, forget about it */
 		base = min(rend, end);
@@ -914,11 +938,17 @@ repeat:
 	/* insert the remaining portion */
 	if (base < end) {
 		nr_new++;
+<<<<<<< HEAD
 		if (insert) {
 			memblock_insert_region(type, idx, base, end - base,
 					       nid, flags);
 			new_size += (unsigned long)(end - base);
 		}
+=======
+		if (insert)
+			memblock_insert_region(type, idx, base, end - base,
+					       nid, flags);
+>>>>>>> v4.14.187
 	}
 
 	if (!nr_new)
@@ -936,6 +966,7 @@ repeat:
 		goto repeat;
 	} else {
 		memblock_merge_regions(type);
+<<<<<<< HEAD
 	}
 done:
 	if (memsize_reserved_name && type == &memblock.reserved)
@@ -945,6 +976,10 @@ done:
 			type == &memblock.reserved)
 		record_memsize_size_only(memsize_kernel_type, (long)new_size);
 	return 0;
+=======
+		return 0;
+	}
+>>>>>>> v4.14.187
 }
 
 int __init_memblock memblock_add_node(phys_addr_t base, phys_addr_t size,
@@ -1049,6 +1084,7 @@ static int __init_memblock memblock_remove_range(struct memblock_type *type,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (memsize_reserved_name && type == &memblock.memory)
 		record_memsize_reserved(memsize_reserved_name, base, size,
 					true, false);
@@ -1057,6 +1093,8 @@ static int __init_memblock memblock_remove_range(struct memblock_type *type,
 	else if (memsize_kernel_type != MEMSIZE_KERNEL_STOP
 			&& type == &memblock.reserved)
 		record_memsize_size_only(memsize_kernel_type, size * -1);
+=======
+>>>>>>> v4.14.187
 	for (i = end_rgn - 1; i >= start_rgn; i--)
 		memblock_remove_region(type, i);
 	return 0;
@@ -1079,6 +1117,7 @@ int __init_memblock memblock_free(phys_addr_t base, phys_addr_t size)
 	return memblock_remove_range(&memblock.reserved, base, size);
 }
 
+<<<<<<< HEAD
 static int __init_memblock memblock_reserve_region(phys_addr_t base,
 						   phys_addr_t size,
 						   int nid,
@@ -1097,6 +1136,16 @@ static int __init_memblock memblock_reserve_region(phys_addr_t base,
 int __init_memblock memblock_reserve(phys_addr_t base, phys_addr_t size)
 {
 	return memblock_reserve_region(base, size, MAX_NUMNODES, 0);
+=======
+int __init_memblock memblock_reserve(phys_addr_t base, phys_addr_t size)
+{
+	phys_addr_t end = base + size - 1;
+
+	memblock_dbg("memblock_reserve: [%pa-%pa] %pF\n",
+		     &base, &end, (void *)_RET_IP_);
+
+	return memblock_add_range(&memblock.reserved, base, size, MAX_NUMNODES, 0);
+>>>>>>> v4.14.187
 }
 
 /**
@@ -1302,7 +1351,11 @@ void __init_memblock __next_mem_range(u64 *idx, int nid, ulong flags,
 			r = &type_b->regions[idx_b];
 			r_start = idx_b ? r[-1].base + r[-1].size : 0;
 			r_end = idx_b < type_b->cnt ?
+<<<<<<< HEAD
 				r->base : (phys_addr_t)ULLONG_MAX;
+=======
+				r->base : ULLONG_MAX;
+>>>>>>> v4.14.187
 
 			/*
 			 * if idx_b advanced past idx_a,
@@ -1418,7 +1471,11 @@ void __init_memblock __next_mem_range_rev(u64 *idx, int nid, ulong flags,
 			r = &type_b->regions[idx_b];
 			r_start = idx_b ? r[-1].base + r[-1].size : 0;
 			r_end = idx_b < type_b->cnt ?
+<<<<<<< HEAD
 				r->base : (phys_addr_t)ULLONG_MAX;
+=======
+				r->base : ULLONG_MAX;
+>>>>>>> v4.14.187
 			/*
 			 * if idx_b advanced past idx_a,
 			 * break out to advance idx_a
@@ -1679,6 +1736,7 @@ done:
 	ptr = phys_to_virt(alloc);
 	memset(ptr, 0, size);
 
+<<<<<<< HEAD
 	/* Skip kmemleak for kasan_init() due to high volume. */
 	if (max_addr != MEMBLOCK_ALLOC_KASAN)
 		/*
@@ -1688,6 +1746,15 @@ done:
 		 * address which is not looked up by kmemleak.
 		 */
 		kmemleak_alloc(ptr, size, 0, 0);
+=======
+	/*
+	 * The min_count is set to 0 so that bootmem allocated blocks
+	 * are never reported as leaks. This is because many of these blocks
+	 * are only referred via the physical address which is not
+	 * looked up by kmemleak.
+	 */
+	kmemleak_alloc(ptr, size, 0, 0);
+>>>>>>> v4.14.187
 
 	return ptr;
 }
@@ -2134,6 +2201,7 @@ static int __init early_memblock(char *p)
 }
 early_param("memblock", early_memblock);
 
+<<<<<<< HEAD
 static int memsize_kernel_show(struct seq_file *m, void *private)
 {
 	int i;
@@ -2308,6 +2376,8 @@ static int __init memblock_memsize_init(void)
 }
 __initcall(memblock_memsize_init);
 
+=======
+>>>>>>> v4.14.187
 #if defined(CONFIG_DEBUG_FS) && !defined(CONFIG_ARCH_DISCARD_MEMBLOCK)
 
 static int memblock_debug_show(struct seq_file *m, void *private)

@@ -664,6 +664,7 @@ static void rxrpc_input_ackinfo(struct rxrpc_call *call, struct sk_buff *skb,
 	       ntohl(ackinfo->rxMTU), ntohl(ackinfo->maxMTU),
 	       rwind, ntohl(ackinfo->jumbo_max));
 
+<<<<<<< HEAD
 	if (call->tx_winsize != rwind) {
 		if (rwind > RXRPC_RXTX_BUFF_SIZE - 1)
 			rwind = RXRPC_RXTX_BUFF_SIZE - 1;
@@ -671,6 +672,14 @@ static void rxrpc_input_ackinfo(struct rxrpc_call *call, struct sk_buff *skb,
 			wake = true;
 		trace_rxrpc_rx_rwind_change(call, sp->hdr.serial,
 					    ntohl(ackinfo->rwind), wake);
+=======
+	if (rwind > RXRPC_RXTX_BUFF_SIZE - 1)
+		rwind = RXRPC_RXTX_BUFF_SIZE - 1;
+	if (call->tx_winsize != rwind) {
+		if (rwind > call->tx_winsize)
+			wake = true;
+		trace_rxrpc_rx_rwind_change(call, sp->hdr.serial, rwind, wake);
+>>>>>>> v4.14.187
 		call->tx_winsize = rwind;
 	}
 

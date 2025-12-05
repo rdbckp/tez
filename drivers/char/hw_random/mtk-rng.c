@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2019 MediaTek Inc.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -9,6 +10,21 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See http://www.gnu.org/licenses/gpl-2.0.html for more details.
+=======
+ * Driver for Mediatek Hardware Random Number Generator
+ *
+ * Copyright (C) 2017 Sean Wang <sean.wang@mediatek.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+>>>>>>> v4.14.187
  */
 #define MTK_RNG_DEV KBUILD_MODNAME
 
@@ -24,6 +40,12 @@
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
 
+<<<<<<< HEAD
+=======
+/* Runtime PM autosuspend timeout: */
+#define RNG_AUTOSUSPEND_TIMEOUT		100
+
+>>>>>>> v4.14.187
 #define USEC_POLL			2
 #define TIMEOUT_POLL			20
 
@@ -88,6 +110,11 @@ static int mtk_rng_read(struct hwrng *rng, void *buf, size_t max, bool wait)
 	struct mtk_rng *priv = to_mtk_rng(rng);
 	int retval = 0;
 
+<<<<<<< HEAD
+=======
+	pm_runtime_get_sync((struct device *)priv->rng.priv);
+
+>>>>>>> v4.14.187
 	while (max >= sizeof(u32)) {
 		if (!mtk_rng_wait_ready(rng, wait))
 			break;
@@ -98,6 +125,12 @@ static int mtk_rng_read(struct hwrng *rng, void *buf, size_t max, bool wait)
 		max -= sizeof(u32);
 	}
 
+<<<<<<< HEAD
+=======
+	pm_runtime_mark_last_busy((struct device *)priv->rng.priv);
+	pm_runtime_put_sync_autosuspend((struct device *)priv->rng.priv);
+
+>>>>>>> v4.14.187
 	return retval || !wait ? retval : -EIO;
 }
 
@@ -118,10 +151,18 @@ static int mtk_rng_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	priv->rng.name = pdev->name;
+<<<<<<< HEAD
 	priv->rng.init = mtk_rng_init;
 	priv->rng.cleanup = mtk_rng_cleanup;
 	priv->rng.read = mtk_rng_read;
 	priv->rng.quality = 100; /* set to 100 to dominate 10% of /dev/random */
+=======
+#ifndef CONFIG_PM
+	priv->rng.init = mtk_rng_init;
+	priv->rng.cleanup = mtk_rng_cleanup;
+#endif
+	priv->rng.read = mtk_rng_read;
+>>>>>>> v4.14.187
 	priv->rng.priv = (unsigned long)&pdev->dev;
 
 	priv->clk = devm_clk_get(&pdev->dev, "rng");
@@ -143,6 +184,12 @@ static int mtk_rng_probe(struct platform_device *pdev)
 	}
 
 	dev_set_drvdata(&pdev->dev, priv);
+<<<<<<< HEAD
+=======
+	pm_runtime_set_autosuspend_delay(&pdev->dev, RNG_AUTOSUSPEND_TIMEOUT);
+	pm_runtime_use_autosuspend(&pdev->dev);
+	pm_runtime_enable(&pdev->dev);
+>>>>>>> v4.14.187
 
 	dev_info(&pdev->dev, "registered RNG driver\n");
 
@@ -150,7 +197,11 @@ static int mtk_rng_probe(struct platform_device *pdev)
 }
 
 #ifdef CONFIG_PM
+<<<<<<< HEAD
 static int mtk_rng_suspend(struct device *dev)
+=======
+static int mtk_rng_runtime_suspend(struct device *dev)
+>>>>>>> v4.14.187
 {
 	struct mtk_rng *priv = dev_get_drvdata(dev);
 
@@ -159,18 +210,27 @@ static int mtk_rng_suspend(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mtk_rng_resume(struct device *dev)
+=======
+static int mtk_rng_runtime_resume(struct device *dev)
+>>>>>>> v4.14.187
 {
 	struct mtk_rng *priv = dev_get_drvdata(dev);
 
 	return mtk_rng_init(&priv->rng);
 }
 
+<<<<<<< HEAD
 static const struct dev_pm_ops mtk_rng_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(mtk_rng_suspend,
 				mtk_rng_resume)
 };
 
+=======
+static UNIVERSAL_DEV_PM_OPS(mtk_rng_pm_ops, mtk_rng_runtime_suspend,
+			    mtk_rng_runtime_resume, NULL);
+>>>>>>> v4.14.187
 #define MTK_RNG_PM_OPS (&mtk_rng_pm_ops)
 #else	/* CONFIG_PM */
 #define MTK_RNG_PM_OPS NULL

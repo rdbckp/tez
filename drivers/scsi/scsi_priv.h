@@ -91,9 +91,12 @@ extern void scsi_run_host_queues(struct Scsi_Host *shost);
 extern void scsi_requeue_run_queue(struct work_struct *work);
 extern struct request_queue *scsi_old_alloc_queue(struct scsi_device *sdev);
 extern struct request_queue *scsi_mq_alloc_queue(struct scsi_device *sdev);
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_TURBO_WRITE
 extern void scsi_alloc_tw(struct scsi_device *sdev);
 #endif
+=======
+>>>>>>> v4.14.187
 extern void scsi_start_queue(struct scsi_device *sdev);
 extern int scsi_mq_setup_tags(struct Scsi_Host *shost);
 extern void scsi_mq_destroy_tags(struct Scsi_Host *shost);

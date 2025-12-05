@@ -27,7 +27,10 @@
 #include <linux/mmc/slot-gpio.h>
 
 #include "core.h"
+<<<<<<< HEAD
 #include "crypto.h"
+=======
+>>>>>>> v4.14.187
 #include "host.h"
 #include "slot-gpio.h"
 #include "pwrseq.h"
@@ -351,9 +354,12 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 {
 	int err;
 	struct mmc_host *host;
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_CQ_SUPPORT
 	int i;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	host = kzalloc(sizeof(struct mmc_host) + extra, GFP_KERNEL);
 	if (!host)
@@ -385,12 +391,15 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 
 	spin_lock_init(&host->lock);
 	init_waitqueue_head(&host->wq);
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_BLOCK_DEFERRED_RESUME
 	host->wlock_name = kasprintf(GFP_KERNEL,
 		"%s_detect", mmc_hostname(host));
 	host->detect_wake_lock =
 		wakeup_source_register(NULL, host->wlock_name);
 #endif
+=======
+>>>>>>> v4.14.187
 	INIT_DELAYED_WORK(&host->detect, mmc_rescan);
 	INIT_DELAYED_WORK(&host->sdio_irq_work, sdio_irq_work);
 	setup_timer(&host->retune_timer, mmc_retune_timer, (unsigned long)host);
@@ -406,6 +415,7 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 	host->max_blk_size = 512;
 	host->max_blk_count = PAGE_SIZE / 512;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTK_EMMC_CQ_SUPPORT
 	for (i = 0; i < EMMC_MAX_QUEUE_DEPTH; i++)
 		host->areq_que[i] = NULL;
@@ -423,6 +433,8 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 	init_waitqueue_head(&host->cmdq_que);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	return host;
 }
 
@@ -454,8 +466,12 @@ int mmc_add_host(struct mmc_host *host)
 #endif
 
 	mmc_start_host(host);
+<<<<<<< HEAD
 	if (!(host->pm_flags & MMC_PM_IGNORE_PM_NOTIFY))
 		mmc_register_pm_notifier(host);
+=======
+	mmc_register_pm_notifier(host);
+>>>>>>> v4.14.187
 
 	return 0;
 }
@@ -472,8 +488,12 @@ EXPORT_SYMBOL(mmc_add_host);
  */
 void mmc_remove_host(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	if (!(host->pm_flags & MMC_PM_IGNORE_PM_NOTIFY))
 		mmc_unregister_pm_notifier(host);
+=======
+	mmc_unregister_pm_notifier(host);
+>>>>>>> v4.14.187
 	mmc_stop_host(host);
 
 #ifdef CONFIG_DEBUG_FS
@@ -495,11 +515,15 @@ EXPORT_SYMBOL(mmc_remove_host);
  */
 void mmc_free_host(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	mmc_crypto_free_host(host);
 	mmc_pwrseq_free(host);
 #ifdef CONFIG_MMC_BLOCK_DEFERRED_RESUME
 	wakeup_source_unregister(host->detect_wake_lock);
 #endif
+=======
+	mmc_pwrseq_free(host);
+>>>>>>> v4.14.187
 	put_device(&host->class_dev);
 }
 

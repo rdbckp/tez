@@ -22,6 +22,7 @@
 #include "../vdec_vpu_if.h"
 #include "../vdec_drv_base.h"
 
+<<<<<<< HEAD
 #define NAL_NON_IDR_SLICE                       0x01
 #define NAL_IDR_SLICE                           0x05
 #define NAL_H264_PPS                            0x08
@@ -36,6 +37,22 @@
 
 #define H264_MAX_FB_NUM                         17
 #define HDR_PARSING_BUF_SZ                      1024
+=======
+#define NAL_NON_IDR_SLICE			0x01
+#define NAL_IDR_SLICE				0x05
+#define NAL_H264_PPS				0x08
+#define NAL_TYPE(value)				((value) & 0x1F)
+
+#define BUF_PREDICTION_SZ			(32 * 1024)
+
+#define MB_UNIT_LEN				16
+
+/* motion vector size (bytes) for every macro block */
+#define HW_MB_STORE_SZ				64
+
+#define H264_MAX_FB_NUM				17
+#define HDR_PARSING_BUF_SZ			1024
+>>>>>>> v4.14.187
 
 /**
  * struct h264_fb - h264 decode frame buffer information
@@ -70,6 +87,7 @@ struct h264_ring_fb_list {
 
 /**
  * struct vdec_h264_dec_info - decode information
+<<<<<<< HEAD
  * @dpb_sz              : decoding picture buffer size
  * @resolution_changed  : resoltion change happen
  * @realloc_mv_buf      : flag to notify driver to re-allocate mv buffer
@@ -78,6 +96,16 @@ struct h264_ring_fb_list {
  * @y_fb_dma            : Y frame buffer dma address
  * @c_fb_dma            : C frame buffer dma address
  * @vdec_fb_va          : VDEC frame buffer struct virtual address
+=======
+ * @dpb_sz		: decoding picture buffer size
+ * @resolution_changed  : resoltion change happen
+ * @realloc_mv_buf	: flag to notify driver to re-allocate mv buffer
+ * @reserved		: for 8 bytes alignment
+ * @bs_dma		: Input bit-stream buffer dma address
+ * @y_fb_dma		: Y frame buffer dma address
+ * @c_fb_dma		: C frame buffer dma address
+ * @vdec_fb_va		: VDEC frame buffer struct virtual address
+>>>>>>> v4.14.187
  */
 struct vdec_h264_dec_info {
 	uint32_t dpb_sz;
@@ -138,7 +166,11 @@ struct vdec_h264_inst {
 
 static unsigned int get_mv_buf_size(unsigned int width, unsigned int height)
 {
+<<<<<<< HEAD
 	return HW_MB_STORE_SZ * (width / MB_UNIT_LEN) * (height / MB_UNIT_LEN);
+=======
+	return HW_MB_STORE_SZ * (width/MB_UNIT_LEN) * (height/MB_UNIT_LEN);
+>>>>>>> v4.14.187
 }
 
 static int allocate_predication_buf(struct vdec_h264_inst *inst)
@@ -211,11 +243,19 @@ static int check_list_validity(struct vdec_h264_inst *inst, bool disp_list)
 	list = disp_list ? &inst->vsi->list_disp : &inst->vsi->list_free;
 
 	if (list->count > H264_MAX_FB_NUM ||
+<<<<<<< HEAD
 		list->read_idx >= H264_MAX_FB_NUM ||
 		list->write_idx >= H264_MAX_FB_NUM) {
 		mtk_vcodec_err(inst, "%s list err: cnt=%d r_idx=%d w_idx=%d",
 			disp_list ? "disp" : "free", list->count,
 			list->read_idx, list->write_idx);
+=======
+	    list->read_idx >= H264_MAX_FB_NUM ||
+	    list->write_idx >= H264_MAX_FB_NUM) {
+		mtk_vcodec_err(inst, "%s list err: cnt=%d r_idx=%d w_idx=%d",
+			       disp_list ? "disp" : "free", list->count,
+			       list->read_idx, list->write_idx);
+>>>>>>> v4.14.187
 		return -EINVAL;
 	}
 
@@ -237,16 +277,25 @@ static void put_fb_to_free(struct vdec_h264_inst *inst, struct vdec_fb *fb)
 		}
 
 		mtk_vcodec_debug(inst, "[FB] put fb into free_list @(%p, %llx)",
+<<<<<<< HEAD
 			fb->base_y.va, (u64)fb->base_y.dma_addr);
 
 		list->fb_list[list->write_idx].vdec_fb_va = (u64)(uintptr_t)fb;
 		list->write_idx = (list->write_idx == H264_MAX_FB_NUM - 1) ?
 						  0 : list->write_idx + 1;
+=======
+				 fb->base_y.va, (u64)fb->base_y.dma_addr);
+
+		list->fb_list[list->write_idx].vdec_fb_va = (u64)(uintptr_t)fb;
+		list->write_idx = (list->write_idx == H264_MAX_FB_NUM - 1) ?
+				  0 : list->write_idx + 1;
+>>>>>>> v4.14.187
 		list->count++;
 	}
 }
 
 static void get_pic_info(struct vdec_h264_inst *inst,
+<<<<<<< HEAD
 						 struct vdec_pic_info *pic)
 {
 	*pic = inst->vsi->pic;
@@ -254,6 +303,15 @@ static void get_pic_info(struct vdec_h264_inst *inst,
 		pic->pic_w, pic->pic_h, pic->buf_w, pic->buf_h);
 	mtk_vcodec_debug(inst, "Y(%d, %d), C(%d, %d)", pic->y_bs_sz,
 		pic->y_len_sz, pic->c_bs_sz, pic->c_len_sz);
+=======
+			 struct vdec_pic_info *pic)
+{
+	*pic = inst->vsi->pic;
+	mtk_vcodec_debug(inst, "pic(%d, %d), buf(%d, %d)",
+			 pic->pic_w, pic->pic_h, pic->buf_w, pic->buf_h);
+	mtk_vcodec_debug(inst, "Y(%d, %d), C(%d, %d)", pic->y_bs_sz,
+			 pic->y_len_sz, pic->c_bs_sz, pic->c_len_sz);
+>>>>>>> v4.14.187
 }
 
 static void get_crop_info(struct vdec_h264_inst *inst, struct v4l2_rect *cr)
@@ -264,7 +322,11 @@ static void get_crop_info(struct vdec_h264_inst *inst, struct v4l2_rect *cr)
 	cr->height = inst->vsi->crop.height;
 
 	mtk_vcodec_debug(inst, "l=%d, t=%d, w=%d, h=%d",
+<<<<<<< HEAD
 		cr->left, cr->top, cr->width, cr->height);
+=======
+			 cr->left, cr->top, cr->width, cr->height);
+>>>>>>> v4.14.187
 }
 
 static void get_dpb_size(struct vdec_h264_inst *inst, unsigned int *dpb_sz)
@@ -332,14 +394,22 @@ static int find_start_code(unsigned char *data, unsigned int data_sz)
 		return 3;
 
 	if (data_sz > 4 && data[0] == 0 && data[1] == 0 && data[2] == 0 &&
+<<<<<<< HEAD
 		data[3] == 1)
+=======
+	    data[3] == 1)
+>>>>>>> v4.14.187
 		return 4;
 
 	return -1;
 }
 
 static int vdec_h264_decode(unsigned long h_vdec, struct mtk_vcodec_mem *bs,
+<<<<<<< HEAD
 	struct vdec_fb *fb, bool *res_chg)
+=======
+			    struct vdec_fb *fb, bool *res_chg)
+>>>>>>> v4.14.187
 {
 	struct vdec_h264_inst *inst = (struct vdec_h264_inst *)h_vdec;
 	struct vdec_vpu_inst *vpu = &inst->vpu;
@@ -355,7 +425,11 @@ static int vdec_h264_decode(unsigned long h_vdec, struct mtk_vcodec_mem *bs,
 	uint64_t c_fb_dma = fb ? (u64)fb->base_c.dma_addr : 0;
 
 	mtk_vcodec_debug(inst, "+ [%d] FB y_dma=%llx c_dma=%llx va=%p",
+<<<<<<< HEAD
 		++inst->num_nalu, y_fb_dma, c_fb_dma, fb);
+=======
+			 ++inst->num_nalu, y_fb_dma, c_fb_dma, fb);
+>>>>>>> v4.14.187
 
 	/* bs NULL means flush decoder */
 	if (bs == NULL)
@@ -370,7 +444,11 @@ static int vdec_h264_decode(unsigned long h_vdec, struct mtk_vcodec_mem *bs,
 	nal_start = buf[nal_start_idx];
 	nal_type = NAL_TYPE(buf[nal_start_idx]);
 	mtk_vcodec_debug(inst, "\n + NALU[%d] type %d +\n", inst->num_nalu,
+<<<<<<< HEAD
 					 nal_type);
+=======
+			 nal_type);
+>>>>>>> v4.14.187
 
 	if (nal_type == NAL_H264_PPS) {
 		buf_sz -= nal_start_idx;
@@ -408,9 +486,15 @@ static int vdec_h264_decode(unsigned long h_vdec, struct mtk_vcodec_mem *bs,
 
 	if (nal_type == NAL_NON_IDR_SLICE || nal_type == NAL_IDR_SLICE) {
 		/* wait decoder done interrupt */
+<<<<<<< HEAD
 		err = mtk_vcodec_wait_for_done_ctx(inst->ctx, 0,
 			MTK_INST_IRQ_RECEIVED,
 			WAIT_INTR_TIMEOUT_MS);
+=======
+		err = mtk_vcodec_wait_for_done_ctx(inst->ctx,
+						   MTK_INST_IRQ_RECEIVED,
+						   WAIT_INTR_TIMEOUT_MS);
+>>>>>>> v4.14.187
 		if (err)
 			goto err_free_fb_out;
 
@@ -418,7 +502,11 @@ static int vdec_h264_decode(unsigned long h_vdec, struct mtk_vcodec_mem *bs,
 	}
 
 	mtk_vcodec_debug(inst, "\n - NALU[%d] type=%d -\n", inst->num_nalu,
+<<<<<<< HEAD
 					 nal_type);
+=======
+			 nal_type);
+>>>>>>> v4.14.187
 	return 0;
 
 err_free_fb_out:
@@ -428,8 +516,13 @@ err_free_fb_out:
 }
 
 static void vdec_h264_get_fb(struct vdec_h264_inst *inst,
+<<<<<<< HEAD
 	struct h264_ring_fb_list *list,
 	bool disp_list, struct vdec_fb **out_fb)
+=======
+			     struct h264_ring_fb_list *list,
+			     bool disp_list, struct vdec_fb **out_fb)
+>>>>>>> v4.14.187
 {
 	struct vdec_fb *fb;
 
@@ -438,28 +531,49 @@ static void vdec_h264_get_fb(struct vdec_h264_inst *inst,
 
 	if (list->count == 0) {
 		mtk_vcodec_debug(inst, "[FB] there is no %s fb",
+<<<<<<< HEAD
 						 disp_list ? "disp" : "free");
+=======
+				 disp_list ? "disp" : "free");
+>>>>>>> v4.14.187
 		*out_fb = NULL;
 		return;
 	}
 
 	fb = (struct vdec_fb *)
+<<<<<<< HEAD
 		 (uintptr_t)list->fb_list[list->read_idx].vdec_fb_va;
+=======
+		(uintptr_t)list->fb_list[list->read_idx].vdec_fb_va;
+>>>>>>> v4.14.187
 	fb->status |= (disp_list ? FB_ST_DISPLAY : FB_ST_FREE);
 
 	*out_fb = fb;
 	mtk_vcodec_debug(inst, "[FB] get %s fb st=%d poc=%d %llx",
+<<<<<<< HEAD
 		disp_list ? "disp" : "free",
 		fb->status, list->fb_list[list->read_idx].poc,
 		list->fb_list[list->read_idx].vdec_fb_va);
 
 	list->read_idx = (list->read_idx == H264_MAX_FB_NUM - 1) ?
 					 0 : list->read_idx + 1;
+=======
+			 disp_list ? "disp" : "free",
+			 fb->status, list->fb_list[list->read_idx].poc,
+			 list->fb_list[list->read_idx].vdec_fb_va);
+
+	list->read_idx = (list->read_idx == H264_MAX_FB_NUM - 1) ?
+			 0 : list->read_idx + 1;
+>>>>>>> v4.14.187
 	list->count--;
 }
 
 static int vdec_h264_get_param(unsigned long h_vdec,
+<<<<<<< HEAD
 	enum vdec_get_param_type type, void *out)
+=======
+			       enum vdec_get_param_type type, void *out)
+>>>>>>> v4.14.187
 {
 	struct vdec_h264_inst *inst = (struct vdec_h264_inst *)h_vdec;
 
@@ -493,10 +607,17 @@ static int vdec_h264_get_param(unsigned long h_vdec,
 }
 
 static struct vdec_common_if vdec_h264_if = {
+<<<<<<< HEAD
 	vdec_h264_init,
 	vdec_h264_decode,
 	vdec_h264_get_param,
 	vdec_h264_deinit,
+=======
+	.init		= vdec_h264_init,
+	.decode		= vdec_h264_decode,
+	.get_param	= vdec_h264_get_param,
+	.deinit		= vdec_h264_deinit,
+>>>>>>> v4.14.187
 };
 
 struct vdec_common_if *get_h264_dec_comm_if(void);

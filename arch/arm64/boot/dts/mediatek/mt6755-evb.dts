@@ -13,7 +13,11 @@
  */
 
 /dts-v1/;
+<<<<<<< HEAD
 #include "mediatek/mt6755.dtsi"
+=======
+#include "mt6755.dtsi"
+>>>>>>> v4.14.187
 
 / {
 	model = "MediaTek MT6755 EVB";

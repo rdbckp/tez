@@ -295,7 +295,11 @@ out:
 }
 
 static void *bpf_obj_do_get(const struct filename *pathname,
+<<<<<<< HEAD
 			    enum bpf_type *type, int flags)
+=======
+			    enum bpf_type *type)
+>>>>>>> v4.14.187
 {
 	struct inode *inode;
 	struct path path;
@@ -307,7 +311,11 @@ static void *bpf_obj_do_get(const struct filename *pathname,
 		return ERR_PTR(ret);
 
 	inode = d_backing_inode(path.dentry);
+<<<<<<< HEAD
 	ret = inode_permission(inode, ACC_MODE(flags));
+=======
+	ret = inode_permission(inode, MAY_WRITE);
+>>>>>>> v4.14.187
 	if (ret)
 		goto out;
 
@@ -326,11 +334,16 @@ out:
 	return ERR_PTR(ret);
 }
 
+<<<<<<< HEAD
 int bpf_obj_get_user(const char __user *pathname, int flags)
+=======
+int bpf_obj_get_user(const char __user *pathname)
+>>>>>>> v4.14.187
 {
 	enum bpf_type type = BPF_TYPE_UNSPEC;
 	struct filename *pname;
 	int ret = -ENOENT;
+<<<<<<< HEAD
 	int f_flags;
 	void *raw;
 
@@ -338,11 +351,19 @@ int bpf_obj_get_user(const char __user *pathname, int flags)
 	if (f_flags < 0)
 		return f_flags;
 
+=======
+	void *raw;
+
+>>>>>>> v4.14.187
 	pname = getname(pathname);
 	if (IS_ERR(pname))
 		return PTR_ERR(pname);
 
+<<<<<<< HEAD
 	raw = bpf_obj_do_get(pname, &type, f_flags);
+=======
+	raw = bpf_obj_do_get(pname, &type);
+>>>>>>> v4.14.187
 	if (IS_ERR(raw)) {
 		ret = PTR_ERR(raw);
 		goto out;
@@ -351,7 +372,11 @@ int bpf_obj_get_user(const char __user *pathname, int flags)
 	if (type == BPF_TYPE_PROG)
 		ret = bpf_prog_new_fd(raw);
 	else if (type == BPF_TYPE_MAP)
+<<<<<<< HEAD
 		ret = bpf_map_new_fd(raw, f_flags);
+=======
+		ret = bpf_map_new_fd(raw);
+>>>>>>> v4.14.187
 	else
 		goto out;
 
@@ -368,6 +393,7 @@ out:
 	putname(pname);
 	return ret;
 }
+<<<<<<< HEAD
 
 static struct bpf_prog *__get_prog_inode(struct inode *inode, enum bpf_prog_type type)
 {
@@ -404,6 +430,9 @@ struct bpf_prog *bpf_prog_get_type_path(const char *name, enum bpf_prog_type typ
 	return prog;
 }
 EXPORT_SYMBOL(bpf_prog_get_type_path);
+=======
+EXPORT_SYMBOL_GPL(bpf_obj_get_user);
+>>>>>>> v4.14.187
 
 /*
  * Display the mount options in /proc/mounts.

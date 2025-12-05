@@ -251,6 +251,7 @@ NF_HOOK(uint8_t pf, unsigned int hook, struct net *net, struct sock *sk, struct 
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline void
 NF_HOOK_LIST(uint8_t pf, unsigned int hook, struct net *net, struct sock *sk,
 	struct list_head *head, struct net_device *in, struct net_device *out,
@@ -270,6 +271,8 @@ NF_HOOK_LIST(uint8_t pf, unsigned int hook, struct net *net, struct sock *sk,
 }
 
 
+=======
+>>>>>>> v4.14.187
 /* Call setsockopt() */
 int nf_setsockopt(struct sock *sk, u_int8_t pf, int optval, char __user *opt,
 		  unsigned int len);
@@ -384,6 +387,7 @@ NF_HOOK(uint8_t pf, unsigned int hook, struct net *net, struct sock *sk,
 	return okfn(net, sk, skb);
 }
 
+<<<<<<< HEAD
 static inline void
 NF_HOOK_LIST(uint8_t pf, unsigned int hook, struct net *net, struct sock *sk,
 	struct list_head *head, struct net_device *in, struct net_device *out,
@@ -393,6 +397,8 @@ NF_HOOK_LIST(uint8_t pf, unsigned int hook, struct net *net, struct sock *sk,
 }
 
 
+=======
+>>>>>>> v4.14.187
 static inline int nf_hook(u_int8_t pf, unsigned int hook, struct net *net,
 			  struct sock *sk, struct sk_buff *skb,
 			  struct net_device *indev, struct net_device *outdev,

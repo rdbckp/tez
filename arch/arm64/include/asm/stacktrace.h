@@ -35,6 +35,7 @@ extern int unwind_frame(struct task_struct *tsk, struct stackframe *frame);
 extern void walk_stackframe(struct task_struct *tsk, struct stackframe *frame,
 			    int (*fn)(struct stackframe *, void *), void *data);
 extern void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk);
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_DEBUG_AUTO_COMMENT
 extern void dump_backtrace_auto_comment(struct pt_regs *regs, struct task_struct *tsk);
 #endif
@@ -45,6 +46,11 @@ DECLARE_PER_CPU(unsigned long *, irq_stack_ptr);
 DECLARE_PER_CPU(unsigned long *, irq_shadow_call_stack_ptr);
 #endif
 
+=======
+
+DECLARE_PER_CPU(unsigned long *, irq_stack_ptr);
+
+>>>>>>> v4.14.187
 static inline bool on_irq_stack(unsigned long sp)
 {
 	unsigned long low = (unsigned long)raw_cpu_read(irq_stack_ptr);

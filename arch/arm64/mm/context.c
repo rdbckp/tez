@@ -88,6 +88,7 @@ void verify_cpu_asid_bits(void)
 	}
 }
 
+<<<<<<< HEAD
 static void __arm64_workaround_1542418_asid_rollover(void)
 {
 #ifdef CONFIG_ARM64_ERRATUM_1542418
@@ -128,6 +129,8 @@ static void __arm64_workaround_1542418_asid_rollover(void)
 #endif
 }
 
+=======
+>>>>>>> v4.14.187
 static void flush_context(unsigned int cpu)
 {
 	int i;
@@ -260,10 +263,15 @@ void check_and_switch_context(struct mm_struct *mm, unsigned int cpu)
 		atomic64_set(&mm->context.id, asid);
 	}
 
+<<<<<<< HEAD
 	if (cpumask_test_and_clear_cpu(cpu, &tlb_flush_pending)) {
 		__arm64_workaround_1542418_asid_rollover();
 		local_flush_tlb_all();
 	}
+=======
+	if (cpumask_test_and_clear_cpu(cpu, &tlb_flush_pending))
+		local_flush_tlb_all();
+>>>>>>> v4.14.187
 
 	atomic64_set(&per_cpu(active_asids, cpu), asid);
 	raw_spin_unlock_irqrestore(&cpu_asid_lock, flags);

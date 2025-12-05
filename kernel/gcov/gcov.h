@@ -15,7 +15,10 @@
 #ifndef GCOV_H
 #define GCOV_H GCOV_H
 
+<<<<<<< HEAD
 #include <linux/module.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/types.h>
 
 /*
@@ -47,7 +50,10 @@ unsigned int gcov_info_version(struct gcov_info *info);
 struct gcov_info *gcov_info_next(struct gcov_info *info);
 void gcov_info_link(struct gcov_info *info);
 void gcov_info_unlink(struct gcov_info *prev, struct gcov_info *info);
+<<<<<<< HEAD
 bool gcov_info_within_module(struct gcov_info *info, struct module *mod);
+=======
+>>>>>>> v4.14.187
 
 /* Base interface. */
 enum gcov_action {
@@ -85,7 +91,10 @@ struct gcov_link {
 };
 extern const struct gcov_link gcov_link[];
 
+<<<<<<< HEAD
 extern int gcov_events_enabled;
 extern struct mutex gcov_lock;
 
+=======
+>>>>>>> v4.14.187
 #endif /* GCOV_H */

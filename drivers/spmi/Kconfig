@@ -24,6 +24,7 @@ config SPMI_MSM_PMIC_ARB
 	  This is required for communicating with Qualcomm PMICs and
 	  other devices that have the SPMI interface.
 
+<<<<<<< HEAD
 config MTK_PMIF
 	tristate "Mediatek SPMI Controller (PMIC Arbiter)"
 	help
@@ -33,4 +34,6 @@ config MTK_PMIF
 
 	  This is required for communicating with Mediatek PMICs and
 	  other devices that have the SPMI interface.
+=======
+>>>>>>> v4.14.187
 endif

@@ -473,6 +473,7 @@ config SRAM
 config SRAM_EXEC
 	bool
 
+<<<<<<< HEAD
 config ACCESS_RAMOOPS
 	tristate "Driver to allow access for decrypting encrypted ramoops"
 	depends on PSTORE_CONSOLE
@@ -483,6 +484,8 @@ config ACCESS_RAMOOPS
 	  for the Resume on Reboot feature.
 	  Say 'y' if ramoops is encrypted.
 
+=======
+>>>>>>> v4.14.187
 config VEXPRESS_SYSCFG
 	bool "Versatile Express System Configuration driver"
 	depends on VEXPRESS_CONFIG
@@ -516,6 +519,7 @@ config PCI_ENDPOINT_TEST
            Enable this configuration option to enable the host side test driver
            for PCI Endpoint.
 
+<<<<<<< HEAD
 config UID_SYS_STATS
 	bool "Per-UID statistics"
 	depends on PROFILING && TASK_XACCT && TASK_IO_ACCOUNTING
@@ -541,6 +545,8 @@ config DEV_RIL_BRIDGE
 	bool "Support a bridge between device and RIL"
 	default n
 
+=======
+>>>>>>> v4.14.187
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"
@@ -553,8 +559,11 @@ source "drivers/misc/mic/Kconfig"
 source "drivers/misc/genwqe/Kconfig"
 source "drivers/misc/echo/Kconfig"
 source "drivers/misc/cxl/Kconfig"
+<<<<<<< HEAD
 source "drivers/misc/mediatek/Kconfig"
 source "drivers/misc/tzdev/4.1/Kconfig"
 source "drivers/misc/tzdev/Kconfig"
 source "drivers/misc/tui/Kconfig"
+=======
+>>>>>>> v4.14.187
 endmenu

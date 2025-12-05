@@ -496,11 +496,19 @@ static void tnode_free(struct key_vector *tn)
 	struct callback_head *head = &tn_info(tn)->rcu;
 
 	while (head) {
+<<<<<<< HEAD
 		tn = container_of(head, struct tnode, rcu)->kv;
 
 		head = head->next;
 		tnode_free_size += TNODE_SIZE(1ul << tn->bits);
 		node_free(tn);
+=======
+		head = head->next;
+		tnode_free_size += TNODE_SIZE(1ul << tn->bits);
+		node_free(tn);
+
+		tn = container_of(head, struct tnode, rcu)->kv;
+>>>>>>> v4.14.187
 	}
 
 	if (tnode_free_size >= PAGE_SIZE * sync_pages) {

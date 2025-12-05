@@ -19,6 +19,7 @@
 
 #include "input-event-codes.h"
 
+<<<<<<< HEAD
 #define SECLOG			"[sec_input]"
 
 #if !IS_ENABLED(CONFIG_INPUT_SEC_INPUT)
@@ -124,6 +125,8 @@
 #endif
 
 
+=======
+>>>>>>> v4.14.187
 /*
  * The event structure itself
  */

@@ -1,8 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0
 # Generic MAILBOX API
 
+<<<<<<< HEAD
 ccflags-$(CONFIG_MTK_CMDQ_MBOX_EXT) += -I$(srctree)/drivers/misc/mediatek/cmdq/mailbox
 
+=======
+>>>>>>> v4.14.187
 obj-$(CONFIG_MAILBOX)		+= mailbox.o
 
 obj-$(CONFIG_MAILBOX_TEST)	+= mailbox-test.o
@@ -38,7 +41,10 @@ obj-$(CONFIG_BCM_FLEXRM_MBOX)	+= bcm-flexrm-mailbox.o
 obj-$(CONFIG_QCOM_APCS_IPC)	+= qcom-apcs-ipc-mailbox.o
 
 obj-$(CONFIG_TEGRA_HSP_MBOX)	+= tegra-hsp.o
+<<<<<<< HEAD
 
 obj-$(CONFIG_MTK_CMDQ_MBOX)    += mtk-cmdq-mailbox.o
 
 obj-$(CONFIG_MTK_RPMSG_MBOX)    += mtk-rpmsg-mailbox.o
+=======
+>>>>>>> v4.14.187

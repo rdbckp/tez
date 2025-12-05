@@ -196,8 +196,11 @@ static inline int ndisc_is_useropt(const struct net_device *dev,
 {
 	return opt->nd_opt_type == ND_OPT_RDNSS ||
 		opt->nd_opt_type == ND_OPT_DNSSL ||
+<<<<<<< HEAD
 		opt->nd_opt_type == ND_OPT_CAPTIVE_PORTAL ||
 		opt->nd_opt_type == ND_OPT_PREF64 ||
+=======
+>>>>>>> v4.14.187
 		ndisc_ops_is_useropt(dev, opt->nd_opt_type);
 }
 
@@ -1222,6 +1225,7 @@ static void ndisc_router_discovery(struct sk_buff *skb)
 		in6_dev->if_flags |= IF_RA_RCVD;
 	}
 
+<<<<<<< HEAD
 	if (sysctl_optr == MTK_IPV6_VZW_ALL ||
 	    sysctl_optr == MTK_IPV6_EX_RS_INTERVAL) {
 		/*add for VzW feature : remove IF_RS_VZW_SENT flag*/
@@ -1229,6 +1233,8 @@ static void ndisc_router_discovery(struct sk_buff *skb)
 			in6_dev->if_flags &= ~IF_RS_VZW_SENT;
 	}
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * Remember the managed/otherconf flags from most recently
 	 * received RA message (RFC 2462) -- yoshfuji

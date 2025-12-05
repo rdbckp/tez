@@ -149,6 +149,10 @@ struct hdmi_audio_param {
 
 struct mtk_hdmi {
 	struct drm_bridge bridge;
+<<<<<<< HEAD
+=======
+	struct drm_bridge *next_bridge;
+>>>>>>> v4.14.187
 	struct drm_connector conn;
 	struct device *dev;
 	struct phy *phy;
@@ -974,7 +978,11 @@ static int mtk_hdmi_setup_avi_infoframe(struct mtk_hdmi *hdmi,
 	u8 buffer[17];
 	ssize_t err;
 
+<<<<<<< HEAD
 	err = drm_hdmi_avi_infoframe_from_display_mode(&frame, mode);
+=======
+	err = drm_hdmi_avi_infoframe_from_display_mode(&frame, mode, false);
+>>>>>>> v4.14.187
 	if (err < 0) {
 		dev_err(hdmi->dev,
 			"Failed to get AVI infoframe from mode: %zd\n", err);
@@ -1260,7 +1268,10 @@ static struct drm_encoder *mtk_hdmi_conn_best_enc(struct drm_connector *conn)
 }
 
 static const struct drm_connector_funcs mtk_hdmi_connector_funcs = {
+<<<<<<< HEAD
 	/* .dpms = drm_atomic_helper_connector_dpms, */
+=======
+>>>>>>> v4.14.187
 	.detect = hdmi_conn_detect,
 	.fill_modes = drm_helper_probe_single_connector_modes,
 	.destroy = hdmi_conn_destroy,
@@ -1314,9 +1325,15 @@ static int mtk_hdmi_bridge_attach(struct drm_bridge *bridge)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (bridge->next) {
 		bridge->next->encoder = bridge->encoder;
 		ret = drm_bridge_attach(bridge->encoder, bridge->next, NULL);
+=======
+	if (hdmi->next_bridge) {
+		ret = drm_bridge_attach(bridge->encoder, hdmi->next_bridge,
+					bridge);
+>>>>>>> v4.14.187
 		if (ret) {
 			dev_err(hdmi->dev,
 				"Failed to attach external bridge: %d\n", ret);
@@ -1433,7 +1450,11 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi,
 {
 	struct device *dev = &pdev->dev;
 	struct device_node *np = dev->of_node;
+<<<<<<< HEAD
 	struct device_node *cec_np, *port, *ep, *remote, *i2c_np;
+=======
+	struct device_node *cec_np, *remote, *i2c_np;
+>>>>>>> v4.14.187
 	struct platform_device *cec_pdev;
 	struct regmap *regmap;
 	struct resource *mem;
@@ -1446,8 +1467,12 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi,
 	}
 
 	/* The CEC module handles HDMI hotplug detection */
+<<<<<<< HEAD
 	cec_np = of_find_compatible_node(np->parent, NULL,
 					 "mediatek,mt8173-cec");
+=======
+	cec_np = of_get_compatible_child(np->parent, "mediatek,mt8173-cec");
+>>>>>>> v4.14.187
 	if (!cec_np) {
 		dev_err(dev, "Failed to find CEC node\n");
 		return -EINVAL;
@@ -1455,10 +1480,19 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi,
 
 	cec_pdev = of_find_device_by_node(cec_np);
 	if (!cec_pdev) {
+<<<<<<< HEAD
 		dev_err(hdmi->dev, "Waiting for CEC device %s\n",
 			cec_np->full_name);
 		return -EPROBE_DEFER;
 	}
+=======
+		dev_err(hdmi->dev, "Waiting for CEC device %pOF\n",
+			cec_np);
+		of_node_put(cec_np);
+		return -EPROBE_DEFER;
+	}
+	of_node_put(cec_np);
+>>>>>>> v4.14.187
 	hdmi->cec_dev = &cec_pdev->dev;
 
 	/*
@@ -1472,7 +1506,10 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi,
 	if (IS_ERR(regmap))
 		ret = PTR_ERR(regmap);
 	if (ret) {
+<<<<<<< HEAD
 		ret = PTR_ERR(regmap);
+=======
+>>>>>>> v4.14.187
 		dev_err(dev,
 			"Failed to get system configuration registers: %d\n",
 			ret);
@@ -1485,6 +1522,7 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi,
 	if (IS_ERR(hdmi->regs))
 		return PTR_ERR(hdmi->regs);
 
+<<<<<<< HEAD
 	port = of_graph_get_port_by_id(np, 1);
 	if (!port) {
 		dev_err(dev, "Missing output port node\n");
@@ -1512,6 +1550,15 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi,
 	if (!of_device_is_compatible(remote, "hdmi-connector")) {
 		hdmi->bridge.next = of_drm_find_bridge(remote);
 		if (!hdmi->bridge.next) {
+=======
+	remote = of_graph_get_remote_node(np, 1, 0);
+	if (!remote)
+		return -EINVAL;
+
+	if (!of_device_is_compatible(remote, "hdmi-connector")) {
+		hdmi->next_bridge = of_drm_find_bridge(remote);
+		if (!hdmi->next_bridge) {
+>>>>>>> v4.14.187
 			dev_err(dev, "Waiting for external bridge\n");
 			of_node_put(remote);
 			return -EPROBE_DEFER;
@@ -1520,14 +1567,23 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi,
 
 	i2c_np = of_parse_phandle(remote, "ddc-i2c-bus", 0);
 	if (!i2c_np) {
+<<<<<<< HEAD
 		dev_err(dev, "Failed to find ddc-i2c-bus node in %s\n",
 			remote->full_name);
+=======
+		dev_err(dev, "Failed to find ddc-i2c-bus node in %pOF\n",
+			remote);
+>>>>>>> v4.14.187
 		of_node_put(remote);
 		return -EINVAL;
 	}
 	of_node_put(remote);
 
 	hdmi->ddc_adpt = of_find_i2c_adapter_by_node(i2c_np);
+<<<<<<< HEAD
+=======
+	of_node_put(i2c_np);
+>>>>>>> v4.14.187
 	if (!hdmi->ddc_adpt) {
 		dev_err(dev, "Failed to get ddc i2c adapter by node\n");
 		return -EINVAL;
@@ -1678,7 +1734,11 @@ static void mtk_hdmi_register_audio_driver(struct device *dev)
 	if (IS_ERR(pdev))
 		return;
 
+<<<<<<< HEAD
 	DDPINFO("%s driver bound to HDMI\n", HDMI_CODEC_DRV_NAME);
+=======
+	DRM_INFO("%s driver bound to HDMI\n", HDMI_CODEC_DRV_NAME);
+>>>>>>> v4.14.187
 }
 
 static int mtk_drm_hdmi_probe(struct platform_device *pdev)
@@ -1797,6 +1857,7 @@ static struct platform_driver * const mtk_hdmi_drivers[] = {
 
 static int __init mtk_hdmitx_init(void)
 {
+<<<<<<< HEAD
 	int ret;
 	int i;
 
@@ -1816,14 +1877,23 @@ err:
 		platform_driver_unregister(mtk_hdmi_drivers[i]);
 
 	return ret;
+=======
+	return platform_register_drivers(mtk_hdmi_drivers,
+					 ARRAY_SIZE(mtk_hdmi_drivers));
+>>>>>>> v4.14.187
 }
 
 static void __exit mtk_hdmitx_exit(void)
 {
+<<<<<<< HEAD
 	int i;
 
 	for (i = ARRAY_SIZE(mtk_hdmi_drivers) - 1; i >= 0; i--)
 		platform_driver_unregister(mtk_hdmi_drivers[i]);
+=======
+	platform_unregister_drivers(mtk_hdmi_drivers,
+				    ARRAY_SIZE(mtk_hdmi_drivers));
+>>>>>>> v4.14.187
 }
 
 module_init(mtk_hdmitx_init);

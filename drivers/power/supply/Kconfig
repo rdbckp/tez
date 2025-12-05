@@ -610,6 +610,7 @@ config CHARGER_RT9455
 	help
 	  Say Y to enable support for Richtek RT9455 battery charger.
 
+<<<<<<< HEAD
 config CUSTOM_BATTERY_EXTERNAL_CHANNEL
 	bool "customer external gauge test"
 	help
@@ -621,4 +622,6 @@ config CUSTOM_BATTERY_EXTERNAL_CHANNEL
 source "drivers/power/supply/mediatek/battery/Kconfig"
 source "drivers/power/supply/mediatek/charger/Kconfig"
 
+=======
+>>>>>>> v4.14.187
 endif # POWER_SUPPLY

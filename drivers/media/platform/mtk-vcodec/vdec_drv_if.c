@@ -21,6 +21,7 @@
 #include "mtk_vcodec_dec.h"
 #include "vdec_drv_base.h"
 #include "mtk_vcodec_dec_pm.h"
+<<<<<<< HEAD
 
 #ifdef CONFIG_VIDEO_MEDIATEK_VCU
 #include "mtk_vcu.h"
@@ -33,10 +34,18 @@ const struct vdec_common_if *get_h264_dec_comm_if(void);
 const struct vdec_common_if *get_vp8_dec_comm_if(void);
 const struct vdec_common_if *get_vp9_dec_comm_if(void);
 #endif
+=======
+#include "mtk_vpu.h"
+
+const struct vdec_common_if *get_h264_dec_comm_if(void);
+const struct vdec_common_if *get_vp8_dec_comm_if(void);
+const struct vdec_common_if *get_vp9_dec_comm_if(void);
+>>>>>>> v4.14.187
 
 int vdec_if_init(struct mtk_vcodec_ctx *ctx, unsigned int fourcc)
 {
 	int ret = 0;
+<<<<<<< HEAD
 	mtk_dec_init_ctx_pm(ctx);
 
 #ifdef CONFIG_VIDEO_MEDIATEK_VCU
@@ -67,6 +76,9 @@ int vdec_if_init(struct mtk_vcodec_ctx *ctx, unsigned int fourcc)
 	}
 #endif
 #ifdef CONFIG_VIDEO_MEDIATEK_VPU
+=======
+
+>>>>>>> v4.14.187
 	switch (fourcc) {
 	case V4L2_PIX_FMT_H264:
 		ctx->dec_if = get_h264_dec_comm_if();
@@ -80,6 +92,7 @@ int vdec_if_init(struct mtk_vcodec_ctx *ctx, unsigned int fourcc)
 	default:
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 #endif
 	if (!ctx->user_lock_hw) {
 		mtk_vdec_lock(ctx, MTK_VDEC_CORE);
@@ -90,11 +103,20 @@ int vdec_if_init(struct mtk_vcodec_ctx *ctx, unsigned int fourcc)
 		mtk_vcodec_dec_clock_off(&ctx->dev->pm, MTK_VDEC_CORE);
 		mtk_vdec_unlock(ctx, MTK_VDEC_CORE);
 	}
+=======
+
+	mtk_vdec_lock(ctx);
+	mtk_vcodec_dec_clock_on(&ctx->dev->pm);
+	ret = ctx->dec_if->init(ctx, &ctx->drv_handle);
+	mtk_vcodec_dec_clock_off(&ctx->dev->pm);
+	mtk_vdec_unlock(ctx);
+>>>>>>> v4.14.187
 
 	return ret;
 }
 
 int vdec_if_decode(struct mtk_vcodec_ctx *ctx, struct mtk_vcodec_mem *bs,
+<<<<<<< HEAD
 				   struct vdec_fb *fb, unsigned int *src_chg)
 {
 	int ret = 0;
@@ -102,22 +124,39 @@ int vdec_if_decode(struct mtk_vcodec_ctx *ctx, struct mtk_vcodec_mem *bs,
 
 	if (bs && !ctx->dec_params.svp_mode) {
 		if ((bs->dma_addr & 63UL) != 0UL) {
+=======
+		   struct vdec_fb *fb, bool *res_chg)
+{
+	int ret = 0;
+
+	if (bs) {
+		if ((bs->dma_addr & 63) != 0) {
+>>>>>>> v4.14.187
 			mtk_v4l2_err("bs dma_addr should 64 byte align");
 			return -EINVAL;
 		}
 	}
 
+<<<<<<< HEAD
 	if (fb && !ctx->dec_params.svp_mode) {
 		for (i = 0; i < fb->num_planes; i++) {
 			if ((fb->fb_base[i].dma_addr & 511UL) != 0UL) {
 				mtk_v4l2_err("fb addr should 512 byte align");
 				return -EINVAL;
 			}
+=======
+	if (fb) {
+		if (((fb->base_y.dma_addr & 511) != 0) ||
+		    ((fb->base_c.dma_addr & 511) != 0)) {
+			mtk_v4l2_err("frame buffer dma_addr should 512 byte align");
+			return -EINVAL;
+>>>>>>> v4.14.187
 		}
 	}
 
 	if (ctx->drv_handle == 0)
 		return -EIO;
+<<<<<<< HEAD
 	if (!ctx->user_lock_hw)
 		vdec_decode_prepare(ctx, MTK_VDEC_CORE);
 
@@ -125,11 +164,26 @@ int vdec_if_decode(struct mtk_vcodec_ctx *ctx, struct mtk_vcodec_mem *bs,
 
 	if (!ctx->user_lock_hw)
 		vdec_decode_unprepare(ctx, MTK_VDEC_CORE);
+=======
+
+	mtk_vdec_lock(ctx);
+
+	mtk_vcodec_set_curr_ctx(ctx->dev, ctx);
+	mtk_vcodec_dec_clock_on(&ctx->dev->pm);
+	enable_irq(ctx->dev->dec_irq);
+	ret = ctx->dec_if->decode(ctx->drv_handle, bs, fb, res_chg);
+	disable_irq(ctx->dev->dec_irq);
+	mtk_vcodec_dec_clock_off(&ctx->dev->pm);
+	mtk_vcodec_set_curr_ctx(ctx->dev, NULL);
+
+	mtk_vdec_unlock(ctx);
+>>>>>>> v4.14.187
 
 	return ret;
 }
 
 int vdec_if_get_param(struct mtk_vcodec_ctx *ctx, enum vdec_get_param_type type,
+<<<<<<< HEAD
 					  void *out)
 {
 	struct vdec_inst *inst = NULL;
@@ -159,13 +213,22 @@ int vdec_if_get_param(struct mtk_vcodec_ctx *ctx, enum vdec_get_param_type type,
 
 int vdec_if_set_param(struct mtk_vcodec_ctx *ctx, enum vdec_set_param_type type,
 					  void *in)
+=======
+		      void *out)
+>>>>>>> v4.14.187
 {
 	int ret = 0;
 
 	if (ctx->drv_handle == 0)
 		return -EIO;
 
+<<<<<<< HEAD
 	ret = ctx->dec_if->set_param(ctx->drv_handle, type, in);
+=======
+	mtk_vdec_lock(ctx);
+	ret = ctx->dec_if->get_param(ctx->drv_handle, type, out);
+	mtk_vdec_unlock(ctx);
+>>>>>>> v4.14.187
 
 	return ret;
 }
@@ -174,6 +237,7 @@ void vdec_if_deinit(struct mtk_vcodec_ctx *ctx)
 {
 	if (ctx->drv_handle == 0)
 		return;
+<<<<<<< HEAD
 	if (!ctx->user_lock_hw)
 		vdec_decode_prepare(ctx, MTK_VDEC_CORE);
 
@@ -229,3 +293,14 @@ void vdec_decode_unprepare(void *ctx_unprepare,
 }
 EXPORT_SYMBOL_GPL(vdec_decode_unprepare);
 
+=======
+
+	mtk_vdec_lock(ctx);
+	mtk_vcodec_dec_clock_on(&ctx->dev->pm);
+	ctx->dec_if->deinit(ctx->drv_handle);
+	mtk_vcodec_dec_clock_off(&ctx->dev->pm);
+	mtk_vdec_unlock(ctx);
+
+	ctx->drv_handle = 0;
+}
+>>>>>>> v4.14.187

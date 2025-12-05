@@ -21,6 +21,10 @@ config KVM
 	prompt "Kernel-based Virtual Machine (KVM) support"
 	depends on HAVE_KVM
 	select PREEMPT_NOTIFIERS
+<<<<<<< HEAD
+=======
+	select ANON_INODES
+>>>>>>> v4.14.187
 	select HAVE_KVM_CPU_RELAX_INTERCEPT
 	select HAVE_KVM_EVENTFD
 	select KVM_ASYNC_PF

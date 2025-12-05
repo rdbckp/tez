@@ -30,6 +30,7 @@
 #include <linux/vmalloc.h>
 #include <linux/err.h>
 #include <linux/idr.h>
+<<<<<<< HEAD
 #include <linux/proc_fs.h>
 #include <linux/sysfs.h>
 #include <linux/debugfs.h>
@@ -57,12 +58,19 @@
 
 /* Total bytes used by the compressed storage */
 static u64 zram_pool_total_size;
+=======
+#include <linux/sysfs.h>
+#include <linux/cpuhotplug.h>
+
+#include "zram_drv.h"
+>>>>>>> v4.14.187
 
 static DEFINE_IDR(zram_index_idr);
 /* idr index must be protected */
 static DEFINE_MUTEX(zram_index_mutex);
 
 static int zram_major;
+<<<<<<< HEAD
 static struct zram *zram_devices;
 static const char *default_compressor = "lzo-rle";
 
@@ -97,6 +105,18 @@ static void zram_slot_unlock(struct zram *zram, u32 index)
 static inline bool init_done(struct zram *zram)
 {
 	return zram ? zram->disksize : 0;
+=======
+static const char *default_compressor = "lzo";
+
+/* Module params (documentation at end) */
+static unsigned int num_devices = 1;
+
+static void zram_free_page(struct zram *zram, size_t index);
+
+static inline bool init_done(struct zram *zram)
+{
+	return zram->disksize;
+>>>>>>> v4.14.187
 }
 
 static inline struct zram *dev_to_zram(struct device *dev)
@@ -114,6 +134,7 @@ static void zram_set_handle(struct zram *zram, u32 index, unsigned long handle)
 	zram->table[index].handle = handle;
 }
 
+<<<<<<< HEAD
 static unsigned long long zram_get_bhandle(struct zram *zram, u32 index)
 {
 	return zram->table[index].bhandle;
@@ -129,18 +150,33 @@ static bool zram_test_flag(struct zram *zram, u32 index,
 			enum zram_pageflags flag)
 {
 	return zram->table[index].flags & BIT(flag);
+=======
+/* flag operations require table entry bit_spin_lock() being held */
+static int zram_test_flag(struct zram *zram, u32 index,
+			enum zram_pageflags flag)
+{
+	return zram->table[index].value & BIT(flag);
+>>>>>>> v4.14.187
 }
 
 static void zram_set_flag(struct zram *zram, u32 index,
 			enum zram_pageflags flag)
 {
+<<<<<<< HEAD
 	zram->table[index].flags |= BIT(flag);
+=======
+	zram->table[index].value |= BIT(flag);
+>>>>>>> v4.14.187
 }
 
 static void zram_clear_flag(struct zram *zram, u32 index,
 			enum zram_pageflags flag)
 {
+<<<<<<< HEAD
 	zram->table[index].flags &= ~BIT(flag);
+=======
+	zram->table[index].value &= ~BIT(flag);
+>>>>>>> v4.14.187
 }
 
 static inline void zram_set_element(struct zram *zram, u32 index,
@@ -156,12 +192,17 @@ static unsigned long zram_get_element(struct zram *zram, u32 index)
 
 static size_t zram_get_obj_size(struct zram *zram, u32 index)
 {
+<<<<<<< HEAD
 	return zram->table[index].flags & (BIT(ZRAM_FLAG_SHIFT) - 1);
+=======
+	return zram->table[index].value & (BIT(ZRAM_FLAG_SHIFT) - 1);
+>>>>>>> v4.14.187
 }
 
 static void zram_set_obj_size(struct zram *zram,
 					u32 index, size_t size)
 {
+<<<<<<< HEAD
 	unsigned long flags = zram->table[index].flags >> ZRAM_FLAG_SHIFT;
 
 	zram->table[index].flags = (flags << ZRAM_FLAG_SHIFT) | size;
@@ -172,6 +213,11 @@ static inline bool zram_allocated(struct zram *zram, u32 index)
 	return zram_get_obj_size(zram, index) ||
 			zram_test_flag(zram, index, ZRAM_SAME) ||
 			zram_test_flag(zram, index, ZRAM_WB);
+=======
+	unsigned long flags = zram->table[index].value >> ZRAM_FLAG_SHIFT;
+
+	zram->table[index].value = (flags << ZRAM_FLAG_SHIFT) | size;
+>>>>>>> v4.14.187
 }
 
 #if PAGE_SIZE != 4096
@@ -186,6 +232,17 @@ static inline bool is_partial_io(struct bio_vec *bvec)
 }
 #endif
 
+<<<<<<< HEAD
+=======
+static void zram_revalidate_disk(struct zram *zram)
+{
+	revalidate_disk(zram->disk);
+	/* revalidate_disk reset the BDI_CAP_STABLE_WRITES so set again */
+	zram->disk->queue->backing_dev_info->capabilities |=
+		BDI_CAP_STABLE_WRITES;
+}
+
+>>>>>>> v4.14.187
 /*
  * Check if request is within bounds and aligned on zram logical blocks.
  */
@@ -317,6 +374,7 @@ static ssize_t mem_used_max_store(struct device *dev,
 	return len;
 }
 
+<<<<<<< HEAD
 static ssize_t idle_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t len)
 {
@@ -583,13 +641,23 @@ static ssize_t writeback_limit_show(struct device *dev,
 	up_read(&zram->init_lock);
 
 	return scnprintf(buf, PAGE_SIZE, "%llu\n", val);
+=======
+#ifdef CONFIG_ZRAM_WRITEBACK
+static bool zram_wb_enabled(struct zram *zram)
+{
+	return zram->backing_dev;
+>>>>>>> v4.14.187
 }
 
 static void reset_bdev(struct zram *zram)
 {
 	struct block_device *bdev;
 
+<<<<<<< HEAD
 	if (!zram->backing_dev)
+=======
+	if (!zram_wb_enabled(zram))
+>>>>>>> v4.14.187
 		return;
 
 	bdev = zram->bdev;
@@ -604,9 +672,12 @@ static void reset_bdev(struct zram *zram)
 
 	kvfree(zram->bitmap);
 	zram->bitmap = NULL;
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	deinit_lru_writeback(zram);
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 static ssize_t backing_dev_show(struct device *dev,
@@ -707,23 +778,31 @@ static ssize_t backing_dev_store(struct device *dev,
 		goto out;
 
 	reset_bdev(zram);
+<<<<<<< HEAD
+=======
+	spin_lock_init(&zram->bitmap_lock);
+>>>>>>> v4.14.187
 
 	zram->old_block_size = old_block_size;
 	zram->bdev = bdev;
 	zram->backing_dev = backing_dev;
 	zram->bitmap = bitmap;
 	zram->nr_pages = nr_pages;
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	err = init_lru_writeback(zram);
 	if (err)
 		goto init_lru_writeback_fail;
 #endif
+=======
+>>>>>>> v4.14.187
 	up_write(&zram->init_lock);
 
 	pr_info("setup backing device %s\n", file_name);
 	kfree(file_name);
 
 	return len;
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 init_lru_writeback_fail:
 	zram->old_block_size = 0;
@@ -732,6 +811,8 @@ init_lru_writeback_fail:
 	zram->bitmap = NULL;
 	zram->nr_pages = 0;
 #endif
+=======
+>>>>>>> v4.14.187
 out:
 	if (bitmap)
 		kvfree(bitmap);
@@ -749,6 +830,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 static unsigned long chunk_to_blk_idx(unsigned long idx)
 {
@@ -895,6 +977,37 @@ static void free_block_bdev(struct zram *zram, unsigned long blk_idx)
 #endif
 
 static void zram_page_end_io(struct bio *bio)
+=======
+static unsigned long get_entry_bdev(struct zram *zram)
+{
+	unsigned long entry;
+
+	spin_lock(&zram->bitmap_lock);
+	/* skip 0 bit to confuse zram.handle = 0 */
+	entry = find_next_zero_bit(zram->bitmap, zram->nr_pages, 1);
+	if (entry == zram->nr_pages) {
+		spin_unlock(&zram->bitmap_lock);
+		return 0;
+	}
+
+	set_bit(entry, zram->bitmap);
+	spin_unlock(&zram->bitmap_lock);
+
+	return entry;
+}
+
+static void put_entry_bdev(struct zram *zram, unsigned long entry)
+{
+	int was_set;
+
+	spin_lock(&zram->bitmap_lock);
+	was_set = test_and_clear_bit(entry, zram->bitmap);
+	spin_unlock(&zram->bitmap_lock);
+	WARN_ON_ONCE(!was_set);
+}
+
+void zram_page_end_io(struct bio *bio)
+>>>>>>> v4.14.187
 {
 	struct page *page = bio->bi_io_vec[0].bv_page;
 
@@ -934,6 +1047,7 @@ static int read_from_bdev_async(struct zram *zram, struct bio_vec *bvec,
 	return 1;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 static int zram_balance_threshold = 25;	/* min swap-used threshold */
 static int zram_balance_ratio = 25;	/* nand writeback ratio */
@@ -1788,6 +1902,8 @@ release_init_lock:
 	return ret;
 }
 
+=======
+>>>>>>> v4.14.187
 struct zram_work {
 	struct work_struct work;
 	struct zram *zram;
@@ -1841,16 +1957,20 @@ static int read_from_bdev_sync(struct zram *zram, struct bio_vec *bvec,
 static int read_from_bdev(struct zram *zram, struct bio_vec *bvec,
 			unsigned long entry, struct bio *parent, bool sync)
 {
+<<<<<<< HEAD
 	atomic64_inc(&zram->stats.bd_reads);
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	count_vm_event(SQZR_READ);
 #endif
+=======
+>>>>>>> v4.14.187
 	if (sync)
 		return read_from_bdev_sync(zram, bvec, entry, parent);
 	else
 		return read_from_bdev_async(zram, bvec, entry, parent);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 static void zram_handle_remain(struct zram *zram, struct page *page,
 				unsigned int blk_idx)
@@ -1999,11 +2119,20 @@ static int read_comp_from_bdev(struct zram *zram, struct bio_vec *bvec,
 
 	atomic64_inc(&zram->stats.bd_reads);
 	count_vm_event(SQZR_READ);
+=======
+static int write_to_bdev(struct zram *zram, struct bio_vec *bvec,
+					u32 index, struct bio *parent,
+					unsigned long *pentry)
+{
+	struct bio *bio;
+	unsigned long entry;
+>>>>>>> v4.14.187
 
 	bio = bio_alloc(GFP_ATOMIC, 1);
 	if (!bio)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	page = alloc_page(GFP_NOIO|__GFP_HIGHMEM);
 	if (!page) {
 		pr_info("%s failed to alloc page", __func__);
@@ -2029,28 +2158,77 @@ static int read_comp_from_bdev(struct zram *zram, struct bio_vec *bvec,
 		kfree(zw);
 		__free_page(page);
 		bio_put(bio);
+=======
+	entry = get_entry_bdev(zram);
+	if (!entry) {
+		bio_put(bio);
+		return -ENOSPC;
+	}
+
+	bio->bi_iter.bi_sector = entry * (PAGE_SIZE >> 9);
+	bio_set_dev(bio, zram->bdev);
+	if (!bio_add_page(bio, bvec->bv_page, bvec->bv_len,
+					bvec->bv_offset)) {
+		bio_put(bio);
+		put_entry_bdev(zram, entry);
+>>>>>>> v4.14.187
 		return -EIO;
 	}
 
 	if (!parent) {
+<<<<<<< HEAD
 		bio->bi_opf = REQ_OP_READ;
 		bio->bi_end_io = zram_comp_page_end_io;
+=======
+		bio->bi_opf = REQ_OP_WRITE | REQ_SYNC;
+		bio->bi_end_io = zram_page_end_io;
+>>>>>>> v4.14.187
 	} else {
 		bio->bi_opf = parent->bi_opf;
 		bio_chain(bio, parent);
 	}
 
 	submit_bio(bio);
+<<<<<<< HEAD
 	return 1;
 }
 #endif
 #else
 static inline void reset_bdev(struct zram *zram) {};
+=======
+	*pentry = entry;
+
+	return 0;
+}
+
+static void zram_wb_clear(struct zram *zram, u32 index)
+{
+	unsigned long entry;
+
+	zram_clear_flag(zram, index, ZRAM_WB);
+	entry = zram_get_element(zram, index);
+	zram_set_element(zram, index, 0);
+	put_entry_bdev(zram, entry);
+}
+
+#else
+static bool zram_wb_enabled(struct zram *zram) { return false; }
+static inline void reset_bdev(struct zram *zram) {};
+static int write_to_bdev(struct zram *zram, struct bio_vec *bvec,
+					u32 index, struct bio *parent,
+					unsigned long *pentry)
+
+{
+	return -EIO;
+}
+
+>>>>>>> v4.14.187
 static int read_from_bdev(struct zram *zram, struct bio_vec *bvec,
 			unsigned long entry, struct bio *parent, bool sync)
 {
 	return -EIO;
 }
+<<<<<<< HEAD
 
 static void free_block_bdev(struct zram *zram, unsigned long blk_idx) {};
 #endif
@@ -2162,6 +2340,11 @@ static void zram_accessed(struct zram *zram, u32 index)
 static void zram_debugfs_register(struct zram *zram) {};
 static void zram_debugfs_unregister(struct zram *zram) {};
 #endif
+=======
+static void zram_wb_clear(struct zram *zram, u32 index) {}
+#endif
+
+>>>>>>> v4.14.187
 
 /*
  * We switched to per-cpu streams and this attr is not needed anymore.
@@ -2281,20 +2464,29 @@ static ssize_t mm_stat_show(struct device *dev,
 	max_used = atomic_long_read(&zram->stats.max_used_pages);
 
 	ret = scnprintf(buf, PAGE_SIZE,
+<<<<<<< HEAD
 			"%8llu %8llu %8llu %8lu %8ld %8llu %8lu %8llu\n",
+=======
+			"%8llu %8llu %8llu %8lu %8ld %8llu %8lu\n",
+>>>>>>> v4.14.187
 			orig_size << PAGE_SHIFT,
 			(u64)atomic64_read(&zram->stats.compr_data_size),
 			mem_used << PAGE_SHIFT,
 			zram->limit_pages << PAGE_SHIFT,
 			max_used << PAGE_SHIFT,
 			(u64)atomic64_read(&zram->stats.same_pages),
+<<<<<<< HEAD
 			pool_stats.pages_compacted,
 			(u64)atomic64_read(&zram->stats.huge_pages));
+=======
+			pool_stats.pages_compacted);
+>>>>>>> v4.14.187
 	up_read(&zram->init_lock);
 
 	return ret;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_WRITEBACK
 #define FOUR_K(x) ((x) * (1 << (PAGE_SHIFT - 12)))
 static ssize_t bd_stat_show(struct device *dev,
@@ -2348,6 +2540,8 @@ static ssize_t bd_stat_store(struct device *dev,
 #endif
 #endif
 
+=======
+>>>>>>> v4.14.187
 static ssize_t debug_stat_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -2357,10 +2551,16 @@ static ssize_t debug_stat_show(struct device *dev,
 
 	down_read(&zram->init_lock);
 	ret = scnprintf(buf, PAGE_SIZE,
+<<<<<<< HEAD
 			"version: %d\n%8llu %8llu\n",
 			version,
 			(u64)atomic64_read(&zram->stats.writestall),
 			(u64)atomic64_read(&zram->stats.miss_free));
+=======
+			"version: %d\n%8llu\n",
+			version,
+			(u64)atomic64_read(&zram->stats.writestall));
+>>>>>>> v4.14.187
 	up_read(&zram->init_lock);
 
 	return ret;
@@ -2368,11 +2568,26 @@ static ssize_t debug_stat_show(struct device *dev,
 
 static DEVICE_ATTR_RO(io_stat);
 static DEVICE_ATTR_RO(mm_stat);
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_WRITEBACK
 static DEVICE_ATTR_RW(bd_stat);
 #endif
 static DEVICE_ATTR_RO(debug_stat);
 
+=======
+static DEVICE_ATTR_RO(debug_stat);
+
+static void zram_slot_lock(struct zram *zram, u32 index)
+{
+	bit_spin_lock(ZRAM_ACCESS, &zram->table[index].value);
+}
+
+static void zram_slot_unlock(struct zram *zram, u32 index)
+{
+	bit_spin_unlock(ZRAM_ACCESS, &zram->table[index].value);
+}
+
+>>>>>>> v4.14.187
 static void zram_meta_free(struct zram *zram, u64 disksize)
 {
 	size_t num_pages = disksize >> PAGE_SHIFT;
@@ -2389,27 +2604,36 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
 static bool zram_meta_alloc(struct zram *zram, u64 disksize)
 {
 	size_t num_pages;
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	int i;
 #endif
+=======
+>>>>>>> v4.14.187
 
 	num_pages = disksize >> PAGE_SHIFT;
 	zram->table = vzalloc(num_pages * sizeof(*zram->table));
 	if (!zram->table)
 		return false;
 
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	for (i = 0; i < num_pages; i++)
 		INIT_LIST_HEAD(&zram->table[i].lru_list);
 #endif
+=======
+>>>>>>> v4.14.187
 	zram->mem_pool = zs_create_pool(zram->disk->disk_name);
 	if (!zram->mem_pool) {
 		vfree(zram->table);
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (!huge_class_size)
 		huge_class_size = zs_huge_class_size(zram->mem_pool);
+=======
+>>>>>>> v4.14.187
 	return true;
 }
 
@@ -2420,6 +2644,7 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
  */
 static void zram_free_page(struct zram *zram, size_t index)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_ARM
 	/* 32-bit ARM compatibility of 64-bit zram handle */
 	unsigned long long handle;
@@ -2466,6 +2691,14 @@ static void zram_free_page(struct zram *zram, size_t index)
 		free_block_bdev(zram, zram_get_bhandle(zram, index) >> (PAGE_SHIFT * 2));
 #endif
 		goto out;
+=======
+	unsigned long handle;
+
+	if (zram_wb_enabled(zram) && zram_test_flag(zram, index, ZRAM_WB)) {
+		zram_wb_clear(zram, index);
+		atomic64_dec(&zram->stats.pages_stored);
+		return;
+>>>>>>> v4.14.187
 	}
 
 	/*
@@ -2474,8 +2707,15 @@ static void zram_free_page(struct zram *zram, size_t index)
 	 */
 	if (zram_test_flag(zram, index, ZRAM_SAME)) {
 		zram_clear_flag(zram, index, ZRAM_SAME);
+<<<<<<< HEAD
 		atomic64_dec(&zram->stats.same_pages);
 		goto out;
+=======
+		zram_set_element(zram, index, 0);
+		atomic64_dec(&zram->stats.same_pages);
+		atomic64_dec(&zram->stats.pages_stored);
+		return;
+>>>>>>> v4.14.187
 	}
 
 	handle = zram_get_handle(zram, index);
@@ -2486,6 +2726,7 @@ static void zram_free_page(struct zram *zram, size_t index)
 
 	atomic64_sub(zram_get_obj_size(zram, index),
 			&zram->stats.compr_data_size);
+<<<<<<< HEAD
 out:
 	atomic64_dec(&zram->stats.pages_stored);
 	zram_set_handle(zram, index, 0);
@@ -2500,6 +2741,12 @@ out:
 #endif
 	WARN_ON_ONCE(zram->table[index].flags &
 		~(1UL << ZRAM_LOCK | 1UL << ZRAM_UNDER_WB));
+=======
+	atomic64_dec(&zram->stats.pages_stored);
+
+	zram_set_handle(zram, index, 0);
+	zram_set_obj_size(zram, index, 0);
+>>>>>>> v4.14.187
 }
 
 static int __zram_bvec_read(struct zram *zram, struct page *page, u32 index,
@@ -2509,6 +2756,7 @@ static int __zram_bvec_read(struct zram *zram, struct page *page, u32 index,
 	unsigned long handle;
 	unsigned int size;
 	void *src, *dst;
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	unsigned long flags;
 #endif
@@ -2541,6 +2789,27 @@ static int __zram_bvec_read(struct zram *zram, struct page *page, u32 index,
 				bio, partial_io);
 	}
 
+=======
+
+	if (zram_wb_enabled(zram)) {
+		zram_slot_lock(zram, index);
+		if (zram_test_flag(zram, index, ZRAM_WB)) {
+			struct bio_vec bvec;
+
+			zram_slot_unlock(zram, index);
+
+			bvec.bv_page = page;
+			bvec.bv_len = PAGE_SIZE;
+			bvec.bv_offset = 0;
+			return read_from_bdev(zram, &bvec,
+					zram_get_element(zram, index),
+					bio, partial_io);
+		}
+		zram_slot_unlock(zram, index);
+	}
+
+	zram_slot_lock(zram, index);
+>>>>>>> v4.14.187
 	handle = zram_get_handle(zram, index);
 	if (!handle || zram_test_flag(zram, index, ZRAM_SAME)) {
 		unsigned long value;
@@ -2567,6 +2836,7 @@ static int __zram_bvec_read(struct zram *zram, struct page *page, u32 index,
 
 		dst = kmap_atomic(page);
 		ret = zcomp_decompress(zstrm, src, size, dst);
+<<<<<<< HEAD
 
 		/* Should NEVER happen. BUG() if it does. */
 		if (unlikely(ret)) {
@@ -2595,10 +2865,13 @@ static int __zram_bvec_read(struct zram *zram, struct page *page, u32 index,
 			print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_OFFSET, 16, 1, src, size, 1);
 			BUG();
 		}
+=======
+>>>>>>> v4.14.187
 		kunmap_atomic(dst);
 		zcomp_stream_put(zram->comp);
 	}
 	zs_unmap_object(zram->mem_pool, handle);
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	if (zram_test_flag(zram, index, ZRAM_UNDER_PPR))
 		zram_clear_flag(zram, index, ZRAM_UNDER_PPR);
@@ -2609,6 +2882,14 @@ static int __zram_bvec_read(struct zram *zram, struct page *page, u32 index,
 #endif
 	zram_slot_unlock(zram, index);
 
+=======
+	zram_slot_unlock(zram, index);
+
+	/* Should NEVER happen. Return bio error if it does. */
+	if (unlikely(ret))
+		pr_err("Decompression failed! err=%d, page=%u\n", ret, index);
+
+>>>>>>> v4.14.187
 	return ret;
 }
 
@@ -2657,9 +2938,13 @@ static int __zram_bvec_write(struct zram *zram, struct bio_vec *bvec,
 	struct page *page = bvec->bv_page;
 	unsigned long element = 0;
 	enum zram_pageflags flags = 0;
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	unsigned long irq_flags;
 #endif
+=======
+	bool allow_wb = true;
+>>>>>>> v4.14.187
 
 	mem = kmap_atomic(page);
 	if (page_same_filled(mem, &element)) {
@@ -2684,8 +2969,26 @@ compress_again:
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (comp_len >= huge_class_size)
 		comp_len = PAGE_SIZE;
+=======
+	if (unlikely(comp_len > max_zpage_size)) {
+		if (zram_wb_enabled(zram) && allow_wb) {
+			zcomp_stream_put(zram->comp);
+			ret = write_to_bdev(zram, bvec, index, bio, &element);
+			if (!ret) {
+				flags = ZRAM_WB;
+				ret = 1;
+				goto out;
+			}
+			allow_wb = false;
+			goto compress_again;
+		}
+		comp_len = PAGE_SIZE;
+	}
+
+>>>>>>> v4.14.187
 	/*
 	 * handle allocation has 2 paths:
 	 * a) fast path is executed with preemption disabled (for
@@ -2717,7 +3020,10 @@ compress_again:
 	}
 
 	alloced_pages = zs_get_total_pages(zram->mem_pool);
+<<<<<<< HEAD
 	zram_pool_total_size = alloced_pages << PAGE_SHIFT;
+=======
+>>>>>>> v4.14.187
 	update_used_max(zram, alloced_pages);
 
 	if (zram->limit_pages && alloced_pages > zram->limit_pages) {
@@ -2746,30 +3052,39 @@ out:
 	zram_slot_lock(zram, index);
 	zram_free_page(zram, index);
 
+<<<<<<< HEAD
 	if (comp_len == PAGE_SIZE) {
 		zram_set_flag(zram, index, ZRAM_HUGE);
 		atomic64_inc(&zram->stats.huge_pages);
 	}
 
+=======
+>>>>>>> v4.14.187
 	if (flags) {
 		zram_set_flag(zram, index, flags);
 		zram_set_element(zram, index, element);
 	}  else {
 		zram_set_handle(zram, index, handle);
 		zram_set_obj_size(zram, index, comp_len);
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 		spin_lock_irqsave(&zram->list_lock, irq_flags);
 		list_add_tail(&zram->table[index].lru_list, &zram->list);
 		spin_unlock_irqrestore(&zram->list_lock, irq_flags);
 #endif
+=======
+>>>>>>> v4.14.187
 	}
 	zram_slot_unlock(zram, index);
 
 	/* Update stats */
 	atomic64_inc(&zram->stats.pages_stored);
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	try_wakeup_zram_wbd(zram);
 #endif
+=======
+>>>>>>> v4.14.187
 	return ret;
 }
 
@@ -2879,10 +3194,13 @@ static int zram_bvec_rw(struct zram *zram, struct bio_vec *bvec, u32 index,
 
 	generic_end_io_acct(q, rw_acct, &zram->disk->part0, start_time);
 
+<<<<<<< HEAD
 	zram_slot_lock(zram, index);
 	zram_accessed(zram, index);
 	zram_slot_unlock(zram, index);
 
+=======
+>>>>>>> v4.14.187
 	if (unlikely(ret < 0)) {
 		if (!is_write)
 			atomic64_inc(&zram->stats.failed_reads);
@@ -2967,6 +3285,7 @@ static void zram_slot_free_notify(struct block_device *bdev,
 
 	zram = bdev->bd_disk->private_data;
 
+<<<<<<< HEAD
 	atomic64_inc(&zram->stats.notify_free);
 	if (!zram_slot_trylock(zram, index)) {
 		atomic64_inc(&zram->stats.miss_free);
@@ -2975,6 +3294,12 @@ static void zram_slot_free_notify(struct block_device *bdev,
 
 	zram_free_page(zram, index);
 	zram_slot_unlock(zram, index);
+=======
+	zram_slot_lock(zram, index);
+	zram_free_page(zram, index);
+	zram_slot_unlock(zram, index);
+	atomic64_inc(&zram->stats.notify_free);
+>>>>>>> v4.14.187
 }
 
 static int zram_rw_page(struct block_device *bdev, sector_t sector,
@@ -3091,11 +3416,17 @@ static ssize_t disksize_store(struct device *dev,
 	}
 
 	zram->comp = comp;
+<<<<<<< HEAD
 	barrier();
 	zram->disksize = disksize;
 	set_capacity(zram->disk, zram->disksize >> SECTOR_SHIFT);
 
 	revalidate_disk(zram->disk);
+=======
+	zram->disksize = disksize;
+	set_capacity(zram->disk, zram->disksize >> SECTOR_SHIFT);
+	zram_revalidate_disk(zram);
+>>>>>>> v4.14.187
 	up_write(&zram->init_lock);
 
 	return len;
@@ -3138,6 +3469,7 @@ static ssize_t reset_store(struct device *dev,
 	/* From now on, anyone can't open /dev/zram[0-9] */
 	zram->claim = true;
 	mutex_unlock(&bdev->bd_mutex);
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	stop_lru_writeback(zram);
 #endif
@@ -3145,6 +3477,13 @@ static ssize_t reset_store(struct device *dev,
 	fsync_bdev(bdev);
 	zram_reset_device(zram);
 	revalidate_disk(zram->disk);
+=======
+
+	/* Make sure all the pending I/O are finished */
+	fsync_bdev(bdev);
+	zram_reset_device(zram);
+	zram_revalidate_disk(zram);
+>>>>>>> v4.14.187
 	bdput(bdev);
 
 	mutex_lock(&bdev->bd_mutex);
@@ -3182,14 +3521,20 @@ static DEVICE_ATTR_RO(initstate);
 static DEVICE_ATTR_WO(reset);
 static DEVICE_ATTR_WO(mem_limit);
 static DEVICE_ATTR_WO(mem_used_max);
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(idle);
+=======
+>>>>>>> v4.14.187
 static DEVICE_ATTR_RW(max_comp_streams);
 static DEVICE_ATTR_RW(comp_algorithm);
 #ifdef CONFIG_ZRAM_WRITEBACK
 static DEVICE_ATTR_RW(backing_dev);
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(writeback);
 static DEVICE_ATTR_RW(writeback_limit);
 static DEVICE_ATTR_RW(writeback_limit_enable);
+=======
+>>>>>>> v4.14.187
 #endif
 
 static struct attribute *zram_disk_attrs[] = {
@@ -3199,11 +3544,15 @@ static struct attribute *zram_disk_attrs[] = {
 	&dev_attr_compact.attr,
 	&dev_attr_mem_limit.attr,
 	&dev_attr_mem_used_max.attr,
+<<<<<<< HEAD
 	&dev_attr_idle.attr,
+=======
+>>>>>>> v4.14.187
 	&dev_attr_max_comp_streams.attr,
 	&dev_attr_comp_algorithm.attr,
 #ifdef CONFIG_ZRAM_WRITEBACK
 	&dev_attr_backing_dev.attr,
+<<<<<<< HEAD
 	&dev_attr_writeback.attr,
 	&dev_attr_writeback_limit.attr,
 	&dev_attr_writeback_limit_enable.attr,
@@ -3213,6 +3562,11 @@ static struct attribute *zram_disk_attrs[] = {
 #ifdef CONFIG_ZRAM_WRITEBACK
 	&dev_attr_bd_stat.attr,
 #endif
+=======
+#endif
+	&dev_attr_io_stat.attr,
+	&dev_attr_mm_stat.attr,
+>>>>>>> v4.14.187
 	&dev_attr_debug_stat.attr,
 	NULL,
 };
@@ -3246,6 +3600,7 @@ static int zram_add(void)
 	device_id = ret;
 
 	init_rwsem(&zram->init_lock);
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_WRITEBACK
 	spin_lock_init(&zram->wb_limit_lock);
 #endif
@@ -3256,6 +3611,9 @@ static int zram_add(void)
 	spin_lock_init(&zram->bitmap_lock);
 	mutex_init(&zram->blk_bitmap_lock);
 #endif
+=======
+
+>>>>>>> v4.14.187
 	queue = blk_alloc_queue(GFP_KERNEL);
 	if (!queue) {
 		pr_err("Error allocating disk queue for device %d\n",
@@ -3288,7 +3646,10 @@ static int zram_add(void)
 	/* zram devices sort of resembles non-rotational disks */
 	queue_flag_set_unlocked(QUEUE_FLAG_NONROT, zram->disk->queue);
 	queue_flag_clear_unlocked(QUEUE_FLAG_ADD_RANDOM, zram->disk->queue);
+<<<<<<< HEAD
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * To ensure that we always get PAGE_SIZE aligned
 	 * and n*PAGE_SIZED sized I/O requests.
@@ -3313,19 +3674,25 @@ static int zram_add(void)
 	if (ZRAM_LOGICAL_BLOCK_SIZE == PAGE_SIZE)
 		blk_queue_max_write_zeroes_sectors(zram->disk->queue, UINT_MAX);
 
+<<<<<<< HEAD
 	zram->disk->queue->backing_dev_info->capabilities |=
 					BDI_CAP_STABLE_WRITES;
 
+=======
+>>>>>>> v4.14.187
 	disk_to_dev(zram->disk)->groups = zram_disk_attr_groups;
 	add_disk(zram->disk);
 
 	strlcpy(zram->compressor, default_compressor, sizeof(zram->compressor));
 
+<<<<<<< HEAD
 	zram_debugfs_register(zram);
 
 	if (!zram_devices)
 		zram_devices = zram;
 
+=======
+>>>>>>> v4.14.187
 	pr_info("Added device: %s\n", zram->disk->disk_name);
 	return device_id;
 
@@ -3356,11 +3723,14 @@ static int zram_remove(struct zram *zram)
 	zram->claim = true;
 	mutex_unlock(&bdev->bd_mutex);
 
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	stop_lru_writeback(zram);
 #endif
 	zram_debugfs_unregister(zram);
 
+=======
+>>>>>>> v4.14.187
 	/* Make sure all the pending I/O are finished */
 	fsync_bdev(bdev);
 	zram_reset_device(zram);
@@ -3368,11 +3738,17 @@ static int zram_remove(struct zram *zram)
 
 	pr_info("Removed device: %s\n", zram->disk->disk_name);
 
+<<<<<<< HEAD
 	del_gendisk(zram->disk);
 	blk_cleanup_queue(zram->disk->queue);
 	put_disk(zram->disk);
 	if (zram_devices == zram)
 		zram_devices = NULL;
+=======
+	blk_cleanup_queue(zram->disk->queue);
+	del_gendisk(zram->disk);
+	put_disk(zram->disk);
+>>>>>>> v4.14.187
 	kfree(zram);
 	return 0;
 }
@@ -3455,12 +3831,16 @@ static void destroy_devices(void)
 {
 	class_unregister(&zram_control_class);
 	idr_for_each(&zram_index_idr, &zram_remove_cb, NULL);
+<<<<<<< HEAD
 	zram_debugfs_destroy();
+=======
+>>>>>>> v4.14.187
 	idr_destroy(&zram_index_idr);
 	unregister_blkdev(zram_major, "zram");
 	cpuhp_remove_multi_state(CPUHP_ZCOMP_PREPARE);
 }
 
+<<<<<<< HEAD
 static int zram_size_notifier(struct notifier_block *nb,
 			       unsigned long action, void *data)
 {
@@ -3554,6 +3934,8 @@ static const struct file_operations zraminfo_proc_fops = {
 };
 #endif
 
+=======
+>>>>>>> v4.14.187
 static int __init zram_init(void)
 {
 	int ret;
@@ -3570,7 +3952,10 @@ static int __init zram_init(void)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	zram_debugfs_create();
+=======
+>>>>>>> v4.14.187
 	zram_major = register_blkdev(0, "zram");
 	if (zram_major <= 0) {
 		pr_err("Unable to get major number\n");
@@ -3588,6 +3973,7 @@ static int __init zram_init(void)
 		num_devices--;
 	}
 
+<<<<<<< HEAD
 	show_mem_extra_notifier_register(&zram_size_nb);
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	am_app_launch_notifier_register(&zram_app_launch_nb);
@@ -3596,6 +3982,8 @@ static int __init zram_init(void)
 	proc_create("zraminfo", 0644, NULL, &zraminfo_proc_fops);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	return 0;
 
 out_error:
@@ -3606,9 +3994,12 @@ out_error:
 static void __exit zram_exit(void)
 {
 	destroy_devices();
+<<<<<<< HEAD
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	am_app_launch_notifier_unregister(&zram_app_launch_nb);
 #endif
+=======
+>>>>>>> v4.14.187
 }
 
 module_init(zram_init);

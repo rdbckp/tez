@@ -191,7 +191,10 @@ void __wake_up_locked_key_bookmark(struct wait_queue_head *wq_head,
 void __wake_up_sync_key(struct wait_queue_head *wq_head, unsigned int mode, int nr, void *key);
 void __wake_up_locked(struct wait_queue_head *wq_head, unsigned int mode, int nr);
 void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode, int nr);
+<<<<<<< HEAD
 void __wake_up_pollfree(struct wait_queue_head *wq_head);
+=======
+>>>>>>> v4.14.187
 
 #define wake_up(x)			__wake_up(x, TASK_NORMAL, 1, NULL)
 #define wake_up_nr(x, nr)		__wake_up(x, TASK_NORMAL, nr, NULL)
@@ -216,6 +219,7 @@ void __wake_up_pollfree(struct wait_queue_head *wq_head);
 #define wake_up_interruptible_sync_poll(x, m)					\
 	__wake_up_sync_key((x), TASK_INTERRUPTIBLE, 1, (void *) (m))
 
+<<<<<<< HEAD
 /**
  * wake_up_pollfree - signal that a polled waitqueue is going away
  * @wq_head: the wait queue head
@@ -241,6 +245,8 @@ static inline void wake_up_pollfree(struct wait_queue_head *wq_head)
 		__wake_up_pollfree(wq_head);
 }
 
+=======
+>>>>>>> v4.14.187
 #define ___wait_cond_timeout(condition)						\
 ({										\
 	bool __cond = (condition);						\

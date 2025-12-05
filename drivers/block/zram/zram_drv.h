@@ -18,10 +18,32 @@
 #include <linux/rwsem.h>
 #include <linux/zsmalloc.h>
 #include <linux/crypto.h>
+<<<<<<< HEAD
 #include <linux/mm.h>
 
 #include "zcomp.h"
 
+=======
+
+#include "zcomp.h"
+
+/*-- Configurable parameters */
+
+/*
+ * Pages that compress to size greater than this are stored
+ * uncompressed in memory.
+ */
+static const size_t max_zpage_size = PAGE_SIZE / 4 * 3;
+
+/*
+ * NOTE: max_zpage_size must be less than or equal to:
+ *   ZS_MAX_ALLOC_SIZE. Otherwise, zs_malloc() would
+ * always return failure.
+ */
+
+/*-- End of configurable params */
+
+>>>>>>> v4.14.187
 #define SECTOR_SHIFT		9
 #define SECTORS_PER_PAGE_SHIFT	(PAGE_SHIFT - SECTOR_SHIFT)
 #define SECTORS_PER_PAGE	(1 << SECTORS_PER_PAGE_SHIFT)
@@ -32,7 +54,11 @@
 
 
 /*
+<<<<<<< HEAD
  * The lower ZRAM_FLAG_SHIFT bits of table.flags is for
+=======
+ * The lower ZRAM_FLAG_SHIFT bits of table.value is for
+>>>>>>> v4.14.187
  * object size (excluding header), the higher bits is for
  * zram_pageflags.
  *
@@ -41,6 +67,7 @@
  * The lower ZRAM_FLAG_SHIFT bits is for object size (excluding header),
  * the higher bits is for zram_pageflags.
  */
+<<<<<<< HEAD
 #ifdef CONFIG_ARM
 /* 32-bit ARM compatibility of ZRAM_PPR and ZRAM_UNDER_PPR flags */
 #define ZRAM_FLAG_SHIFT 16
@@ -61,6 +88,16 @@ enum zram_pageflags {
 	ZRAM_READ_BDEV,
 	ZRAM_PPR,
 	ZRAM_UNDER_PPR,
+=======
+#define ZRAM_FLAG_SHIFT 24
+
+/* Flags for zram pages (table[page_no].value) */
+enum zram_pageflags {
+	/* Page consists the same element */
+	ZRAM_SAME = ZRAM_FLAG_SHIFT,
+	ZRAM_ACCESS,	/* page is now accessed */
+	ZRAM_WB,	/* page is stored on backing_device */
+>>>>>>> v4.14.187
 
 	__NR_ZRAM_PAGEFLAGS,
 };
@@ -72,6 +109,7 @@ struct zram_table_entry {
 	union {
 		unsigned long handle;
 		unsigned long element;
+<<<<<<< HEAD
 		unsigned long long bhandle;
 	};
 	unsigned long flags;
@@ -81,6 +119,10 @@ struct zram_table_entry {
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	struct list_head lru_list;
 #endif
+=======
+	};
+	unsigned long value;
+>>>>>>> v4.14.187
 };
 
 struct zram_stats {
@@ -92,6 +134,7 @@ struct zram_stats {
 	atomic64_t invalid_io;	/* non-page-aligned I/O requests */
 	atomic64_t notify_free;	/* no. of swap slot free notifications */
 	atomic64_t same_pages;		/* no. of same element filled pages */
+<<<<<<< HEAD
 	atomic64_t huge_pages;		/* no. of huge pages */
 	atomic64_t pages_stored;	/* no. of pages currently stored */
 	atomic_long_t max_used_pages;	/* no. of maximum pages stored */
@@ -160,6 +203,13 @@ void swap_add_to_list(struct list_head *, swp_entry_t);
 void swap_writeback_list(struct zwbs **, struct list_head *);
 #endif
 
+=======
+	atomic64_t pages_stored;	/* no. of pages currently stored */
+	atomic_long_t max_used_pages;	/* no. of maximum pages stored */
+	atomic64_t writestall;		/* no. of write slow paths */
+};
+
+>>>>>>> v4.14.187
 struct zram {
 	struct zram_table_entry *table;
 	struct zs_pool *mem_pool;
@@ -183,15 +233,21 @@ struct zram {
 	 * zram is claimed so open request will be failed
 	 */
 	bool claim; /* Protected by bdev->bd_mutex */
+<<<<<<< HEAD
 	struct file *backing_dev;
 #ifdef CONFIG_ZRAM_WRITEBACK
 	spinlock_t wb_limit_lock;
 	bool wb_limit_enable;
 	u64 bd_wb_limit;
+=======
+#ifdef CONFIG_ZRAM_WRITEBACK
+	struct file *backing_dev;
+>>>>>>> v4.14.187
 	struct block_device *bdev;
 	unsigned int old_block_size;
 	unsigned long *bitmap;
 	unsigned long nr_pages;
+<<<<<<< HEAD
 #endif
 #ifdef CONFIG_ZRAM_MEMORY_TRACKING
 	struct dentry *debugfs_dir;
@@ -214,4 +270,9 @@ struct zram {
 
 /* mlog */
 unsigned long zram_mlog(void);
+=======
+	spinlock_t bitmap_lock;
+#endif
+};
+>>>>>>> v4.14.187
 #endif

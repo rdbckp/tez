@@ -20,9 +20,12 @@
 
 #include "ubsan.h"
 
+<<<<<<< HEAD
 #include "../kernel/sched/sched.h"
 #include "../drivers/misc/mediatek/include/mt-plat/aee.h"
 
+=======
+>>>>>>> v4.14.187
 const char *type_check_kinds[] = {
 	"load of",
 	"store to",
@@ -166,14 +169,18 @@ static void ubsan_prologue(struct source_location *location,
 
 static void ubsan_epilogue(unsigned long *flags)
 {
+<<<<<<< HEAD
 	int cpu;
 	struct rq *rq;
 
+=======
+>>>>>>> v4.14.187
 	dump_stack();
 	pr_err("========================================"
 		"========================================\n");
 	spin_unlock_irqrestore(&report_lock, *flags);
 	current->in_ubsan--;
+<<<<<<< HEAD
 
 	cpu = raw_smp_processor_id();
 	rq = cpu_rq(cpu);
@@ -185,6 +192,8 @@ static void ubsan_epilogue(unsigned long *flags)
 	} else {
 		BUG();
 	}
+=======
+>>>>>>> v4.14.187
 }
 
 static void handle_overflow(struct overflow_data *data, void *lhs,

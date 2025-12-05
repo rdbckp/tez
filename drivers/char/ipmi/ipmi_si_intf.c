@@ -1359,7 +1359,11 @@ static unsigned int num_slave_addrs;
 #define IPMI_MEM_ADDR_SPACE 1
 static const char * const addr_space_to_str[] = { "i/o", "mem" };
 
+<<<<<<< HEAD
 static int hotmod_handler(const char *val, const struct kernel_param *kp);
+=======
+static int hotmod_handler(const char *val, struct kernel_param *kp);
+>>>>>>> v4.14.187
 
 module_param_call(hotmod, hotmod_handler, NULL, NULL, 0200);
 MODULE_PARM_DESC(hotmod, "Add and remove interfaces.  See"
@@ -1825,7 +1829,11 @@ static struct smi_info *smi_info_alloc(void)
 	return info;
 }
 
+<<<<<<< HEAD
 static int hotmod_handler(const char *val, const struct kernel_param *kp)
+=======
+static int hotmod_handler(const char *val, struct kernel_param *kp)
+>>>>>>> v4.14.187
 {
 	char *str = kstrdup(val, GFP_KERNEL);
 	int  rv;

@@ -195,6 +195,7 @@ struct scsi_device {
 	unsigned lun_in_cdb:1;		/* Store LUN bits in CDB[1] */
 	unsigned unmap_limit_for_ws:1;	/* Use the UNMAP limit for WRITE SAME */
 
+<<<<<<< HEAD
 	/* MTK PATCH */
 	unsigned use_rpm_auto:1; /* Enable runtime PM auto suspend */
 
@@ -208,6 +209,8 @@ struct scsi_device {
 #define SCSI_DEFAULT_AUTOSUSPEND_DELAY  -1
 	int autosuspend_delay;
 
+=======
+>>>>>>> v4.14.187
 	atomic_t disk_events_disable_depth; /* disable depth for disk events */
 
 	DECLARE_BITMAP(supported_events, SDEV_EVT_MAXBITS); /* supported events */
@@ -235,8 +238,11 @@ struct scsi_device {
 	struct mutex		state_mutex;
 	enum scsi_device_state sdev_state;
 	unsigned long		sdev_data[0];
+<<<<<<< HEAD
 	bool support_tw_lu;
 	u8 bootlunID;
+=======
+>>>>>>> v4.14.187
 } __attribute__((aligned(sizeof(unsigned long))));
 
 #define	to_scsi_device(d)	\

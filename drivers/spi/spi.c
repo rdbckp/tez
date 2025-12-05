@@ -1050,9 +1050,13 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
 				ret = 0;
 				ms = 8LL * 1000LL * xfer->len;
 				do_div(ms, xfer->speed_hz);
+<<<<<<< HEAD
 				/* Increase spi transfer tolerance to 2s */
 				/* To aviod timeout when OS is busy.*/
 				ms += 2000;
+=======
+				ms += ms + 200; /* some tolerance */
+>>>>>>> v4.14.187
 
 				if (ms > UINT_MAX)
 					ms = UINT_MAX;
@@ -2777,6 +2781,7 @@ int spi_setup(struct spi_device *spi)
 	if (spi->controller->setup)
 		status = spi->controller->setup(spi);
 
+<<<<<<< HEAD
 	if (spi->master->auto_runtime_pm && spi->master->set_cs) {
 		status = pm_runtime_get_sync(spi->master->dev.parent);
 		if (status < 0) {
@@ -2791,6 +2796,9 @@ int spi_setup(struct spi_device *spi)
 	} else {
 		spi_set_cs(spi, false);
 	}
+=======
+	spi_set_cs(spi, false);
+>>>>>>> v4.14.187
 
 	dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
 			(int) (spi->mode & (SPI_CPOL | SPI_CPHA)),

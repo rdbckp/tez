@@ -1482,6 +1482,11 @@ static struct rdma_id_private *cma_find_listener(
 {
 	struct rdma_id_private *id_priv, *id_priv_dev;
 
+<<<<<<< HEAD
+=======
+	lockdep_assert_held(&lock);
+
+>>>>>>> v4.14.187
 	if (!bind_list)
 		return ERR_PTR(-EINVAL);
 
@@ -1530,6 +1535,10 @@ static struct rdma_id_private *cma_id_from_event(struct ib_cm_id *cm_id,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&lock);
+>>>>>>> v4.14.187
 	/*
 	 * Net namespace might be getting deleted while route lookup,
 	 * cm_id lookup is in progress. Therefore, perform netdevice
@@ -1571,6 +1580,10 @@ static struct rdma_id_private *cma_id_from_event(struct ib_cm_id *cm_id,
 	id_priv = cma_find_listener(bind_list, cm_id, ib_event, &req, *net_dev);
 err:
 	rcu_read_unlock();
+<<<<<<< HEAD
+=======
+	mutex_unlock(&lock);
+>>>>>>> v4.14.187
 	if (IS_ERR(id_priv) && *net_dev) {
 		dev_put(*net_dev);
 		*net_dev = NULL;
@@ -2287,6 +2300,11 @@ static void cma_listen_on_dev(struct rdma_id_private *id_priv,
 	struct net *net = id_priv->id.route.addr.dev_addr.net;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	lockdep_assert_held(&lock);
+
+>>>>>>> v4.14.187
 	if (cma_family(id_priv) == AF_IB && !rdma_cap_ib_cm(cma_dev->device, 1))
 		return;
 
@@ -2993,6 +3011,11 @@ static void cma_bind_port(struct rdma_bind_list *bind_list,
 	u64 sid, mask;
 	__be16 port;
 
+<<<<<<< HEAD
+=======
+	lockdep_assert_held(&lock);
+
+>>>>>>> v4.14.187
 	addr = cma_src_addr(id_priv);
 	port = htons(bind_list->port);
 
@@ -3021,6 +3044,11 @@ static int cma_alloc_port(enum rdma_port_space ps,
 	struct rdma_bind_list *bind_list;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	lockdep_assert_held(&lock);
+
+>>>>>>> v4.14.187
 	bind_list = kzalloc(sizeof *bind_list, GFP_KERNEL);
 	if (!bind_list)
 		return -ENOMEM;
@@ -3047,6 +3075,11 @@ static int cma_port_is_unique(struct rdma_bind_list *bind_list,
 	struct sockaddr  *saddr = cma_src_addr(id_priv);
 	__be16 dport = cma_port(daddr);
 
+<<<<<<< HEAD
+=======
+	lockdep_assert_held(&lock);
+
+>>>>>>> v4.14.187
 	hlist_for_each_entry(cur_id, &bind_list->owners, node) {
 		struct sockaddr  *cur_daddr = cma_dst_addr(cur_id);
 		struct sockaddr  *cur_saddr = cma_src_addr(cur_id);
@@ -3086,6 +3119,11 @@ static int cma_alloc_any_port(enum rdma_port_space ps,
 	unsigned int rover;
 	struct net *net = id_priv->id.route.addr.dev_addr.net;
 
+<<<<<<< HEAD
+=======
+	lockdep_assert_held(&lock);
+
+>>>>>>> v4.14.187
 	inet_get_local_port_range(net, &low, &high);
 	remaining = (high - low) + 1;
 	rover = prandom_u32() % remaining + low;
@@ -3133,6 +3171,11 @@ static int cma_check_port(struct rdma_bind_list *bind_list,
 	struct rdma_id_private *cur_id;
 	struct sockaddr *addr, *cur_addr;
 
+<<<<<<< HEAD
+=======
+	lockdep_assert_held(&lock);
+
+>>>>>>> v4.14.187
 	addr = cma_src_addr(id_priv);
 	hlist_for_each_entry(cur_id, &bind_list->owners, node) {
 		if (id_priv == cur_id)
@@ -3163,6 +3206,11 @@ static int cma_use_port(enum rdma_port_space ps,
 	unsigned short snum;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	lockdep_assert_held(&lock);
+
+>>>>>>> v4.14.187
 	snum = ntohs(cma_port(cma_src_addr(id_priv)));
 	if (snum < PROT_SOCK && !capable(CAP_NET_BIND_SERVICE))
 		return -EACCES;

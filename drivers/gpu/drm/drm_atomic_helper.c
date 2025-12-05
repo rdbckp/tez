@@ -30,7 +30,10 @@
 #include <drm/drm_plane_helper.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_atomic_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_writeback.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/dma-fence.h>
 
 #include "drm_crtc_helper_internal.h"
@@ -1051,6 +1054,7 @@ void drm_atomic_helper_commit_modeset_disables(struct drm_device *dev,
 }
 EXPORT_SYMBOL(drm_atomic_helper_commit_modeset_disables);
 
+<<<<<<< HEAD
 static void drm_atomic_helper_commit_writebacks(struct drm_device *dev,
 					struct drm_atomic_state *old_state)
 {
@@ -1074,6 +1078,8 @@ static void drm_atomic_helper_commit_writebacks(struct drm_device *dev,
 	}
 }
 
+=======
+>>>>>>> v4.14.187
 /**
  * drm_atomic_helper_commit_modeset_enables - modeset commit to enable outputs
  * @dev: DRM device
@@ -1153,8 +1159,11 @@ void drm_atomic_helper_commit_modeset_enables(struct drm_device *dev,
 
 		drm_bridge_enable(encoder->bridge);
 	}
+<<<<<<< HEAD
 
 	drm_atomic_helper_commit_writebacks(dev, old_state);
+=======
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL(drm_atomic_helper_commit_modeset_enables);
 
@@ -3155,8 +3164,12 @@ struct drm_encoder *
 drm_atomic_helper_best_encoder(struct drm_connector *connector)
 {
 	WARN_ON(connector->encoder_ids[1]);
+<<<<<<< HEAD
 	return drm_encoder_find(connector->dev,
 			NULL, connector->encoder_ids[0]);
+=======
+	return drm_encoder_find(connector->dev, connector->encoder_ids[0]);
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL(drm_atomic_helper_best_encoder);
 
@@ -3447,9 +3460,12 @@ __drm_atomic_helper_connector_duplicate_state(struct drm_connector *connector,
 	memcpy(state, connector->state, sizeof(*state));
 	if (state->crtc)
 		drm_connector_get(connector);
+<<<<<<< HEAD
 
 	/* Don't copy over a writeback job, they are used only once */
 	state->writeback_job = NULL;
+=======
+>>>>>>> v4.14.187
 }
 EXPORT_SYMBOL(__drm_atomic_helper_connector_duplicate_state);
 

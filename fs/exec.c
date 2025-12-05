@@ -62,20 +62,27 @@
 #include <linux/oom.h>
 #include <linux/compat.h>
 #include <linux/vmalloc.h>
+<<<<<<< HEAD
 #include <linux/task_integrity.h>
+=======
+>>>>>>> v4.14.187
 
 #include <linux/uaccess.h>
 #include <asm/mmu_context.h>
 #include <asm/tlb.h>
 
 #include <trace/events/task.h>
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_NS
 #include "mount.h"
 #endif
+=======
+>>>>>>> v4.14.187
 #include "internal.h"
 
 #include <trace/events/sched.h>
 
+<<<<<<< HEAD
 #include <mt-plat/mtk_pidmap.h>
 
 #ifdef CONFIG_SECURITY_DEFEX
@@ -103,6 +110,8 @@ static int __init boot_recovery(char *str)
 early_param("androidboot.boot_recovery", boot_recovery);
 #endif
 
+=======
+>>>>>>> v4.14.187
 int suid_dumpable = 0;
 
 static LIST_HEAD(formats);
@@ -342,7 +351,11 @@ static int __bprm_mm_init(struct linux_binprm *bprm)
 	vma->vm_start = vma->vm_end - PAGE_SIZE;
 	vma->vm_flags = VM_SOFTDIRTY | VM_STACK_FLAGS | VM_STACK_INCOMPLETE_SETUP;
 	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+<<<<<<< HEAD
 	INIT_VMA(vma);
+=======
+	INIT_LIST_HEAD(&vma->anon_vma_chain);
+>>>>>>> v4.14.187
 
 	err = insert_vm_struct(mm, vma);
 	if (err)
@@ -1061,6 +1074,7 @@ static int exec_mmap(struct mm_struct *mm)
 	activate_mm(active_mm, mm);
 	tsk->mm->vmacache_seqnum = 0;
 	vmacache_flush(tsk);
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_CRED
 	if (rkp_cred_enable)
 		uh_call(UH_APP_RKP, RKP_KDP_X43, (u64)current_cred(), (u64)mm->pgd, 0, 0);
@@ -1069,6 +1083,8 @@ static int exec_mmap(struct mm_struct *mm)
 	if(kdp_enable)
 		uh_call(UH_APP_KDP, SET_CRED_PGD, (u64)current_cred(), (u64)mm->pgd, 0, 0);
 #endif
+=======
+>>>>>>> v4.14.187
 	task_unlock(tsk);
 	if (old_mm) {
 		up_read(&old_mm->mmap_sem);
@@ -1276,6 +1292,7 @@ void __set_task_comm(struct task_struct *tsk, const char *buf, bool exec)
 	strlcpy(tsk->comm, buf, sizeof(tsk->comm));
 	task_unlock(tsk);
 	perf_event_comm(tsk, exec);
+<<<<<<< HEAD
 	mtk_pidmap_update(tsk);
 }
 
@@ -1376,6 +1393,10 @@ static int is_kdp_priv_task(void)
 }
 #endif
 
+=======
+}
+
+>>>>>>> v4.14.187
 /*
  * Calling this is the point of no return. None of the failures will be
  * seen by userspace since either the process is already taking a fatal
@@ -1407,6 +1428,7 @@ int flush_old_exec(struct linux_binprm * bprm)
 	 * Release all of the old mmap stuff
 	 */
 	acct_arg_size(bprm, 0);
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_NS
 	if (rkp_cred_enable &&
 		is_kdp_priv_task() &&
@@ -1418,6 +1440,8 @@ int flush_old_exec(struct linux_binprm * bprm)
 	if (kdp_enable && is_kdp_priv_task() && invalid_drive(bprm))
 		panic("[KDP]: Illegal Execution of file #%s#\n", bprm->filename);
 #endif
+=======
+>>>>>>> v4.14.187
 	retval = exec_mmap(bprm->mm);
 	if (retval)
 		goto out;
@@ -1453,7 +1477,11 @@ EXPORT_SYMBOL(flush_old_exec);
 void would_dump(struct linux_binprm *bprm, struct file *file)
 {
 	struct inode *inode = file_inode(file);
+<<<<<<< HEAD
 	if (inode_permission2(file->f_path.mnt, inode, MAY_READ) < 0) {
+=======
+	if (inode_permission(inode, MAY_READ) < 0) {
+>>>>>>> v4.14.187
 		struct user_namespace *old, *user_ns;
 		bprm->interp_flags |= BINPRM_FLAGS_ENFORCE_NONDUMP;
 
@@ -1816,6 +1844,7 @@ int search_binary_handler(struct linux_binprm *bprm)
 }
 EXPORT_SYMBOL(search_binary_handler);
 
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_CRED
 #define CHECK_ROOT_UID(x) (x->cred->uid.val == 0 || x->cred->gid.val == 0 || \
 			x->cred->euid.val == 0 || x->cred->egid.val == 0 || \
@@ -1851,6 +1880,8 @@ static int rkp_restrict_fork(struct filename *path)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static int exec_binprm(struct linux_binprm *bprm)
 {
 	pid_t old_pid, old_vpid;
@@ -1868,8 +1899,11 @@ static int exec_binprm(struct linux_binprm *bprm)
 		trace_sched_process_exec(current, old_pid, bprm);
 		ptrace_event(PTRACE_EVENT_EXEC, old_vpid);
 		proc_exec_connector(current);
+<<<<<<< HEAD
 	} else {
 		task_integrity_delayed_reset(current, CAUSE_EXEC, bprm->file);
+=======
+>>>>>>> v4.14.187
 	}
 
 	return ret;
@@ -1929,6 +1963,7 @@ static int do_execveat_common(int fd, struct filename *filename,
 	if (IS_ERR(file))
 		goto out_unmark;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SECURITY_DEFEX
 	retval = task_defex_enforce(current, file, -__NR_execve);
 	if (retval < 0) {
@@ -1938,6 +1973,8 @@ static int do_execveat_common(int fd, struct filename *filename,
 	 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 	sched_exec();
 
 	bprm->file = file;
@@ -2119,6 +2156,7 @@ SYSCALL_DEFINE3(execve,
 		const char __user *const __user *, argv,
 		const char __user *const __user *, envp)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_CRED
 	struct filename *path = getname(filename);
 	int error = PTR_ERR(path);
@@ -2163,6 +2201,8 @@ SYSCALL_DEFINE3(execve,
 	}
 	putname(path);
 #endif
+=======
+>>>>>>> v4.14.187
 	return do_execve(getname(filename), argv, envp);
 }
 

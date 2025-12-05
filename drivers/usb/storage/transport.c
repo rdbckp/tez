@@ -63,7 +63,10 @@
 
 #include <linux/blkdev.h>
 #include "../../scsi/sd.h"
+<<<<<<< HEAD
 #include "usb_boost.h"
+=======
+>>>>>>> v4.14.187
 
 
 /***********************************************************************
@@ -479,12 +482,16 @@ int usb_stor_bulk_srb(struct us_data* us, unsigned int pipe,
 		      struct scsi_cmnd* srb)
 {
 	unsigned int partial;
+<<<<<<< HEAD
 	int result;
 
 #ifdef CONFIG_MEDIATEK_SOLUTION
 	usb_boost();
 #endif
 	result = usb_stor_bulk_transfer_sglist(us, pipe, scsi_sglist(srb),
+=======
+	int result = usb_stor_bulk_transfer_sglist(us, pipe, scsi_sglist(srb),
+>>>>>>> v4.14.187
 				      scsi_sg_count(srb), scsi_bufflen(srb),
 				      &partial);
 

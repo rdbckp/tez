@@ -31,6 +31,7 @@
 #include <trace/events/power.h>
 #include <linux/compiler.h>
 #include <linux/moduleparam.h>
+<<<<<<< HEAD
 #include <linux/wakeup_reason.h>
 
 #include "power.h"
@@ -41,6 +42,11 @@
 
 #define MTK_SOLUTION 1
 
+=======
+
+#include "power.h"
+
+>>>>>>> v4.14.187
 const char * const pm_labels[] = {
 	[PM_SUSPEND_TO_IDLE] = "freeze",
 	[PM_SUSPEND_STANDBY] = "standby",
@@ -154,7 +160,10 @@ static void s2idle_loop(void)
 			break;
 
 		pm_wakeup_clear(false);
+<<<<<<< HEAD
 		clear_wakeup_reasons();
+=======
+>>>>>>> v4.14.187
 	}
 
 	pm_pr_dbg("resume from suspend-to-idle\n");
@@ -362,6 +371,7 @@ static int suspend_prepare(suspend_state_t state)
 		goto Finish;
 	}
 
+<<<<<<< HEAD
 #ifndef CONFIG_SUSPEND_SKIP_SYNC
 	trace_suspend_resume(TPS("sync_filesystems"), 0, true);
 	pr_info("Syncing filesystems ... ");
@@ -375,13 +385,18 @@ static int suspend_prepare(suspend_state_t state)
 	trace_suspend_resume(TPS("sync_filesystems"), 0, false);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	trace_suspend_resume(TPS("freeze_processes"), 0, true);
 	error = suspend_freeze_processes();
 	trace_suspend_resume(TPS("freeze_processes"), 0, false);
 	if (!error)
 		return 0;
 
+<<<<<<< HEAD
 	log_suspend_abort_reason("One or more tasks refusing to freeze");
+=======
+>>>>>>> v4.14.187
 	suspend_stats.failed_freeze++;
 	dpm_save_failed_step(SUSPEND_FREEZE);
  Finish:
@@ -411,6 +426,7 @@ void __weak arch_suspend_enable_irqs(void)
  */
 static int suspend_enter(suspend_state_t state, bool *wakeup)
 {
+<<<<<<< HEAD
 	int error, last_dev;
 
 #ifdef CONFIG_SEC_GPIO_DVS
@@ -421,6 +437,9 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 	/************************ Caution !!! ****************************/
 	gpio_dvs_check_sleepgpio();
 #endif
+=======
+	int error;
+>>>>>>> v4.14.187
 
 	error = platform_suspend_prepare(state);
 	if (error)
@@ -428,11 +447,15 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 
 	error = dpm_suspend_late(PMSG_SUSPEND);
 	if (error) {
+<<<<<<< HEAD
 		last_dev = suspend_stats.last_failed_dev + REC_FAILED_NUM - 1;
 		last_dev %= REC_FAILED_NUM;
 		pr_err("late suspend of devices failed\n");
 		log_suspend_abort_reason("late suspend of %s device failed",
 					 suspend_stats.failed_devs[last_dev]);
+=======
+		pr_err("late suspend of devices failed\n");
+>>>>>>> v4.14.187
 		goto Platform_finish;
 	}
 	error = platform_suspend_prepare_late(state);
@@ -446,11 +469,15 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 
 	error = dpm_suspend_noirq(PMSG_SUSPEND);
 	if (error) {
+<<<<<<< HEAD
 		last_dev = suspend_stats.last_failed_dev + REC_FAILED_NUM - 1;
 		last_dev %= REC_FAILED_NUM;
 		pr_err("noirq suspend of devices failed\n");
 		log_suspend_abort_reason("noirq suspend of %s device failed",
 					 suspend_stats.failed_devs[last_dev]);
+=======
+		pr_err("noirq suspend of devices failed\n");
+>>>>>>> v4.14.187
 		goto Platform_early_resume;
 	}
 	error = platform_suspend_prepare_noirq(state);
@@ -461,10 +488,15 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 		goto Platform_wake;
 
 	error = disable_nonboot_cpus();
+<<<<<<< HEAD
 	if (error || suspend_test(TEST_CPUS)) {
 		log_suspend_abort_reason("Disabling non-boot cpus failed");
 		goto Enable_cpus;
 	}
+=======
+	if (error || suspend_test(TEST_CPUS))
+		goto Enable_cpus;
+>>>>>>> v4.14.187
 
 	arch_suspend_disable_irqs();
 	BUG_ON(!irqs_disabled());
@@ -528,8 +560,11 @@ int suspend_devices_and_enter(suspend_state_t state)
 	error = dpm_suspend_start(PMSG_SUSPEND);
 	if (error) {
 		pr_err("Some devices failed to suspend, or early wake event detected\n");
+<<<<<<< HEAD
 		log_suspend_abort_reason(
 				"Some devices failed to suspend, or early wake event detected");
+=======
+>>>>>>> v4.14.187
 		goto Recover_platform;
 	}
 	suspend_test_finish("suspend devices");
@@ -571,6 +606,7 @@ static void suspend_finish(void)
 	pm_restore_console();
 }
 
+<<<<<<< HEAD
 #if MTK_SOLUTION
 
 #define SYS_SYNC_TIMEOUT 2000
@@ -625,6 +661,8 @@ int suspend_syssync_enqueue(void)
 
 #endif
 
+=======
+>>>>>>> v4.14.187
 /**
  * enter_state - Do common work needed to enter system sleep state.
  * @state: System sleep state to enter.
@@ -654,7 +692,19 @@ static int enter_state(suspend_state_t state)
 	if (state == PM_SUSPEND_TO_IDLE)
 		s2idle_begin();
 
+<<<<<<< HEAD
 	pr_info("Preparing system for sleep (%s)\n", mem_sleep_labels[state]);
+=======
+#ifndef CONFIG_SUSPEND_SKIP_SYNC
+	trace_suspend_resume(TPS("sync_filesystems"), 0, true);
+	pr_info("Syncing filesystems ... ");
+	sys_sync();
+	pr_cont("done.\n");
+	trace_suspend_resume(TPS("sync_filesystems"), 0, false);
+#endif
+
+	pm_pr_dbg("Preparing system for sleep (%s)\n", mem_sleep_labels[state]);
+>>>>>>> v4.14.187
 	pm_suspend_clear_flags();
 	error = suspend_prepare(state);
 	if (error)
@@ -664,14 +714,22 @@ static int enter_state(suspend_state_t state)
 		goto Finish;
 
 	trace_suspend_resume(TPS("suspend_enter"), state, false);
+<<<<<<< HEAD
 	pr_info("Suspending system (%s)\n", mem_sleep_labels[state]);
+=======
+	pm_pr_dbg("Suspending system (%s)\n", mem_sleep_labels[state]);
+>>>>>>> v4.14.187
 	pm_restrict_gfp_mask();
 	error = suspend_devices_and_enter(state);
 	pm_restore_gfp_mask();
 
  Finish:
 	events_check_enabled = false;
+<<<<<<< HEAD
 	pr_info("Finishing wakeup.\n");
+=======
+	pm_pr_dbg("Finishing wakeup.\n");
+>>>>>>> v4.14.187
 	suspend_finish();
  Unlock:
 	mutex_unlock(&pm_mutex);

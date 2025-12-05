@@ -89,7 +89,10 @@
 	{1UL << PG_dirty,		"dirty"		},		\
 	{1UL << PG_lru,			"lru"		},		\
 	{1UL << PG_active,		"active"	},		\
+<<<<<<< HEAD
 	{1UL << PG_workingset,		"workingset"	},		\
+=======
+>>>>>>> v4.14.187
 	{1UL << PG_slab,		"slab"		},		\
 	{1UL << PG_owner_priv_1,	"owner_priv_1"	},		\
 	{1UL << PG_arch_1,		"arch_1"	},		\
@@ -106,8 +109,12 @@ IF_HAVE_PG_MLOCK(PG_mlocked,		"mlocked"	)		\
 IF_HAVE_PG_UNCACHED(PG_uncached,	"uncached"	)		\
 IF_HAVE_PG_HWPOISON(PG_hwpoison,	"hwpoison"	)		\
 IF_HAVE_PG_IDLE(PG_young,		"young"		)		\
+<<<<<<< HEAD
 IF_HAVE_PG_IDLE(PG_idle,		"idle"		),		\
 	{1UL << PG_iommu,		"iommu"		}
+=======
+IF_HAVE_PG_IDLE(PG_idle,		"idle"		)
+>>>>>>> v4.14.187
 
 #define show_page_flags(flags)						\
 	(flags) ? __print_flags(flags, "|",				\

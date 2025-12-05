@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #
 # Copyright (C) 2015 MediaTek Inc.
 #
@@ -127,3 +128,8 @@ obj-y += $(AUDIO_PLATFORM)/
 # AP include path
 subdir-ccflags-y += -Werror -I$(src)/$(AUDIO_PLATFORM)
 endif
+=======
+obj-$(CONFIG_SND_SOC_MEDIATEK) += common/
+obj-$(CONFIG_SND_SOC_MT2701) += mt2701/
+obj-$(CONFIG_SND_SOC_MT8173) += mt8173/
+>>>>>>> v4.14.187

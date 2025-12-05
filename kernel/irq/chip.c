@@ -16,7 +16,10 @@
 #include <linux/interrupt.h>
 #include <linux/kernel_stat.h>
 #include <linux/irqdomain.h>
+<<<<<<< HEAD
 #include <linux/wakeup_reason.h>
+=======
+>>>>>>> v4.14.187
 
 #include <trace/events/irq.h>
 
@@ -481,6 +484,7 @@ static bool irq_may_run(struct irq_desc *desc)
 	 * If the interrupt is not in progress and is not an armed
 	 * wakeup interrupt, proceed.
 	 */
+<<<<<<< HEAD
 	if (!irqd_has_set(&desc->irq_data, mask)) {
 #ifdef CONFIG_PM_SLEEP
 		if (unlikely(desc->no_suspend_depth &&
@@ -497,6 +501,10 @@ static bool irq_may_run(struct irq_desc *desc)
 #endif
 		return true;
 	}
+=======
+	if (!irqd_has_set(&desc->irq_data, mask))
+		return true;
+>>>>>>> v4.14.187
 
 	/*
 	 * If the interrupt is an armed wakeup source, mark it pending

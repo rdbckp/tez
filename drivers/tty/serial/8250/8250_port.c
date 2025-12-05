@@ -38,7 +38,10 @@
 #include <linux/uaccess.h>
 #include <linux/pm_runtime.h>
 #include <linux/ktime.h>
+<<<<<<< HEAD
 #include "mt-plat/mtk_printk_ctrl.h"
+=======
+>>>>>>> v4.14.187
 
 #include <asm/io.h>
 #include <asm/irq.h>
@@ -1693,6 +1696,7 @@ static void serial8250_read_char(struct uart_8250_port *up, unsigned char lsr)
 	unsigned char ch;
 	char flag = TTY_NORMAL;
 
+<<<<<<< HEAD
 	if (likely(lsr & UART_LSR_DR)) {
 		ch = serial_in(up, UART_RX);
 		/* Enable uart log output on eng load when receive char input */
@@ -1705,6 +1709,11 @@ static void serial8250_read_char(struct uart_8250_port *up, unsigned char lsr)
 		#endif
 		#endif
 	} else
+=======
+	if (likely(lsr & UART_LSR_DR))
+		ch = serial_in(up, UART_RX);
+	else
+>>>>>>> v4.14.187
 		/*
 		 * Intel 82571 has a Serial Over Lan device that will
 		 * set UART_LSR_BI without setting UART_LSR_DR when

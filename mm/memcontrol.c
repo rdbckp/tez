@@ -2804,7 +2804,10 @@ static void tree_events(struct mem_cgroup *memcg, unsigned long *events)
 	}
 }
 
+<<<<<<< HEAD
 #ifndef CONFIG_MTK_GMO_RAM_OPTIMIZE
+=======
+>>>>>>> v4.14.187
 static unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
 {
 	unsigned long val = 0;
@@ -2826,6 +2829,7 @@ static unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
 	}
 	return val;
 }
+<<<<<<< HEAD
 #else
 static unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
 {
@@ -2856,6 +2860,8 @@ static unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
 	return val;
 }
 #endif
+=======
+>>>>>>> v4.14.187
 
 enum {
 	RES_USAGE,
@@ -3341,10 +3347,15 @@ static int mem_cgroup_swappiness_write(struct cgroup_subsys_state *css,
 {
 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
 
+<<<<<<< HEAD
 #ifndef CONFIG_MTK_GMO_RAM_OPTIMIZE
 	if (val > 100)
 		return -EINVAL;
 #endif
+=======
+	if (val > 100)
+		return -EINVAL;
+>>>>>>> v4.14.187
 
 	if (css->parent)
 		memcg->swappiness = val;
@@ -4276,8 +4287,11 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
 	for_each_node(node)
 		free_mem_cgroup_per_node_info(memcg, node);
 	free_percpu(memcg->stat);
+<<<<<<< HEAD
 	/* poison memcg before freeing it */
 	memset(memcg, 0x78, sizeof(struct mem_cgroup));
+=======
+>>>>>>> v4.14.187
 	kfree(memcg);
 }
 

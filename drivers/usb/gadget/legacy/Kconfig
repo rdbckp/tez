@@ -490,6 +490,7 @@ config USB_G_WEBCAM
 
 	  Say "y" to link the driver statically, or "m" to build a
 	  dynamically linked module called "g_webcam".
+<<<<<<< HEAD
 
 config USB_RAW_GADGET
 	tristate "USB Raw Gadget"
@@ -502,3 +503,5 @@ config USB_RAW_GADGET
 	  Say "y" to link the driver statically, or "m" to build a
 	  dynamically linked module called "raw_gadget".
 
+=======
+>>>>>>> v4.14.187

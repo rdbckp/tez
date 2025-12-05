@@ -20,6 +20,7 @@
 #include "overlayfs.h"
 #include "ovl_entry.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_NS
 void rkp_set_mnt_flags(struct vfsmount *mnt, int flags);
 void rkp_reset_mnt_flags(struct vfsmount *mnt, int flags);
@@ -28,6 +29,8 @@ void kdp_set_mnt_flags(struct vfsmount *mnt, int flags);
 void kdp_clear_mnt_flags(struct vfsmount *mnt, int flags);
 #endif
 
+=======
+>>>>>>> v4.14.187
 MODULE_AUTHOR("Miklos Szeredi <miklos@szeredi.hu>");
 MODULE_DESCRIPTION("Overlay filesystem");
 MODULE_LICENSE("GPL");
@@ -47,11 +50,14 @@ module_param_named(index, ovl_index_def, bool, 0644);
 MODULE_PARM_DESC(ovl_index_def,
 		 "Default to on or off for the inodes index feature");
 
+<<<<<<< HEAD
 static bool __read_mostly ovl_override_creds_def = true;
 module_param_named(override_creds, ovl_override_creds_def, bool, 0644);
 MODULE_PARM_DESC(ovl_override_creds_def,
 		 "Use mounter's credentials for accesses");
 
+=======
+>>>>>>> v4.14.187
 static void ovl_dentry_release(struct dentry *dentry)
 {
 	struct ovl_entry *oe = dentry->d_fsdata;
@@ -331,9 +337,12 @@ static int ovl_show_options(struct seq_file *m, struct dentry *dentry)
 	if (ufs->config.index != ovl_index_def)
 		seq_printf(m, ",index=%s",
 			   ufs->config.index ? "on" : "off");
+<<<<<<< HEAD
 	if (ufs->config.override_creds != ovl_override_creds_def)
 		seq_show_option(m, "override_creds",
 				ufs->config.override_creds ? "on" : "off");
+=======
+>>>>>>> v4.14.187
 	return 0;
 }
 
@@ -367,8 +376,11 @@ enum {
 	OPT_REDIRECT_DIR_OFF,
 	OPT_INDEX_ON,
 	OPT_INDEX_OFF,
+<<<<<<< HEAD
 	OPT_OVERRIDE_CREDS_ON,
 	OPT_OVERRIDE_CREDS_OFF,
+=======
+>>>>>>> v4.14.187
 	OPT_ERR,
 };
 
@@ -381,8 +393,11 @@ static const match_table_t ovl_tokens = {
 	{OPT_REDIRECT_DIR_OFF,		"redirect_dir=off"},
 	{OPT_INDEX_ON,			"index=on"},
 	{OPT_INDEX_OFF,			"index=off"},
+<<<<<<< HEAD
 	{OPT_OVERRIDE_CREDS_ON,		"override_creds=on"},
 	{OPT_OVERRIDE_CREDS_OFF,	"override_creds=off"},
+=======
+>>>>>>> v4.14.187
 	{OPT_ERR,			NULL}
 };
 
@@ -413,7 +428,10 @@ static int ovl_parse_opt(char *opt, struct ovl_config *config)
 {
 	char *p;
 
+<<<<<<< HEAD
 	config->override_creds = ovl_override_creds_def;
+=======
+>>>>>>> v4.14.187
 	while ((p = ovl_next_opt(&opt)) != NULL) {
 		int token;
 		substring_t args[MAX_OPT_ARGS];
@@ -464,6 +482,7 @@ static int ovl_parse_opt(char *opt, struct ovl_config *config)
 			config->index = false;
 			break;
 
+<<<<<<< HEAD
 		case OPT_OVERRIDE_CREDS_ON:
 			config->override_creds = true;
 			break;
@@ -472,6 +491,8 @@ static int ovl_parse_opt(char *opt, struct ovl_config *config)
 			config->override_creds = false;
 			break;
 
+=======
+>>>>>>> v4.14.187
 		default:
 			pr_err("overlayfs: unrecognized mount option \"%s\" or missing value\n", p);
 			return -EINVAL;
@@ -742,6 +763,7 @@ ovl_posix_acl_xattr_get(const struct xattr_handler *handler,
 }
 
 static int __maybe_unused
+<<<<<<< HEAD
 __ovl_posix_acl_xattr_get(const struct xattr_handler *handler,
 			  struct dentry *dentry, struct inode *inode,
 			  const char *name, void *buffer, size_t size)
@@ -750,6 +772,8 @@ __ovl_posix_acl_xattr_get(const struct xattr_handler *handler,
 }
 
 static int __maybe_unused
+=======
+>>>>>>> v4.14.187
 ovl_posix_acl_xattr_set(const struct xattr_handler *handler,
 			struct dentry *dentry, struct inode *inode,
 			const char *name, const void *value,
@@ -829,6 +853,7 @@ static int ovl_other_xattr_get(const struct xattr_handler *handler,
 	return ovl_xattr_get(dentry, inode, name, buffer, size);
 }
 
+<<<<<<< HEAD
 static int __ovl_other_xattr_get(const struct xattr_handler *handler,
 				 struct dentry *dentry, struct inode *inode,
 				 const char *name, void *buffer, size_t size)
@@ -836,6 +861,8 @@ static int __ovl_other_xattr_get(const struct xattr_handler *handler,
 	return __ovl_xattr_get(dentry, inode, name, buffer, size);
 }
 
+=======
+>>>>>>> v4.14.187
 static int ovl_other_xattr_set(const struct xattr_handler *handler,
 			       struct dentry *dentry, struct inode *inode,
 			       const char *name, const void *value,
@@ -849,7 +876,10 @@ ovl_posix_acl_access_xattr_handler = {
 	.name = XATTR_NAME_POSIX_ACL_ACCESS,
 	.flags = ACL_TYPE_ACCESS,
 	.get = ovl_posix_acl_xattr_get,
+<<<<<<< HEAD
 	.__get = __ovl_posix_acl_xattr_get,
+=======
+>>>>>>> v4.14.187
 	.set = ovl_posix_acl_xattr_set,
 };
 
@@ -858,7 +888,10 @@ ovl_posix_acl_default_xattr_handler = {
 	.name = XATTR_NAME_POSIX_ACL_DEFAULT,
 	.flags = ACL_TYPE_DEFAULT,
 	.get = ovl_posix_acl_xattr_get,
+<<<<<<< HEAD
 	.__get = __ovl_posix_acl_xattr_get,
+=======
+>>>>>>> v4.14.187
 	.set = ovl_posix_acl_xattr_set,
 };
 
@@ -871,7 +904,10 @@ static const struct xattr_handler ovl_own_xattr_handler = {
 static const struct xattr_handler ovl_other_xattr_handler = {
 	.prefix	= "", /* catch all */
 	.get = ovl_other_xattr_get,
+<<<<<<< HEAD
 	.__get = __ovl_other_xattr_get,
+=======
+>>>>>>> v4.14.187
 	.set = ovl_other_xattr_set,
 };
 
@@ -1028,6 +1064,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
 		}
 
 		/* Don't inherit atime flags */
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_NS
 		rkp_reset_mnt_flags(ufs->upper_mnt, (MNT_NOATIME | MNT_NODIRATIME | MNT_RELATIME));
 #elif defined CONFIG_RUSTUH_KDP_NS
@@ -1035,6 +1072,9 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
 #else
 		ufs->upper_mnt->mnt_flags &= ~(MNT_NOATIME | MNT_NODIRATIME | MNT_RELATIME);
 #endif
+=======
+		ufs->upper_mnt->mnt_flags &= ~(MNT_NOATIME | MNT_NODIRATIME | MNT_RELATIME);
+>>>>>>> v4.14.187
 
 		sb->s_time_gran = ufs->upper_mnt->mnt_sb->s_time_gran;
 
@@ -1107,6 +1147,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
 		 * Make lower_mnt R/O.  That way fchmod/fchown on lower file
 		 * will fail instead of modifying lower fs.
 		 */
+<<<<<<< HEAD
 #ifdef CONFIG_KDP_NS
 		rkp_set_mnt_flags(mnt, MNT_READONLY | MNT_NOATIME);
 #elif defined CONFIG_RUSTUH_KDP_NS
@@ -1115,6 +1156,9 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
 		mnt->mnt_flags |= MNT_READONLY | MNT_NOATIME;
 #endif
 
+=======
+		mnt->mnt_flags |= MNT_READONLY | MNT_NOATIME;
+>>>>>>> v4.14.187
 
 		ufs->lower_mnt[ufs->numlower] = mnt;
 		ufs->numlower++;
@@ -1217,6 +1261,10 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
 		       ovl_dentry_lower(root_dentry));
 
 	sb->s_root = root_dentry;
+<<<<<<< HEAD
+=======
+
+>>>>>>> v4.14.187
 	return 0;
 
 out_free_oe:

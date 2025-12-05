@@ -45,10 +45,13 @@ struct kmem_cache {
 #include <linux/random.h>
 #include <linux/sched/mm.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_RUSTUH_KDP
 #include <linux/rustkdp.h>
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * State of the slab allocator.
  *
@@ -169,7 +172,10 @@ static inline unsigned long kmem_cache_flags(unsigned long object_size,
 			      SLAB_TEMPORARY | \
 			      SLAB_ACCOUNT)
 
+<<<<<<< HEAD
 bool __kmem_cache_empty(struct kmem_cache *);
+=======
+>>>>>>> v4.14.187
 int __kmem_cache_shutdown(struct kmem_cache *);
 void __kmem_cache_release(struct kmem_cache *);
 int __kmem_cache_shrink(struct kmem_cache *);
@@ -425,10 +431,14 @@ static inline struct kmem_cache *slab_pre_alloc_hook(struct kmem_cache *s,
 
 	if (should_failslab(s, flags))
 		return NULL;
+<<<<<<< HEAD
 #ifdef CONFIG_RUSTUH_KDP
 	if (is_kdp_kmem_cache(s))
 		return s;
 #endif
+=======
+
+>>>>>>> v4.14.187
 	if (memcg_kmem_enabled() &&
 	    ((flags & __GFP_ACCOUNT) || (s->flags & SLAB_ACCOUNT)))
 		return memcg_kmem_get_cache(s);
@@ -443,9 +453,17 @@ static inline void slab_post_alloc_hook(struct kmem_cache *s, gfp_t flags,
 
 	flags &= gfp_allowed_mask;
 	for (i = 0; i < size; i++) {
+<<<<<<< HEAD
 		p[i] = kasan_slab_alloc(s, p[i], flags);
 		kmemleak_alloc_recursive(p[i], s->object_size, 1,
 					 s->flags, flags);
+=======
+		void *object = p[i];
+
+		kmemleak_alloc_recursive(object, s->object_size, 1,
+					 s->flags, flags);
+		kasan_slab_alloc(s, object, flags);
+>>>>>>> v4.14.187
 	}
 
 	if (memcg_kmem_enabled())
@@ -524,6 +542,7 @@ static inline int cache_random_seq_create(struct kmem_cache *cachep,
 static inline void cache_random_seq_destroy(struct kmem_cache *cachep) { }
 #endif /* CONFIG_SLAB_FREELIST_RANDOM */
 
+<<<<<<< HEAD
 static inline bool slab_want_init_on_alloc(gfp_t flags, struct kmem_cache *c)
 {
 	if (static_branch_unlikely(&init_on_alloc)) {
@@ -544,4 +563,6 @@ static inline bool slab_want_init_on_free(struct kmem_cache *c)
 	return false;
 }
 
+=======
+>>>>>>> v4.14.187
 #endif /* MM_SLAB_H */

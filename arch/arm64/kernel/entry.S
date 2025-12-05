@@ -192,11 +192,14 @@ alternative_cb_end
 1:
 
 	mov	x29, xzr			// fp pointed to user-space
+<<<<<<< HEAD
 
 #ifdef CONFIG_SHADOW_CALL_STACK
 	ldr	x18, [tsk, #TSK_TI_SCS]		// Restore shadow call stack
 	str	xzr, [tsk, #TSK_TI_SCS]		// Limit visibility of saved SCS
 #endif
+=======
+>>>>>>> v4.14.187
 	.else
 	add	x21, sp, #S_FRAME_SIZE
 	get_thread_info tsk
@@ -286,12 +289,15 @@ alternative_else_nop_endif
 	ct_user_enter
 	.endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SHADOW_CALL_STACK
 	.if	\el == 0
 	str	x18, [tsk, #TSK_TI_SCS]		// Save shadow call stack
 	.endif
 #endif
 
+=======
+>>>>>>> v4.14.187
 #ifdef CONFIG_ARM64_SW_TTBR0_PAN
 	/*
 	 * Restore access to TTBR0_EL1. If returning to EL0, no need for SPSR
@@ -382,9 +388,12 @@ alternative_insn eret, nop, ARM64_UNMAP_KERNEL_AT_EL0
 
 	.macro	irq_stack_entry
 	mov	x19, sp			// preserve the original sp
+<<<<<<< HEAD
 #ifdef CONFIG_SHADOW_CALL_STACK
 	mov	x20, x18		// preserve the original shadow stack
 #endif
+=======
+>>>>>>> v4.14.187
 
 	/*
 	 * Compare sp with the base of the task stack.
@@ -402,16 +411,20 @@ alternative_insn eret, nop, ARM64_UNMAP_KERNEL_AT_EL0
 
 	/* switch to the irq stack */
 	mov	sp, x26
+<<<<<<< HEAD
 
 #ifdef CONFIG_SHADOW_CALL_STACK
 	/* also switch to the irq shadow stack */
 	ldr_this_cpu x18, irq_shadow_call_stack_ptr, x26
 #endif
 
+=======
+>>>>>>> v4.14.187
 9998:
 	.endm
 
 	/*
+<<<<<<< HEAD
 	 * The callee-saved regs (x19-x29) should be preserved between
 	 * irq_stack_entry and irq_stack_exit.
 	 */
@@ -420,6 +433,13 @@ alternative_insn eret, nop, ARM64_UNMAP_KERNEL_AT_EL0
 #ifdef CONFIG_SHADOW_CALL_STACK
 	mov	x18, x20
 #endif
+=======
+	 * x19 should be preserved between irq_stack_entry and
+	 * irq_stack_exit.
+	 */
+	.macro	irq_stack_exit
+	mov	sp, x19
+>>>>>>> v4.14.187
 	.endm
 
 /*
@@ -571,6 +591,7 @@ ENDPROC(el1_error_invalid)
 	.align	6
 el1_sync:
 	kernel_entry 1
+<<<<<<< HEAD
 	mov	x0, sp
 	get_thread_info x20	// top of stack
 	ldr	w4, [x20, #TI_CPU_EXCP]
@@ -593,6 +614,8 @@ el1_sync_nest_skip_dec:
 	bl	aee_stop_nested_panic
 #endif
 el1_sync_nest_skip:
+=======
+>>>>>>> v4.14.187
 	mrs	x1, esr_el1			// read the syndrome register
 	lsr	x24, x1, #ESR_ELx_EC_SHIFT	// exception class
 	cmp	x24, #ESR_ELx_EC_DABT_CUR	// data abort in EL1
@@ -625,6 +648,7 @@ el1_da:
 	tbnz	x23, #7, 1f			// PSR_I_BIT
 	enable_irq
 1:
+<<<<<<< HEAD
 	untagged_addr x0, x3
 	mov	x2, sp				// struct pt_regs
 	bl	do_mem_abort
@@ -635,6 +659,11 @@ el1_da:
 	sub	w4, w4, #0x1
 	str	w4, [x20, #TI_CPU_EXCP]
 el1_da_nest_skip_dec:
+=======
+	clear_address_tag x0, x3
+	mov	x2, sp				// struct pt_regs
+	bl	do_mem_abort
+>>>>>>> v4.14.187
 
 	// disable interrupts before pulling preserved data off the stack
 	disable_irq
@@ -655,11 +684,15 @@ el1_undef:
 	enable_dbg
 	mov	x0, sp
 	bl	do_undefinstr
+<<<<<<< HEAD
 	get_thread_info x20     // top of stack
 	ldr	w4, [x20, #TI_CPU_EXCP]
 	sub	w4, w4, #0x1
 	str	w4, [x20, #TI_CPU_EXCP]
 	kernel_exit 1
+=======
+	ASM_BUG()
+>>>>>>> v4.14.187
 el1_dbg:
 	/*
 	 * Debug exception handling
@@ -670,11 +703,14 @@ el1_dbg:
 	mrs	x0, far_el1
 	mov	x2, sp				// struct pt_regs
 	bl	do_debug_exception
+<<<<<<< HEAD
 	get_thread_info x20	// top of stack
 	ldr	w4, [x20, #TI_CPU_EXCP]
 	sub	w4, w4, #0x1
 	str	w4, [x20, #TI_CPU_EXCP]
 
+=======
+>>>>>>> v4.14.187
 	kernel_exit 1
 el1_inv:
 	// TODO: add support for undefined instructions in kernel mode
@@ -805,7 +841,11 @@ el0_da:
 	// enable interrupts before calling the main handler
 	enable_dbg_and_irq
 	ct_user_exit
+<<<<<<< HEAD
 	untagged_addr x0, x26
+=======
+	clear_address_tag x0, x26
+>>>>>>> v4.14.187
 	mov	x1, x25
 	mov	x2, sp
 	bl	do_mem_abort
@@ -985,6 +1025,7 @@ el0_svc_naked:					// compat entry point
 	b.ne	__sys_trace
 	cmp     wscno, wsc_nr			// check upper syscall limit
 	b.hs	ni_sys
+<<<<<<< HEAD
 #ifdef CONFIG_SECURITY_DEFEX
 /*
  * Defex enter hook
@@ -1008,6 +1049,8 @@ el0_svc_naked:					// compat entry point
 
 2:
 #endif
+=======
+>>>>>>> v4.14.187
 	mask_nospec64 xscno, xsc_nr, x19	// enforce bounds for syscall number
 	ldr	x16, [stbl, xscno, lsl #3]	// address in the syscall table
 	blr	x16				// call sys_* routine
@@ -1035,6 +1078,7 @@ __sys_trace:
 	mov	x1, sp				// pointer to regs
 	cmp	wscno, wsc_nr			// check upper syscall limit
 	b.hs	__ni_sys_trace
+<<<<<<< HEAD
 #ifdef CONFIG_SECURITY_DEFEX
 /*
  * Defex enter hook
@@ -1052,6 +1096,8 @@ __sys_trace:
 #	adr	lr, __sys_trace_return		// return address (not neede here)
 3:
 #endif
+=======
+>>>>>>> v4.14.187
 	ldp	x0, x1, [sp]			// restore the syscall args
 	ldp	x2, x3, [sp, #S_X2]
 	ldp	x4, x5, [sp, #S_X4]
@@ -1221,11 +1267,14 @@ ENTRY(cpu_switch_to)
 	ldr	lr, [x8]
 	mov	sp, x9
 	msr	sp_el0, x1
+<<<<<<< HEAD
 #ifdef CONFIG_SHADOW_CALL_STACK
 	str	x18, [x0, #TSK_TI_SCS]
 	ldr	x18, [x1, #TSK_TI_SCS]
 	str	xzr, [x1, #TSK_TI_SCS]		// limit visibility of saved SCS
 #endif
+=======
+>>>>>>> v4.14.187
 	ret
 ENDPROC(cpu_switch_to)
 NOKPROBE(cpu_switch_to)

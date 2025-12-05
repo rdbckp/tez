@@ -23,7 +23,10 @@
 #include <linux/module.h>
 #include <linux/types.h>
 #include <linux/fs.h>
+<<<<<<< HEAD
 #include <linux/fscrypt.h>
+=======
+>>>>>>> v4.14.187
 #include <linux/mm.h>
 #include <linux/slab.h>
 #include <linux/highmem.h>
@@ -432,7 +435,10 @@ dio_bio_alloc(struct dio *dio, struct dio_submit *sdio,
 	      sector_t first_sector, int nr_vecs)
 {
 	struct bio *bio;
+<<<<<<< HEAD
 	struct inode *inode = dio->inode;
+=======
+>>>>>>> v4.14.187
 
 	/*
 	 * bio_alloc() is guaranteed to return a bio when called with
@@ -440,9 +446,12 @@ dio_bio_alloc(struct dio *dio, struct dio_submit *sdio,
 	 */
 	bio = bio_alloc(GFP_KERNEL, nr_vecs);
 
+<<<<<<< HEAD
 	fscrypt_set_bio_crypt_ctx(bio, inode,
 				  sdio->cur_page_fs_offset >> inode->i_blkbits,
 				  GFP_KERNEL);
+=======
+>>>>>>> v4.14.187
 	bio_set_dev(bio, bdev);
 	bio->bi_iter.bi_sector = first_sector;
 	bio_set_op_attrs(bio, dio->op, dio->op_flags);
@@ -815,6 +824,7 @@ static inline int dio_send_cur_page(struct dio *dio, struct dio_submit *sdio,
 		 * current logical offset in the file does not equal what would
 		 * be the next logical offset in the bio, submit the bio we
 		 * have.
+<<<<<<< HEAD
 		 *
 		 * When fscrypt inline encryption is used, data unit number
 		 * (DUN) contiguity is also required.  Normally that's implied
@@ -826,6 +836,11 @@ static inline int dio_send_cur_page(struct dio *dio, struct dio_submit *sdio,
 		    cur_offset != bio_next_offset ||
 		    !fscrypt_mergeable_bio(sdio->bio, dio->inode,
 					   cur_offset >> dio->inode->i_blkbits))
+=======
+		 */
+		if (sdio->final_block_in_bio != sdio->cur_page_block ||
+		    cur_offset != bio_next_offset)
+>>>>>>> v4.14.187
 			dio_bio_submit(dio, sdio);
 	}
 

@@ -36,9 +36,12 @@ struct task_security_struct {
 	u32 create_sid;		/* fscreate SID */
 	u32 keycreate_sid;	/* keycreate SID */
 	u32 sockcreate_sid;	/* fscreate SID */
+<<<<<<< HEAD
 #if defined(CONFIG_KDP_CRED) || defined(CONFIG_RUSTUH_KDP_CRED)
 	void *bp_cred;
 #endif
+=======
+>>>>>>> v4.14.187
 };
 
 /*
@@ -153,6 +156,7 @@ struct pkey_security_struct {
 	u32	sid;	/* SID of pkey */
 };
 
+<<<<<<< HEAD
 struct bpf_security_struct {
 	u32 sid;  /* SID of bpf obj creator */
 };
@@ -160,5 +164,8 @@ struct bpf_security_struct {
 struct perf_event_security_struct {
 	u32 sid;  /* SID of perf_event obj creator */
 };
+=======
+extern unsigned int selinux_checkreqprot;
+>>>>>>> v4.14.187
 
 #endif /* _SELINUX_OBJSEC_H_ */

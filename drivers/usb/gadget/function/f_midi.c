@@ -1208,6 +1208,7 @@ static void f_midi_free_inst(struct usb_function_instance *f)
 	kfree(opts);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_USB_CONFIGFS_UEVENT
 extern struct device *create_function_device(char *name);
 static ssize_t alsa_show(struct device *dev,
@@ -1267,6 +1268,8 @@ static int create_alsa_device(struct usb_function_instance *fi)
 }
 #endif
 
+=======
+>>>>>>> v4.14.187
 static struct usb_function_instance *f_midi_alloc_inst(void)
 {
 	struct f_midi_opts *opts;
@@ -1284,11 +1287,14 @@ static struct usb_function_instance *f_midi_alloc_inst(void)
 	opts->in_ports = 1;
 	opts->out_ports = 1;
 
+<<<<<<< HEAD
 	if (create_alsa_device(&opts->func_inst)) {
 		kfree(opts);
 		return ERR_PTR(-ENODEV);
 	}
 
+=======
+>>>>>>> v4.14.187
 	config_group_init_type_name(&opts->func_inst.group, "",
 				    &midi_func_type);
 
@@ -1307,7 +1313,10 @@ static void f_midi_free(struct usb_function *f)
 		kfree(midi->id);
 		kfifo_free(&midi->in_req_fifo);
 		kfree(midi);
+<<<<<<< HEAD
 		opts->func_inst.f = NULL;
+=======
+>>>>>>> v4.14.187
 		--opts->refcnt;
 	}
 	mutex_unlock(&opts->lock);
@@ -1387,14 +1396,21 @@ static struct usb_function *f_midi_alloc(struct usb_function_instance *fi)
 	++opts->refcnt;
 	mutex_unlock(&opts->lock);
 
+<<<<<<< HEAD
 	midi->func.name		= "midi";
+=======
+	midi->func.name		= "gmidi function";
+>>>>>>> v4.14.187
 	midi->func.bind		= f_midi_bind;
 	midi->func.unbind	= f_midi_unbind;
 	midi->func.set_alt	= f_midi_set_alt;
 	midi->func.disable	= f_midi_disable;
 	midi->func.free_func	= f_midi_free;
 
+<<<<<<< HEAD
 	fi->f = &midi->func;
+=======
+>>>>>>> v4.14.187
 	return &midi->func;
 
 setup_fail:

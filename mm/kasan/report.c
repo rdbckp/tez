@@ -1,12 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * This file contains common generic and tag-based KASAN error reporting code.
+=======
+/*
+ * This file contains error reporting code.
+>>>>>>> v4.14.187
  *
  * Copyright (c) 2014 Samsung Electronics Co., Ltd.
  * Author: Andrey Ryabinin <ryabinin.a.a@gmail.com>
  *
  * Some code borrowed from https://github.com/xairy/kasan-prototype by
+<<<<<<< HEAD
  *        Andrey Konovalov <andreyknvl@gmail.com>
+=======
+ *        Andrey Konovalov <adech.fo@gmail.com>
+>>>>>>> v4.14.187
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -40,6 +49,7 @@
 #define SHADOW_BYTES_PER_ROW (SHADOW_BLOCKS_PER_ROW * SHADOW_BYTES_PER_BLOCK)
 #define SHADOW_ROWS_AROUND_ADDR 2
 
+<<<<<<< HEAD
 static unsigned long kasan_flags;
 
 #define KASAN_BIT_REPORTED	0
@@ -70,13 +80,133 @@ static void print_error_description(struct kasan_access_info *info)
 	pr_err("BUG: KASAN: %s in %pS\n",
 		get_bug_type(info), (void *)info->ip);
 	pr_err("%s of size %zu at addr %px by task %s/%d\n",
+=======
+static const void *find_first_bad_addr(const void *addr, size_t size)
+{
+	u8 shadow_val = *(u8 *)kasan_mem_to_shadow(addr);
+	const void *first_bad_addr = addr;
+
+	while (!shadow_val && first_bad_addr < addr + size) {
+		first_bad_addr += KASAN_SHADOW_SCALE_SIZE;
+		shadow_val = *(u8 *)kasan_mem_to_shadow(first_bad_addr);
+	}
+	return first_bad_addr;
+}
+
+static bool addr_has_shadow(struct kasan_access_info *info)
+{
+	return (info->access_addr >=
+		kasan_shadow_to_mem((void *)KASAN_SHADOW_START));
+}
+
+static const char *get_shadow_bug_type(struct kasan_access_info *info)
+{
+	const char *bug_type = "unknown-crash";
+	u8 *shadow_addr;
+
+	info->first_bad_addr = find_first_bad_addr(info->access_addr,
+						info->access_size);
+
+	shadow_addr = (u8 *)kasan_mem_to_shadow(info->first_bad_addr);
+
+	/*
+	 * If shadow byte value is in [0, KASAN_SHADOW_SCALE_SIZE) we can look
+	 * at the next shadow byte to determine the type of the bad access.
+	 */
+	if (*shadow_addr > 0 && *shadow_addr <= KASAN_SHADOW_SCALE_SIZE - 1)
+		shadow_addr++;
+
+	switch (*shadow_addr) {
+	case 0 ... KASAN_SHADOW_SCALE_SIZE - 1:
+		/*
+		 * In theory it's still possible to see these shadow values
+		 * due to a data race in the kernel code.
+		 */
+		bug_type = "out-of-bounds";
+		break;
+	case KASAN_PAGE_REDZONE:
+	case KASAN_KMALLOC_REDZONE:
+		bug_type = "slab-out-of-bounds";
+		break;
+	case KASAN_GLOBAL_REDZONE:
+		bug_type = "global-out-of-bounds";
+		break;
+	case KASAN_STACK_LEFT:
+	case KASAN_STACK_MID:
+	case KASAN_STACK_RIGHT:
+	case KASAN_STACK_PARTIAL:
+		bug_type = "stack-out-of-bounds";
+		break;
+	case KASAN_FREE_PAGE:
+	case KASAN_KMALLOC_FREE:
+		bug_type = "use-after-free";
+		break;
+	case KASAN_USE_AFTER_SCOPE:
+		bug_type = "use-after-scope";
+		break;
+	}
+
+	return bug_type;
+}
+
+static const char *get_wild_bug_type(struct kasan_access_info *info)
+{
+	const char *bug_type = "unknown-crash";
+
+	if ((unsigned long)info->access_addr < PAGE_SIZE)
+		bug_type = "null-ptr-deref";
+	else if ((unsigned long)info->access_addr < TASK_SIZE)
+		bug_type = "user-memory-access";
+	else
+		bug_type = "wild-memory-access";
+
+	return bug_type;
+}
+
+static const char *get_bug_type(struct kasan_access_info *info)
+{
+	if (addr_has_shadow(info))
+		return get_shadow_bug_type(info);
+	return get_wild_bug_type(info);
+}
+
+static void print_error_description(struct kasan_access_info *info)
+{
+	const char *bug_type = get_bug_type(info);
+
+	pr_err("BUG: KASAN: %s in %pS\n",
+		bug_type, (void *)info->ip);
+	pr_err("%s of size %zu at addr %p by task %s/%d\n",
+>>>>>>> v4.14.187
 		info->is_write ? "Write" : "Read", info->access_size,
 		info->access_addr, current->comm, task_pid_nr(current));
 }
 
+<<<<<<< HEAD
 static DEFINE_SPINLOCK(report_lock);
 
 static void start_report(unsigned long *flags)
+=======
+static inline bool kernel_or_module_addr(const void *addr)
+{
+	if (addr >= (void *)_stext && addr < (void *)_end)
+		return true;
+	if (is_module_address((unsigned long)addr))
+		return true;
+	return false;
+}
+
+static inline bool init_task_stack_addr(const void *addr)
+{
+	return addr >= (void *)&init_thread_union.stack &&
+		(addr <= (void *)&init_thread_union.stack +
+			sizeof(init_thread_union.stack));
+}
+
+static DEFINE_SPINLOCK(report_lock);
+
+static void kasan_start_report(unsigned long *flags)
+>>>>>>> v4.14.187
 {
 	/*
 	 * Make sure we don't end up in loop.
@@ -86,7 +216,11 @@ static void start_report(unsigned long *flags)
 	pr_err("==================================================================\n");
 }
 
+<<<<<<< HEAD
 static void end_report(unsigned long *flags)
+=======
+static void kasan_end_report(unsigned long *flags)
+>>>>>>> v4.14.187
 {
 	pr_err("==================================================================\n");
 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
@@ -125,7 +259,11 @@ static void describe_object_addr(struct kmem_cache *cache, void *object,
 	const char *rel_type;
 	int rel_bytes;
 
+<<<<<<< HEAD
 	pr_err("The buggy address belongs to the object at %px\n"
+=======
+	pr_err("The buggy address belongs to the object at %p\n"
+>>>>>>> v4.14.187
 	       " which belongs to the cache %s of size %d\n",
 		object, cache->name, cache->object_size);
 
@@ -144,7 +282,11 @@ static void describe_object_addr(struct kmem_cache *cache, void *object,
 	}
 
 	pr_err("The buggy address is located %d bytes %s of\n"
+<<<<<<< HEAD
 	       " %d-byte region [%px, %px)\n",
+=======
+	       " %d-byte region [%p, %p)\n",
+>>>>>>> v4.14.187
 		rel_bytes, rel_type, cache->object_size, (void *)object_addr,
 		(void *)(object_addr + cache->object_size));
 }
@@ -164,6 +306,7 @@ static void describe_object(struct kmem_cache *cache, void *object,
 	describe_object_addr(cache, object, addr);
 }
 
+<<<<<<< HEAD
 static inline bool kernel_or_module_addr(const void *addr)
 {
 	if (addr >= (void *)_stext && addr < (void *)_end)
@@ -180,6 +323,8 @@ static inline bool init_task_stack_addr(const void *addr)
 			sizeof(init_thread_union.stack));
 }
 
+=======
+>>>>>>> v4.14.187
 static void print_address_description(void *addr)
 {
 	struct page *page = addr_to_page(addr);
@@ -237,7 +382,11 @@ static void print_shadow_for_address(const void *addr)
 		char shadow_buf[SHADOW_BYTES_PER_ROW];
 
 		snprintf(buffer, sizeof(buffer),
+<<<<<<< HEAD
 			(i == 0) ? ">%px: " : " %px: ", kaddr);
+=======
+			(i == 0) ? ">%p: " : " %p: ", kaddr);
+>>>>>>> v4.14.187
 		/*
 		 * We should not pass a shadow pointer to generic
 		 * function, because generic functions may try to
@@ -257,7 +406,70 @@ static void print_shadow_for_address(const void *addr)
 	}
 }
 
+<<<<<<< HEAD
 static bool report_enabled(void)
+=======
+void kasan_report_double_free(struct kmem_cache *cache, void *object,
+				void *ip)
+{
+	unsigned long flags;
+
+	kasan_start_report(&flags);
+	pr_err("BUG: KASAN: double-free or invalid-free in %pS\n", ip);
+	pr_err("\n");
+	print_address_description(object);
+	pr_err("\n");
+	print_shadow_for_address(object);
+	kasan_end_report(&flags);
+}
+
+static void kasan_report_error(struct kasan_access_info *info)
+{
+	unsigned long flags;
+
+	kasan_start_report(&flags);
+
+	print_error_description(info);
+	pr_err("\n");
+
+	if (!addr_has_shadow(info)) {
+		dump_stack();
+	} else {
+		print_address_description((void *)info->access_addr);
+		pr_err("\n");
+		print_shadow_for_address(info->first_bad_addr);
+	}
+
+	kasan_end_report(&flags);
+}
+
+static unsigned long kasan_flags;
+
+#define KASAN_BIT_REPORTED	0
+#define KASAN_BIT_MULTI_SHOT	1
+
+bool kasan_save_enable_multi_shot(void)
+{
+	return test_and_set_bit(KASAN_BIT_MULTI_SHOT, &kasan_flags);
+}
+EXPORT_SYMBOL_GPL(kasan_save_enable_multi_shot);
+
+void kasan_restore_multi_shot(bool enabled)
+{
+	if (!enabled)
+		clear_bit(KASAN_BIT_MULTI_SHOT, &kasan_flags);
+}
+EXPORT_SYMBOL_GPL(kasan_restore_multi_shot);
+
+static int __init kasan_set_multi_shot(char *str)
+{
+	set_bit(KASAN_BIT_MULTI_SHOT, &kasan_flags);
+	return 1;
+}
+__setup("kasan_multi_shot", kasan_set_multi_shot);
+
+static inline bool kasan_report_enabled(void)
+>>>>>>> v4.14.187
 {
 	if (current->kasan_depth)
 		return false;
@@ -266,6 +478,7 @@ static bool report_enabled(void)
 	return !test_and_set_bit(KASAN_BIT_REPORTED, &kasan_flags);
 }
 
+<<<<<<< HEAD
 void kasan_report_invalid_free(void *object, unsigned long ip)
 {
 	unsigned long flags;
@@ -291,10 +504,19 @@ void __kasan_report(unsigned long addr, size_t size, bool is_write, unsigned lon
 	unsigned long flags;
 
 	if (likely(!report_enabled()))
+=======
+void kasan_report(unsigned long addr, size_t size,
+		bool is_write, unsigned long ip)
+{
+	struct kasan_access_info info;
+
+	if (likely(!kasan_report_enabled()))
+>>>>>>> v4.14.187
 		return;
 
 	disable_trace_on_warning();
 
+<<<<<<< HEAD
 	tagged_addr = (void *)addr;
 	untagged_addr = reset_tag(tagged_addr);
 
@@ -303,10 +525,15 @@ void __kasan_report(unsigned long addr, size_t size, bool is_write, unsigned lon
 		info.first_bad_addr = find_first_bad_addr(tagged_addr, size);
 	else
 		info.first_bad_addr = untagged_addr;
+=======
+	info.access_addr = (void *)addr;
+	info.first_bad_addr = (void *)addr;
+>>>>>>> v4.14.187
 	info.access_size = size;
 	info.is_write = is_write;
 	info.ip = ip;
 
+<<<<<<< HEAD
 	start_report(&flags);
 
 	print_error_description(&info);
@@ -326,3 +553,45 @@ void __kasan_report(unsigned long addr, size_t size, bool is_write, unsigned lon
 	/* trigger KE to get the KAsan corruption message */
 	BUG();
 }
+=======
+	kasan_report_error(&info);
+}
+
+
+#define DEFINE_ASAN_REPORT_LOAD(size)                     \
+void __asan_report_load##size##_noabort(unsigned long addr) \
+{                                                         \
+	kasan_report(addr, size, false, _RET_IP_);	  \
+}                                                         \
+EXPORT_SYMBOL(__asan_report_load##size##_noabort)
+
+#define DEFINE_ASAN_REPORT_STORE(size)                     \
+void __asan_report_store##size##_noabort(unsigned long addr) \
+{                                                          \
+	kasan_report(addr, size, true, _RET_IP_);	   \
+}                                                          \
+EXPORT_SYMBOL(__asan_report_store##size##_noabort)
+
+DEFINE_ASAN_REPORT_LOAD(1);
+DEFINE_ASAN_REPORT_LOAD(2);
+DEFINE_ASAN_REPORT_LOAD(4);
+DEFINE_ASAN_REPORT_LOAD(8);
+DEFINE_ASAN_REPORT_LOAD(16);
+DEFINE_ASAN_REPORT_STORE(1);
+DEFINE_ASAN_REPORT_STORE(2);
+DEFINE_ASAN_REPORT_STORE(4);
+DEFINE_ASAN_REPORT_STORE(8);
+DEFINE_ASAN_REPORT_STORE(16);
+
+void __asan_report_load_n_noabort(unsigned long addr, size_t size)
+{
+	kasan_report(addr, size, false, _RET_IP_);
+}
+EXPORT_SYMBOL(__asan_report_load_n_noabort);
+
+void __asan_report_store_n_noabort(unsigned long addr, size_t size)
+{
+	kasan_report(addr, size, true, _RET_IP_);
+}
+EXPORT_SYMBOL(__asan_report_store_n_noabort);
+>>>>>>> v4.14.187

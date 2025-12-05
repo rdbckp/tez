@@ -284,6 +284,11 @@ config PWM_MESON
 
 config PWM_MTK_DISP
 	tristate "MediaTek display PWM driver"
+<<<<<<< HEAD
+=======
+	depends on ARCH_MEDIATEK || COMPILE_TEST
+	depends on HAS_IOMEM
+>>>>>>> v4.14.187
 	help
 	  Generic PWM framework driver for MediaTek disp-pwm device.
 	  The PWM is used to control the backlight brightness for display.

@@ -91,6 +91,7 @@ int xhci_handshake(void __iomem *ptr, u32 mask, u32 done, int usec)
 	return ret;
 }
 
+<<<<<<< HEAD
 int xhci_handshake_check_state(struct xhci_hcd *xhci,
 		void __iomem *ptr, u32 mask, u32 done, int usec)
 {
@@ -110,6 +111,8 @@ int xhci_handshake_check_state(struct xhci_hcd *xhci,
 	return -ETIMEDOUT;
 }
 
+=======
+>>>>>>> v4.14.187
 /*
  * Disable interrupts and begin the xHCI halting process.
  */
@@ -1365,6 +1368,10 @@ static int xhci_check_maxpacket(struct xhci_hcd *xhci, unsigned int slot_id,
 				xhci->devs[slot_id]->out_ctx, ep_index);
 
 		ep_ctx = xhci_get_ep_ctx(xhci, command->in_ctx, ep_index);
+<<<<<<< HEAD
+=======
+		ep_ctx->ep_info &= cpu_to_le32(~EP_STATE_MASK);/* must clear */
+>>>>>>> v4.14.187
 		ep_ctx->ep_info2 &= cpu_to_le32(~MAX_PACKET_MASK);
 		ep_ctx->ep_info2 |= cpu_to_le32(MAX_PACKET(max_packet_size));
 
@@ -3645,10 +3652,13 @@ static void xhci_free_dev(struct usb_hcd *hcd, struct usb_device *udev)
 		pm_runtime_put_noidle(hcd->self.controller);
 #endif
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTK_UAC_POWER_SAVING)
 	xhci->quirks &= ~XHCI_DEV_WITH_SYNC_EP;
 #endif
 
+=======
+>>>>>>> v4.14.187
 	ret = xhci_check_args(hcd, udev, NULL, 0, true, __func__);
 	/* If the host is halted due to driver unload, we still need to free the
 	 * device.
@@ -4248,6 +4258,12 @@ static int xhci_set_usb2_hardware_lpm(struct usb_hcd *hcd,
 			mutex_lock(hcd->bandwidth_mutex);
 			xhci_change_max_exit_latency(xhci, udev, 0);
 			mutex_unlock(hcd->bandwidth_mutex);
+<<<<<<< HEAD
+=======
+			readl_poll_timeout(port_array[port_num], pm_val,
+					   (pm_val & PORT_PLS_MASK) == XDEV_U0,
+					   100, 10000);
+>>>>>>> v4.14.187
 			return 0;
 		}
 	}

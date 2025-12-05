@@ -25,7 +25,10 @@
 #define SSUSB_USB3_MAC_CSR_BASE	0x1400
 #define SSUSB_USB3_SYS_CSR_BASE	0x1400
 #define SSUSB_USB2_CSR_BASE	0x2400
+<<<<<<< HEAD
 #define SSUSB_XHCI_PORT0_BASE	0x420
+=======
+>>>>>>> v4.14.187
 
 /* IPPC register in Infra */
 #define SSUSB_SIFSLV_IPPC_BASE	0x0000
@@ -60,9 +63,12 @@
 #define U3D_QCR2		(SSUSB_DEV_BASE + 0x0408)
 #define U3D_QCR3		(SSUSB_DEV_BASE + 0x040C)
 
+<<<<<<< HEAD
 #define U3D_TXQHIAR1		(SSUSB_DEV_BASE + 0x0484)
 #define U3D_RXQHIAR1		(SSUSB_DEV_BASE + 0x04C4)
 
+=======
+>>>>>>> v4.14.187
 #define U3D_TXQCSR1		(SSUSB_DEV_BASE + 0x0510)
 #define U3D_TXQSAR1		(SSUSB_DEV_BASE + 0x0514)
 #define U3D_TXQCPR1		(SSUSB_DEV_BASE + 0x0518)
@@ -231,7 +237,11 @@
 /* U3D_MISC_CTRL */
 #define VBUS_ON			BIT(1)
 #define VBUS_FRC_EN		BIT(0)
+<<<<<<< HEAD
 #define CAP_36BIT_SUPPORT(x)	(((x) >> 31) & 0x1)
+=======
+
+>>>>>>> v4.14.187
 
 /*---------------- SSUSB_EPCTL_CSR REGISTER DEFINITION ----------------*/
 
@@ -466,6 +476,7 @@
 #define SSUSB_U3_PORT_DIS		BIT(0)
 
 /* U3D_SSUSB_U2_CTRL_0P */
+<<<<<<< HEAD
 #define SSUSB_U2_PORT_RG_IDDIG		BIT(12)
 #define SSUSB_U2_PORT_FORCE_IDDIG	BIT(11)
 #define SSUSB_U2_PORT_VBUSVALID		BIT(9)
@@ -478,6 +489,14 @@
 #define SSUSB_U2_PORT_HOST		BIT(2)
 #define SSUSB_U2_PORT_PDN		BIT(1)
 #define SSUSB_U2_PORT_DIS		BIT(0)
+=======
+#define SSUSB_U2_PORT_VBUSVALID	BIT(9)
+#define SSUSB_U2_PORT_OTG_SEL		BIT(7)
+#define SSUSB_U2_PORT_HOST		BIT(2)
+#define SSUSB_U2_PORT_PDN		BIT(1)
+#define SSUSB_U2_PORT_DIS		BIT(0)
+#define SSUSB_U2_PORT_HOST_SEL	(SSUSB_U2_PORT_VBUSVALID | SSUSB_U2_PORT_HOST)
+>>>>>>> v4.14.187
 
 /* U3D_SSUSB_DEV_RST_CTRL */
 #define SSUSB_DEV_SW_RST		BIT(0)

@@ -70,12 +70,15 @@ static inline void exit_thread(struct task_struct *tsk)
 #endif
 extern void do_group_exit(int);
 
+<<<<<<< HEAD
 #ifdef CONFIG_UCLAMP_TASK
 extern void uclamp_exit_task(struct task_struct *p);
 #else
 static inline void uclamp_exit_task(struct task_struct *p) { }
 #endif /* CONFIG_UCLAMP_TASK */
 
+=======
+>>>>>>> v4.14.187
 extern void exit_files(struct task_struct *);
 extern void exit_itimers(struct signal_struct *);
 

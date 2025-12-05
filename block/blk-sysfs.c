@@ -101,6 +101,7 @@ static ssize_t
 queue_ra_store(struct request_queue *q, const char *page, size_t count)
 {
 	unsigned long ra_kb;
+<<<<<<< HEAD
 	ssize_t ret;
 	static const char temp[] = "temporary ";
 
@@ -111,13 +112,20 @@ queue_ra_store(struct request_queue *q, const char *page, size_t count)
 	page += sizeof(temp) - 1;
 
 	ret = queue_var_store(&ra_kb, page, count);
+=======
+	ssize_t ret = queue_var_store(&ra_kb, page, count);
+>>>>>>> v4.14.187
 
 	if (ret < 0)
 		return ret;
 
 	q->backing_dev_info->ra_pages = ra_kb >> (PAGE_SHIFT - 10);
 
+<<<<<<< HEAD
 	return count;
+=======
+	return ret;
+>>>>>>> v4.14.187
 }
 
 static ssize_t queue_max_sectors_show(struct request_queue *q, char *page)
@@ -514,11 +522,14 @@ static ssize_t queue_dax_show(struct request_queue *q, char *page)
 	return queue_var_show(blk_queue_dax(q), page);
 }
 
+<<<<<<< HEAD
 static ssize_t queue_inline_crypt_show(struct request_queue *q, char *page)
 {
 	return queue_var_show(blk_queue_inline_crypt(q), page);
 }
 
+=======
+>>>>>>> v4.14.187
 static struct queue_sysfs_entry queue_requests_entry = {
 	.attr = {.name = "nr_requests", .mode = S_IRUGO | S_IWUSR },
 	.show = queue_requests_show,
@@ -676,11 +687,14 @@ static struct queue_sysfs_entry queue_poll_delay_entry = {
 	.store = queue_poll_delay_store,
 };
 
+<<<<<<< HEAD
 static struct queue_sysfs_entry queue_inline_crypt_entry = {
 	.attr = {.name = "inline_crypt", .mode = S_IRUGO },
 	.show = queue_inline_crypt_show,
 };
 
+=======
+>>>>>>> v4.14.187
 static struct queue_sysfs_entry queue_wc_entry = {
 	.attr = {.name = "write_cache", .mode = S_IRUGO | S_IWUSR },
 	.show = queue_wc_show,
@@ -706,6 +720,7 @@ static struct queue_sysfs_entry throtl_sample_time_entry = {
 };
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_IO_VOLUME
 static ssize_t queue_io_vol_show(struct request_queue *q, char *page)
 {
@@ -1077,6 +1092,8 @@ static struct queue_sysfs_entry queue_tw_off_delay_ms_entry = {
 };
 #endif
 
+=======
+>>>>>>> v4.14.187
 static struct attribute *default_attrs[] = {
 	&queue_requests_entry.attr,
 	&queue_ra_entry.attr,
@@ -1110,6 +1127,7 @@ static struct attribute *default_attrs[] = {
 	&queue_dax_entry.attr,
 	&queue_wb_lat_entry.attr,
 	&queue_poll_delay_entry.attr,
+<<<<<<< HEAD
 	&queue_inline_crypt_entry.attr,
 #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
 	&throtl_sample_time_entry.attr,
@@ -1127,6 +1145,11 @@ static struct attribute *default_attrs[] = {
 	&queue_tw_on_interval_ms_entry.attr,
 	&queue_tw_off_delay_ms_entry.attr,
 #endif
+=======
+#ifdef CONFIG_BLK_DEV_THROTTLING_LOW
+	&throtl_sample_time_entry.attr,
+#endif
+>>>>>>> v4.14.187
 	NULL,
 };
 

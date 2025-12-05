@@ -431,7 +431,11 @@ static int block2mtd_setup2(const char *val)
 }
 
 
+<<<<<<< HEAD
 static int block2mtd_setup(const char *val, const struct kernel_param *kp)
+=======
+static int block2mtd_setup(const char *val, struct kernel_param *kp)
+>>>>>>> v4.14.187
 {
 #ifdef MODULE
 	return block2mtd_setup2(val);

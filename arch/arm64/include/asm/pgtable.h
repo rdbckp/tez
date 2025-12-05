@@ -23,6 +23,7 @@
 #include <asm/pgtable-hwdef.h>
 #include <asm/pgtable-prot.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_UH
 #include <linux/uh.h>
 #ifdef CONFIG_UH_RKP
@@ -30,6 +31,8 @@
 #endif
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * VMALLOC range.
  *
@@ -206,6 +209,7 @@ static inline pmd_t pmd_mkcont(pmd_t pmd)
 
 static inline void set_pte(pte_t *ptep, pte_t pte)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 	/* bug on double mapping */
 	BUG_ON(pte_val(pte) && rkp_is_pg_dbl_mapped(pte_val(pte)));
@@ -223,6 +227,10 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
 #else
 	*ptep = pte;
 #endif
+=======
+	*ptep = pte;
+
+>>>>>>> v4.14.187
 	/*
 	 * Only if the new pte is valid and kernel, otherwise TLB maintenance
 	 * or update_mmu_cache() have the necessary barriers.
@@ -407,6 +415,7 @@ static inline bool pud_table(pud_t pud) { return true; }
 
 static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 	if (rkp_is_pg_protected((u64)pmdp)) {
 		uh_call(UH_APP_RKP, RKP_WRITE_PGT2, (u64)pmdp, pmd_val(pmd), 0, 0);
@@ -421,6 +430,9 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
 #else
 	*pmdp = pmd;
 #endif
+=======
+	*pmdp = pmd;
+>>>>>>> v4.14.187
 	dsb(ishst);
 	isb();
 }
@@ -472,6 +484,7 @@ static inline void pte_unmap(pte_t *pte) { }
 
 static inline void set_pud(pud_t *pudp, pud_t pud)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_UH_RKP
 	if (rkp_is_pg_protected((u64)pudp)) {
 		uh_call(UH_APP_RKP, RKP_WRITE_PGT1, (u64)pudp, pud_val(pud), 0, 0);
@@ -486,6 +499,9 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
 #else
 	*pudp = pud;
 #endif
+=======
+	*pudp = pud;
+>>>>>>> v4.14.187
 	dsb(ishst);
 	isb();
 }
@@ -666,6 +682,7 @@ static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
 static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
 				       unsigned long address, pte_t *ptep)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_RUSTUH_RKP
 	pte_t old = __pte(pte_val(*ptep));
 	pte_t zero_pte;
@@ -676,6 +693,9 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
 #else
 	return __pte(xchg_relaxed(&pte_val(*ptep), 0));
 #endif
+=======
+	return __pte(xchg_relaxed(&pte_val(*ptep), 0));
+>>>>>>> v4.14.187
 }
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE

@@ -276,8 +276,11 @@ static void ubifs_i_callback(struct rcu_head *head)
 {
 	struct inode *inode = container_of(head, struct inode, i_rcu);
 	struct ubifs_inode *ui = ubifs_inode(inode);
+<<<<<<< HEAD
 
 	fscrypt_free_inode(inode);
+=======
+>>>>>>> v4.14.187
 	kmem_cache_free(ubifs_inode_slab, ui);
 }
 
@@ -336,6 +339,7 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
 	return err;
 }
 
+<<<<<<< HEAD
 static int ubifs_drop_inode(struct inode *inode)
 {
 	int drop = generic_drop_inode(inode);
@@ -346,6 +350,8 @@ static int ubifs_drop_inode(struct inode *inode)
 	return drop;
 }
 
+=======
+>>>>>>> v4.14.187
 static void ubifs_evict_inode(struct inode *inode)
 {
 	int err;
@@ -391,7 +397,13 @@ out:
 	}
 done:
 	clear_inode(inode);
+<<<<<<< HEAD
 	fscrypt_put_encryption_info(inode);
+=======
+#ifdef CONFIG_UBIFS_FS_ENCRYPTION
+	fscrypt_put_encryption_info(inode, NULL);
+#endif
+>>>>>>> v4.14.187
 }
 
 static void ubifs_dirty_inode(struct inode *inode, int flags)
@@ -1907,7 +1919,10 @@ const struct super_operations ubifs_super_operations = {
 	.destroy_inode = ubifs_destroy_inode,
 	.put_super     = ubifs_put_super,
 	.write_inode   = ubifs_write_inode,
+<<<<<<< HEAD
 	.drop_inode    = ubifs_drop_inode,
+=======
+>>>>>>> v4.14.187
 	.evict_inode   = ubifs_evict_inode,
 	.statfs        = ubifs_statfs,
 	.dirty_inode   = ubifs_dirty_inode,
@@ -2027,6 +2042,15 @@ static struct ubifs_info *alloc_ubifs_info(struct ubi_volume_desc *ubi)
 	return c;
 }
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_UBIFS_FS_ENCRYPTION
+const struct fscrypt_operations ubifs_crypt_operations = {
+	.is_encrypted		= __ubifs_crypt_is_encrypted,
+};
+#endif
+
+>>>>>>> v4.14.187
 static int ubifs_fill_super(struct super_block *sb, void *data, int silent)
 {
 	struct ubifs_info *c = sb->s_fs_info;
@@ -2069,9 +2093,13 @@ static int ubifs_fill_super(struct super_block *sb, void *data, int silent)
 		sb->s_maxbytes = c->max_inode_sz = MAX_LFS_FILESIZE;
 	sb->s_op = &ubifs_super_operations;
 	sb->s_xattr = ubifs_xattr_handlers;
+<<<<<<< HEAD
 #ifdef CONFIG_FS_ENCRYPTION
 	sb->s_cop = &ubifs_crypt_operations;
 #endif
+=======
+	sb->s_cop = &ubifs_crypt_operations;
+>>>>>>> v4.14.187
 
 	mutex_lock(&c->umount_mutex);
 	err = mount_ubifs(c);

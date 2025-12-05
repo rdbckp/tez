@@ -25,6 +25,10 @@
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
 #include <linux/workqueue.h>
+<<<<<<< HEAD
+=======
+#include <soc/mediatek/smi.h>
+>>>>>>> v4.14.187
 
 #include "mtk_mdp_core.h"
 #include "mtk_mdp_m2m.h"

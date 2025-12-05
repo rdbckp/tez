@@ -21,8 +21,11 @@
 #include <asm/irq.h>
 #include <asm/sections.h>
 
+<<<<<<< HEAD
 #include <mt-plat/mtk_sched_mon.h>
 
+=======
+>>>>>>> v4.14.187
 /*
  * These correspond to the IORESOURCE_IRQ_* defines in
  * linux/ioport.h to select the interrupt line behaviour.  When

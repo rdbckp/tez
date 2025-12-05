@@ -1103,6 +1103,7 @@ static void ufs_qcom_advertise_quirks(struct ufs_hba *hba)
 				| UFSHCD_QUIRK_DME_PEER_ACCESS_AUTO_MODE
 				| UFSHCD_QUIRK_BROKEN_PA_RXHSUNTERMCAP);
 	}
+<<<<<<< HEAD
 
 	/*
 	 * Inline crypto is currently broken with ufs-qcom at least because the
@@ -1110,6 +1111,8 @@ static void ufs_qcom_advertise_quirks(struct ufs_hba *hba)
 	 * to be other issues that will need to be addressed too.
 	 */
 	hba->quirks |= UFSHCD_QUIRK_BROKEN_CRYPTO;
+=======
+>>>>>>> v4.14.187
 }
 
 static void ufs_qcom_set_caps(struct ufs_hba *hba)

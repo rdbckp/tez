@@ -19,6 +19,7 @@
 #include <linux/uaccess.h>
 
 #include "ion.h"
+<<<<<<< HEAD
 #include "ion_priv.h"
 #include "compat_ion.h"
 
@@ -27,6 +28,11 @@ union ion_ioctl_arg {
 	struct ion_allocation_data allocation;
 	struct ion_handle_data handle;
 	struct ion_custom_data custom;
+=======
+
+union ion_ioctl_arg {
+	struct ion_allocation_data allocation;
+>>>>>>> v4.14.187
 	struct ion_heap_query query;
 };
 
@@ -51,10 +57,13 @@ static int validate_ioctl_arg(unsigned int cmd, union ion_ioctl_arg *arg)
 static unsigned int ion_ioctl_dir(unsigned int cmd)
 {
 	switch (cmd) {
+<<<<<<< HEAD
 	case ION_IOC_SYNC:
 	case ION_IOC_FREE:
 	case ION_IOC_CUSTOM:
 		return _IOC_WRITE;
+=======
+>>>>>>> v4.14.187
 	default:
 		return _IOC_DIR(cmd);
 	}
@@ -62,27 +71,36 @@ static unsigned int ion_ioctl_dir(unsigned int cmd)
 
 long ion_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
+<<<<<<< HEAD
 	struct ion_client *client = filp->private_data;
 	struct ion_device *dev = client->dev;
 	struct ion_handle *cleanup_handle = NULL;
+=======
+>>>>>>> v4.14.187
 	int ret = 0;
 	unsigned int dir;
 	union ion_ioctl_arg data;
 
 	dir = ion_ioctl_dir(cmd);
 
+<<<<<<< HEAD
 	if (_IOC_SIZE(cmd) > sizeof(data)) {
 		IONMSG(
 				"%s cmd = %d, _IOC_SIZE(cmd) = %d, sizeof(data) = %zd.\n",
 				__func__, cmd, _IOC_SIZE(cmd), sizeof(data));
 		return -EINVAL;
 	}
+=======
+	if (_IOC_SIZE(cmd) > sizeof(data))
+		return -EINVAL;
+>>>>>>> v4.14.187
 
 	/*
 	 * The copy_from_user is unconditional here for both read and write
 	 * to do the validate. If there is no write for the ioctl, the
 	 * buffer is cleared
 	 */
+<<<<<<< HEAD
 	if (copy_from_user(&data, (void __user *)arg, _IOC_SIZE(cmd))) {
 		IONMSG(
 			"%s copy_from_user fail!. cmd = %d, n = %d.\n",
@@ -93,6 +111,16 @@ long ion_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	ret = validate_ioctl_arg(cmd, &data);
 	if (WARN_ON_ONCE(ret))
 		return ret;
+=======
+	if (copy_from_user(&data, (void __user *)arg, _IOC_SIZE(cmd)))
+		return -EFAULT;
+
+	ret = validate_ioctl_arg(cmd, &data);
+	if (ret) {
+		pr_warn_once("%s: ioctl validate failed\n", __func__);
+		return ret;
+	}
+>>>>>>> v4.14.187
 
 	if (!(dir & _IOC_WRITE))
 		memset(&data, 0, sizeof(data));
@@ -100,6 +128,7 @@ long ion_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	switch (cmd) {
 	case ION_IOC_ALLOC:
 	{
+<<<<<<< HEAD
 		struct ion_handle *handle;
 
 		handle = __ion_alloc(client, data.allocation.len,
@@ -199,12 +228,29 @@ long ion_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	}
 	case ION_IOC_HEAP_QUERY:
 		ret = ion_query_heaps(client, &data.query);
+=======
+		int fd;
+
+		fd = ion_alloc(data.allocation.len,
+			       data.allocation.heap_id_mask,
+			       data.allocation.flags);
+		if (fd < 0)
+			return fd;
+
+		data.allocation.fd = fd;
+
+		break;
+	}
+	case ION_IOC_HEAP_QUERY:
+		ret = ion_query_heaps(&data.query);
+>>>>>>> v4.14.187
 		break;
 	default:
 		return -ENOTTY;
 	}
 
 	if (dir & _IOC_READ) {
+<<<<<<< HEAD
 		if (copy_to_user((void __user *)arg, &data, _IOC_SIZE(cmd))) {
 			if (cleanup_handle) {
 				mutex_lock(&client->lock);
@@ -221,5 +267,10 @@ long ion_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	}
 	if (cleanup_handle)
 		ion_handle_put(cleanup_handle);
+=======
+		if (copy_to_user((void __user *)arg, &data, _IOC_SIZE(cmd)))
+			return -EFAULT;
+	}
+>>>>>>> v4.14.187
 	return ret;
 }

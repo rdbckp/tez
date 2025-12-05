@@ -467,6 +467,7 @@ config MTK_TIMER
 	help
 	  Support for Mediatek timer driver.
 
+<<<<<<< HEAD
 config MTK_TIMER_SYSTIMER
 	bool "Mediatek sys-timer driver" if COMPILE_TEST
 	depends on GENERIC_CLOCKEVENTS && HAS_IOMEM && !MTK_TIEMR
@@ -489,6 +490,8 @@ config MTK_TIMER_APXGPT
 	  resolve some issue that gpt interrupt masked.
 	  add important debug info.
 
+=======
+>>>>>>> v4.14.187
 config SYS_SUPPORTS_SH_MTU2
         bool
 

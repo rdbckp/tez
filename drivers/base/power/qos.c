@@ -191,7 +191,10 @@ static int dev_pm_qos_constraints_allocate(struct device *dev)
 	c->default_value = PM_QOS_RESUME_LATENCY_DEFAULT_VALUE;
 	c->no_constraint_value = PM_QOS_RESUME_LATENCY_DEFAULT_VALUE;
 	c->type = PM_QOS_MIN;
+<<<<<<< HEAD
 	mutex_init(&c->qos_lock);
+=======
+>>>>>>> v4.14.187
 	c->notifiers = n;
 
 	c = &qos->latency_tolerance;
@@ -199,7 +202,10 @@ static int dev_pm_qos_constraints_allocate(struct device *dev)
 	c->target_value = PM_QOS_LATENCY_TOLERANCE_DEFAULT_VALUE;
 	c->default_value = PM_QOS_LATENCY_TOLERANCE_DEFAULT_VALUE;
 	c->no_constraint_value = PM_QOS_LATENCY_TOLERANCE_NO_CONSTRAINT;
+<<<<<<< HEAD
 	mutex_init(&c->qos_lock);
+=======
+>>>>>>> v4.14.187
 	c->type = PM_QOS_MIN;
 
 	INIT_LIST_HEAD(&qos->flags.list);

@@ -17,7 +17,11 @@
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/of_platform.h>
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
+=======
+#include <soc/mediatek/smi.h>
+>>>>>>> v4.14.187
 
 #include "mtk_mdp_comp.h"
 
@@ -67,8 +71,13 @@ void mtk_mdp_comp_clock_on(struct device *dev, struct mtk_mdp_comp *comp)
 	int i, err;
 
 	if (comp->larb_dev) {
+<<<<<<< HEAD
 		err = pm_runtime_get_sync(comp->larb_dev);
 		if (err < 0)
+=======
+		err = mtk_smi_larb_get(comp->larb_dev);
+		if (err)
+>>>>>>> v4.14.187
 			dev_err(dev,
 				"failed to get larb, err %d. type:%d id:%d\n",
 				err, comp->type, comp->id);
@@ -96,7 +105,11 @@ void mtk_mdp_comp_clock_off(struct device *dev, struct mtk_mdp_comp *comp)
 	}
 
 	if (comp->larb_dev)
+<<<<<<< HEAD
 		pm_runtime_put_sync(comp->larb_dev);
+=======
+		mtk_smi_larb_put(comp->larb_dev);
+>>>>>>> v4.14.187
 }
 
 int mtk_mdp_comp_init(struct device *dev, struct device_node *node,

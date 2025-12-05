@@ -54,7 +54,10 @@
 #include <linux/proc_ns.h>
 #include <linux/nsproxy.h>
 #include <linux/file.h>
+<<<<<<< HEAD
 #include <linux/psi.h>
+=======
+>>>>>>> v4.14.187
 #include <net/sock.h>
 
 #define CREATE_TRACE_POINTS
@@ -799,7 +802,11 @@ static void css_set_move_task(struct task_struct *task,
 		 */
 		WARN_ON_ONCE(task->flags & PF_EXITING);
 
+<<<<<<< HEAD
 		cgroup_move_task(task, to_cset);
+=======
+		rcu_assign_pointer(task->cgroups, to_cset);
+>>>>>>> v4.14.187
 		list_add_tail(&task->cg_list, use_mg_tasks ? &to_cset->mg_tasks :
 							     &to_cset->tasks);
 	}
@@ -1902,9 +1909,12 @@ int cgroup_setup_root(struct cgroup_root *root, u16 ss_mask, int ref_flags)
 	if (ret)
 		goto destroy_root;
 
+<<<<<<< HEAD
 	ret = cgroup_bpf_inherit(root_cgrp);
 	WARN_ON_ONCE(ret);
 
+=======
+>>>>>>> v4.14.187
 	trace_cgroup_setup_root(root);
 
 	/*
@@ -3342,6 +3352,7 @@ static int cgroup_stat_show(struct seq_file *seq, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PSI
 static int cgroup_io_pressure_show(struct seq_file *seq, void *v)
 {
@@ -3415,6 +3426,8 @@ static void cgroup_pressure_release(struct kernfs_open_file *of)
 }
 #endif /* CONFIG_PSI */
 
+=======
+>>>>>>> v4.14.187
 static int cgroup_file_open(struct kernfs_open_file *of)
 {
 	struct cftype *cft = of->kn->priv;
@@ -3482,6 +3495,7 @@ static ssize_t cgroup_file_write(struct kernfs_open_file *of, char *buf,
 	return ret ?: nbytes;
 }
 
+<<<<<<< HEAD
 static unsigned int cgroup_file_poll(struct kernfs_open_file *of,
 				     poll_table *pt)
 {
@@ -3493,6 +3507,8 @@ static unsigned int cgroup_file_poll(struct kernfs_open_file *of,
 	return kernfs_generic_poll(of, pt);
 }
 
+=======
+>>>>>>> v4.14.187
 static void *cgroup_seqfile_start(struct seq_file *seq, loff_t *ppos)
 {
 	return seq_cft(seq)->seq_start(seq, ppos);
@@ -3531,7 +3547,10 @@ static struct kernfs_ops cgroup_kf_single_ops = {
 	.open			= cgroup_file_open,
 	.release		= cgroup_file_release,
 	.write			= cgroup_file_write,
+<<<<<<< HEAD
 	.poll			= cgroup_file_poll,
+=======
+>>>>>>> v4.14.187
 	.seq_show		= cgroup_seqfile_show,
 };
 
@@ -3540,7 +3559,10 @@ static struct kernfs_ops cgroup_kf_ops = {
 	.open			= cgroup_file_open,
 	.release		= cgroup_file_release,
 	.write			= cgroup_file_write,
+<<<<<<< HEAD
 	.poll			= cgroup_file_poll,
+=======
+>>>>>>> v4.14.187
 	.seq_start		= cgroup_seqfile_start,
 	.seq_next		= cgroup_seqfile_next,
 	.seq_stop		= cgroup_seqfile_stop,
@@ -4584,6 +4606,7 @@ static struct cftype cgroup_base_files[] = {
 		.name = "cgroup.stat",
 		.seq_show = cgroup_stat_show,
 	},
+<<<<<<< HEAD
 #ifdef CONFIG_PSI
 	{
 		.name = "io.pressure",
@@ -4610,6 +4633,8 @@ static struct cftype cgroup_base_files[] = {
 		.release = cgroup_pressure_release,
 	},
 #endif /* CONFIG_PSI */
+=======
+>>>>>>> v4.14.187
 	{ }	/* terminate */
 };
 
@@ -4670,8 +4695,11 @@ static void css_free_work_fn(struct work_struct *work)
 			 */
 			cgroup_put(cgroup_parent(cgrp));
 			kernfs_put(cgrp->kn);
+<<<<<<< HEAD
 			if (cgroup_on_dfl(cgrp))
 				psi_cgroup_free(cgrp);
+=======
+>>>>>>> v4.14.187
 			kfree(cgrp);
 		} else {
 			/*
@@ -4916,9 +4944,12 @@ static struct cgroup *cgroup_create(struct cgroup *parent)
 	cgrp->self.parent = &parent->self;
 	cgrp->root = root;
 	cgrp->level = level;
+<<<<<<< HEAD
 	ret = cgroup_bpf_inherit(cgrp);
 	if (ret)
 		goto out_idr_free;
+=======
+>>>>>>> v4.14.187
 
 	spin_lock_irq(&css_set_lock);
 	for (tcgrp = cgrp; tcgrp; tcgrp = cgroup_parent(tcgrp)) {
@@ -4955,18 +4986,26 @@ static struct cgroup *cgroup_create(struct cgroup *parent)
 	if (!cgroup_on_dfl(cgrp))
 		cgrp->subtree_control = cgroup_control(cgrp);
 
+<<<<<<< HEAD
 	if (cgroup_on_dfl(cgrp)) {
 		ret = psi_cgroup_alloc(cgrp);
 		if (ret)
 			goto out_idr_free;
 	}
+=======
+	if (parent)
+		cgroup_bpf_inherit(cgrp, parent);
+>>>>>>> v4.14.187
 
 	cgroup_propagate_control(cgrp);
 
 	return cgrp;
 
+<<<<<<< HEAD
 out_idr_free:
 	cgroup_idr_remove(&root->cgroup_idr, cgrp->id);
+=======
+>>>>>>> v4.14.187
 out_cancel_ref:
 	percpu_ref_exit(&cgrp->self.refcnt);
 out_free_cgrp:
@@ -5966,6 +6005,7 @@ void cgroup_sk_free(struct sock_cgroup_data *skcd)
 #endif	/* CONFIG_SOCK_CGROUP_DATA */
 
 #ifdef CONFIG_CGROUP_BPF
+<<<<<<< HEAD
 int cgroup_bpf_attach(struct cgroup *cgrp, struct bpf_prog *prog,
 		      enum bpf_attach_type type, u32 flags)
 {
@@ -5983,6 +6023,16 @@ int cgroup_bpf_detach(struct cgroup *cgrp, struct bpf_prog *prog,
 
 	mutex_lock(&cgroup_mutex);
 	ret = __cgroup_bpf_detach(cgrp, prog, type, flags);
+=======
+int cgroup_bpf_update(struct cgroup *cgrp, struct bpf_prog *prog,
+		      enum bpf_attach_type type, bool overridable)
+{
+	struct cgroup *parent = cgroup_parent(cgrp);
+	int ret;
+
+	mutex_lock(&cgroup_mutex);
+	ret = __cgroup_bpf_update(cgrp, parent, prog, type, overridable);
+>>>>>>> v4.14.187
 	mutex_unlock(&cgroup_mutex);
 	return ret;
 }

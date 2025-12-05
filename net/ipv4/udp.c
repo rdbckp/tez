@@ -107,21 +107,30 @@
 #include <net/inet_hashtables.h>
 #include <net/route.h>
 #include <net/checksum.h>
+<<<<<<< HEAD
 #include <net/udp_tunnel.h>
 #include <net/xfrm.h>
 #include <trace/events/udp.h>
 #include <linux/static_key.h>
 #include <net/udp.h>
+=======
+#include <net/xfrm.h>
+#include <trace/events/udp.h>
+#include <linux/static_key.h>
+>>>>>>> v4.14.187
 #include <trace/events/skb.h>
 #include <net/busy_poll.h>
 #include "udp_impl.h"
 #include <net/sock_reuseport.h>
 #include <net/addrconf.h>
+<<<<<<< HEAD
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 #include <net/ncm.h>
 // SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
 
 #include <perf_tracker_internal.h>
+=======
+>>>>>>> v4.14.187
 
 struct udp_table udp_table __read_mostly;
 EXPORT_SYMBOL(udp_table);
@@ -794,8 +803,12 @@ void udp_set_csum(bool nocheck, struct sk_buff *skb,
 }
 EXPORT_SYMBOL(udp_set_csum);
 
+<<<<<<< HEAD
 static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
 			struct inet_cork *cork)
+=======
+static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4)
+>>>>>>> v4.14.187
 {
 	struct sock *sk = skb->sk;
 	struct inet_sock *inet = inet_sk(sk);
@@ -815,6 +828,7 @@ static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
 	uh->len = htons(len);
 	uh->check = 0;
 
+<<<<<<< HEAD
 	if (cork->gso_size) {
 		const int hlen = skb_network_header_len(skb) +
 				 sizeof(struct udphdr);
@@ -830,6 +844,8 @@ static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
 		skb_shinfo(skb)->gso_type = SKB_GSO_UDP_L4;
 	}
 
+=======
+>>>>>>> v4.14.187
 	if (is_udplite)  				 /*     UDP-Lite      */
 		csum = udplite_csum(skb);
 
@@ -881,7 +897,11 @@ int udp_push_pending_frames(struct sock *sk)
 	if (!skb)
 		goto out;
 
+<<<<<<< HEAD
 	err = udp_send_skb(skb, fl4, &inet->cork.base);
+=======
+	err = udp_send_skb(skb, fl4);
+>>>>>>> v4.14.187
 
 out:
 	up->len = 0;
@@ -975,7 +995,10 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
 	ipc.sockc.tsflags = sk->sk_tsflags;
 	ipc.addr = inet->inet_saddr;
 	ipc.oif = sk->sk_bound_dev_if;
+<<<<<<< HEAD
 	ipc.gso_size = up->gso_size;
+=======
+>>>>>>> v4.14.187
 
 	if (msg->msg_controllen) {
 		err = ip_cmsg_send(sk, msg, &ipc, sk->sk_family == AF_INET6);
@@ -1073,6 +1096,7 @@ back_from_confirm:
 
 	/* Lockless fast path for the non-corking case. */
 	if (!corkreq) {
+<<<<<<< HEAD
 		struct inet_cork cork;
 
 		skb = ip_make_skb(sk, fl4, getfrag, msg, ulen,
@@ -1081,6 +1105,14 @@ back_from_confirm:
 		err = PTR_ERR(skb);
 		if (!IS_ERR_OR_NULL(skb))
 			err = udp_send_skb(skb, fl4, &cork);
+=======
+		skb = ip_make_skb(sk, fl4, getfrag, msg, ulen,
+				  sizeof(struct udphdr), &ipc, &rt,
+				  msg->msg_flags);
+		err = PTR_ERR(skb);
+		if (!IS_ERR_OR_NULL(skb))
+			err = udp_send_skb(skb, fl4);
+>>>>>>> v4.14.187
 		goto out;
 	}
 
@@ -1635,7 +1667,10 @@ try_again:
 	if (!skb)
 		return err;
 
+<<<<<<< HEAD
 	perf_net_pkt_trace(sk, skb, skb->len);
+=======
+>>>>>>> v4.14.187
 	ulen = udp_skb_len(skb);
 	copied = len;
 	if (copied > ulen - off)
@@ -1693,10 +1728,13 @@ try_again:
 		memset(sin->sin_zero, 0, sizeof(sin->sin_zero));
 		*addr_len = sizeof(*sin);
 	}
+<<<<<<< HEAD
 
 	if (udp_sk(sk)->gro_enabled)
 		udp_cmsg_recv(msg, sk, skb);
 
+=======
+>>>>>>> v4.14.187
 	if (inet->cmsg_flags)
 		ip_cmsg_recv_offset(msg, sk, skb, sizeof(struct udphdr), off);
 
@@ -1860,6 +1898,10 @@ static int __udp_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static struct static_key udp_encap_needed __read_mostly;
+>>>>>>> v4.14.187
 void udp_encap_enable(void)
 {
 	static_key_enable(&udp_encap_needed);
@@ -1874,10 +1916,18 @@ EXPORT_SYMBOL(udp_encap_enable);
  * Note that in the success and error cases, the skb is assumed to
  * have either been requeued or freed.
  */
+<<<<<<< HEAD
 static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
 {
 	struct udp_sock *up = udp_sk(sk);
 	int is_udplite = IS_UDPLITE(sk);
+=======
+static int udp_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
+{
+	struct udp_sock *up = udp_sk(sk);
+	int is_udplite = IS_UDPLITE(sk);
+
+>>>>>>> v4.14.187
 	/*
 	 *	Charge it to the socket, dropping if the queue is full.
 	 */
@@ -1976,6 +2026,7 @@ drop:
 	return -1;
 }
 
+<<<<<<< HEAD
 static int udp_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 {
 	struct sk_buff *next, *segs;
@@ -1997,6 +2048,8 @@ static int udp_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 	return 0;
 }
 
+=======
+>>>>>>> v4.14.187
 /* For TCP sockets, sk_rx_dst is protected by socket lock
  * For UDP, we use xchg() to guard against concurrent changes.
  */
@@ -2194,6 +2247,7 @@ int __udp4_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
 	if (sk) {
 		struct dst_entry *dst = skb_dst(skb);
 		int ret;
+<<<<<<< HEAD
 		// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 		struct nf_conn *ct = NULL;
 		enum ip_conntrack_info ctinfo;
@@ -2201,10 +2255,13 @@ int __udp4_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
 		char srcaddr[INET6_ADDRSTRLEN_NAP];
 		char dstaddr[INET6_ADDRSTRLEN_NAP];
 		// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
+=======
+>>>>>>> v4.14.187
 
 		if (unlikely(sk->sk_rx_dst != dst))
 			udp_sk_rx_dst_set(sk, dst);
 
+<<<<<<< HEAD
 		// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 		/* function to handle open flows with incoming udp packets */
 		if (check_ncm_flag()) {
@@ -2254,6 +2311,8 @@ int __udp4_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
 		}
 		// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
 
+=======
+>>>>>>> v4.14.187
 		ret = udp_unicast_rcv_skb(sk, skb, uh);
 		sock_put(sk);
 		return ret;
@@ -2264,6 +2323,7 @@ int __udp4_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
 						saddr, daddr, udptable, proto);
 
 	sk = __udp4_lib_lookup_skb(skb, uh->source, uh->dest, udptable);
+<<<<<<< HEAD
 	if (sk) {
 		// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA {
 		struct nf_conn *ct = NULL;
@@ -2322,6 +2382,10 @@ int __udp4_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
 
 		return udp_unicast_rcv_skb(sk, skb, uh);
 	}
+=======
+	if (sk)
+		return udp_unicast_rcv_skb(sk, skb, uh);
+>>>>>>> v4.14.187
 
 	if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb))
 		goto drop;
@@ -2565,6 +2629,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
 		up->no_check6_rx = valbool;
 		break;
 
+<<<<<<< HEAD
 	case UDP_GRO:
 		lock_sock(sk);
 		if (valbool)
@@ -2579,6 +2644,8 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
 		up->gso_size = val;
 		break;
 
+=======
+>>>>>>> v4.14.187
 	/*
 	 * 	UDP-Lite's partial checksum coverage (RFC 3828).
 	 */
@@ -2669,10 +2736,13 @@ int udp_lib_getsockopt(struct sock *sk, int level, int optname,
 		val = up->no_check6_rx;
 		break;
 
+<<<<<<< HEAD
 	case UDP_SEGMENT:
 		val = up->gso_size;
 		break;
 
+=======
+>>>>>>> v4.14.187
 	/* The following two cannot be changed on UDP sockets, the return is
 	 * always 0 (which corresponds to the full checksum coverage of UDP). */
 	case UDPLITE_SEND_CSCOV:

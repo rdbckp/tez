@@ -8,15 +8,19 @@
 #define KASAN_SHADOW_SCALE_SIZE (1UL << KASAN_SHADOW_SCALE_SHIFT)
 #define KASAN_SHADOW_MASK       (KASAN_SHADOW_SCALE_SIZE - 1)
 
+<<<<<<< HEAD
 #define KASAN_TAG_KERNEL	0xFF /* native kernel pointers tag */
 #define KASAN_TAG_INVALID	0xFE /* inaccessible memory tag */
 #define KASAN_TAG_MAX		0xFD /* maximum value for random tags */
 
 #ifdef CONFIG_KASAN_GENERIC
+=======
+>>>>>>> v4.14.187
 #define KASAN_FREE_PAGE         0xFF  /* page was freed */
 #define KASAN_PAGE_REDZONE      0xFE  /* redzone for kmalloc_large allocations */
 #define KASAN_KMALLOC_REDZONE   0xFC  /* redzone inside slub object */
 #define KASAN_KMALLOC_FREE      0xFB  /* object was freed (kmem_cache_free/kfree) */
+<<<<<<< HEAD
 #else
 #define KASAN_FREE_PAGE         KASAN_TAG_INVALID
 #define KASAN_PAGE_REDZONE      KASAN_TAG_INVALID
@@ -24,6 +28,8 @@
 #define KASAN_KMALLOC_FREE      KASAN_TAG_INVALID
 #endif
 
+=======
+>>>>>>> v4.14.187
 #define KASAN_GLOBAL_REDZONE    0xFA  /* redzone for global variable */
 
 /*
@@ -34,6 +40,7 @@
 #define KASAN_STACK_MID         0xF2
 #define KASAN_STACK_RIGHT       0xF3
 #define KASAN_STACK_PARTIAL     0xF4
+<<<<<<< HEAD
 
 /*
  * alloca redzone shadow values
@@ -42,6 +49,9 @@
 #define KASAN_ALLOCA_RIGHT	0xCB
 
 #define KASAN_ALLOCA_REDZONE_SIZE	32
+=======
+#define KASAN_USE_AFTER_SCOPE   0xF8
+>>>>>>> v4.14.187
 
 /* Don't break randconfig/all*config builds */
 #ifndef KASAN_ABI_VERSION
@@ -116,6 +126,7 @@ static inline const void *kasan_shadow_to_mem(const void *shadow_addr)
 		<< KASAN_SHADOW_SCALE_SHIFT);
 }
 
+<<<<<<< HEAD
 static inline bool addr_has_shadow(const void *addr)
 {
 	return (addr >= kasan_shadow_to_mem((void *)KASAN_SHADOW_START));
@@ -135,6 +146,14 @@ void kasan_report_invalid_free(void *object, unsigned long ip);
 
 #if defined(CONFIG_KASAN_GENERIC) && \
 	(defined(CONFIG_SLAB) || defined(CONFIG_SLUB))
+=======
+void kasan_report(unsigned long addr, size_t size,
+		bool is_write, unsigned long ip);
+void kasan_report_double_free(struct kmem_cache *cache, void *object,
+					void *ip);
+
+#if defined(CONFIG_SLAB) || defined(CONFIG_SLUB)
+>>>>>>> v4.14.187
 void quarantine_put(struct kasan_free_meta *info, struct kmem_cache *cache);
 void quarantine_reduce(void);
 void quarantine_remove_cache(struct kmem_cache *cache);
@@ -145,6 +164,7 @@ static inline void quarantine_reduce(void) { }
 static inline void quarantine_remove_cache(struct kmem_cache *cache) { }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_KASAN_SW_TAGS
 
 void print_tags(u8 addr_tag, const void *addr);
@@ -221,4 +241,6 @@ void __asan_set_shadow_f3(const void *addr, size_t size);
 void __asan_set_shadow_f5(const void *addr, size_t size);
 void __asan_set_shadow_f8(const void *addr, size_t size);
 
+=======
+>>>>>>> v4.14.187
 #endif

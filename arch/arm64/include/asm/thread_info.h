@@ -43,18 +43,24 @@ struct thread_info {
 	u64			ttbr0;		/* saved TTBR0_EL1 */
 #endif
 	int			preempt_count;	/* 0 => preemptable, <0 => bug */
+<<<<<<< HEAD
 #ifdef CONFIG_SHADOW_CALL_STACK
 	void			*shadow_call_stack;
 #endif
 	void			*regs_on_excp;	/* aee */
 	int			cpu_excp;	/* aee */
+=======
+>>>>>>> v4.14.187
 };
 
 #define INIT_THREAD_INFO(tsk)						\
 {									\
 	.preempt_count	= INIT_PREEMPT_COUNT,				\
 	.addr_limit	= KERNEL_DS,					\
+<<<<<<< HEAD
 	.cpu_excp = 0,	/* aee */					\
+=======
+>>>>>>> v4.14.187
 }
 
 #define init_stack		(init_thread_union.stack)
@@ -99,7 +105,10 @@ void arch_setup_new_exec(void);
 #define TIF_SINGLESTEP		21
 #define TIF_32BIT		22	/* 32bit process */
 #define TIF_SSBD		23	/* Wants SSB mitigation */
+<<<<<<< HEAD
 #define TIF_TAGGED_ADDR		24	/* Allow tagged user addresses */
+=======
+>>>>>>> v4.14.187
 
 #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
 #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)

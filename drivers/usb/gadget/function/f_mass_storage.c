@@ -314,10 +314,15 @@ struct fsg_common {
 	void			*private_data;
 
 	char inquiry_string[INQUIRY_STRING_LEN];
+<<<<<<< HEAD
 	char name[FSG_MAX_LUNS][LUN_NAME_LEN];
 
 	struct kref		ref;
 	u8 bicr;
+=======
+
+	struct kref		ref;
+>>>>>>> v4.14.187
 };
 
 struct fsg_dev {
@@ -372,9 +377,12 @@ static void set_bulk_out_req_length(struct fsg_common *common,
 	if (rem > 0)
 		length += common->bulk_out_maxpacket - rem;
 	bh->outreq->length = length;
+<<<<<<< HEAD
 
 	/* used by usb20 */
 	bh->outreq->short_not_ok = 1;
+=======
+>>>>>>> v4.14.187
 }
 
 
@@ -533,6 +541,7 @@ static int fsg_setup(struct usb_function *f,
 				w_length != 1)
 			return -EDOM;
 		VDBG(fsg, "get max LUN\n");
+<<<<<<< HEAD
 		if (fsg->common->bicr) {
 			/*When enable bicr, only share ONE LUN.*/
 			*(u8 *)req->buf = 0;
@@ -540,6 +549,9 @@ static int fsg_setup(struct usb_function *f,
 			*(u8 *)req->buf = _fsg_common_get_max_lun(fsg->common);
 		}
 		INFO(fsg, "get max LUN = %d\n", *(u8 *)req->buf);
+=======
+		*(u8 *)req->buf = _fsg_common_get_max_lun(fsg->common);
+>>>>>>> v4.14.187
 
 		/* Respond with data/status */
 		req->length = min((u16)1, w_length);
@@ -1339,7 +1351,11 @@ static int do_start_stop(struct fsg_common *common)
 	}
 
 	/* Are we allowed to unload the media? */
+<<<<<<< HEAD
 	if (!curlun->nofua && curlun->prevent_medium_removal) {
+=======
+	if (curlun->prevent_medium_removal) {
+>>>>>>> v4.14.187
 		LDBG(curlun, "unload attempt prevented\n");
 		curlun->sense_data = SS_MEDIUM_REMOVAL_PREVENTED;
 		return -EINVAL;
@@ -2436,10 +2452,13 @@ static void handle_exception(struct fsg_common *common)
 
 	case FSG_STATE_CONFIG_CHANGE:
 		do_set_interface(common, new_fsg);
+<<<<<<< HEAD
 		/*
 		 * Wait for composite_setup to complete
 		 */
 		mdelay(100);
+=======
+>>>>>>> v4.14.187
 		if (new_fsg)
 			usb_composite_setup_continue(common->cdev);
 		break;
@@ -2717,7 +2736,10 @@ int fsg_common_set_cdev(struct fsg_common *common,
 	common->ep0 = cdev->gadget->ep0;
 	common->ep0req = cdev->req;
 	common->cdev = cdev;
+<<<<<<< HEAD
 	common->bicr = 0;
+=======
+>>>>>>> v4.14.187
 
 	us = usb_gstrings_attach(cdev, fsg_strings_array,
 				 ARRAY_SIZE(fsg_strings));
@@ -2921,6 +2943,7 @@ static void fsg_common_release(struct kref *ref)
 	if (common->free_storage_on_release)
 		kfree(common);
 }
+<<<<<<< HEAD
 ssize_t fsg_inquiry_show(struct fsg_common *common, char *buf)
 {
 	return snprintf(buf, PAGE_SIZE, "%s\n", common->inquiry_string);
@@ -2998,6 +3021,8 @@ remove_sysfs:
 
 	return ret;
 }
+=======
+>>>>>>> v4.14.187
 
 
 /*-------------------------------------------------------------------------*/
@@ -3563,8 +3588,11 @@ void fsg_config_from_params(struct fsg_config *cfg,
 		lun->ro = !!params->ro[i];
 		lun->cdrom = !!params->cdrom[i];
 		lun->removable = !!params->removable[i];
+<<<<<<< HEAD
 		/* add nofua flag support */
 		lun->nofua = !!params->nofua[i];
+=======
+>>>>>>> v4.14.187
 		lun->filename =
 			params->file_count > i && params->file[i][0]
 			? params->file[i]

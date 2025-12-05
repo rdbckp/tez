@@ -21,15 +21,21 @@
 #define UFS_ANY_VENDOR 0xFFFF
 #define UFS_ANY_MODEL  "ANY_MODEL"
 
+<<<<<<< HEAD
 #define UFS_VENDOR_MICRON      0x12C
+=======
+>>>>>>> v4.14.187
 #define UFS_VENDOR_TOSHIBA     0x198
 #define UFS_VENDOR_SAMSUNG     0x1CE
 #define UFS_VENDOR_SKHYNIX     0x1AD
 
+<<<<<<< HEAD
 /*uniqueu number*/
 #define UFS_UN_20_DIGITS 20
 #define UFS_UN_MAX_DIGITS 21 //current max digit + 1
 
+=======
+>>>>>>> v4.14.187
 /**
  * ufs_dev_fix - ufs device quirk info
  * @card: ufs card details
@@ -136,6 +142,7 @@ struct ufs_dev_fix {
  */
 #define UFS_DEVICE_QUIRK_HOST_PA_SAVECONFIGTIME	(1 << 8)
 
+<<<<<<< HEAD
 /*
  * MTK PATCH
  * Some UFS device need 5ms delay in VCC off. In order to wait VCC discharged
@@ -161,4 +168,6 @@ struct ufs_dev_fix {
 struct ufs_hba;
 void ufs_set_sec_unique_number(struct ufs_hba *hba, u8 *str_desc_buf, u8 *desc_buf);
 
+=======
+>>>>>>> v4.14.187
 #endif /* UFS_QUIRKS_H_ */

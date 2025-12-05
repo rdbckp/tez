@@ -501,8 +501,13 @@ config MCP3422
 
 config MEDIATEK_MT6577_AUXADC
         tristate "MediaTek AUXADC driver"
+<<<<<<< HEAD
         depends on HAS_IOMEM
         default n
+=======
+        depends on ARCH_MEDIATEK || COMPILE_TEST
+        depends on HAS_IOMEM
+>>>>>>> v4.14.187
         help
           Say yes here to enable support for MediaTek mt65xx AUXADC.
 
@@ -534,6 +539,7 @@ config MESON_SARADC
 	  To compile this driver as a module, choose M here: the
 	  module will be called meson_saradc.
 
+<<<<<<< HEAD
 config MT635X_AUXADC
 	tristate "MediaTek MT635X PMIC AUXADC Support"
 	depends on MFD_MT6358
@@ -556,6 +562,8 @@ config MT6362_ADC
 	  The driver can also be build as a module.
 	  If so, the module will be called mt6362_adc.
 
+=======
+>>>>>>> v4.14.187
 config NAU7802
 	tristate "Nuvoton NAU7802 ADC driver"
 	depends on I2C

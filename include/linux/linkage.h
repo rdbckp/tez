@@ -39,6 +39,7 @@
 #define __page_aligned_data	__section(.data..page_aligned) __aligned(PAGE_SIZE)
 #define __page_aligned_bss	__section(.bss..page_aligned) __aligned(PAGE_SIZE)
 
+<<<<<<< HEAD
 #ifndef CONFIG_RUSTUH_RKP
 #ifdef CONFIG_UH_RKP
 #define __page_aligned_rkp_bss		__section(.rkp_bss.page_aligned) __aligned(PAGE_SIZE)
@@ -59,6 +60,8 @@
 #endif
 #endif
 
+=======
+>>>>>>> v4.14.187
 /*
  * For assembly routines.
  *

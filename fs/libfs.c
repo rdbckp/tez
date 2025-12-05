@@ -16,12 +16,15 @@
 #include <linux/exportfs.h>
 #include <linux/writeback.h>
 #include <linux/buffer_head.h> /* sync_mapping_buffers */
+<<<<<<< HEAD
 #include <linux/unicode.h>
 #include <linux/fscrypt.h>
 
 #ifdef CONFIG_FSCRYPT_SDP
 #include "crypto/fscrypt_private.h"
 #endif
+=======
+>>>>>>> v4.14.187
 
 #include <linux/uaccess.h>
 
@@ -1227,6 +1230,7 @@ bool is_empty_dir_inode(struct inode *inode)
 	return (inode->i_fop == &empty_dir_operations) &&
 		(inode->i_op == &empty_dir_inode_operations);
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_FSCRYPT_SDP
 static int fscrypt_sdp_d_delete(const struct dentry *dentry)
@@ -1378,3 +1382,5 @@ void generic_set_encrypted_ci_d_ops(struct inode *dir, struct dentry *dentry)
 #endif
 }
 EXPORT_SYMBOL(generic_set_encrypted_ci_d_ops);
+=======
+>>>>>>> v4.14.187

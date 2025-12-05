@@ -170,6 +170,7 @@ config BCM_FLEXRM_MBOX
 	  Mailbox implementation of the Broadcom FlexRM ring manager,
 	  which provides access to various offload engines on Broadcom
 	  SoCs. Say Y here if you want to use the Broadcom FlexRM.
+<<<<<<< HEAD
 
 config MTK_CMDQ_MBOX
 	tristate "MediaTek CMDQ Mailbox Support"
@@ -186,4 +187,6 @@ config MTK_RPMSG_MBOX
 	  This uses MTK MBOX driver to communicate with remote processors
 	  base on mailbox framework. It provide channels, controller creation
 	  and send operations.
+=======
+>>>>>>> v4.14.187
 endif

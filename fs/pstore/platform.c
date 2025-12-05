@@ -44,6 +44,7 @@
 #include <linux/hardirq.h>
 #include <linux/jiffies.h>
 #include <linux/workqueue.h>
+<<<<<<< HEAD
 #include <linux/io.h>
 #ifdef CONFIG_SEC_LOG_HOOK_PMSG
 #include <linux/sec_debug.h>
@@ -58,6 +59,11 @@
 #define memcpy memcpy_toio
 #endif
 
+=======
+
+#include "internal.h"
+
+>>>>>>> v4.14.187
 /*
  * We defer making "oops" entries appear in pstore - see
  * whether the system is actually still running well enough
@@ -607,7 +613,10 @@ static void pstore_unregister_kmsg(void)
 }
 
 #ifdef CONFIG_PSTORE_CONSOLE
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> v4.14.187
 static void pstore_console_write(struct console *con, const char *s, unsigned c)
 {
 	struct pstore_record record;
@@ -619,6 +628,7 @@ static void pstore_console_write(struct console *con, const char *s, unsigned c)
 	record.size = c;
 	psinfo->write(&record);
 }
+<<<<<<< HEAD
 */
 
 static void pstore_simp_console_write(struct console *con, const char *s,
@@ -668,6 +678,12 @@ void pstore_bconsole_write(struct console *con, const char *s, unsigned int c)
 static struct console pstore_console = {
 	.name	= "pstore",
 	.write	= pstore_simp_console_write,
+=======
+
+static struct console pstore_console = {
+	.name	= "pstore",
+	.write	= pstore_console_write,
+>>>>>>> v4.14.187
 	.flags	= CON_PRINTBUFFER | CON_ENABLED | CON_ANYTIME,
 	.index	= -1,
 };
@@ -700,10 +716,13 @@ static int pstore_write_user_compat(struct pstore_record *record,
 		goto out;
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_LOG_HOOK_PMSG		
 	sec_log_hook_pmsg((char *)buf, record->size);
 #endif
 
+=======
+>>>>>>> v4.14.187
 	ret = record->psi->write(record);
 
 	kfree(record->buf);

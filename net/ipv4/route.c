@@ -1468,7 +1468,11 @@ struct uncached_list {
 
 static DEFINE_PER_CPU_ALIGNED(struct uncached_list, rt_uncached_list);
 
+<<<<<<< HEAD
 void rt_add_uncached_list(struct rtable *rt)
+=======
+static void rt_add_uncached_list(struct rtable *rt)
+>>>>>>> v4.14.187
 {
 	struct uncached_list *ul = raw_cpu_ptr(&rt_uncached_list);
 
@@ -1479,8 +1483,19 @@ void rt_add_uncached_list(struct rtable *rt)
 	spin_unlock_bh(&ul->lock);
 }
 
+<<<<<<< HEAD
 void rt_del_uncached_list(struct rtable *rt)
 {
+=======
+static void ipv4_dst_destroy(struct dst_entry *dst)
+{
+	struct dst_metrics *p = (struct dst_metrics *)DST_METRICS_PTR(dst);
+	struct rtable *rt = (struct rtable *) dst;
+
+	if (p != &dst_default_metrics && refcount_dec_and_test(&p->refcnt))
+		kfree(p);
+
+>>>>>>> v4.14.187
 	if (!list_empty(&rt->rt_uncached)) {
 		struct uncached_list *ul = rt->rt_uncached_list;
 
@@ -1490,6 +1505,7 @@ void rt_del_uncached_list(struct rtable *rt)
 	}
 }
 
+<<<<<<< HEAD
 static void ipv4_dst_destroy(struct dst_entry *dst)
 {
 	struct dst_metrics *p = (struct dst_metrics *)DST_METRICS_PTR(dst);
@@ -1501,6 +1517,8 @@ static void ipv4_dst_destroy(struct dst_entry *dst)
 	rt_del_uncached_list(rt);
 }
 
+=======
+>>>>>>> v4.14.187
 void rt_flush_dev(struct net_device *dev)
 {
 	struct net *net = dev_net(dev);

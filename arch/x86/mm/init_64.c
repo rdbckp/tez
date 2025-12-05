@@ -1184,7 +1184,11 @@ int kernel_set_to_readonly;
 void set_kernel_text_rw(void)
 {
 	unsigned long start = PFN_ALIGN(_text);
+<<<<<<< HEAD
 	unsigned long end = PFN_ALIGN(_etext);
+=======
+	unsigned long end = PFN_ALIGN(__stop___ex_table);
+>>>>>>> v4.14.187
 
 	if (!kernel_set_to_readonly)
 		return;
@@ -1203,7 +1207,11 @@ void set_kernel_text_rw(void)
 void set_kernel_text_ro(void)
 {
 	unsigned long start = PFN_ALIGN(_text);
+<<<<<<< HEAD
 	unsigned long end = PFN_ALIGN(_etext);
+=======
+	unsigned long end = PFN_ALIGN(__stop___ex_table);
+>>>>>>> v4.14.187
 
 	if (!kernel_set_to_readonly)
 		return;
@@ -1222,7 +1230,11 @@ void mark_rodata_ro(void)
 	unsigned long start = PFN_ALIGN(_text);
 	unsigned long rodata_start = PFN_ALIGN(__start_rodata);
 	unsigned long end = (unsigned long) &__end_rodata_hpage_align;
+<<<<<<< HEAD
 	unsigned long text_end = PFN_ALIGN(&_etext);
+=======
+	unsigned long text_end = PFN_ALIGN(&__stop___ex_table);
+>>>>>>> v4.14.187
 	unsigned long rodata_end = PFN_ALIGN(&__end_rodata);
 	unsigned long all_end;
 

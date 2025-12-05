@@ -33,6 +33,7 @@ int pcibus_to_node(struct pci_bus *bus);
 
 #endif /* CONFIG_NUMA */
 
+<<<<<<< HEAD
 #include <linux/arch_topology.h>
 
 /* Replace task scheduler's default frequency-invariant accounting */
@@ -61,6 +62,8 @@ int arch_get_nr_clusters(void);
 int arch_get_cluster_id(unsigned int cpu);
 void arch_build_cpu_topology_domain(void);
 
+=======
+>>>>>>> v4.14.187
 #include <asm-generic/topology.h>
 
 #endif /* _ASM_ARM_TOPOLOGY_H */

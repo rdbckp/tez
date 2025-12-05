@@ -365,6 +365,7 @@ struct hd_struct *add_partition(struct gendisk *disk, int partno,
 		goto out_free_info;
 	pdev->devt = devt;
 
+<<<<<<< HEAD
 	if (!p->policy) {
 		if (disk->fops->check_disk_range_wp) {
 			err = disk->fops->check_disk_range_wp(disk, start, len);
@@ -375,6 +376,8 @@ struct hd_struct *add_partition(struct gendisk *disk, int partno,
 		}
 	}
 
+=======
+>>>>>>> v4.14.187
 	/* delay uevent until 'holders' subdir is created */
 	dev_set_uevent_suppress(pdev, 1);
 	err = device_add(pdev);

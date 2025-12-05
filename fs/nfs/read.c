@@ -354,7 +354,11 @@ struct nfs_readdesc {
 };
 
 static int
+<<<<<<< HEAD
 readpage_async_filler(struct file *data, struct page *page)
+=======
+readpage_async_filler(void *data, struct page *page)
+>>>>>>> v4.14.187
 {
 	struct nfs_readdesc *desc = (struct nfs_readdesc *)data;
 	struct nfs_page *new;
