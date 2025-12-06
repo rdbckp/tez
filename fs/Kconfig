@@ -8,12 +8,6 @@ menu "File systems"
 config DCACHE_WORD_ACCESS
        bool
 
-<<<<<<< HEAD
-config INTERRUPTIBLE_SYNC
-    bool "Support interruptible sync for Samsung Mobile Device"
-
-=======
->>>>>>> v4.14.187
 if BLOCK
 
 config FS_IOMAP
@@ -103,11 +97,6 @@ config MANDATORY_FILE_LOCKING
 
 source "fs/crypto/Kconfig"
 
-<<<<<<< HEAD
-source "fs/verity/Kconfig"
-
-=======
->>>>>>> v4.14.187
 source "fs/notify/Kconfig"
 
 source "fs/quota/Kconfig"
@@ -115,10 +104,6 @@ source "fs/quota/Kconfig"
 source "fs/autofs4/Kconfig"
 source "fs/fuse/Kconfig"
 source "fs/overlayfs/Kconfig"
-<<<<<<< HEAD
-source "fs/incfs/Kconfig"
-=======
->>>>>>> v4.14.187
 
 menu "Caches"
 
@@ -140,10 +125,6 @@ if BLOCK
 menu "DOS/FAT/NT Filesystems"
 
 source "fs/fat/Kconfig"
-<<<<<<< HEAD
-source "fs/sdfat/Kconfig"
-=======
->>>>>>> v4.14.187
 source "fs/ntfs/Kconfig"
 
 endmenu
@@ -246,10 +227,6 @@ source "fs/orangefs/Kconfig"
 source "fs/adfs/Kconfig"
 source "fs/affs/Kconfig"
 source "fs/ecryptfs/Kconfig"
-<<<<<<< HEAD
-source "fs/sdcardfs/Kconfig"
-=======
->>>>>>> v4.14.187
 source "fs/hfs/Kconfig"
 source "fs/hfsplus/Kconfig"
 source "fs/befs/Kconfig"
@@ -330,9 +307,5 @@ endif # NETWORK_FILESYSTEMS
 
 source "fs/nls/Kconfig"
 source "fs/dlm/Kconfig"
-<<<<<<< HEAD
-source "fs/unicode/Kconfig"
-=======
->>>>>>> v4.14.187
 
 endmenu
