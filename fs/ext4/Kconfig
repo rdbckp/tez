@@ -37,10 +37,6 @@ config EXT4_FS
 	select CRC16
 	select CRYPTO
 	select CRYPTO_CRC32C
-<<<<<<< HEAD
-	select FS_ENCRYPTION_ALGS if FS_ENCRYPTION
-=======
->>>>>>> v4.14.187
 	help
 	  This is the next generation of the ext3 filesystem.
 
@@ -81,10 +77,6 @@ config EXT4_FS_POSIX_ACL
 	bool "Ext4 POSIX Access Control Lists"
 	depends on EXT4_FS
 	select FS_POSIX_ACL
-<<<<<<< HEAD
-	default y
-=======
->>>>>>> v4.14.187
 	help
 	  POSIX Access Control Lists (ACLs) support permissions for users and
 	  groups beyond the owner/group/world scheme.
@@ -111,16 +103,10 @@ config EXT4_ENCRYPTION
 	depends on EXT4_FS
 	select FS_ENCRYPTION
 	help
-<<<<<<< HEAD
-	  This kconfig symbol is deprecated; now it just selects
-	  FS_ENCRYPTION.  Use CONFIG_FS_ENCRYPTION=y in new config
-	  files
-=======
 	  Enable encryption of ext4 files and directories.  This
 	  feature is similar to ecryptfs, but it is more memory
 	  efficient since it avoids caching the encrypted and
 	  decrypted pages in the page cache.
->>>>>>> v4.14.187
 
 config EXT4_FS_ENCRYPTION
 	bool
