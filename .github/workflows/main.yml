@@ -1,0 +1,75 @@
+name: Build Custom
+
+on:
+  workflow_dispatch:
+    inputs:
+      CLANG_AOSP:
+        description: 'input clang url'
+        required: true
+        default: 'https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android13-release/clang-r450784d.tar.gz'
+      GCC_AOSP:
+        description: 'input gcc url'
+        required: true
+        default: 'https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/heads/llvm-r416183.tar.gz'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Prepare the environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential gcc make binutils flex bison libelf-dev ncurses-dev bc python3 gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi libssl-dev libfl-dev
+        sudo apt-get install -y curl git ftp lftp wget libarchive-tools ccache
+        sudo apt-get install -y zip unzip tar gzip bzip2 rar unrar
+        
+    - name: Preparing Toolchain
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        mkdir toolchain2
+        cd toolchain2
+        CLANG=${{ inputs.CLANG_AOSP }}
+        if [ ! -d clang ]; then mkdir clang && curl -Lsq "${CLANG}" -o clang.tgz && tar -xzf clang.tgz -C clang; fi
+        GCC=${{ inputs.GCC_AOSP }}
+        if [ ! -d gcc ]; then mkdir gcc && curl -Lsq "${GCC}" -o gcc.tgz && tar -xzf gcc.tgz -C gcc; fi
+
+    - name: Start Building Rookie Kernel
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        export KBUILD_BUILD_USER="${{ github.actor }}"
+        export KBUILD_BUILD_HOST="${{ github.event.inputs.DEVICE_NAME }}"
+        chmod +x build_kernel.sh
+        ./build_kernel.sh
+
+    - name: Set Properties
+      id: props
+      run: |
+        echo "date=$(TZ=Asia/Jakarta date +%Y%m%d-%I%M%p)" >> $GITHUB_OUTPUT
+
+    - name: Make Zip
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        export DEVICE_NAME=SM-A022F
+        zip -r9 ${DEVICE_NAME}-${{ steps.props.outputs.date }}.zip boot.img-kernel
+
+    - name: Release
+      uses: ncipollo/release-action@v1.12.0
+      with:
+        artifacts: |
+          ${{ github.workspace }}/*.zip
+        name: Compiled Kernel for SM-A022F - ${{ steps.props.outputs.date }}
+        draft: false
+        prerelease: false
+        tag: ${{ github.run_id }}-${{ steps.props.outputs.date }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        body: |
+          ## Notes
+            - Kernel for SM-A022F, ready to download.
+
+    - name: Link of Release
+      run: |
+        echo "Enjoy your Newly Built Kernel"
+        echo "https://github.com/${GITHUB_REPOSITORY}/releases/tag/${{ github.run_id }}-${{ steps.props.outputs.date }}"
